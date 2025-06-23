@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Medicamento;
 use App\Models\SegurosMedicos;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Smalot\PdfParser\Parser;
 use Spatie\PdfToText\Pdf;
