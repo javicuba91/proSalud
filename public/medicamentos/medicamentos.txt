@@ -1,0 +1,1015 @@
+ 1     37.400.074   18 - FLUOR DESOXIGLUCOSA (18 - FDG)                              -               -         VIAL
+ 2     59.505.987   ABACAVIR (como sulfato)                                      300 mg            TAB
+ 3     59.055.531   ACETATO DE ABIRATERONA                                       250 mg            TAB
+ 4     59.665.010   ACETAZOLAMIDA                                                250 mg            TAB
+ 5     59.075.019   ACETILCISTEINA                                              200 mg/ml          INY
+ 6     59.665.020   ACICLOVIR                                                      3%            UNG OFT       3.5 g
+ 7     59.030.003   ACICLOVIR                                                    200 mg            TAB
+ 8     59.030.013   ACICLOVIR                                                    400 mg            TAB
+ 9     59.030.004   ACICLOVIR (como sal sódica)                                  250 mg            INY
+ 10    59.020.041   ACIDO ACETILSALICILICO                                        500mg            TAB
+ 11    59.020.038   ACIDO ACETILSALICILICO                                     80 a 100mg          TAB
+ 12    59.480.010   ACIDO ALENDRONICO (como alendronato sódico)                   70 mg            TAB
+ 13    59.960.031   ACIDO ASCORBICO                                              100 mg            TAB
+ 14    37.400.006   ACIDO DIMERCAPTOSUCCINICO                                        -               -         VIAL
+ 15    37.400.076   ÁCIDO DIMERCAPTOSUCCINICO PENTAVALENTE (DMSA-V)                  -               -         VIAL
+ 16    59.830.010   ACIDO FOLICO                                                   1 mg            TAB
+                                                                               500 mcg (0.5
+ 17    59.830.011   ACIDO FOLICO                                                                   TAB
+                                                                                   mg)
+ 18    59.285.007   ACIDO FUSIDICO                                                  2%           CRM TOP       15 g
+                                                                                0.5mmol/Ml
+ 19    59.055.082   ACIDO GADOTERICO                                           (1ml contiene       INY
+                                                                                279,32 mg)
+ 20    59.055.015   ACIDO IBANDRONICO                                            1 mg/ml           INY         3 ml
+ 21    37.400.012   ACIDO IMINODIACETICO (IDA)                                       -               -         VIAL
+ 22    59.030.703   ACIDO P-AMINOSALICILICO                                         4g         TAB LIB MODIF
+ 23    59.830.020   ACIDO TRANEXAMICO                                               1g             INY
+ 24    59.830.030   ACIDO TRANEXAMICO                                            250 mg            TAB
+ 25    59.480.995   ACIDO URSODEOXICOLICO                                        250 mg            TAB
+ 26    59.055.085   ACIDO ZOLEDRONICO                                              4 mg            INY
+ 27    59.285.826   ACITRETINA                                                    25 mg            TAB
+ 28    59.055.280   ACTINOMICINA D                                               500 mcg           INY
+ 29    59.020.146   ADALIMUMAB                                                    40 mg            INY         0.8 ml
+ 30    59.065.136   ADENOSINA                                                    3 mg/ml           INY         2 ml
+ 31    59.020.148   AGALSIDASA BETA                                               35 mg            INY
+ 32    59.560.022   AGUA PARA INYECCION                                                            INY         2 ml
+ 33    59.560.021   AGUA PARA INYECCION                                                            INY         5 ml
+ 34    59.560.020   AGUA PARA INYECCION                                                            INY         10 ml
+ 35    59.860.010   AGUA PARA INYECCION                                                            INY           1L
+ 36    49.010.040   AIRE MEDICINAL                                                  m3             GAS
+ 37    59.030.010   ALBENDAZOL                                                 100 mg/5 ml       LIQ ORAL      20ml
+ 38    59.030.005   ALBENDAZOL                                                   200 mg            TAB
+ 39    59.030.017   ALBENDAZOL                                                   400 mg            TAB
+ 40    59.830.045   ALBUMINA HUMANA                                            20 g/100 ml         INY         50 ml
+ 41    59.665.026   ALCOHOL POLIVINILICO                                          1.4%           SOL OFT
+ 42    59.020.050   ALOPURINOL                                                   100 mg            TAB
+ 43    59.020.051   ALOPURINOL                                                   300 mg            TAB
+                                                                                 500 mcg
+ 44    59.760.010   ALPRAZOLAM                                                                     TAB
+                                                                                 (0,5mg)
+ 45    59.065.011   ALTEPLASA                                                     50 mg            INY
+                                                                               400mg+400
+ 46    59.070.015   ALUMINIO HIDROXIDO + MAGNESIO HIDROXIDO                                      LIQ ORAL      150ml
+                                                                                 mg/5ml
+ 47    59.030.065   AMFOTERICINA B (como deoxicolato sódico)                      50 mg            INY
+ 48    SIN_CODIGO   AMFOTERICINA B COMPLEJO LIPIDICO                           50mg/10 ml          INY
+ 49    59.030.015   AMIKACINA (como sulfato)                                    250 mg/ ml         INY         2 ml
+ 50    59.030.020   AMIKACINA (como sulfato)                                    50 mg/ ml          INY         2 ml
+ 51    59.065.647   AMILO NITRITO                                                                 LIQ INH
+
+
+
+
+                                                                                                                        33
+Item    Código                                     Principio Activo                  Concent.         Form Farm   Pres.
+ 52    59.960.016   AMINOACIDOS CON ELECTROLITOS                                      10 -15%            INY
+ 53    59.960.001   AMINOACIDOS FORMULA PEDIATRICA                                      10%              SOL
+ 54    SIN CODIGO   AMINOÁCIDOS S/E PARA INSUFICIENCIA HEPATICA                         8%               INY
+ 55    59.960.032   AMINOÁCIDOS S/E PARA INSUFICIENCIA RENAL                            7%               INY
+ 56    SIN CODIGO   AMINOACIDOS SIN ELECTROLITOS                                      10 -15%            INY
+ 57    59.075.020   AMINOFILINA                                                      25 mg/ml            INY      10 ml
+ 58    59.065.015   AMIODARONA CLORHIDRATO                                            200 mg             TAB
+ 59    59.065.020   AMIODARONA CLORHIDRATO                                           50 mg/ml            INY      3 ml
+ 60    59.760.533   AMISULPRIDA                                                       200 mg             TAB
+ 61    59.760.020   AMITRIPTILINA CLORHIDRATO                                          25 mg             TAB
+ 62    59.065.021   AMLODIPINO (como besilato)                                         5 mg              TAB
+ 63    59.030.034   AMOXICILINA                                                     250 mg/5ml        LIQ ORAL
+ 64    59.030.036   AMOXICILINA                                                     500 mg/5ml        LIQ ORAL
+ 65    59.030.030   AMOXICILINA                                                       500 mg             TAB
+                                                                                     250mg +
+ 66    59.030.032   AMOXICILINA + ACIDO CLAVULANICO (como sal potásica)                               LIQ ORAL
+                                                                                    62.5mg/5ml
+ 67    59.030.035   AMOXICILINA + ACIDO CLAVULANICO (como sal potásica)           500 mg+125 mg          TAB
+
+ 68    59.030.040   AMPICILINA (como sal sódica)                                        1g               INY
+ 69    59.030.045   AMPICILINA (como sal sódica)                                      500 mg             INY
+ 70    59.030.061   AMPICILINA (como sal sódica) + SULBACTAM (como sal sódica)     1 g + 500 mg          INY
+ 71    59.055.532   ANASTROZOL                                                         1 mg              TAB
+ 72    59.070.045   ANTIHEMORROIDAL (Anestésico local + corticoide + aplicador)                         CRM
+
+                                                                                   equiv 80-85mg
+ 73    59.030.082   ANTIMONIATO MEGLUMINA                                            antimonio           INY
+                                                                                  pentavalente/ml
+
+ 74    59.505.055   ANTITOXINA TETANICA                                                                  INY
+                                                                                   125mg-80mg-
+ 75    59.025.700   APREPITANT                                                                           TAB       Kit
+                                                                                      80mg
+ 76    SIN CODIGO   ARIPIPRAZOL                                                        15 mg             TAB
+ 77    SIN_CODIGO   ARTEMETERO                                                       80 mg/ml            INY
+ 78    SIN_CODIGO   ARTESUNATO                                                        250 mg             TAB
+ 79    59.055.010   ASPARAGINASA                                                     10,000 UI           INY
+ 80    59.065.137   ATAZANAVIR (como sulfato)                                         300 mg             TAB
+ 81    59.065.025   ATENOLOL                                                          100 mg             TAB
+                                                                                    500 mcg/ml
+ 82    59.065.026   ATENOLOL                                                                             INY
+                                                                                    (0.5mg/ml)
+ 83    59.065.098   ATORVASTATINA (como sal cálcica)                                   20 mg             TAB
+ 84    59.065.099   ATORVASTATINA (como sal cálcica)                                   40 mg             TAB
+ 85    59.665.040   ATROPINA SULFATO                                                    1%             SOL OFT    5 ml
+                                                                                  500 mcg/ml (0.5
+ 86    59.040.020   ATROPINA SULFATO                                                                     INY
+                                                                                      mg/ml)
+ 87    59.055.065   AZACITIDINA                                                       100 mg             INY
+ 88    59.505.060   AZATIOPRINA                                                        50 mg             TAB
+ 89    59.030.301   AZITROMICINA                                                    200mg/5ml         LIQ ORAL    30ml
+ 90    59.030.299   AZITROMICINA                                                       500mg             TAB
+ 91    59.030.083   AZTREONAM                                                           1g               INY
+ 92    59.075.082   BACLOFENO                                                          10 mg             TAB
+ 93    59.750.111   BARIO SULFATO                                                                      SUS REC
+ 94    59.750.091   BARIO SULFATO                                                                     LIQ ORAL
+ 95    59.075.088   BECLOMETASONA DIPROPIONATO                                     250 mcg/dosis       AER INH
+ 96    59.665.048   BENCIDAMINA CLORHIDRATO                                            0.15%          LIQ ORAL    120 ml
+                                                                                  Equiv. 1'200.000
+ 97    59.030.682   BENCILPENICILINA BENZATINA                                           UI              INY
+                                                                                   Bencilpenicilina
+                                                                                  Equiv.1'000.000
+ 98    59.030.697   BENCILPENICILINA SODICA                                              UI              INY
+                                                                                   Bencilpenicilina
+ 99    SIN_CODIGO   BENZNIDAZOL                                                       100 mg             TAB
+100    59.285.467   BETAMETASONA (COMO DIPROPIONATO)                                   0.05%           CRM TOP     20g
+
+
+
+
+                                                                                                                           34
+Item    Código                                     Principio Activo      Concent.        Form Farm    Pres.
+101    59.480.095   BETAMETASONA (COMO FOSFATO SODICO)                    4 mg/ml           INY
+102    59.055.087   BEVACIZUMAB                                           400 mg            INY
+103    59.055.009   BICALUTAMIDA                                          150 mg            TAB
+104    59.055.008   BICALUTAMIDA                                           50 mg            TAB
+105    59.060.100   BIPERIDENO CLORHIDRATO                                 2 mg             TAB
+106    59.060.090   BIPERIDENO LACTATO                                    5 mg/ml           INY        1 ml
+107    59.070.681   BISACODILO                                             10 mg            SUP
+108    59.070.682   BISACODILO                                             5 mg             TAB
+109    59.070.829   BISMUTO SUBSALICILATO                                 262 mg            TAB
+110    59.070.830   BISMUTO SUBSALICILATO                              87.33 mg/5 ml     LIQ ORAL     150ml
+111    SIN_CODIGO   BISOPROLOL FUMARATO                                    5 mg             TAB
+112    59.055.090   BLEOMICINA (como sulfato)                          15 mg (15 UI)        INY
+113    59.055.092   BORTEZOMIB                                            3.5 mg            INY
+114    59.665.844   BRIMONIDINA TARTRATO                                  0.15%           SOL OFT
+115    59.480.090   BROMOCRIPTINA COMO MESILATO                           2.5 mg            TAB
+116    59.075.107   BUDESONIDA                                         100 mcg/dosis      SPR NAS    200 DOSIS
+117    59.075.106   BUDESONIDA                                         200 mcg/dosis      AER INH    200 DOSIS
+118    59.025.554   BUPIVACAINA CLORHIDRATO + GLUCOSA (PESADA)         0.5% + 7.5%          INY        4 ml
+119    59.025.100   BUPIVACAINA CLORHIDRATO SIN PRESERVANTES               0.5%             INY        20ml
+120    59.020.587   BUPRENORFINA                                         35 mcg/h           PTD
+                                                                        500 mcg (0,5
+121    59.030.112   CABERGOLINA                                                             TAB
+                                                                             mg)
+                                                                      20 mg/ml (Equiv.
+122    59.050.132   CAFEINA CITRATO                                         10mg            INY
+                                                                         cafeína/ml)
+                                                                      20 mg/ml (Equiv.
+123    59.050.133   CAFEINA CITRATO                                         10mg         LIQ ORAL
+                                                                         cafeína/ml)
+                                                                       1500 mg+ 400
+124    59.960.125   CALCIO CITRATO + VITAMINA D3                                            TAB
+                                                                              UI
+                                                                        10% (equiv.
+125    59.960.130   CALCIO GLUCONATO                                                        INY       10 ml
+                                                                       8,4mg/mL Ca)
+126    59.040.320   CALCIOEDETATO SODICO                                200 mg/ml           INY        5 ml
+127    59.960.133   CALCITRIOL                                           0.25 mcg           TAB
+128    59.960.131   CALCITRIOL                                           1 mcg/ml           INY
+129    59.030.111   CAPECITABINA                                          500 mg            TAB
+130    59.065.128   CAPTOPRIL                                              25 mg            TAB
+131    59.035.132   CARBAMAZEPINA                                         100 mg            TAB
+132    59.035.133   CARBAMAZEPINA                                       100 mg/5 ml      LIQ ORAL     100ml
+133    59.035.130   CARBAMAZEPINA                                         200 mg            TAB
+134    59.035.131   CARBAMAZEPINA                                         400 mg            TAB
+135    59.040.130   CARBON ACTIVADO                                        50 g             PLV
+136    59.055.120   CARBOPLATINO                                          150 mg            INY
+137    59.055.130   CARMUSTINA                                            100 mg            INY
+138    SIN_CODIGO   CARVEDILOL                                             25 mg            TAB
+139    59.065.102   CARVEDILOL                                            6.25 mg           TAB
+140    59.030.394   CASPOFUNGINA                                           50 mg            INY
+141    59.030.300   CEFACLOR                                              500 mg            TAB
+142    59.030.152   CEFALEXINA                                            500 mg            TAB
+143    59.030.138   CEFALEXINA                                          250 mg/5 ml      LIQ ORAL      60ml
+144    59.030.031   CEFAZOLINA (como sal sódica)                            1g              INY
+145    59.030.110   CEFOPERAZONA + SULBACTAM IM/IV                      1 g + 0.5 g         INY
+146    59.030.162   CEFOTAXIMA (como sal sódica)                          500 mg            INY
+147    59.030.195   CEFTAZIDIMA                                             1g              INY
+148    59.030.200   CEFTRIAXONA (como sal sódica) IV                        1g              INY
+149    59.030.204   CEFUROXIMA (como axetil)                            250 mg/5 ml      LIQ ORAL
+150    59.030.203   CEFUROXIMA (como axetil)                              500 mg            TAB
+151    59.030.205   CEFUROXIMA (como sal sódica)                          750 mg            INY
+152    59.055.133   CETUXIMAB                                             100 mg            INY
+
+
+
+
+                                                                                                                 35
+Item    Código                                      Principio Activo               Concent.       Form Farm      Pres.
+153    59.055.135   CICLOFOSFAMIDA                                                   50 mg           TAB
+154    59.055.145   CICLOFOSFAMIDA                                                    1g             INY
+155    59.665.115   CICLOPENTOLATO CLORHIDRATO                                        1%           SOL OFT
+156    59.505.132   CICLOSPORINA                                                     25 mg           TAB
+157    59.505.127   CICLOSPORINA                                                     50 mg           TAB
+158    59.505.133   CICLOSPORINA                                                   50 mg/ml          INY          1 ml
+159    59.505.125   CICLOSPORINA                                                   100 mg/ml      LIQ ORAL        50ml
+160    59.080.151   CIPROFLOXACINO                                                250 mg/5 ml     LIQ ORAL
+161    59.670.135   CIPROFLOXACINO (como clorhidrato)                                0.3%          SOL OTI
+162    59.665.894   CIPROFLOXACINO (como clorhidrato)                                0.3%          SOL OFT        5ml
+163    59.080.150   CIPROFLOXACINO (como clorhidrato)                               500 mg           TAB
+164    59.030.208   CIPROFLOXACINO (como lactato)                                   2 mg/ml          INY         100 ml
+165    59.055.148   CIPROTERONA ACETATO                                              50 mg           TAB
+166    59.055.160   CISPLATINO                                                       10 mg           INY
+167    59.055.150   CISPLATINO                                                       50 mg           INY
+168    59.055.170   CITARABINA SIN PRESERVANTE                                      100 mg           INY
+169    59.065.151   CITICOLINA                                                        1g             TAB
+170    59.030.207   CLARITROMICINA                                                 250mg/5ml      LIQ ORAL
+171    59.030.206   CLARITROMICINA                                                  500 mg           TAB
+172    59.030.216   CLINDAMICINA (como clorhidrato)                                 300 mg           TAB
+173    59.030.210   CLINDAMICINA (como fosfato)                                    150 mg/ml         INY          4 ml
+174    59.030.217   CLINDAMICINA (como palmitato)                                  75 mg/5 ml     LIQ ORAL
+175    59.760.273   CLOBAZAM                                                         10mg            TAB
+176    59.285.115   CLOBETASOL PROPIONATO                                            0.05%         CRM TOP        25g
+177    59.480.130   CLOMIFENO CITRATO                                                50 mg           TAB
+178    59.760.136   CLOMIPRAMINA CLORHIDRATO                                         25 mg           TAB
+179    59.035.143   CLONAZEPAM                                                       2 mg            TAB
+
+180    59.035.145   CLONAZEPAM                                                   500mcg (0,5mg)      TAB
+
+181    59.065.637   CLOPIDOGREL                                                      75 mg           TAB
+182    59.030.228   CLORAFENICOL                                                    250 mg           TAB
+183    59.665.140   CLORANFENICOL                                                    0.5%          SOL OFT
+184    59.030.227   CLORANFENICOL                                                   500 mg           TAB
+185    59.030.240   CLORANFENICOL (como palmitato)                                250 mg/5 ml     LIQ ORAL        60ml
+186    59.030.230   CLORANFENICOL (como succinato sódico)                             1g             INY
+187    59.045.140   CLORFENAMINA MALEATO                                           2 mg/5 ml      LIQ ORAL       120 ml
+188    59.045.130   CLORFENAMINA MALEATO                                           10 mg/ ml         INY          1 ml
+189    59.045.150   CLORFENAMINA MALEATO                                             4 mg            TAB
+190    59.030.243   CLOROQUINA (como fosfato)                                       150 mg           TAB
+191    59.760.140   CLORPROMAZINA CLORHIDRATO                                       100 mg           TAB
+192    59.760.150   CLORPROMAZINA CLORHIDRATO                                        25 mg           INY          2 ml
+                                                                                                              TUBO+APLICAD
+193    59.440.135   CLOTRIMAZOL                                                       1%           CRM VAG
+                                                                                                                   OR
+194    59.030.246   CLOTRIMAZOL                                                       1%           CRM TOP        20g
+195    59.440.130   CLOTRIMAZOL                                                     500 mg          OVU
+196    59.760.181   CLOZAPINA                                                        25 mg           TAB
+197    59.760.180   CLOZAPINA                                                       100 mg           TAB
+198    59.020.130   CODEINA FOSFATO                                                30 mg/ml          INY
+199    59.020.134   CODEINA FOSFATO                                                  60 mg           TAB
+200    59.275.135   CODEINA FOSFATO                                                15 mg/5 ml     LIQ ORAL
+201    59.020.132   CODEINA FOSFATO                                                  30 mg           TAB
+                                                                                  500 mcg (0.5
+202    59.020.140   COLCHICINA                                                                       TAB
+                                                                                      mg)
+203    59.030.962   COLISTIMETATO DE SODIO O COLISTINA                              100 mg           INY
+204    37.400.075   COLOIDE DE AZUFRE KIT (A+B+C) X 3 VIALES                           -              -           KIT
+205    59.960.140   COMPLEJO B                                                                       TAB
+206    59.830.400   CONCENTRADO DE COMPLEJO FACTOR IX (Factor II, VII, IX y X)                       INY
+
+
+
+
+                                                                                                                          36
+Item    Código                                      Principio Activo             Concent.       Form Farm      Pres.
+207    59.830.390   CONCENTRADO DE FACTOR VIII                                                     INY
+208    59.960.151   CONJUGADO rEGF+rP64K                                       0.9mg/0.9 ml        INY
+209    59.055.270   DACARBAZINA                                                   200 mg           INY
+210    59.055.275   DACARBAZINA                                                   100 mg           INY
+211    SIN CODIGO   DACLATASVIR                                                   60 mg            TAB
+212    SIN_CODIGO   DAPSONA                                                       100 mg           TAB
+213    59.505.009   DARUNAVIR ETANOLATO                                           300 mg           TAB
+214    59.055.279   DASATINIB                                                     50 mg            TAB
+215    59.055.285   DAUNORUBICINA (como clorhidrato)                              20 mg            INY
+216    59.750.677   DERIVADO PROTEICO PURIFICADO DE TUBERCULINA                                    INY
+217    59.480.260   DESMOPRESINA ACETATO                                       10mcg/dosis       SPR NAS       5 ml
+218    59.440.005   DESOGESTREL                                                  0.075 mg          TAB
+219    59.665.180   DEXAMETASONA                                                   0.1%          SOL OFT
+220    59.480.276   DEXAMETASONA (como dexametasona fosfato          sódico)     2mg/5ml         LIQ ORAL
+221    59.480.274   DEXAMETASONA FOSFATO (como sal sódica)                       4 mg/ ml          INY
+222    59.055.679   DEXRAZOXANO (como clorhidrato)                                500 mg           INY
+223    37.400.046   DEXTRAN                                                       50 mg              -         VIAL
+224    59.075.289   DEXTROMETORFANO BROMHIDRATO                                 15 mg/5 ml       LIQ ORAL      120ml
+225    59.760.270   DIAZEPAM                                                     5 mg/ ml          INY         2 ml
+226    59.035.270   DIAZEPAM                                                      10 mg            TAB
+227    59.020.285   DICLOFENACO                                                   50 mg            TAB
+228    59.020.280   DICLOFENACO SODICO                                           25 mg/ml          INY         3 ml
+229    59.020.290   DICLOFENACO SODICO                                             1%            GEL TOP        50g
+230    59.665.195   DICLOFENACO SODICO                                             0.1%          SOL OFT       5 ml
+231    59.030.286   DICLOXACILINA (como sal sódica)                            250 mg/5 ml       LIQ ORAL
+232    59.030.278   DICLOXACILINA (como sal sódica)                               500 mg           TAB
+233    37.400.027   DIETIL TETRAPENTACETICO (DPTA)                                   -               -         VIAL
+234    49.555.422   DIGLUCONATO DE CLORHEXIDINA                                   0.12%            SOL
+                                                                               250 mcg (0.25
+235    59.065.285   DIGOXINA                                                                       TAB
+                                                                                   mg)
+236    59.065.287   DILTIAZEM CLOHIDRATO                                          60 mg            TAB
+237    59.070.280   DIMENHIDRINATO                                               10 mg/ml          INY         5 ml
+238    59.070.275   DIMENHIDRINATO                                                50 mg            TAB
+239    SIN CODIGO   DIOXIDO DE CARBONO MEDICINAL                                    Kg             GAS
+240    59.065.290   DIPIRIDAMOL                                                   75 mg            TAB
+241    59.760.290   DISULFIRAM                                                    500 mg           TAB
+242    59.065.298   DOBUTAMINA (como clorhidrato)                               12.5 mg/ml         INY         20 ml
+243    59.055.089   DOCETAXEL                                                     80 mg            INY
+244    59.065.300   DOPAMINA CLORHIDRATO                                         40 mg/ml          INY         5 ml
+245    59.665.015   DORZOLAMIDA                                                    2%            SOL OFT
+246    59.080.005   DOXAZOSINA                                                     4 mg        TAB LIB MODIF
+247    59.030.295   DOXICICLINA    (como clorhidrato o hiclato)                   100 mg           TAB
+248    59.055.295   DOXORUBICINA CLORHIDRATO                                      10 mg            INY
+249    59.055.290   DOXORUBICINA CLORHIDRATO                                      50 mg            INY
+250    59.505.305   EFAVIRENZ                                                     600 mg           TAB
+                                                                               600mg+200mg
+251    SIN_CODIGO   EFAVIRENZ+EMTRICITABINA+TENOFOVIR DISOPROXIL FUMARATO                          TAB
+                                                                                 + 300 mg
+252    59.065.310   ENALAPRIL MALEATO                                             20 mg            TAB
+253    59.830.241   ENOXAPARINA SODICA                                          100 mg/ml          INY         0.6 ml
+254    59.830.246   ENOXAPARINA SODICA                                          100 mg/ml          INY         0.4 ml
+255    59.505.245   ENTECAVIR                                                      1 mg            TAB
+256    59.075.010   EPINEFRINA (como clorhidrato o tartrato ácido)               1 mg/ml           INY         1 ml
+257    59.055.320   EPIRUBICINA CLORHIDRATO                                       50 mg            INY
+258    59.055.325   EPIRUBICINA CLORHIDRATO                                        10 mg           INY
+259    59.830.292   EPOETINA ALFA (ERITROPOYETINA RECOMBINANTE HUMANA ALFA)    2,000 UI/ml         INY         1 ml
+260    59.830.290   EPOETINA ALFA (ERITROPOYETINA RECOMBINANTE HUMANA ALFA)    4,000 UI/ml         INY         1 ml
+261    59.830.288   EPOETINA BETA (ERITROPOYETINA BETA RECOMBINANTE HUMANA)      30,000 UI         INY
+
+
+
+                                                                                                                        37
+Item    Código                                     Principio Activo          Concent.       Form Farm   Pres.
+                                                                          250 mcg/mL (10
+262    59.960.330   ERGOCALCIFEROL                                                          LIQ ORAL
+                                                                             000UI/mL)
+                                                                            1,25 mg (50
+263    59.960.325   ERGOCALCIFEROL                                                             TAB
+                                                                               000UI)
+                                                                            200 mcg/ml
+264    59.440.320   ERGOMETRINA MALEATO                                                        INY      1 ml
+                                                                            (0,2 mg/ml)
+265    59.440.330   ERGOMETRINA MALEATO                                       0.2 mg           TAB
+
+266    59.030.324   ERITROMICINA (como estearato o etilsuccinato)         200-250 mg/5 ml   LIQ ORAL
+
+267    59.030.297   ERITROMICINA (como estearato o etilsuccinato)             500 mg           TAB
+268    59.030.325   ERITROMICINA (como estearato o etilsuccinato)          125 mg/5 ml      LIQ ORAL
+269    59.055.328   ERLOTINIB CLORHIDRATO                                     150 mg           TAB
+270    59.030.330   ERTAPENEM                                                   1g             INY
+271    59.070.450   ESCOPOLAMINA BUTILBROMURO                                 10 mg            TAB
+272    59.070.455   ESCOPOLAMINA BUTILBROMURO                                20 mg/ml          INY
+273    59.080.006   ESPIRONOLACTONA                                           100 mg           TAB
+274    59.080.320   ESPIRONOLACTONA                                           25 mg            TAB
+275    37.400.029   ESTAÑOSO CLORURO (Cl2Sn)                                     -              -       VIAL
+276    59.505.315   ESTAVUDINA                                               5 mg/5 ml      LIQ ORAL
+277    59.480.330   ESTRADIOL                                                  1 mg            TAB
+278    59.480.331   ESTRADIOL                                                 60 mg          GEL TOP
+279    59.480.315   ESTRADIOL VALERATO + DROSPIRENONA                      1 mg + 2 mg         TAB
+280    59.055.570   ESTRADIOL CIPIONATO + MEDROXIPROGESTERONA ACETATO      5 mg + 25 mg        INY
+281    59.030.340   ESTREPTOMICINA (como sulfato)                               1g             INY
+282    59.030.335   ESTREPTOMICINA (como sulfato)                               5g             INY
+283    59.440.340   ESTRIOL                                                    0.1%          CRM VAG    15 g
+284    59.030.345   ETAMBUTOL                                                 400 mg           TAB
+285    59.830.320   ETAMSILATO                                                250 mg           INY      2 ml
+286    59.065.320   ETILEFRINA                                               10 mg/ml          INY
+287    37.400.048   ETILENDICISTEINA DIMERO 1.0 mg KIT (A+B) X 2 VIALES          -              -       VIAL
+                                                                           30 mcg + 150
+288    59.480.360   ETINILESTRADIOL+LEVONORGESTREL                                             TAB
+                                                                               mcg
+289    59.030.360   ETIONAMIDA                                                250 mg           TAB
+290    59.055.340   ETOPOSIDO                                                20 mg/ml          INY      5ml
+291    59.055.345   ETOPOSIDO                                                 50 mg            TAB
+292    59.035.353   ETOSUXIMIDA                                             250 mg/5mL      LIQ ORAL
+293    59.035.350   ETOSUXIMIDA                                               250 mg           TAB
+294    59.285.323   ETRAVIRINA                                                100 mg           TAB
+295    59.505.131   EVEROLIMUS                                               0.75 mg           TAB
+296    SIN CODIGO   EVEROLIMUS                                                10 mg            TAB
+297    59.055.346   EXEMESTANO                                                25 mg            TAB
+298    59.505.320   EXTRACTO ALTERNARIA                                                        INY
+299    59.505.323   EXTRACTO ASPERGILLUS                                                       INY
+300    59.505.338   EXTRACTO HORMODENDRUM                                                      INY
+301    59.505.341   EXTRACTO MUCOR                                                             INY
+302    59.505.344   EXTRACTO PENICILLIUM                                                       INY
+303    59.505.347   EXTRACTO POLVOS DE CASA                                                    INY
+304    59.505.350   EXTRACTO RHIZOPUS                                                          INY
+305    59.080.390   FENAZOPIRIDINA                                            100 mg           TAB
+306    59.035.391   FENITOINA                                              125 mg/5 ml      LIQ ORAL
+307    59.035.400   FENITOINA SODICA                                         50 mg/ml          INY      2 ml
+308    59.035.410   FENITOINA SODICA                                          100 mg           TAB
+309    59.035.403   FENITOINA SODICA                                         50 mg/ml          INY      5ml
+310    59.035.430   FENOBARBITAL                                              100 mg           TAB
+311    59.020.395   FENTANILO                                                 8.4 mg           PTD
+                                                                            50 mcg/ml
+312    59.020.390   FENTANILO (como citrato)                                                   INY      2ml
+                                                                           (0.05 mg/ml)
+                                                                            50 mcg/ml
+313    59.020.391   FENTANILO (como citrato)                                                   INY      10ml
+                                                                           (0.05 mg/ml)
+
+
+
+
+                                                                                                                38
+Item    Código                                      Principio Activo                Concent.         Form Farm        Pres.
+
+                                                                                     (125 U
+                                                                                 DESOXIRRIBONU
+314    59.286.370   FIBRINOLISINA BOVINA + DESOXIRRIBONUCLEASA + CLORANFENICOL   CLEASA 99900 U         UNG
+                                                                                 CLORANFENICOL
+                                                                                     1.05 g)
+
+315    59.055.339   FILGRASTIM                                                    30 000 000 UI         INY
+316    59.055.337   FILGRASTIM                                                    48 000 000 UI         INY
+317    59.080.393   FINASTERIDA                                                       5 mg               TAB
+318    59.830.410   FITOMENADIONA                                                   10 mg/ml            INY           1 ml
+319    59.080.409   FLAVOXATO CLORHIDRATO                                            200 mg             TAB
+320    59.030.399   FLUCONAZOL                                                      2 mg/ml             INY           50ml
+321    59.030.390   FLUCONAZOL                                                       150 mg             TAB
+322    59.055.297   FLUDARABINA                                                      10 mg              TAB
+323    59.055.088   FLUDARABINA FOSFATO                                              50 mg              INY
+324    59.760.390   FLUFENAZINA DECANOATO O ENANTATO                                25 mg/ml             INY          1ml
+                                                                                   100 mcg/ml
+325    59.040.001   FLUMAZENIL                                                                          INY           5 ml
+                                                                                  (0.1 mg/ ml)
+326    59.750.410   FLUORESCEINA SODICA                                               10%               INY
+327    59.750.400   FLUORESCEINA SODICA                                                2%             SOL OFT
+328    59.665.405   FLUOROMETOLONA                                                    0.1%            SOL OFT
+329    59.055.395   FLUOROURACILO                                                   50 mg/ml            INY           5 ml
+330    59.055.390   FLUOROURACILO                                                   50 mg/ml            INY           10ml
+331    59.760.410   FLUOXETINA (como clorhidrato)                                    20 mg              TAB
+332    59.480.400   FLUTAMIDA                                                        250 mg             TAB
+                                                                                  500 mcg + 50
+333    59.075.873   FLUTICASONA + SALMETEROL                                                           AER INH      60 DOSIS
+                                                                                    mcg/dosis
+                                                                                    250 mcg +
+334    59.075.870   FLUTICASONA PROPIONATO + SALMETEROL (como xinafoato)                               AER INH      120 DOSIS
+                                                                                  25 mcg/dosis
+                                                                                  equiv. 50 mg
+335    59.055.425   FOLINATO CÁLCICO                                                                     INY
+                                                                                  ácido folínico
+                                                                                  equiv. 15 mg
+336    59.055.420   FOLINATO CÁLCICO                                                                     TAB
+                                                                                  ácido folínico
+337    59.440.006   FOLITROPINA BETA                                             600 UI / 0.72 ml       INY
+
+                                                                                    (FOSFATO
+                                                                                   DIBASICO DE
+                                                                                      SODIO
+                                                                                 HEPTAHIDRATO
+338    59.860.007   FOSFATO DIBASICO DE SODIO HEPTAHIDRATADO PEDIATRICO          5.93 g FOSFATO       SOL REC
+                                                                                  MONOBASICO
+                                                                                    DE SODIO
+                                                                                 MONOHIDRATO
+                                                                                      16.1 g)
+                                                                                    (FOSFATO
+                                                                                  MONOBASICO
+                                                                                    DE SODIO
+                                                                                  ANHIDRO 16 g
+339    59.860.008   FOSFATO DIBASICO DE SODIO MONOHIDRATADO ADULTO                   FOSFATO          SOL REC        250 ml
+                                                                                   DIBASICO DE
+                                                                                      SODIO
+                                                                                 HEPTAHIDRATO
+                                                                                       6 g)
+340    59.055.430   FULVESTRANT                                                       250 mg            INY
+341    59.030.400   FURAZOLIDONA                                                     100 mg             TAB
+342    59.030.403   FURAZOLIDONA                                                   50 mg/5ml          LIQ ORAL
+343    59.080.420   FUROSEMIDA                                                      10 mg/ml            INY           2ml
+344    59.080.410   FUROSEMIDA                                                       40 mg              TAB
+345    59.080.415   FUROSEMIDA                                                     20 mg/5mL          LIQ ORAL
+346    59.035.460   GABAPENTINA                                                      300 mg             TAB
+347    59.035.490   GALANTAMINA                                                       8 mg          TAB LIB MODIF
+348    37.400.034   GALIO 67 (Ga 67)                                                    -                 -           VIAL
+349    59.505.460   GANCICLOVIR (como sal sódica)                                    500 mg             INY
+350    59.055.536   GEMCITABINA (como clorhidrato)                                     1g               INY
+351    59.030.534   GEMCITABINA (como clorhidrato)                                   200 mg              INY
+
+
+
+
+                                                                                                                                39
+Item    Código                                   Principio Activo      Concent.         Form Farm   Pres.
+352    59.065.420   GEMFIBROZILO                                        600 mg             TAB
+353    59.665.430   GENTAMICINA                                        3.5 mg/g          UNG OFT
+354    59.665.420   GENTAMICINA                                         3 mg/ ml         SOL OFT     5 ml
+355    59.030.410   GENTAMICINA (como sulfato)                         40 mg/ml            INY       2ml
+356    59.030.420   GENTAMICINA (como sulfato)                          80 mg/ml           INY       2ml
+357    59.038.420   GLIBENCLAMIDA                                        5 mg              TAB
+358    59.070.420   GLICEROL                                                               SUP
+359    SIN_CODIGO   GLICEROLTRINITRATO (NITROGLICERINA)                 5mg/mL             INY       5 ml
+360    59.860.305   GLUCOSA                                              33.3%             INY      20 ml
+361    59.860.285   GLUCOSA en Agua                                       10%              INY        1L
+362    59.860.280   GLUCOSA en Agua                                       50%              INY        1L
+363    59.860.295   GLUCOSA en Agua                                       5%               INY       1L
+364    59.860.006   GLUCOSA en Agua                                       5%               INY      500 ml
+365    59.860.270   GLUCOSA EN AGUA + SODIO CLORURO                   5% + 0.9%            INY       1L
+366    59.960.038   GLUTAMINA LIBRE                                       20%              INY
+367    59.480.421   GONADOTROPINA CORIONICA                             5 000 UI           INY
+368    59.075.001   GUAIFENESINA                                      100 mg/5 ml       LIQ ORAL
+369    59.760.485   HALOPERIDOL                                         2 mg/ml         LIQ ORAL
+370    59.760.475   HALOPERIDOL                                         5 mg/ml            INY       1 ml
+371    59.760.460   HALOPERIDOL                                          5 mg              TAB
+372    59.760.465   HALOPERIDOL                                          10 mg             TAB
+373    59.760.001   HALOPERIDOL (como decanoato)                       50 mg/ml            INY       1 ml
+374    49.030.057   HELIO                                                                 GAS         3
+375    59.830.465   HEPARINA SODICA                                   5000 UI/ml           INY       5 ml
+376    59.080.460   HIDROCLOROTIAZIDA                                    50 mg             TAB
+377    59.080.450   HIDROCLOROTIAZIDA                                    25 mg             TAB
+378    59.285.466   HIDROCORTISONA (como acetato)                         1%             CRM TOP     20g
+379    59.480.460   HIDROCORTISONA (como succinato sódico)               100 mg            INY
+380    59.480.465   HIDROCORTISONA (como succinato sódico)              250 mg             INY
+381    59.055.460   HIDROXICARBAMIDA                                    500 mg             TAB
+
+                                                                         400 mg
+                                                                     (equiv. 310 mg
+382    59.020.470   HIDROXICLOROQUINA SULFATO                                              TAB
+                                                                    hidroxicloroquina
+                                                                             )
+
+383    SIN CODIGO   HIDROXIPROPIL METILCELULOSA                          3 mg            GEL OFT
+384    59.830.480   HIDROXOCOBALAMINA                                   1 mg/ml            INY       1 ml
+385    59.505.124   HIERRO (como sacarato)                           20 mg Fe/ml           INY       5 ml
+386    59.830.834   HIERRO (como sulfato)                             25 mg Fe/ml       LIQ ORAL    gotas
+387    59.830.832   HIERRO (como sulfato)                            15 mg Fe/5ml       LIQ ORAL
+388    59.830.838   HIERRO (como sulfato)                              60 mg Fe            TAB
+                                                                    60 mg Fe + 400
+389    59.830.830   HIERRO (como sulfato) + ACIDO FOLICO                                   TAB
+                                                                         mcg
+390    35.850.521   HIPOCLORITO DE SODIO                                  10%              SOL
+391    59.070.470   HOMATROPINA METILBROMURO                            1 mg/ml         LIQ ORAL
+392    59.480.480   HORMONA DE CRECIMIENTO HUMANA RECOMBINANTE           10 UI             INY
+393    59.020.486   IBUPROFENO                                        100 mg/5 ml       LIQ ORAL    60ml
+394    59.020.485   IBUPROFENO                                          400 mg             TAB
+395    59.055.500   IFOSFAMIDA                                            1g               INY
+396    59.030.481   IMATINIB (como mesilato)                            100 mg             TAB
+397    59.030.482   IMATINIB (como mesilato)                            400 mg             TAB
+                                                                     500 mg + 500
+398    59.030.480   IMIPENEM + CILASTATINA (como sal sódica)                               INY
+                                                                          mg
+399    59.020.141   INFLIXIMAB                                          100 mg             INY
+400    59.505.491   INMUNOGLOBULINA ANTI-D (Rho)                                           INY
+401    59.505.496   INMUNOGLOBULINA CONTRA EL TETANOS                                      INY
+402    59.505.497   INMUNOGLOBULINA CONTRA LA HEPATITIS B                                  INY
+403    59.505.498   INMUNOGLOBULINA CONTRA LA RABIA                                        INY
+
+
+
+
+                                                                                                             40
+Item    Código                                    Principio Activo        Concent.      Form Farm      Pres.
+404    37.400.531   INMUNOGLOBULINA GAMMA LIOFILIZADA                         -             -           VIAL
+405    59.055.496   INMUNOGLOBULINA HUMANA                                  10%            INY
+406    59.038.498   INSULINA GLARGINA                                     100 UI/ml        INY          3 ml
+407    59.038.480   INSULINA CRISTALINA                                   100 UI/ml        INY          3 ml
+408    59.038.495   INSULINA DE ACCION INTERMEDIA (NPH)                   100 UI/ml        INY           3 ml
+409    SIN CODIGO   INSULINA ISOFANA HUMANA (NPH) (ADN recombinante)      100 UI/ml        INY         10 ml
+410    59.055.508   INTERFERON ALFA 2a                                  3'000.000 UI       INY
+411    59.055.498   INTERFERON ALFA 2a                                  9'000.000 UI       INY
+                                                                       3 000 000 – 10
+412    59.055.509   INTERFERON ALFA 2b                                                     INY
+                                                                         000 0U0 UI
+413    59.055.511   INTERFERON BETA 1 b                                    0.3 mg          INY
+414    59.055.522   INTERFERON BETA 1a                                 132 mcg/1.5ml       INY
+415    59.055.516   INTERFERON PEGILADO ALFA 2 a                          180 mcg          INY
+416    59.055.510   INTERFERON PEGILADO ALFA 2 b                          100 mcg          INY
+417    59.750.997   IOBITRIDOL                                           350 mg I/ml       INY
+418    SIN CODIGO   IOBITRIDOL                                           300 mg/ml                     500 ml
+                                                                        equiv. 300 mg
+419    59.750.994   IOPAMIDOL                                                              INY         50 ml
+                                                                           iodo/ml
+420    59.075.854   IPRATROPIO BROMURO                                  20 mcg/dosis     AER INH     200 DOSIS
+421    59.055.647   IRINOTECAN CLORHIDRATO                               100 mg/5ml        INY          5 ml
+                                                                                                    TUBO+APLICAD
+422    59.030.487   ISOCONAZOL                                              1%           CRM VAG
+                                                                                                         OR
+423    59.030.489   ISOCONAZOL                                             600 mg        TAB VAG
+424    59.025.485   ISOFLURANO                                          99.9 - 100%      LIQ INH       100 ml
+425    59.030.490   ISONIAZIDA                                             100 mg          TAB
+
+426    59.030.500   ISONIAZIDA + TIOACETAZONA                          300 mg+150 mg       TAB
+
+427    37.400.055   ISONITRILOS                                             1mg.            -           VIAL
+428    59.065.495   ISOSORBIDA DINITRATO                                    5 mg         TAB SL
+429    59.065.505   ISOSORBIDA MONONITRATO                                 20 mg           TAB
+430    59.960.490   ISOTRETINOINA                                          20 mg           TAB
+431    59.440.490   ISOXSUPRINA CLORHIDRATO                                10 mg           TAB
+432    59.440.500   ISOXSUPRINA CLORHIDRATO                               5 mg/ml          INY          2 ml
+433    SIN_CODIGO   ITRACONAZOL                                            100 mg          TAB
+434    SIN_CODIGO   IVERMECTINA                                             6 mg           TAB
+435    59.055.527   IXABEPILONA                                             15mg           INY
+436    59.055.526   IXABEPILONA                                            45 mg           INY
+437    59.025.531   KETAMINA (como clorhidrato)                           50 mg/ml         INY          10 ml
+438    59.020.005   KETOPROFENO                                           20 mg/ml         INY          5 ml
+439    59.070.001   LACTULOSA                                            3.33 g/5 ml    LIQ ORAL
+440    59.055.002   LAMIVUDINA                                             150 mg          TAB
+441    59.505.991   LAMIVUDINA                                           50 mg/5ml      LIQ ORAL
+                                                                        150 mg+ 200
+442    59.505.500   LAMIVUDINA + NEVIRAPINA +ESTAVUDINA                                    TAB
+                                                                         mg+ 30 mg
+443    59.505.944   LAMIVUDINA + ZIDOVUDINA                            150 mg+300 mg       TAB
+
+                                                                           150 mg+
+444    59.505.510   LAMIVUDINA + ZIDOVUDINA + NEVIRAPINA                                   TAB
+                                                                       300 mg+ 200 mg
+
+445    SIN_CODIGO   LAMOTRIGINA                                            50 mg           TAB
+                                                                         200 mcg/ml
+446    59.065.016   LANATOSIDO C                                                           INY
+                                                                         (0,2mg/ml)
+447    59.665.821   LATANOPROST                                            0.005%        SOL OFT       2.5 ml
+448    59.020.139   LEFLUNOMIDA                                            20 mg           TAB
+449    59.070.545   LENALIDOMIDA                                           25 mg           TAB
+450    59.055.128   LETROZOL                                               2.5 mg          TAB
+451    59.480.515   LEUPRORELINA ACETATO                                   7,5 mg.         INY
+452    59.480.525   LEUPRORELINA ACETATO                                  11.25 mg         INY
+453    59.035.580   LEVETIRACETAM                                          500 mg          TAB
+
+454    59.060.534   LEVODOPA + CARBIDOPA                               250 mg + 25 mg      TAB
+
+
+
+
+                                                                                                                 41
+Item    Código                                     Principio Activo             Concent.       Form Farm    Pres.
+455    59.030.344   LEVOFLOXACINO                                                500 mg           TAB
+456    59.030.532   LEVOFLOXACINO                                                500 mg           INY
+457    59.760.544   LEVOMEPROMAZINA                                             25 mg/ml          INY
+458    59.760.534   LEVOMEPROMAZINA (como maleato)                               100 mg           TAB
+459    59.760.539   LEVOMEPROMAZINA (como maleato)                                25 mg           TAB
+460    59.480.526   LEVONORGESTREL                                               750 mcg          TAB
+                                                                               100 mcg (0.1
+461    59.480.540   LEVOTIROXINA SODICA                                                           TAB
+                                                                                   mg)
+462    59.025.559   LIDOCAINA                                                      10%          AER TOP
+463    59.025.551   LIDOCAINA CLORHIDRATO                                         2-4%          GEL TOP      10 g
+464    59.025.543   LIDOCAINA CLORHIDRATO SIN PRESERVANTE SIN EPINEFRINA           2%             INY       20 ml
+465    59.025.543   LIDOCAINA CLORHIDRATO SIN PRESERVANTE SIN EPINEFRINA           2%             INY       20 ml
+466    59.025.567   LIDOCAINA CLORHIDRATO + EPINEFRINA                        2%+ 1:80,000        INY      CARPULA
+
+467    59.025.537   LIDOCAINA CLORHIDRATO +PRESERVANTE +EPINEFRINA            2% + 1:200,000      INY       20 ml
+
+468    59.025.564   LIDOCAINA CLORHIDRATO SIN EPINEFRINA                           2%             INY      CARPULA
+
+469    59.025.536   LIDOCAINA CLORHIDRATO SIN PRESERVANTE + EPINEFRINA        2% + 1:200,000      INY       20 ml
+
+470    59.025.536   LIDOCAINA CLORHIDRATO SIN PRESERVANTE + EPINEFRINA        2% + 1:200,000      INY       20ml
+
+471    59.025.534   LIDOCAINA CLORHIDRATO+ PRESERVANTE SIN EPINEFRINA              2%             INY       20 ml
+472    59.025.534   LIDOCAINA CLORHIDRATO+ PRESERVANTE SIN EPINEFRINA              2%             INY       20ml
+473    59.030.554   LINEZOLID                                                    600 mg           INY
+474    59.960.520   LIPIDOS INTRAVENOSOS                                           20%            INY       500 ml
+475    59.760.549   LITIO CARBONATO                                              300 mg           TAB
+476    59.030.289   LOPINAVIR + RITONAVIR                                     200 mg+50 mg        TAB
+                                                                                400mg +
+477    59.030.560   LOPINAVIR + RITONAVIR                                                      LIQ ORAL
+                                                                               100mg/5mL
+478    59.045.152   LORATADINA                                                  5 mg/5 ml      LIQ ORAL
+479    59.045.151   LORATADINA                                                    10 mg           TAB
+480    SIN_CODIGO   LOSARTAN POTASICO                                             50 mg           TAB
+481    37.400.057   MACRO AGREGADOS DE ALBUMINA (MAA)                               -              -        VIAL
+                    MACROGOL 3350 + POTASIO CLORURO + SODIO CLORURO + SODIO
+482    59.070.532                                                                                 PLV
+                    BICARBONATO CON O SIN SODIO SULFATO
+483    59.065.566   MAGNESIO SULFATO                                               20%            INY
+484    59.080.566   MANITOL                                                        20%            INY
+485    SIN_CODIGO   MARAVIROC                                                    300 mg           TAB
+486    SIN_CODIGO   MEFLOQUINA (como clorhidato)                                 250 mg           TAB
+487    59.055.127   MEGESTROL ACETATO                                           40 mg/ml       LIQ ORAL
+488    59.055.584   MEMANTINA CLORHIDRATO                                         10mg            TAB
+
+489    SIN_CODIGO   MEPIVACAINA + EPINEFRINA                                  2% + 1:100,000      INY      CARPULA
+
+490    SIN_CODIGO   MEPIVACAINA SIN VASOCONSTRICTOR                                3%             INY      CARPULA
+491    59.055.586   MERCAPTOPURINA                                                50 mg           TAB
+492    59.030.577   MEROPENEM                                                      1g             INY
+493    59.020.554   MESALAZINA                                                   500 mg           TAB
+494    59.080.570   MESNA                                                       100 mg/ml         INY       4 ml
+495    37.400.077   METAIODO BENCILGUANIDINA-I 131                                  -              -        VIAL
+496    59.020.566   METAMIZOL                                                    0.5 g/ml      LIQ ORAL
+497    59.020.564   METAMIZOL SODICO                                            500 mg/ml         INY       2 ml
+498    59.480.005   METFORMINA CLORHIDRATO                                       850 mg           TAB
+499    59.065.572   METILDOPA                                                    500 mg           TAB
+500    37.400.061   METILEN DIFOSFONATO (MDP)                                       -              -        VIAL
+501    59.035.028   METILFENIDATO                                                 18 mg           TAB
+502    59.480.586   METILPREDNISOLONA (como succinato sódico)                    500 mg           INY
+503    59.285.538   METILPREDNISOLONA ACEPONATO                                   0.1%            SOL
+504    59.285.536   METILPREDNISOLONA ACEPONATO Emulsión                          0.1%            LOC
+505    59.070.571   METOCLOPRAMIDA                                                5mg/ml          INY       2 ml
+506    59.055.611   METOTREXATO (como sal sódica)                                 2.5 mg          TAB
+507    59.055.601   METOTREXATO (como sal sódica) con preservante                 50 mg           INY
+
+
+
+                                                                                                                     42
+Item    Código                                     Principio Activo                Concent.        Form Farm      Pres.
+508    SIN CODIGO   METOTREXATO (como sal sódica) sin preservante                   50 mg             INY
+509    59.505.908   METOXIPOLIETILENGLICOL EPOETINA BETA                           100 mcg             INY
+510    59.030.576   METRONIDAZOL                                                   5 mg/ml            INY         100 ml
+511    59.030.579   METRONIDAZOL                                                    500 mg            TAB
+512    59.440.566   METRONIDAZOL                                                    500 mg            OVU
+513    59.030.587   METRONIDAZOL (como benzoato)                                 250 mg/5 ml        LIQ ORAL
+514    59.505.126   MICOFENOLATO MOFETILO                                           250 mg            TAB
+515    59.505.520   MICOFENOLATO MOFETILO                                           500 mg            TAB
+516    59.760.578   MIDAZOLAM MALEATO                                               15 mg             TAB
+517    59.060.580   MIDAZOLAM (como chorhidrato)                                   1 mg/ ml           INY          5 ml
+518    SIN_CODIGO   MILTEFOSINA                                                     10 mg             TAB
+519    59.760.146   MIRTAZAPINA                                                     30 mg             TAB
+520    59.055.621   MITOMICINA                                                      20 mg             INY
+521    59.055.630   MITOXANTRONA (como diclorhidrato)                               20 mg             INY
+522    59.760.580   MOCLOBEMIDA                                                     300 mg            TAB
+523    59.960.050   MODULO PROTEICO DE PROTEINAS                                    75-95%            PLV          Kg
+524    59.670.580   MOMETASONA FUROATO (sin alcohol)                                50mcg           SPR NAS
+525    59.020.586   MORFINA CLORHIDRATO                                            10 mg/ ml          INY          1 ml
+526    59.020.590   MORFINA SULFATO                                                 30 mg         TAB LIB MODIF
+527    59.070.004   MOSAPRIDA CITRATO                                                5 mg             TAB
+528    SIN_CODIGO   MOXIFLOXACINO (como clorhidrato)                                400 mg            TAB
+529    59.030.588   MUPIROCINA (como mupirocina cálcica)                              2%            CRM TOP        15g
+530    59.665.610   NAFAZOLINA CORHIDRATO                                           0.012%          SOL OFT
+531    37.400.062   NANOCOLOIDE SEROALBUMINA HUMANA 1.0 mg.                            -                -          VIAL
+532    59.020.620   NAPROXENO (como sal sódica)                                     500mg             TAB
+                                                                                500 mcg/ml (0,5
+533    59.600.636   NEOSTIGMINA METILSULFATO                                                          INY         1 ml.
+                                                                                    mg/ml)
+534    59.505.061   NEVIRAPINA                                                      200 mg            TAB
+535    59.505.062   NEVIRAPINA                                                    50mg/5mL          LIQ ORAL
+536    59.030.641   NIFURTIMOX                                                      120 mg            TAB
+537    50.055.019   NILOTINIB                                                       200 mg            TAB
+538    59.065.638   NIMODIPINO                                                      30 mg             TAB
+                                                                                  200mcg/ml
+539    59.065.639   NIMODIPINO                                                                        INY         50 ml
+                                                                                  (0,2mg/ml)
+540    59.055.094   NIMOTUZUMAB                                                  50 mg/10 ml          INY
+541    59.030.648   NISTATINA                                                    100,000 UI/ml      LIQ ORAL
+542    59.285.666   NITROFURAL                                                       0.2%             POM          35g
+543    59.285.671   NITROFURAL                                                       0.2%             POM         500 g
+544    59.285.676   NITROFURAL                                                       0.2%             SOL
+545    59.080.636   NITROFURANTOINA                                                 100 mg            TAB
+546    59.080.643   NITROFURANTOINA                                               25 mg/5 ml        LIQ ORAL
+547    SIN CODIGO   NITROGENO GASEOSO MEDICINAL                                       m3              GAS
+548    59.065.823   NITROPRUSIATO SODICO                                            50 mg             INY
+549    59.075.620   NOREPINEFRINA (como tartrato ácido)                            1mg/mL             INY          4 ml
+550    59.960.006   NUTRIENTE ENTERAL HIPERTÓNICO POLIMÉRICO                                          PLV          Kg
+                    NUTRIENTE ENTERAL HIPOALERGENICO CON PROTEINAS TOTALMENTE
+551    SIN CODIGO                                                                                     PLV          Kg
+                    HIDROLIZADAS
+552    59.960.007   NUTRIENTE ENTERAL ISOTÓNICO                                                       SOL           L
+553    59.960.022   NUTRIENTE ENTERAL PARA ENFERMEDAD OBSTRUCTIVA CRÓNICA                             SOL           L
+554    59.960.024   NUTRIENTE ENTERAL PARA INSUFICIENCIA RENAL EN DIÁLISIS                            SOL           L
+555    59.960.026   NUTRIENTE ENTERAL PARA INSUFICIENCIA RENAL PRE - DIÁLISIS                         SOL           L
+556    59.960.027   NUTRIENTE ENTERAL PARA PACIENTE DIABÉTICO                                         PLV          Kg
+557    59.960.023   NUTRIENTE ENTERAL PEPTÍDICO                                                       SOL           L
+558    59.960.021   NUTRIENTE ENTERAL POLIMÉRICO PEDIÁTRICO                                           SOL           L
+559    59.960.025   NUTRIENTE ENTERAL REFORZADO CON INMUNONUTRIENTE                                   PLV          Kg
+560    59.480.630   OCTREOTIDA                                                    0.2 mg/ ml          INY
+561    59.480.631   OCTREOTIDA ACETATO                                              20 mg             INY
+
+
+
+
+                                                                                                                           43
+Item    Código                                    Principio Activo    Concent.       Form Farm        Pres.
+562    37.400.063   OCTREOTIDO - Tc 99m                                   -               -           VIAL
+563    59.670.657   OFLOXACINO                                          0.3%          SOL OTI
+564    59.760.607   OLANZAPINA                                          10 mg           INY
+565    59.760.597   OLANZAPINA                                          10 mg           TAB
+566    59.960.564   OLIGOELEMENTOS SOLUCION                                             INY          9-10 ml
+567    59.760.899   OLOPATADINA CLORHIDRATO                             0.2%          SOL OFT
+568    59.070.590   OMEPRAZOL                                           20 mg           TAB
+569    59.070.480   OMEPRAZOL (como sal sódica)                         40 mg           INY
+570    59.055.656   ONDANSETRON (Como Clorhidrato)                     2mg/ml           INY           4 ml
+571    59.055.659   ONDANSETRON (Como Clorhidrato)                      8mg             TAB
+572    59.600.650   ORFENADRINA CITRATO                                100 mg           TAB
+573    59.600.657   ORFENADRINA CITRATO                               30 mg/ ml         INY           2 ml
+574    59.030.657   OXACILINA                                          500 mg           INY
+575    59.030.658   OXACILINA                                            1g             INY
+576    59.055.660   OXALIPLATINO                                        50 mg           INY
+577    59.035.600   OXCARBAZEPINA                                      300 mg           TAB
+578    59.020.450   OXICODONA CLORHIDRATO                               10 mg       TAB LIB MODIF
+579    59.075.700   OXIGENO MEDICINAL                                 99 - 100%         GAS
+580    59.440.657   OXITOCINA                                         10 UI/ml          INY           1 ml
+581    59.055.670   PACLITAXEL                                          30 mg           INY
+582    59.055.537   PACLITAXEL                                         100 mg           INY
+583    59.020.010   PARACETAMOL                                      100 mg/ml        LIQ ORAL
+584    59.020.020   PARACETAMOL                                      120 mg/5 ml      LIQ ORAL
+585    59.020.030   PARACETAMOL                                        500 mg           TAB
+586    59.960.956   PARICALCITOL                                        2 mcg           TAB
+587    59.960.954   PARICALCITOL                                      5 mcg/ml          INY
+588    59.055.190   PAZOPANIB                                          400 mg           TAB
+589    59.055.675   PEMETREXED                                         500 mg           INY
+590    59.020.275   PENICILAMINA                                       250 mg           TAB
+591    59.030.692   PENICILINA CLEMIZOL                              1'000.000 UI       INY
+592    59.065.001   PENTOXIFILINA                                      400 mg           TAB
+593    59.285.678   PERMETRINA                                           5%           CRM TOP          60g
+594    59.285.679   PERMETRINA                                           1%             LOC
+595    37.400.064   PERTECNETATO DE SODIO (Tc-99 m)                       -               -           VIAL
+596    59.020.687   PETIDINA CLORHIDRATO                              50 mg/ml          INY           2 ml
+597    59.665.679   PILOCARPINA CLORHIDRATO                              2%           SOL OFT       10 - 15 ml
+598    59.070.003   PINAVERIO BROMURO                                  100 mg           TAB
+599    59.038.677   PIOGLITAZONA CLORHIDRATO                            15 mg           TAB
+600    59.030.700   PIPERACILINA + TAZOBACTAM SODICO                 4 g+500 mg         INY
+601    59.030.702   PIRAZINAMIDA                                       500 mg           TAB
+602    59.600.677   PIRIDOSTIGMINA BROMURO                              60 mg           TAB
+603    59.960.677   PIRIDOXINA CLORHIDRATO                           100 mg/ml          INY           3 ml
+604    59.030.707   PIRIMETAMINA                                        25 mg           TAB
+605    37.400.069   PIROFOSFATO (pPl)                                     -               -           VIAL
+606    59.830.308   POLIESTER MUCOPOLISACARIDO DEL ACIDO SULFURICO     300 mg           POM           20 g
+607    59.830.665   POLIGELINA C/S ELECTROLITOS                         3.5%            INY          500 ml
+608    59.860.677   POTASIO CLORURO                                    14.9%            INY           10 ml
+609    59.860.698   POTASIO FOSFATO                                     15%             INY           20 ml
+610    59.035.146   PRAMIPEXOL                                          1mg             TAB
+611    59.030.710   PRAZICUANTEL                                       150mg            TAB
+612    59.030.712   PRAZICUANTEL                                       600 mg           TAB
+613    59.665.695   PREDNISOLONA ACETATO                                 1%           SUS OFT         5 ml.
+614    59.480.682   PREDNISONA                                          20 mg           TAB
+615    59.480.677   PREDNISONA                                          50 mg           TAB
+616    59.480.687   PREDNISONA                                          5 mg            TAB
+
+
+
+
+                                                                                                                 44
+Item    Código                                      Principio Activo            Concent.        Form Farm    Pres.
+617    59.480.692   PREDNISONA                                                 5 mg/5 mL        LIQ ORAL
+618    59.030.715   PRIMAQUINA (como fosfato)                                    7.5 mg.           TAB
+619    59.030.717   PRIMAQUINA (como fosfato)                                     15 mg            TAB
+620    59.480.703   PROGESTERONA                                                 100 mg            TAB
+621    SIN_CODIGO   PROPAFENONA                                                  150 mg            TAB
+622    59.670.136   PROPARACAINA                                                  0.5%           SOL OFT
+623    59.025.693   PROPOFOL                                                       1%              INY       20 ml
+624    59.065.687   PROPRANOLOL CLORHIDRATO                                       40 mg            TAB
+625    59.830.677   PROTAMINA SULFATO                                           10 mg/ml           INY        5 ml
+626    59.760.011   QUETIAPINA                                                   300 mg            TAB
+627    59.030.777   QUININA SULFATO                                              300 mg            TAB
+628    59.055.012   RALOXIFENO CLORHIDRATO                                        60 mg            TAB
+629    59.055.018   RALTEGRAVIR                                                  400 mg            TAB
+630    59.020.147   RANIBIZUMAB                                                 10 mg/ml           INY
+631    59.070.785   RANITIDINA (como clorhidrato)                               25 mg/ml           INY        2 ml.
+632    59.070.783   RANITIDINA (como clorhidrato)                                300 mg            TAB
+633    59.020.824   REMIFENTANILO CLORHIDRATO                                     5 mg             INY
+634    59.030.780   RIFABUTINA                                                   150 mg            TAB
+635    59.030.788   RIFAMPICINA                                               100 mg/5 ml       LIQ ORAL
+636    59.030.783   RIFAMPICINA                                                  300 mg            TAB
+637    59.860.783   RINGER LACTATO                                                                 INY         1L
+638    59.760.130   RISPERIDONA DE LIBERACION PROLONGADA                          25 mg            INY
+639    59.055.003   RITONAVIR                                                    100 mg            TAB
+640    59.055.013   RITUXIMAB                                                   10 mg/ml           INY       50 ml
+641    59.055.011   RITUXIMAB                                                   10 mg/ml           INY       10 ml
+642    59.055.020   RIVAROXABAN                                                   10 mg            TAB
+643    59.600.643   RIVASTIGMINA                                                  9 mg             PTD
+644    59.025.070   ROCURONIO BROMURO                                           10 mg/ ml          INY        5 ml
+645    59.055.022   RUXOLITINIB                                                   5 mg             TAB
+646    59.075.844   SALBUTAMOL (como sulfato)                                    5 mg/ml         SOL NBZ
+647    59.075.853   SALBUTAMOL (como sulfato)                                 100 mcg/dosis      AER INH    200 dosis
+648    59.860.823   SALES DE REHIDRATACION ORAL                                  20.5 g/L          PLV
+649    37.400.795   SAMARIO 153 (Solución EDTMP)                                    -               -         VIAL
+650    59.760.409   SERTRALINA (como clorhidrato)                                100 mg            TAB
+651    59.760.012   SERTRALINA (como clorhidrato)                                 50 mg            TAB
+652    59.080.007   SEVELAMERO                                                   800 mg            TAB
+653    59.025.001   SEVOFLURANO                                                   100%           LIQ INH     250 ml
+654    SIN CODIGO   SIMEPREVIR                                                   150 mg            TAB
+655    59.070.002   SIMETICONA                                                  80 mg/ml        LIQ ORAL
+656    SIN_CODIGO   SITAGLIPTINA                                                 100 mg            TAB
+657    59.960.965   SODIO ACETATO                                               22%-30%            INY       10 ml
+658    59.860.833   SODIO BICARBONATO                                             8.4%             INY        20ml
+659    59.960.036   SODIO CLORURO                                                 0.9%             INY       500 ml
+660    59.960.039   SODIO CLORURO                                                 0.9%             INY       100 ml
+661    59.860.843   SODIO CLORURO                                                 0.9%             INY      1000 ml
+662    59.860.848   SODIO CLORURO                                                 0.9%             INY       20 ml
+663    59.860.838   SODIO CLORURO                                                 20%              INY       20 ml
+664    SIN CODIGO   SOFOSBUVIR                                                   400 mg            TAB
+665    59.080.830   SOLIFENACINA                                                  5 mg             TAB
+666    59.860.853   SOLUCION CONCENTRADA PARA HEMODIALISIS (Acida)                               SOL DIA
+                                                                                  Fórmula
+                                                                             estándar con 35-
+667    59.860.850   SOLUCIÓN CONCENTRADA PARA HEMODIÁLISIS CON BICARBONATO                       SOL DIA
+                                                                               39mEq/L de
+                                                                                bicarbonato
+668    59.055.803   SORAFENIB                                                     200 mg           TAB
+669    59.025.823   SUCCINILCOLINA CLORHIDRATO                                   500 mg            INY
+670    59.070.831   SUCRALFATO                                                   1 g/5 ml       LIQ ORAL
+
+
+
+                                                                                                                        45
+Item    Código                                  Principio Activo       Concent.       Form Farm    Pres.
+671    59.505.825   SUERO ANTIBOTROPICO                                                  INY
+672    59.505.828   SUERO ANTICROTALICO                                                  INY
+673    59.505.833   SUERO ANTILACHESICO                                                  INY
+674    59.505.843   SUERO ANTILOXOSCELICO                                                INY
+675    59.505.850   SUERO ANTIOFIDICO                                                    INY
+676    59.505.855   SUERO ANTIRRABICO                                                    INY
+677    59.665.840   SULFACETAMIDA SODICA                               10-15%          SOL OFT
+678    59.285.825   SULFADIAZINA DE PLATA                                1%            CRM TOP     400 g
+679    59.285.823   SULFADIAZINA DE PLATA                                1%            CRM TOP     50 g
+680    59.030.810   SULFADOXINA + PIRIMETAMINA                      500 mg+25 mg         TAB
+
+681    59.030.820   SULFAMETOXASOL + TRIMETOPRIMA                   80mg+16mg/ml         INY       5ml
+                                                                       200 mg +
+682    59.030.828   SULFAMETOXAZOL+TRIMETOPRIMA                                        LIQ ORAL
+                                                                       40mg/5ml
+683    59.030.823   SULFAMETOXAZOL+TRIMETOPRIMA                     800 mg+160 mg        TAB
+
+684    59.070.833   SULFASALAZINA                                       500 mg           TAB
+685    37.400.890   SULFURO COLOIDAL LIOFOLIZADO                       200 ugr.           -        VIAL
+686    59.760.828   SULPIRIDA                                           200 mg           TAB
+687    59.055.823   SUNITINIB                                           25 mg            TAB
+688    59.440.695   SURFACTANTE PULMONAR                                              SOL INTRAT
+689    59.505.895   TACROLIMUS                                         5mg/mL             INY
+690    59.080.008   TACROLIMUS                                           1 mg            TAB
+691    59.505.890   TACROLIMUS                                           5 mg            TAB
+692    59.085.002   TADALAFILO                                          20 mg            TAB
+693    59.830.883   TALIDOMIDA                                          100 mg           TAB
+694    37.400.071   TALIO 201 (Tl 201)                                     -              -        VIAL
+695    59.055.883   TAMOXIFENO (como citrato)                           20 mg            TAB
+                                                                     400 mcg (0,4
+696    59.080.002   TAMSULOSINA CLORHIDRATO                                              TAB
+                                                                         mg)
+697    59.055.880   TEGAFUR + URACILO                               100 mg+224 mg        TAB
+
+698    59.055.884   TEMOZOLOMIDA                                        100 mg           TAB
+                                                                        300 mg
+                                                                    (equiv.245mg.Te
+699    59.505.911   TENOFOVIR DISOPROXIL FUMARATO                                        TAB
+                                                                         nofovir
+                                                                       disoproxil)
+700    SIN_CODIGO   TENOFOVIR DISOPROXIL FUMARATO + EMTRICITABINA    300mg+200mg         TAB
+701    59.665.883   TETRACICLINA CLORHIDRATO                             1%            UNG OFT
+702    59.480.529   TIAMAZOL                                            20 mg            TAB
+703    59.960.893   TIAMINA CLORHIDRATO                                 100 mg           TAB
+704    SIN_CODIGO   TICAGRELOR                                          90 mg            TAB
+705    SIN_CODIGO   TIGECICLINA                                         50 mg            INY
+706    59.665.893   TIMOLOL (como maleato)                               0.5%          SOL OFT     5 ml
+707    59.030.903   TINIDAZOL                                           500 mg           TAB
+708    59.025.883   TIOPENTAL SODICO                                      1g             INY
+709    SIN_CODIGO   TIROTROPINA ALFA                                    0.9 mg           INY
+710    59.665.908   TOBRAMICINA                                          0.3%          SOL OFT
+711    59.055.517   TOCILIZUMAB                                         200 mg           INY
+712    59.080.011   TOLTERODINA                                          4 mg            TAB
+713    59.054.910   TOPIRAMATO                                          100 mg           TAB
+714    59.055.646   TOPOTECAN                                            4 mg            INY
+715    SIN_CODIGO   TRAMADOL CLORHIDRATO                               50 mg/ml          INY       2 ml
+716    SIN_CODIGO   TRAMADOL CLORHIDRATO                                50 mg/ml         INY       1 ml
+717    59.020.893   TRAMADOL CLORHIDRATO                                50 mg            TAB
+718    59.020.881   TRAMADOL CLORHIDRATO                              100 mg/ml        LIQ ORAL
+719    59.055.512   TRASTUZUMAB                                         440 mg           INY
+720    59.830.291   TRETINOINA                                          10 mg            TAB
+721    59.285.893   TRIAMCINOLONA ACETONIDO                             0.025%           LOC
+722    59.480.903   TRIAMCINOLONA ACETONIDO                            10 mg/ml          INY       5 ml
+
+
+
+                                                                                                           46
+Item    Código                                     Principio Activo                      Concent.       Form Farm    Pres.
+723    59.030.920   TRICLABENDAZOL                                                        250 mg           TAB
+724    59.055.007   TRIPTORELINA                                                         3.75 mg           INY
+725    59.665.913   TROPICAMIDA                                                             1%           SOL OFT      15 ml
+726    59.505.912   VACUNA CONTRA LA POLIOMIELITIS (IPV)                                                   INY
+727    59.505.019   VACUNA ANTIRUBEOLA + ANTISARAMPIONOSA + ANTIPAROTIDITIS                                INY
+728    59.505.904   VACUNA CONTRA EL HAEMOPHILUS INFLUENZAE tipo B (HIB)                                   INY
+729    59.505.903   VACUNA CONTRA EL NEUMOCOCO (adulto)                                                    INY
+730    59.505.907   VACUNA CONTRA EL NEUMOCOCO (pediátrico)                                                INY
+731    59.505.905   VACUNA CONTRA EL SARAMPION                                                             INY
+732    59.505.040   VACUNA CONTRA EL TÉTANOS                                                               INY
+733    59.505.902   VACUNA CONTRA EL VIRUS DE LA INFLUENZA HSUR (adulto)                                   INY
+734    59.505.930   VACUNA CONTRA EL VIRUS DEL PAPILOMA HUMANO                                             INY
+735    59.505.022   VACUNA CONTRA LA DIFTERIA (adulto)                                                     INY
+736    59.505.009   VACUNA CONTRA LA DIFTERIA (pediátrico)                                                 INY
+737    59.505.003   VACUNA CONTRA LA FIEBRE AMARILLA                                                       INY
+738    59.505.003   VACUNA CONTRA LA FIEBRE AMARILLA                                                       INY
+739    59.505.006   VACUNA CONTRA LA HEPATITIS A (adulto)                                                  INY
+740    59.505.917   VACUNA CONTRA LA HEPATITIS A (pediátrico)                                              INY
+741    59.505.007   VACUNA CONTRA LA HEPATITIS B (HVB adulto)                                              INY
+742    59.505.918   VACUNA CONTRA LA HEPATITIS B (HVB pediátrico)                                          INY
+743    59.505.928   VACUNA CONTRA LA PAROTIDITIS                                                           INY
+744    59.505.913   VACUNA CONTRA LA POLIOMIELITIS (OPV)                                                LIQ ORAL
+745    59.505.914   VACUNA CONTRA LA RABIA (preparado en cerebro ratón lactante)                           INY
+746    59.505.916   VACUNA CONTRA LA RABIA INACTIVADA (preparado en cultivo celular)                       INY
+747    59.505.920   VACUNA CONTRA LA RUBEOLA                                                               INY
+748    59.505.922   VACUNA CONTRA LA TOS FERINA                                                            INY
+749    59.505.924   VACUNA CONTRA LA TUBERCULOSIS (BCG)                                                    INY
+750    59.505.926   VACUNA CONTRA LA VARICELA                                                              INY
+751    59.505.908   VACUNA CONTRA LEPTOSPIRA                                                               INY
+752    SIN_CODIGO   VACUNA CONTRA MENINGOCOCO                                                              INY
+753    59.505.091   VACUNA INTRAVESICAL - NC                                           2-8 x 10^8 UFC      INY
+754    59.505.915   VALGANCICLOVIR                                                        450 mg           TAB
+755    59.035.965   VALPROATO SODICO                                                     200mg/ml       LIQ ORAL
+756    59.035.950   VALPROATO SODICO                                                      500 mg           TAB
+757    59.035.968   VALPROATO SODICO                                                    250mg/5ml       LIQ ORAL
+758    59.030.945   VANCOMICINA (como clorhidrato)                                        500 mg           INY
+759    59.025.953   VECURONIO BROMURO                                                      4 mg            INY
+760    SIN_CODIGO   VERAPAMILO CLORHIDRATO                                              2.5 mg/mL          INY        2 ml
+761    SIN_CODIGO   VERAPAMILO CLORHIDRATO                                                80 mg            TAB
+762    59.055.953   VINBLASTINA SULFATO                                                   10 mg            INY
+763    59.055.963   VINCRISTINA SULFATO                                                    1 mg            INY
+764    59.055.970   VINORELBINA                                                           10 mg            INY
+765    59.960.980   VITAMINAS PARA NUTRIC. PARENT. ADULTOS                                                 INY
+766    59.960.985   VITAMINAS PARA NUTRIC. PARENT. PEDIÁTRICA                                              INY
+767    59.030.970   VORICONAZOL                                                           200 mg           INY
+768    59.030.975   VORICONAZOL                                                           200 mg           TAB
+769    59.830.892   WARFARINA SODICA                                                       5 mg            TAB
+770    37.400.051   YODO 131 (I-131)                                                         -              -         VIAL
+771    59.285.475   YODO-POVIDONA                                                        7 a 10%         SOL TOP     ESPUMA
+772    59.285.480   YODO-POVIDONA                                                        7 a 10%         SOL TOP    SOLUCION
+773    59.505.935   ZIDOVUDINA                                                            300 mg           TAB
+774    59.960.823   ZINC SULFATO (equiv 20mg Zn)                                          0.88%            INY
+775    59.760.015   ZIPRASIDONA                                                           40 mg            TAB
+776    59.760.002   ZOLPIDEM TARTRATO                                                     10 mg            TAB
+
+
+
+
+                                                                                                                               47
+

@@ -1,0 +1,432 @@
+<?php
+
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\EspecialidadController;
+use App\Http\Controllers\MedicamentosRecetaController;
+use App\Http\Controllers\PacienteController;
+use App\Http\Controllers\PacienteFrontendController;
+use App\Http\Controllers\ProfesionalController;
+use App\Http\Controllers\ProfesionalFrontendController;
+use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\MetodoPagoController;
+use App\Http\Controllers\RecetaController;
+use App\Http\Controllers\SeguroMedicoController;
+use App\Http\Controllers\CitaController;
+use App\Http\Controllers\CiudadController;
+use App\Http\Controllers\DocumentoProfesionalController;
+use App\Http\Controllers\EmergenciaController;
+use App\Http\Controllers\InformeConsultaController;
+use App\Http\Controllers\IntervaloMedicamentoController;
+use App\Http\Controllers\MedicamentoController;
+use App\Http\Controllers\PlanController;
+use App\Http\Controllers\PreguntaController;
+use App\Http\Controllers\PresentacionMedicamentoController;
+use App\Http\Controllers\ProveedorFrontendController;
+use App\Http\Controllers\ProvinciaController;
+use App\Http\Controllers\RegionController;
+use App\Http\Controllers\RespuestaController;
+use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\ValoracionController;
+use App\Http\Controllers\ViaMedicamentoController;
+use App\Models\Provincia;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+Auth::routes();
+
+Route::get('/', [PacienteFrontendController::class, 'index'])->name('pacientes.index');
+
+
+Route::get('/check-auth', function () {
+    return response()->json(['authenticated' => Auth::check()]);
+});
+
+Route::post('/ajax-login', [LoginController::class, 'ajaxLogin'])->name('ajax.login');
+
+Route::get('/cerrar-sesion', function () {
+    Auth::logout();
+    return redirect('/pacientes');
+});
+
+Route::middleware(['auth'])->group(function () {
+
+    /* Cargar documento con medicamentos */
+    Route::get('/admin/cargar-medicamentos', [AdminController::class, 'cargarMedicamentos'])->name('admin.cargarMedicamentos');
+
+    /* URLS SIDEBAR: PACIENTE*/
+    Route::get('/paciente', [PacienteController::class, 'index'])->name('pacientes.index');
+    Route::get('/paciente/pedir-cita', [PacienteController::class, 'pedirCita'])->name('pacientes.pedirCita');
+
+    Route::get('/paciente/mis-citas', [PacienteController::class, 'misCitas'])->name('pacientes.misCitas');
+    Route::get('/paciente/mis-citas/pendientes', [PacienteController::class, 'misCitasPendiente'])->name('pacientes.misCitas.pendiente');
+    Route::get('/paciente/mis-citas/canceladas', [PacienteController::class, 'misCitasCanceladas'])->name('pacientes.misCitas.canceladas');
+    Route::get('/paciente/mis-citas/aceptadas', [PacienteController::class, 'misCitasAceptadas'])->name('pacientes.misCitas.aceptadas');
+    Route::get('/paciente/mis-citas/{id}/detalle', [PacienteController::class, 'detalleCita'])->name('pacientes.misCitas.detalle');
+    Route::post('/pacientes/valoraciones', [PacienteController::class, 'guardarValoracion'])->name('pacientes.valoraciones.store');
+
+
+    Route::get('/paciente/buscar-profesionales', [PacienteController::class, 'buscarProfesionales'])->name('pacientes.buscarProfesionales');
+    Route::get('/paciente/buscar-profesionales/categoria/{id}/citas', [PacienteController::class, 'buscarProfesionalesCitas'])->name('pacientes.buscarProfesionales');
+    Route::get('/paciente/buscar-proveedores', [PacienteController::class, 'buscarProveedores'])->name('pacientes.buscarProveedores');
+    Route::get('/paciente/buscar-proveedores/presupuestos', [PacienteController::class, 'buscarProveedoresPresupuestos'])->name('pacientes.buscarProveedores');
+    Route::get('/paciente/buscar-emergencias', [PacienteController::class, 'buscarEmergencias'])->name('pacientes.buscarEmergencias');
+
+    Route::get('/paciente/emergencias', [PacienteController::class, 'emergencias'])->name('pacientes.emergencias');
+    Route::get('/paciente/mis-recetas', [PacienteController::class, 'misRecetas'])->name('pacientes.misRecetas');
+    Route::get('/paciente/mis-recetas/detalle/{id}', [PacienteController::class, 'misRecetasDetalle'])->name('pacientes.misRecetas.detalle');
+    Route::get('/paciente/presupuestos', [PacienteController::class, 'presupuestos'])->name('pacientes.presupuestos');
+    Route::get('/paciente/mis-pruebas', [PacienteController::class, 'misPruebas'])->name('pacientes.misPruebas');
+    Route::get('/paciente/mi-historial-medico', [PacienteController::class, 'miHistorialMedico'])->name(name: 'pacientes.miHistorialMedico');
+
+    Route::get('/paciente/mis-valoraciones', [PacienteController::class, 'valoraciones'])->name('pacientes.valoraciones');
+    Route::get('/paciente/mis-valoraciones/detalle/profesionales/{id}', [PacienteController::class, 'valoracionesProfesionales'])->name('pacientes.valoraciones.profesionales');
+    Route::get('/paciente/mis-valoraciones/detalle/proveedores/{id}', [PacienteController::class, 'valoracionesProveedores'])->name('pacientes.valoraciones.proveedores');
+
+    Route::get('/paciente/mis-datos', [PacienteController::class, 'datos'])->name('pacientes.datos');
+    Route::get('/paciente/notificaciones', [PacienteController::class, 'notificaciones'])->name('pacientes.notificaciones');
+    Route::get('/paciente/contactar-administrador', [PacienteController::class, 'contactoAdministrador'])->name('pacientes.contactoAdministrador');
+
+    Route::get('/paciente/cita/informe-consulta/{id}/receta', [PacienteController::class, 'misRecetasDetalle'])->name('profesionales.informeConsulta.receta');
+
+    Route::get('/subespecialidades/{id}', [PacienteController::class, 'getSubespecialidades']);
+
+
+    Route::put('/paciente/{paciente}', [PacienteController::class, 'update'])->name('paciente.update');
+
+    Route::delete('/paciente/antecedentes/{antecedente}', [PacienteController::class, 'eliminarAntecdente'])->name('paciente.antecedentes.destroy');
+    Route::delete('/paciente/contactos/{contacto}', [PacienteController::class, 'eliminarContacto'])->name('paciente.contactos.destroy');
+
+    Route::post('/paciente/usuario/eliminar-cuenta', [PacienteController::class, 'eliminarCuenta'])->name('usuario.eliminarCuenta');
+
+
+
+    /* URLS SIDEBAR: PROFESIONAL*/
+    Route::get('/profesional', [ProfesionalController::class, 'index'])->name('profesionales.index');
+    Route::get('/profesional/mis-estadisticas', [ProfesionalController::class, 'misEstadisticas'])->name('profesionales.misEstadisticas');
+    Route::get('/profesional/mis-citas-presenciales', [ProfesionalController::class, 'misCitasPresenciales'])->name('profesionales.misCitasPresenciales');
+    Route::get('/profesional/mis-citas-presenciales/pendientes', [ProfesionalController::class, 'misCitasPresencialesPendientes'])->name('profesionales.misCitasPresencialesPendientes');
+    Route::get('/profesional/listado-citas-presenciales', [ProfesionalController::class, 'listadoCitasPresenciales'])
+        ->name('profesional.listadoCitasPresenciales');
+
+    Route::get('/profesional/mis-citas-videoconsulta', [ProfesionalController::class, 'misCitasVideoconsulta'])->name('profesionales.misCitasVideoconsulta');
+    Route::get('/profesional/mis-citas-videoconsulta/pendientes', [ProfesionalController::class, 'misCitasVideoconsultaPendientes'])->name('profesionales.misCitasVideoconsultaPendientes');
+    Route::get('/profesional/mis-pacientes', [ProfesionalController::class, 'misPacientes'])->name('profesionales.misPacientes');
+    Route::get('/profesional/listado-citas-videollamada', [ProfesionalController::class, 'listadoCitasVideollamada'])
+        ->name('profesional.listadoCitasVideollamada');
+
+
+    Route::get('/profesional/recetas-farmacia-digitales', [ProfesionalController::class, 'recetasFarmacia'])->name('profesionales.recetasFarmacia');
+    Route::get('/profesional/recetas-farmacia-digitales/crear', [ProfesionalController::class, 'recetasFarmaciaCrear'])->name('profesionales.recetasFarmaciaCrear');
+
+    Route::get('/profesional/pedidos-laboratorio', [ProfesionalController::class, 'pedidosLaboratorio'])->name('profesionales.pedidosLaboratorio');
+    Route::get('/profesional/pedidos-laboratorio/crear', [ProfesionalController::class, 'pedidosLaboratorioCrear'])->name('profesionales.pedidosLaboratorioCrear');
+
+    Route::get('/profesional/pedidos-imagenes', [ProfesionalController::class, 'pedidosImagenes'])->name('profesionales.pedidosImagenes');
+    Route::get('/profesional/pedidos-imagenes/crear', [ProfesionalController::class, 'pedidosImagenesCrear'])->name('profesionales.pedidosImagenesCrear');
+
+    Route::get('/profesional/valoraciones-comentarios', [ProfesionalController::class, 'valoracionesComentarios'])->name('profesionales.valoracionesComentarios');
+    Route::get('/profesional/mis-datos', [ProfesionalController::class, 'misDatos'])->name('profesionales.misDatos');
+    Route::get('/profesional/mis-planes', [ProfesionalController::class, 'misPlanes'])->name('profesionales.misPlanes');
+    Route::get('/profesional/notificaciones', [ProfesionalController::class, 'notificaciones'])->name('profesionales.notificaciones');
+    Route::get('/profesional/contactar-administrador', [ProfesionalController::class, 'contactarAdministrador'])->name('profesionales.contactarAdministrador');
+    Route::get('/profesional/mis-citas/agendar', [ProfesionalController::class, 'agendarCitaProfesional'])->name('profesionales.agendarCitaProfesional');
+    Route::get('/profesional/mis-pacientes/historial/{id}', [ProfesionalController::class, 'historialClinicoPaciente'])->name('profesionales.historialClinicoPaciente');
+    Route::get('/profesional/paciente/crear', [ProfesionalController::class, 'crearPaciente'])->name('profesionales.crearPaciente');
+    Route::get('/profesional/cita/informe-consulta/{id}', [ProfesionalController::class, 'informeConsulta'])->name('profesionales.informeConsulta');
+    Route::post('/pacientes/cita/informe-consulta/{id}', [ProfesionalController::class, 'informeConsultaCrear'])->name('profesionales.informeConsultaCrear');
+    Route::get('/profesional/cita/informe-consulta/{id}/receta', [ProfesionalController::class, 'recetaInformeConsulta'])->name('profesionales.informeConsulta.receta');
+    Route::post('/profesional/medicamentos-recetas', [MedicamentosRecetaController::class, 'store'])->name('profesionales.medicamentos_recetas.guardarMedicamentosReceta');
+    Route::delete('/profesional/medicamentos_recetas/{id}', [MedicamentosRecetaController::class, 'destroy'])->name('profesionales.medicamentos_recetas.destroy');
+    Route::post('/profesional/receta/guardar/{id}', [ProfesionalController::class, 'actualizarReceta'])->name('profesionales.receta.update');
+    Route::get('/profesional/receta/detalle/{id}', [ProfesionalController::class, 'detalleReceta'])->name('profesionales.detalleReceta');
+
+    Route::get('/profesional/listado-citas-presenciales/aceptadas', [ProfesionalController::class, 'listadoCitasPresencialesAceptadas'])->name('profesional.listadoCitasPresencialesAceptadas');
+    Route::get('/profesional/listado-citas-presenciales/pasadas', [ProfesionalController::class, 'listadoCitasPresencialesPasadas'])->name('profesional.listadoCitasPresencialesPasadas');
+
+    Route::post('/profesional/elegir-plan', [ProfesionalController::class, 'elegirPlan'])->name('profesional.elegir.plan');
+    Route::post('/profesional/contactos', [ProfesionalController::class, 'realizarContactoAdministrador'])->name('profesional.contactos.store');
+
+    Route::get('/profesional/pacientes/buscar', [ProfesionalController::class, 'buscarPaciente'])->name('profesional.pacientes.buscar');
+    Route::get('/profesional/consultorios/buscar', [ProfesionalController::class, 'delProfesional'])->name('profesional.consultorios.buscar');
+
+    Route::post('/profesional/citas/guardar', [ProfesionalController::class, 'guardarCita'])->name('profesional.citas.guardar');
+
+    Route::get('/profesional/citas/presenciales/json', [ProfesionalController::class, 'citasPresencialesJson'])->name('profesional.citasPresencialesJson');
+    Route::get('/profesional/citas/videollamadas/json', [ProfesionalController::class, 'citasVideoLlamadasJson'])->name('profesional.citasVideoLlamadasJson');
+
+    Route::post('/profesional/citas/actualizar-fecha', [ProfesionalController::class, 'actualizarFecha'])->name('profesional.citas.actualizarFecha');
+
+
+    Route::get('/profesional/recetas/{id}/exportar-pdf', [ProfesionalController::class, 'exportarRecetaPDF'])->name('profesional.receta.exportarPDF');
+
+
+    /* Eliminar título universitario */
+    Route::delete('/profesional/titulo-universitario/{id}', [ProfesionalController::class, 'eliminarTitulo'])->name('profesional.titulo.delete');
+    Route::delete('/profesional/especializacion/{id}', [ProfesionalController::class, 'eliminarEspecializacion']);
+    Route::delete('/profesional/formacion-adicional/{id}', [ProfesionalController::class, 'eliminarFormacion']);
+    Route::delete('/profesional/experiencia/{id}', [ProfesionalController::class, 'eliminarExperiencia']);
+    Route::delete('/profesional/consultorios/{id}', [ProfesionalController::class, 'eliminarConsultorio']);
+    Route::post('/profesional/guardar-seguro', [ProfesionalController::class, 'guardarSeguro']);
+    Route::post('/profesional/eliminar-seguro', [ProfesionalController::class, 'eliminarSeguro']);
+    Route::post('/profesional/actualizar-numero-cuenta', [ProfesionalController::class, 'actualizarNumeroCuenta']);
+    Route::post('/profesional/actualizar-datos', [ProfesionalController::class, 'actualizarDatos']);
+    Route::post('/profesional/actualizar-contrasena', [ProfesionalController::class, 'actualizarContrasena'])->name('profesional.actualizarContrasena');
+    Route::post('/profesional/titulos-universitarios', [ProfesionalController::class, 'guardarTitulo'])->name('profesional.titulos.guardar');
+    Route::post('/profesional/especializaciones/guardar', [ProfesionalController::class, 'guardarEspecializacion'])
+        ->name('profesional.especializaciones.guardar');
+    Route::post('/profesional/formaciones-adicionales/guardar', [ProfesionalController::class, 'guardarFormacionAdicional'])
+        ->name('profesional.formaciones-adicionales.guardar');
+    Route::post('/profesional/experiencias/guardar', [ProfesionalController::class, 'guardarExperiencia'])
+        ->name('profesional.experiencias.guardar');
+    Route::post('/profesional/consultorios/guardar', [ProfesionalController::class, 'guardarConsultorio'])
+        ->name('profesional.consultorios.guardar');
+    Route::post('/profesional/citas/cancelar/{id}', [ProfesionalController::class, 'cancelar']);
+
+    Route::put('/profesional/{profesional}/metodos-pago', [ProfesionalController::class, 'updateMetodosPago'])
+        ->name('profesional.metodos_pago.update');
+
+    Route::post('/profesional/guardar-horarios', [ProfesionalController::class, 'guardarHorariosPresencial'])->name('profesional.horarios.presencial.guardar');
+
+    Route::post('/profesional/consultorio/{id}/imagenes', [ProfesionalController::class, 'guardarImagenesConsultorio'])->name('profesional.consultorio.imagenes.store');
+    Route::get('/profesional/consultorio/{id}/imagenes', [ProfesionalController::class, 'listaImagenesConsultorio'])->name('profesional.consultorio.imagenes.index');
+    Route::delete('/profesional/consultorio/imagen/{id}', [ProfesionalController::class, 'eliminarImagenConsultorio']);
+
+    Route::get('/api/profesional/horarios', [ProfesionalController::class, 'eventosCalendario']);
+    Route::get('/api/profesional/horarios/{fecha}', [ProfesionalController::class, 'horariosPorDia']);
+    Route::delete('/profesional/detalle-horarios/{id}', [ProfesionalController::class, 'eliminarDetalle']);
+
+    Route::post('/profesional/{id}/documentos', [ProfesionalController::class, 'guardarDocumento'])->name('profesionales.documentos.store');
+    Route::delete('/profesional/documentos/{documento}', [ProfesionalController::class, 'eliminarDocumento'])->name('profesionales.documentos.destroy');
+
+
+
+    Route::get('/get-provincias/{region_id}', [ProfesionalController::class, 'getProvincias']);
+    Route::get('/get-ciudades/{provincia_id}', [ProfesionalController::class, 'getCiudades']);
+
+    /* URLS SIDEBAR: Proveedor*/
+    Route::get('/proveedor', [ProveedorController::class, 'index'])->name('proveedores.index');
+    Route::get('/proveedor/mis-estadisticas', [ProveedorController::class, 'misEstadisticas'])->name('proveedores.misEstadisticas');
+    Route::get('/proveedor/contactar-administrador', [ProveedorController::class, 'contactarAdministrador'])->name('proveedores.contactarAdministrador');
+    Route::get('/proveedor/notificaciones', [ProveedorController::class, 'notificaciones'])->name('proveedores.notificaciones');
+    Route::get('/proveedor/mis-planes', [ProveedorController::class, 'misPlanes'])->name('proveedores.misPlanes');
+    Route::get('/proveedor/mis-valoraciones', [ProveedorController::class, 'valoracionesComentarios'])->name('proveedores.valoracionesComentarios');
+    Route::get('/proveedor/compartir-resultado', [ProveedorController::class, 'compartirResultados'])->name('proveedores.compartirResultados');
+    Route::get('/proveedor/mis-datos', [ProveedorController::class, 'misDatos'])->name('proveedores.misDatos');
+    Route::get('/proveedor/mis-citas', [ProveedorController::class, 'misCitas'])->name('proveedores.misCitas');
+
+    Route::get('/proveedor/listado-citas/pasadas', [ProveedorController::class, 'listadoCitasPasadas'])->name('proveedores.listadoCitasPasadas');
+    Route::get('/proveedor/listado-citas/aceptadas', [ProveedorController::class, 'listadoCitasAceptadas'])->name('proveedores.listadoCitasAceptadas');
+    Route::get('/proveedor/listado-citas/pendientes', [ProveedorController::class, 'listadoCitasPendientes'])->name('proveedores.listadoCitasPendientes');
+    Route::get('/proveedor/mis-citas/agendar', [ProveedorController::class, 'agendarCitaProveedor'])->name('profesionales.agendarCitaProveedor');
+    Route::get('/proveedor/mis-clientes-pacientes', [ProveedorController::class, 'misClinicasPacientes'])->name('profesionales.misClinicasPacientes');
+    Route::get('/proveedor/historial-pruebas', [ProveedorController::class, 'historialPruebas'])->name('profesionales.historialPruebas');
+});
+
+
+
+
+Route::get('/profesionales', [ProfesionalFrontendController::class, 'index'])->name('profesionales.index');
+Route::post('/profesionales/registrar', [ProfesionalFrontendController::class, 'registroProfesional'])->name('profesionales.registroProfesional');
+
+Route::get('/profesionales/beneficios', [ProfesionalFrontendController::class, 'beneficios'])->name('profesionales.beneficios');
+Route::get('/profesionales/funcionalidades', [ProfesionalFrontendController::class, 'funcionalidades'])->name('profesionales.funcionalidades');
+Route::get('/profesionales/planes', [ProfesionalFrontendController::class, 'planes'])->name('profesionales.planes');
+Route::get('/profesionales/login', [ProfesionalFrontendController::class, 'login'])->name('profesionales.login');
+Route::get('/profesionales/registro', [ProfesionalFrontendController::class, 'registro'])->name('profesionales.registro');
+Route::get('/profesionales/contacto', [ProfesionalFrontendController::class, 'contacto'])->name('profesionales.contacto');
+Route::get('/profesionales/ficha/{id}', [ProfesionalFrontendController::class, 'detalleProfesional'])->name('profesionales.detalleProfesional');
+
+
+Route::get('/proveedores', [ProveedorFrontendController::class, 'index'])->name('proveedores.index');
+Route::get('/proveedores/beneficios', [ProveedorFrontendController::class, 'beneficios'])->name('proveedores.beneficios');
+Route::get('/proveedores/funcionalidades', [ProveedorFrontendController::class, 'funcionalidades'])->name('proveedores.funcionalidades');
+Route::get('/proveedores/planes', [ProveedorFrontendController::class, 'planes'])->name('proveedores.planes');
+Route::get('/proveedores/login', [ProveedorFrontendController::class, 'login'])->name('proveedores.login');
+Route::get('/proveedores/registro', [ProveedorFrontendController::class, 'registro'])->name('proveedores.registro');
+Route::get('/proveedores/contacto', [ProveedorFrontendController::class, 'contacto'])->name('proveedores.contacto');
+Route::post('/proveedores/registrar', [ProveedorFrontendController::class, 'registroProveedor'])->name('proveedores.registroProveedor');
+
+Route::get('/pacientes', [PacienteFrontendController::class, 'index'])->name('pacientes.index');
+Route::get('/pacientes/registro', [PacienteFrontendController::class, 'registro'])->name('pacientes.registro');
+Route::post('/pacientes/registrar', [PacienteFrontendController::class, 'registroPaciente'])->name('pacientes.registroPaciente');
+Route::get('/pacientes/contacto', [PacienteFrontendController::class, 'contacto'])->name('pacientes.contacto');
+Route::get('/pacientes/login', [PacienteFrontendController::class, 'login'])->name('pacientes.login');
+Route::get('/pacientes/preguntas-expertos', [PacienteFrontendController::class, 'preguntasExpertos'])->name('pacientes.preguntasExpertos');
+Route::post('/profesionales/preguntas-expertos', [PacienteFrontendController::class, 'preguntasExpertosGuardar'])->name('pacientes.enviar.preguntasExpertos');
+Route::get('/pacientes/preguntas-expertos/filtros', [PacienteFrontendController::class, 'pacientePreguntaRespuestaFiltro'])->name('pacientes.respuestas.index');
+Route::get('/pacientes/citas/{id}/resumen', [PacienteFrontendController::class, 'resumenCita'])->name('pacientes.citas.resumen');
+Route::post('/pacientes/citas/pago/{id}', [PacienteFrontendController::class, 'simularPago'])->name('pacientes.citas.pago');
+
+
+/* Buscadores por Categorías */
+Route::get('/pacientes/buscar/medicos', [PacienteFrontendController::class, 'buscarMedicosPaciente'])->name('pacientes.buscar.medicos');
+Route::get('/pacientes/buscar/emergencias', [PacienteFrontendController::class, 'buscarEmergenciasPaciente'])->name('pacientes.buscar.emergencias');
+
+
+Route::get('/api/frontend/profesional/horarios/{id}', [PacienteFrontendController::class, 'eventosCalendarioProfesional']);
+Route::get('/api/frontend/profesional/horarios/{id}/{fecha}', [PacienteFrontendController::class, 'horariosPorDiaProfesional']);
+Route::post('/citas/ajax', [PacienteFrontendController::class, 'storeAjax'])->name('citas.ajax.store');
+
+/* Misceláneas */
+Route::get('/subespecialidades/{id}', [PacienteController::class, 'getSubespecialidades']);
+Route::get('/get-provincias/{region_id}', [ProfesionalController::class, 'getProvincias']);
+Route::get('/get-ciudades/{provincia_id}', [ProfesionalController::class, 'getCiudades']);
+
+
+
+
+
+/* RUTAS ADMINISTRADOR */
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::prefix('admin')->group(function () {
+        // Aquí todas tus rutas de admin
+        Route::get('/', [AdminController::class, 'index']);        
+      
+        Route::get('/especialidades', [EspecialidadController::class, 'index'])->name('especialidades.index');            
+        Route::get('/especialidades/create', [EspecialidadController::class, 'create'])->name('especialidades.create');           
+        Route::post('/especialidades', [EspecialidadController::class, 'store'])->name('especialidades.store');           
+        Route::get('/especialidades/{especialidad}/edit', [EspecialidadController::class, 'edit'])->name('especialidades.edit');          
+        Route::put('/especialidades/{especialidad}', [EspecialidadController::class, 'update'])->name('especialidades.update');           
+        Route::delete('/especialidades/{especialidad}', [EspecialidadController::class, 'destroy'])->name('especialidades.destroy');
+   
+        Route::get('/metodos-pago', [MetodoPagoController::class, 'index'])->name('metodos-pagos.index');            
+        Route::get('/metodos-pago/create', [MetodoPagoController::class, 'create'])->name('metodos-pagos.create');           
+        Route::post('/metodos-pago', [MetodoPagoController::class, 'store'])->name('metodos-pagos.store');           
+        Route::get('/metodos-pago/{metodo}/edit', [MetodoPagoController::class, 'edit'])->name('metodos-pagos.edit');          
+        Route::put('/metodos-pago/{metodo}', [MetodoPagoController::class, 'update'])->name('metodos-pagos.update');           
+        Route::delete('/metodos-pago/{metodo}', [MetodoPagoController::class, 'destroy'])->name('metodos-pagos.destroy');
+   
+        Route::get('/planes', [PlanController::class, 'index'])->name('planes.index');            
+        Route::get('/planes/create', [PlanController::class, 'create'])->name('planes.create');           
+        Route::post('/planes', [PlanController::class, 'store'])->name('planes.store');           
+        Route::get('/planes/{plan}/edit', [PlanController::class, 'edit'])->name('planes.edit');          
+        Route::put('/planes/{plan}', [PlanController::class, 'update'])->name('planes.update');           
+        Route::delete('/planes/{plan}', [PlanController::class, 'destroy'])->name('planes.destroy');
+      
+        Route::get('/seguros-medicos', [SeguroMedicoController::class, 'index'])->name('seguros_medicos.index');            
+        Route::get('/seguros-medicos/create', [SeguroMedicoController::class, 'create'])->name('seguros_medicos.create');           
+        Route::post('/seguros-medicos', [SeguroMedicoController::class, 'store'])->name('seguros_medicos.store');           
+        Route::get('/seguros-medicos/{seguro}/edit', [SeguroMedicoController::class, 'edit'])->name('seguros_medicos.edit');          
+        Route::put('/seguros-medicos/{seguro}', [SeguroMedicoController::class, 'update'])->name('seguros_medicos.update');           
+        Route::delete('/seguros-medicos/{seguro}', [SeguroMedicoController::class, 'destroy'])->name('seguros_medicos.destroy');
+        
+        Route::get('/citas', [CitaController::class, 'index'])->name('citas.index');            
+        Route::get('/citas/create', [CitaController::class, 'create'])->name('citas.create');           
+        Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');           
+        Route::get('/citas/{cita}/edit', [CitaController::class, 'edit'])->name('citas.edit');          
+        Route::put('/citas/{cita}', [CitaController::class, 'update'])->name('citas.update');           
+        Route::delete('/citas/{cita}', [CitaController::class, 'destroy'])->name('citas.destroy');   
+        
+        Route::get('/emergencias', [EmergenciaController::class, 'index'])->name('emergencias.index');            
+        Route::get('/emergencias/create', [EmergenciaController::class, 'create'])->name('emergencias.create');           
+        Route::post('/emergencias', [EmergenciaController::class, 'store'])->name('emergencias.store');           
+        Route::get('/emergencias/{emergencia}/edit', [EmergenciaController::class, 'edit'])->name('emergencias.edit');          
+        Route::put('/emergencias/{emergencia}', [EmergenciaController::class, 'update'])->name('emergencias.update');           
+        Route::delete('/emergencias/{emergencia}', [EmergenciaController::class, 'destroy'])->name('emergencias.destroy'); 
+        
+        Route::get('/medicamentos', [MedicamentoController::class, 'index'])->name('medicamentos.index');            
+        Route::get('/medicamentos/create', [MedicamentoController::class, 'create'])->name('medicamentos.create');           
+        Route::post('/medicamentos', [MedicamentoController::class, 'store'])->name('medicamentos.store');           
+        Route::get('/medicamentos/{medicamento}/edit', [MedicamentoController::class, 'edit'])->name('medicamentos.edit');          
+        Route::put('/medicamentos/{medicamento}', [MedicamentoController::class, 'update'])->name('medicamentos.update');           
+        Route::delete('/medicamentos/{medicamento}', [MedicamentoController::class, 'destroy'])->name('medicamentos.destroy');
+   
+        Route::get('/intervalo-medicamentos', [IntervaloMedicamentoController::class, 'index'])->name('intervalos.index');            
+        Route::get('/intervalo-medicamentos/create', [IntervaloMedicamentoController::class, 'create'])->name('intervalos.create');           
+        Route::post('/intervalo-medicamentos', [IntervaloMedicamentoController::class, 'store'])->name('intervalos.store');           
+        Route::get('/intervalo-medicamentos/{intervalo}/edit', [IntervaloMedicamentoController::class, 'edit'])->name('intervalos.edit');          
+        Route::put('/intervalo-medicamentos/{intervalo}', [IntervaloMedicamentoController::class, 'update'])->name('intervalos.update');           
+        Route::delete('/intervalo-medicamentos/{intervalo}', [IntervaloMedicamentoController::class, 'destroy'])->name('intervalos.destroy');
+
+        Route::get('/presentacion-medicamentos', [PresentacionMedicamentoController::class, 'index'])->name('presentaciones.index');            
+        Route::get('/presentacion-medicamentos/create', [PresentacionMedicamentoController::class, 'create'])->name('presentaciones.create');           
+        Route::post('/presentacion-medicamentos', [PresentacionMedicamentoController::class, 'store'])->name('presentaciones.store');           
+        Route::get('/presentacion-medicamentos/{presentacion}/edit', [PresentacionMedicamentoController::class, 'edit'])->name('presentaciones.edit');          
+        Route::put('/presentacion-medicamentos/{presentacion}', [PresentacionMedicamentoController::class, 'update'])->name('presentaciones.update');           
+        Route::delete('/presentacion-medicamentos/{presentacion}', [PresentacionMedicamentoController::class, 'destroy'])->name('presentaciones.destroy');
+
+        Route::get('/vias-administracion-medicamentos', [ViaMedicamentoController::class, 'index'])->name('vias.index');            
+        Route::get('/vias-administracion-medicamentos/create', [ViaMedicamentoController::class, 'create'])->name('vias.create');           
+        Route::post('/vias-administracion-medicamentos', [ViaMedicamentoController::class, 'store'])->name('vias.store');           
+        Route::get('/vias-administracion-medicamentos/{via}/edit', [ViaMedicamentoController::class, 'edit'])->name('vias.edit');          
+        Route::put('/vias-administracion-medicamentos/{via}', [ViaMedicamentoController::class, 'update'])->name('vias.update');           
+        Route::delete('/vias-administracion-medicamentos/{via}', [ViaMedicamentoController::class, 'destroy'])->name('vias.destroy');   
+   
+        Route::get('/regiones', [RegionController::class, 'index'])->name('regiones.index');            
+        Route::get('/regiones/create', [RegionController::class, 'create'])->name('regiones.create');           
+        Route::post('/regiones', [RegionController::class, 'store'])->name('regiones.store');           
+        Route::get('/regiones/{region}/edit', [RegionController::class, 'edit'])->name('regiones.edit');          
+        Route::put('/regiones/{region}', [RegionController::class, 'update'])->name('regiones.update');           
+        Route::delete('/regiones/{region}', [RegionController::class, 'destroy'])->name('regiones.destroy');   
+   
+        Route::get('/provincias', [ProvinciaController::class, 'index'])->name('provincias.index');            
+        Route::get('/provincias/create', [ProvinciaController::class, 'create'])->name('provincias.create');           
+        Route::post('/provincias', [ProvinciaController::class, 'store'])->name('provincias.store');           
+        Route::get('/provincias/{provincia}/edit', [ProvinciaController::class, 'edit'])->name('provincias.edit');          
+        Route::put('/provincias/{provincia}', [ProvinciaController::class, 'update'])->name('provincias.update');           
+        Route::delete('/provincias/{provincia}', [ProvinciaController::class, 'destroy'])->name('provincias.destroy');   
+   
+        Route::get('/ciudades', [CiudadController::class, 'index'])->name('ciudades.index');            
+        Route::get('/ciudades/create', [CiudadController::class, 'create'])->name('ciudades.create');           
+        Route::post('/ciudades', [CiudadController::class, 'store'])->name('ciudades.store');           
+        Route::get('/ciudades/{ciudad}/edit', [CiudadController::class, 'edit'])->name('ciudades.edit');          
+        Route::put('/ciudades/{ciudad}', [CiudadController::class, 'update'])->name('ciudades.update');           
+        Route::delete('/ciudades/{ciudad}', [CiudadController::class, 'destroy'])->name('ciudades.destroy');   
+   
+        Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');            
+        Route::get('/usuarios/create', [UsuarioController::class, 'create'])->name('usuarios.create');           
+        Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');           
+        Route::get('/usuarios/{ciudad}/edit', [UsuarioController::class, 'edit'])->name('usuarios.edit');          
+        Route::put('/usuarios/{ciudad}', [UsuarioController::class, 'update'])->name('usuarios.update');           
+        Route::delete('/usuarios/{ciudad}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');   
+   
+        Route::get('/pacientes', [UsuarioController::class, 'indexPaciente'])->name('pacientes.index'); 
+        Route::get('/profesionales', [UsuarioController::class, 'indexProfesional'])->name('profesionales.index'); 
+        Route::get('/proveedores', [UsuarioController::class, 'indexProveedor'])->name('proveedores.index');            
+
+        Route::get('/documentos-profesional', [DocumentoProfesionalController::class, 'index'])->name('documentos.index');            
+        Route::get('/documentos-profesional/create', [DocumentoProfesionalController::class, 'create'])->name('documentos.create');           
+        Route::post('/documentos-profesional', [DocumentoProfesionalController::class, 'store'])->name('documentos.store');           
+        Route::get('/documentos-profesional/{documento}/edit', [DocumentoProfesionalController::class, 'edit'])->name('documentos.edit');          
+        Route::put('/documentos-profesional/{documento}', [DocumentoProfesionalController::class, 'update'])->name('documentos.update');           
+        Route::delete('/documentos-profesional/{documento}', [DocumentoProfesionalController::class, 'destroy'])->name('documentos.destroy');   
+   
+        Route::get('/valoraciones', [ValoracionController::class, 'index'])->name('valoraciones.index');            
+        Route::get('/valoraciones/create', [ValoracionController::class, 'create'])->name('valoraciones.create');           
+        Route::post('/valoraciones', [ValoracionController::class, 'store'])->name('valoraciones.store');           
+        Route::get('/valoraciones/{documento}/edit', [ValoracionController::class, 'edit'])->name('valoraciones.edit');          
+        Route::put('/valoraciones/{documento}', [ValoracionController::class, 'update'])->name('valoraciones.update');           
+        Route::delete('/valoraciones/{documento}', [ValoracionController::class, 'destroy'])->name('valoraciones.destroy');   
+   
+        Route::get('/informes-consulta', [InformeConsultaController::class, 'index'])->name('informes.index');            
+        Route::get('/informes-consulta/create', [InformeConsultaController::class, 'create'])->name('informes.create');           
+        Route::post('/informes-consulta', [InformeConsultaController::class, 'store'])->name('informes.store');           
+        Route::get('/informes-consulta/{documento}/edit', [InformeConsultaController::class, 'edit'])->name('informes.edit');          
+        Route::put('/informes-consulta/{documento}', [InformeConsultaController::class, 'update'])->name('informes.update');           
+        Route::delete('/informes-consulta/{documento}', [InformeConsultaController::class, 'destroy'])->name('informes.destroy');   
+   
+        Route::get('/recetas', [RecetaController::class, 'index'])->name('recetas.index');            
+        Route::get('/recetas/create', [RecetaController::class, 'create'])->name('recetas.create');           
+        Route::post('/recetas', [RecetaController::class, 'store'])->name('recetas.store');           
+        Route::get('/recetas/{documento}/edit', [RecetaController::class, 'edit'])->name('recetas.edit');          
+        Route::put('/recetas/{documento}', [RecetaController::class, 'update'])->name('recetas.update');           
+        Route::delete('/recetas/{documento}', [RecetaController::class, 'destroy'])->name('recetas.destroy');   
+   
+        Route::get('/preguntas-expertos', [PreguntaController::class, 'index'])->name('preguntas.index');            
+        Route::get('/preguntas-expertos/create', [PreguntaController::class, 'create'])->name('preguntas.create');           
+        Route::post('/preguntas-expertos', [PreguntaController::class, 'store'])->name('preguntas.store');           
+        Route::get('/preguntas-expertos/{documento}/edit', [PreguntaController::class, 'edit'])->name('preguntas.edit');          
+        Route::put('/preguntas-expertos/{documento}', [PreguntaController::class, 'update'])->name('preguntas.update');           
+        Route::delete('/preguntas-expertos/{documento}', [PreguntaController::class, 'destroy'])->name('preguntas.destroy');   
+   
+        Route::get('/respuestas-expertos', [RespuestaController::class, 'index'])->name('respuestas.index');            
+        Route::get('/respuestas-expertos/create', [RespuestaController::class, 'create'])->name('respuestas.create');           
+        Route::post('/respuestas-expertos', [RespuestaController::class, 'store'])->name('respuestas.store');           
+        Route::get('/respuestas-expertos/{documento}/edit', [RespuestaController::class, 'edit'])->name('respuestas.edit');          
+        Route::put('/respuestas-expertos/{documento}', [RespuestaController::class, 'update'])->name('respuestas.update');           
+        Route::delete('/respuestas-expertos/{documento}', [RespuestaController::class, 'destroy'])->name('respuestas.destroy');   
+   
+    });
+});
