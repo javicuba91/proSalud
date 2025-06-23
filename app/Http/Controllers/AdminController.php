@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Medicamento;
+use App\Models\SegurosMedicos;
 use Illuminate\Http\Request;
 use Smalot\PdfParser\Parser;
 use Spatie\PdfToText\Pdf;
@@ -15,6 +16,7 @@ class AdminController extends Controller
     public function index()
     {
         $usuarios = User::all();
+        $seguros = SegurosMedicos::all();
         return view('admin.index');
     }
 
