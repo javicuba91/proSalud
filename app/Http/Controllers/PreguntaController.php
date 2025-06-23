@@ -59,8 +59,9 @@ class PreguntaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(PreguntaExperto $pregunta)
     {
-        //
+        $pregunta->delete();
+        return redirect()->route('preguntas.index')->with('eliminado', 'ok');
     }
 }

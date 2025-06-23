@@ -59,8 +59,9 @@ class MedicamentoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Medicamento $medicamento)
     {
-        //
+        $medicamento->delete();
+        return redirect()->route('medicamentos.index')->with('eliminado', 'ok');
     }
 }

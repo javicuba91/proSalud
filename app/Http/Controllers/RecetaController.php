@@ -59,8 +59,9 @@ class RecetaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Receta $receta)
     {
-        //
+        $receta->delete();
+        return redirect()->route('recetas.index')->with('eliminado', 'ok');
     }
 }

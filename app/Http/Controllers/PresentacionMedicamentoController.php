@@ -59,8 +59,9 @@ class PresentacionMedicamentoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(PresentacionMedicamento $presentacion)
     {
-        //
+        $presentacion->delete();
+        return redirect()->route('presentaciones.index')->with('eliminado', 'ok');
     }
 }

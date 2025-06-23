@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DocumentoProfesional;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class DocumentoProfesionalController extends Controller
 {
@@ -59,8 +60,13 @@ class DocumentoProfesionalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(DocumentoProfesional $documento)
     {
-        //
+        if (File::exists(public_path($documento->archivo))) {
+            File::delete(public_path($documento->archivo));
+        }
+
+        $documento->delete();
+        return redirect()->route('documentos.index')->with('eliminado', 'ok');
     }
 }

@@ -37,7 +37,7 @@
                     <td>{{ date("d-m-Y H:i", strtotime($receta->fecha_emision)) }}</td>                                     
                     <td>
                         <a href="{{ route('recetas.edit', $receta->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                        <form action="{{ route('recetas.destroy', $receta->id) }}" method="POST"
+                        <form class="form-eliminar" action="{{ route('recetas.destroy', $receta->id) }}" method="POST"
                             style="display:inline;">
                             @csrf
                             @method('DELETE')
@@ -50,7 +50,9 @@
     </table>
 @stop
 
+
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
             $('#recetas').DataTable({
@@ -60,6 +62,37 @@
                 responsive: true,
                 autoWidth: false
             });
+
+            $('.form-eliminar').submit(function(e) {
+                e.preventDefault();
+
+                const form = this;
+
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¡Esta acción no se puede deshacer!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
         });
     </script>
+
+    @if (session('eliminado') == 'ok')
+        <script>
+            Swal.fire(
+                'Eliminado',
+                'La receta ha sido eliminada correctamente.',
+                'success'
+            );
+        </script>
+    @endif
 @endsection

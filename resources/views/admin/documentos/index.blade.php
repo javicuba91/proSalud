@@ -27,23 +27,25 @@
         <tbody>
             @foreach ($documentos as $documento)
                 <tr>
-                    <td>{{ $documento->nombre }}</td>    
+                    <td>{{ $documento->nombre }}</td>
                     <td>
                         <a href="{{ asset($documento->archivo) }}" target="_blank" class="d-block mb-1">
                             <i class="fa fa-file"></i> Abrir
                         </a>
-                    </td>       
-                    <td><span class="badge bg-danger p-2">{{ ucfirst($documento->estado) }}</span></td>             
+                    </td>
+                    <td><span class="badge bg-danger p-2">{{ ucfirst($documento->estado) }}</span></td>
                     <td>
-                        <a href="{{ route('documentos.edit', $documento->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                        <form action="{{ route('documentos.destroy', $documento->id) }}" method="POST"
+                        <a href="{{ route('documentos.edit', $documento->id) }}" class="btn btn-warning"><i
+                                class="fa fa-edit"></i></a>
+                        <form class="form-eliminar" action="{{ route('documentos.destroy', $documento->id) }}" method="POST"
                             style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                         </form>
-                        @if($documento->estado == "pendiente")
-                            <a href="{{ route('documentos.edit', $documento->id) }}" class="btn btn-success"><i class="fa fa-check"></i></a>
+                        @if ($documento->estado == 'pendiente')
+                            <a href="{{ route('documentos.edit', $documento->id) }}" class="btn btn-success"><i
+                                    class="fa fa-check"></i></a>
                         @endif
                     </td>
                 </tr>
@@ -53,6 +55,7 @@
 @stop
 
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
             $('#documentos').DataTable({
@@ -62,6 +65,37 @@
                 responsive: true,
                 autoWidth: false
             });
+
+            $('.form-eliminar').submit(function(e) {
+                e.preventDefault();
+
+                const form = this;
+
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¡Esta acción no se puede deshacer!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
         });
     </script>
+
+    @if (session('eliminado') == 'ok')
+        <script>
+            Swal.fire(
+                'Eliminado',
+                'El documento ha sido eliminado correctamente.',
+                'success'
+            );
+        </script>
+    @endif
 @endsection

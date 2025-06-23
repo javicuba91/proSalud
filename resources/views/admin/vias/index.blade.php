@@ -28,7 +28,7 @@
                     <td>{{ $via->nombre }}</td>                    
                     <td>
                         <a href="{{ route('vias.edit', $via->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                        <form action="{{ route('vias.destroy', $via->id) }}" method="POST"
+                        <form class="form-eliminar" action="{{ route('vias.destroy', $via->id) }}" method="POST"
                             style="display:inline;">
                             @csrf
                             @method('DELETE')
@@ -41,7 +41,9 @@
     </table>
 @stop
 
+
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
             $('#vias').DataTable({
@@ -51,6 +53,37 @@
                 responsive: true,
                 autoWidth: false
             });
+
+            $('.form-eliminar').submit(function(e) {
+                e.preventDefault();
+
+                const form = this;
+
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¡Esta acción no se puede deshacer!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
         });
     </script>
+
+    @if (session('eliminado') == 'ok')
+        <script>
+            Swal.fire(
+                'Eliminado',
+                'La Vía de Administración del Medicamento ha sido eliminado correctamente.',
+                'success'
+            );
+        </script>
+    @endif
 @endsection

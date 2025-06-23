@@ -378,9 +378,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');            
         Route::get('/usuarios/create', [UsuarioController::class, 'create'])->name('usuarios.create');           
         Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');           
-        Route::get('/usuarios/{ciudad}/edit', [UsuarioController::class, 'edit'])->name('usuarios.edit');          
-        Route::put('/usuarios/{ciudad}', [UsuarioController::class, 'update'])->name('usuarios.update');           
-        Route::delete('/usuarios/{ciudad}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');   
+        Route::get('/usuarios/{usuario}/edit', [UsuarioController::class, 'edit'])->name('usuarios.edit');          
+        Route::put('/usuarios/{usuario}', [UsuarioController::class, 'update'])->name('usuarios.update');           
+        Route::delete('/usuarios/{usuario}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');   
    
         Route::get('/pacientes', [UsuarioController::class, 'indexPaciente'])->name('pacientes.index'); 
         Route::get('/profesionales', [UsuarioController::class, 'indexProfesional'])->name('profesionales.index'); 
@@ -396,37 +396,37 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/valoraciones', [ValoracionController::class, 'index'])->name('valoraciones.index');            
         Route::get('/valoraciones/create', [ValoracionController::class, 'create'])->name('valoraciones.create');           
         Route::post('/valoraciones', [ValoracionController::class, 'store'])->name('valoraciones.store');           
-        Route::get('/valoraciones/{documento}/edit', [ValoracionController::class, 'edit'])->name('valoraciones.edit');          
-        Route::put('/valoraciones/{documento}', [ValoracionController::class, 'update'])->name('valoraciones.update');           
-        Route::delete('/valoraciones/{documento}', [ValoracionController::class, 'destroy'])->name('valoraciones.destroy');   
+        Route::get('/valoraciones/{valoracion}/edit', [ValoracionController::class, 'edit'])->name('valoraciones.edit');          
+        Route::put('/valoraciones/{valoracion}', [ValoracionController::class, 'update'])->name('valoraciones.update');           
+        Route::delete('/valoraciones/{valoracion}', [ValoracionController::class, 'destroy'])->name('valoraciones.destroy');   
    
         Route::get('/informes-consulta', [InformeConsultaController::class, 'index'])->name('informes.index');            
         Route::get('/informes-consulta/create', [InformeConsultaController::class, 'create'])->name('informes.create');           
-        Route::post('/informes-consulta', [InformeConsultaController::class, 'store'])->name('informes.store');           
-        Route::get('/informes-consulta/{documento}/edit', [InformeConsultaController::class, 'edit'])->name('informes.edit');          
-        Route::put('/informes-consulta/{documento}', [InformeConsultaController::class, 'update'])->name('informes.update');           
-        Route::delete('/informes-consulta/{documento}', [InformeConsultaController::class, 'destroy'])->name('informes.destroy');   
+        Route::post('/informes-consulta', action: [InformeConsultaController::class, 'store'])->name('informes.store');           
+        Route::get('/informes-consulta/{informe}/edit', [InformeConsultaController::class, 'edit'])->name('informes.edit');          
+        Route::put('/informes-consulta/{informe}', [InformeConsultaController::class, 'update'])->name('informes.update');           
+        Route::delete('/informes-consulta/{informe}', [InformeConsultaController::class, 'destroy'])->name('informes.destroy');   
    
         Route::get('/recetas', [RecetaController::class, 'index'])->name('recetas.index');            
         Route::get('/recetas/create', [RecetaController::class, 'create'])->name('recetas.create');           
         Route::post('/recetas', [RecetaController::class, 'store'])->name('recetas.store');           
-        Route::get('/recetas/{documento}/edit', [RecetaController::class, 'edit'])->name('recetas.edit');          
-        Route::put('/recetas/{documento}', [RecetaController::class, 'update'])->name('recetas.update');           
-        Route::delete('/recetas/{documento}', [RecetaController::class, 'destroy'])->name('recetas.destroy');   
+        Route::get('/recetas/{receta}/edit', [RecetaController::class, 'edit'])->name('recetas.edit');          
+        Route::put('/recetas/{receta}', [RecetaController::class, 'update'])->name('recetas.update');           
+        Route::delete('/recetas/{receta}', [RecetaController::class, 'destroy'])->name('recetas.destroy');   
    
         Route::get('/preguntas-expertos', [PreguntaController::class, 'index'])->name('preguntas.index');            
         Route::get('/preguntas-expertos/create', [PreguntaController::class, 'create'])->name('preguntas.create');           
         Route::post('/preguntas-expertos', [PreguntaController::class, 'store'])->name('preguntas.store');           
-        Route::get('/preguntas-expertos/{documento}/edit', [PreguntaController::class, 'edit'])->name('preguntas.edit');          
-        Route::put('/preguntas-expertos/{documento}', [PreguntaController::class, 'update'])->name('preguntas.update');           
-        Route::delete('/preguntas-expertos/{documento}', [PreguntaController::class, 'destroy'])->name('preguntas.destroy');   
+        Route::get('/preguntas-expertos/{pregunta}/edit', [PreguntaController::class, 'edit'])->name('preguntas.edit');          
+        Route::put('/preguntas-expertos/{pregunta}', [PreguntaController::class, 'update'])->name('preguntas.update');           
+        Route::delete('/preguntas-expertos/{pregunta}', [PreguntaController::class, 'destroy'])->name('preguntas.destroy');   
    
         Route::get('/respuestas-expertos', [RespuestaController::class, 'index'])->name('respuestas.index');            
         Route::get('/respuestas-expertos/create', [RespuestaController::class, 'create'])->name('respuestas.create');           
         Route::post('/respuestas-expertos', [RespuestaController::class, 'store'])->name('respuestas.store');           
-        Route::get('/respuestas-expertos/{documento}/edit', [RespuestaController::class, 'edit'])->name('respuestas.edit');          
-        Route::put('/respuestas-expertos/{documento}', [RespuestaController::class, 'update'])->name('respuestas.update');           
-        Route::delete('/respuestas-expertos/{documento}', [RespuestaController::class, 'destroy'])->name('respuestas.destroy');   
+        Route::get('/respuestas-expertos/{respuesta}/edit', [RespuestaController::class, 'edit'])->name('respuestas.edit');          
+        Route::put('/respuestas-expertos/{respuesta}', [RespuestaController::class, 'update'])->name('respuestas.update');           
+        Route::delete('/respuestas-expertos/{respuesta}', [RespuestaController::class, 'destroy'])->name('respuestas.destroy');   
    
     });
 });

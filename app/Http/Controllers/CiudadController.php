@@ -59,8 +59,9 @@ class CiudadController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Ciudad $ciudad)
     {
-        //
+        $ciudad->delete();
+        return redirect()->route('ciudades.index')->with('eliminado', 'ok');
     }
 }

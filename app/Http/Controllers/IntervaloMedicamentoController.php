@@ -59,8 +59,9 @@ class IntervaloMedicamentoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(IntervaloMedicamento $intervalo)
     {
-        //
+        $intervalo->delete();
+        return redirect()->route('intervalos.index')->with('eliminado', 'ok');
     }
 }

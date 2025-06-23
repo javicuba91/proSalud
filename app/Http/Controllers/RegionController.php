@@ -59,8 +59,9 @@ class RegionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Region $region)
     {
-        //
+        $region->delete();
+        return redirect()->route('regiones.index')->with('eliminado', 'ok');
     }
 }
