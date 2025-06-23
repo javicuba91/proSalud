@@ -6,7 +6,7 @@
     <h1>Seguros Médicos</h1>
 
     <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('seguros_medicos.create') }}" class="btn btn-primary">
+        <a href="{{ route('seguros_medicos.create') }}" class="btn btn-primary p-2">
             <i class="fa fa-plus"> Crear Seguro Médico</i>
         </a>
     </div>
