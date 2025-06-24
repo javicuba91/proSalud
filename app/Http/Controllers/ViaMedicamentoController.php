@@ -21,7 +21,7 @@ class ViaMedicamentoController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.vias.create');
     }
 
     /**
@@ -29,7 +29,14 @@ class ViaMedicamentoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+
+        ViaAdministracionMedicamento::create($request->all());
+
+        return redirect()->route('vias.index')
+            ->with('success', 'Vía de administración creada correctamente.');
     }
 
     /**

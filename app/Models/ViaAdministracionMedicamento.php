@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ViaAdministracionMedicamento extends Model
 {
-    //
     protected $table = "via_administracion_medicamentos";
+
+    protected $fillable = [
+        'nombre',
+    ];
 }

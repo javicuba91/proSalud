@@ -21,7 +21,7 @@ class RegionController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.regiones.create');
     }
 
     /**
@@ -29,7 +29,14 @@ class RegionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+
+        Region::create($request->all());
+
+        return redirect()->route('regiones.index')
+            ->with('success', 'Región creada correctamente.');
     }
 
     /**

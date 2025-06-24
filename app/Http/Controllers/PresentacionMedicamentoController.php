@@ -21,7 +21,7 @@ class PresentacionMedicamentoController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.presentaciones.create');
     }
 
     /**
@@ -29,7 +29,14 @@ class PresentacionMedicamentoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+
+        PresentacionMedicamento::create($request->all());
+
+        return redirect()->route('presentaciones.index')
+            ->with('success', 'Presentación creada correctamente.');
     }
 
     /**

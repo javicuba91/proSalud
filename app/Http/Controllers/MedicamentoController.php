@@ -21,7 +21,7 @@ class MedicamentoController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.medicamentos.create');
     }
 
     /**
@@ -29,7 +29,14 @@ class MedicamentoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+
+        Medicamento::create($request->all());
+
+        return redirect()->route('medicamentos.index')
+            ->with('success', 'Medicamento creado correctamente.');
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Provincia;
+use App\Models\Region;
 use Illuminate\Http\Request;
 
 class ProvinciaController extends Controller
@@ -21,7 +22,8 @@ class ProvinciaController extends Controller
      */
     public function create()
     {
-        //
+        $regiones = Region::all();
+        return view('admin.provincias.create', compact('regiones'));
     }
 
     /**
@@ -29,7 +31,15 @@ class ProvinciaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'region_id' => 'required|exists:regiones,id',
+        ]);
+
+        Provincia::create($request->all());
+
+        return redirect()->route('provincias.index')
+            ->with('success', 'Provincia creada correctamente.');
     }
 
     /**

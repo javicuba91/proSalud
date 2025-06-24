@@ -21,7 +21,7 @@ class IntervaloMedicamentoController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.intervalos.create');
     }
 
     /**
@@ -29,7 +29,14 @@ class IntervaloMedicamentoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+
+        IntervaloMedicamento::create($request->all());
+
+        return redirect()->route('intervalos.index')
+            ->with('success', 'Intervalo creado correctamente.');
     }
 
     /**
