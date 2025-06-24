@@ -9,6 +9,12 @@ class RespuestaExperto extends Model
     //
     protected $table = "respuestas_expertos";
 
+    protected $fillable = [
+        'preguntas_expertos_id',
+        'respuesta',
+        'profesional_id'
+    ];
+
     public function pregunta()
     {
         return $this->belongsTo(PreguntaExperto::class, 'preguntas_expertos_id');
@@ -17,7 +23,4 @@ class RespuestaExperto extends Model
     {
         return $this->belongsTo(Profesional::class, 'profesional_id');
     }
-
-
-    
 }

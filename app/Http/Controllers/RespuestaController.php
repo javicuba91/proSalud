@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\RespuestaExperto;
+use App\Models\PreguntaExperto;
+use App\Models\Profesional;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class RespuestaController extends Controller
 {
@@ -21,7 +25,11 @@ class RespuestaController extends Controller
      */
     public function create()
     {
-        //
+        $preguntas = PreguntaExperto::with(['especialidad', 'subespecialidad'])->get();
+        // Ya no cargamos todos los profesionales, se cargarán via AJAX según la pregunta seleccionada
+        $profesionales = collect(); // Colección vacía
+
+        return view('admin.respuestas.create', compact('preguntas', 'profesionales'));
     }
 
     /**
@@ -29,7 +37,17 @@ class RespuestaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'preguntas_expertos_id' => 'required|exists:preguntas_expertos,id',
+            'profesional_id' => 'required|exists:profesionales,id',
+            'respuesta' => 'required|string',
+        ]);
+
+        RespuestaExperto::create($request->all());
+
+
+        return redirect()->route('respuestas.index')
+            ->with('success', 'Respuesta creada correctamente.');
     }
 
     /**
@@ -63,5 +81,41 @@ class RespuestaController extends Controller
     {
         $respuesta->delete();
         return redirect()->route('respuestas.index')->with('eliminado', 'ok');
+    }
+
+    /**
+     * Get professionals filtered by question's speciality
+     */
+    public function ProfesionalesPregunta(Request $request)
+    {
+        $preguntaId = $request->get('pregunta_id');
+
+        if (!$preguntaId) {
+            return response()->json([]);
+        }
+
+        // Obtener la pregunta con sus especialidades
+        $pregunta = PreguntaExperto::find($preguntaId);
+
+        if (!$pregunta) {
+            return response()->json([]);
+        }
+
+        // Obtener profesionales que tienen la especialidad principal o sub-especialidad de la pregunta
+        $profesionales = Profesional::with('user')
+            ->whereHas('especializaciones', function($query) use ($pregunta) {
+                // Filtrar por especialidad principal
+                $query->where('especialidad_id', $pregunta->especialidad_id);
+            })->get();
+
+        // Formatear la respuesta para el select
+        $profesionalesFormatted = $profesionales->map(function($profesional) {
+            return [
+                'id' => $profesional->id,
+                'nombre_completo' => $profesional->nombre_completo?? 'Profesional #' . $profesional->id
+            ];
+        });
+
+        return response()->json($profesionalesFormatted);
     }
 }

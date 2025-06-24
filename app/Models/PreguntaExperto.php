@@ -9,6 +9,12 @@ class PreguntaExperto extends Model
     //
     protected $table = "preguntas_expertos";
 
+    protected $fillable = [
+        'especialidad_id',
+        'sub_especialidad_id', 
+        'pregunta'
+    ];
+
     public function respuestas()
     {
         return $this->hasMany(RespuestaExperto::class);

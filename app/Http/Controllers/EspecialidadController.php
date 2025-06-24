@@ -10,7 +10,7 @@ class EspecialidadController extends Controller
     // Mostrar todas las especialidades
     public function index()
     {
-        $especialidades = Especialidad::all();
+        $especialidades = Especialidad::whereNull('padre_id')->get();
         return view('admin.especialidades.index', compact('especialidades'));
     }
 

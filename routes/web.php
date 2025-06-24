@@ -425,6 +425,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/preguntas-expertos', [PreguntaController::class, 'index'])->name('preguntas.index');
         Route::get('/preguntas-expertos/create', [PreguntaController::class, 'create'])->name('preguntas.create');
         Route::post('/preguntas-expertos', [PreguntaController::class, 'store'])->name('preguntas.store');
+        Route::get('/preguntas-expertos/subespecialidades/{especialidad}', [PreguntaController::class, 'subespecialidadesPorEspecialidad'])->name('preguntas.subespecialidades.especialidad');
         Route::get('/preguntas-expertos/{pregunta}/edit', [PreguntaController::class, 'edit'])->name('preguntas.edit');
         Route::put('/preguntas-expertos/{pregunta}', [PreguntaController::class, 'update'])->name('preguntas.update');
         Route::delete('/preguntas-expertos/{pregunta}', [PreguntaController::class, 'destroy'])->name('preguntas.destroy');
@@ -435,6 +436,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/respuestas-expertos/{respuesta}/edit', [RespuestaController::class, 'edit'])->name('respuestas.edit');
         Route::put('/respuestas-expertos/{respuesta}', [RespuestaController::class, 'update'])->name('respuestas.update');
         Route::delete('/respuestas-expertos/{respuesta}', [RespuestaController::class, 'destroy'])->name('respuestas.destroy');
+        Route::get('/respuestas-expertos/profesionales-by-pregunta', [RespuestaController::class, 'ProfesionalesPregunta'])->name('respuestas.profesionales-by-pregunta');
 
 
     });

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\PreguntaExperto;
+use App\Models\Especialidad;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PreguntaController extends Controller
 {
@@ -21,7 +23,8 @@ class PreguntaController extends Controller
      */
     public function create()
     {
-        //
+        $especialidades = Especialidad::whereNull('padre_id')->get(); //
+        return view('admin.preguntas.create', compact('especialidades'));
     }
 
     /**
@@ -29,9 +32,16 @@ class PreguntaController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+            $request->validate([
+                'especialidad_id' => 'required|exists:especialidades,id',
+                'sub_especialidad_id' => 'nullable|exists:especialidades,id',
+                'pregunta' => 'required|string',
+            ]);
+            PreguntaExperto::create($request->all());
 
+            return redirect()->route('preguntas.index')
+                ->with('success', 'Pregunta creada correctamente.');
+    }
     /**
      * Display the specified resource.
      */
@@ -63,5 +73,25 @@ class PreguntaController extends Controller
     {
         $pregunta->delete();
         return redirect()->route('preguntas.index')->with('eliminado', 'ok');
+    }
+
+    /**
+     * Obtener sub-especialidades por especialidad
+     */
+    public function subespecialidadesPorEspecialidad($especialidad_id)
+    {
+        try {
+            $subespecialidades = Especialidad::where('padre_id', $especialidad_id)->get();
+
+            return response()->json($subespecialidades->map(function ($subespecialidad) {
+                return [
+                    'id' => $subespecialidad->id,
+                    'nombre' => $subespecialidad->nombre
+                ];
+            }));
+        } catch (\Exception $e) {
+            Log::error('Error al obtener sub-especialidades: ' . $e->getMessage());
+            return response()->json(['error' => 'Error al obtener sub-especialidades'], 500);
+        }
     }
 }
