@@ -3,7 +3,7 @@
 @section('title', 'Ver Valoración')
 
 @section('content_header')
-    <h1>Ver Valoracion: {{ $valoracion->id }}</h1>
+    <h1>Ver Valoración: {{ $valoracion->id }}</h1>
 @stop
 
 @section('content')
