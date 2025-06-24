@@ -13,8 +13,14 @@
 
 @stop
 
+
 @section('content')
 
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <table id="especialidades" class="table table-bordered mb-4">
         <thead>
             <tr>
@@ -29,7 +35,8 @@
                     <td>{{ $especialidad->nombre }}</td>
                     <td>{{ $especialidad->descripcion }}</td>
                     <td>
-                        <a href="{{ route('especialidades.edit', $especialidad->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                        <a href="{{ route('especialidades.edit', $especialidad->id) }}" class="btn btn-warning"><i
+                                class="fa fa-edit"></i></a>
                         <form action="{{ route('especialidades.destroy', $especialidad->id) }}" method="POST"
                             style="display:inline;">
                             @csrf

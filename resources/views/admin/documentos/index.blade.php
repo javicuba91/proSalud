@@ -5,16 +5,15 @@
 @section('content_header')
     <h1>Documentos</h1>
 
-    <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('documentos.create') }}" class="btn btn-primary">
-            <i class="fa fa-plus"> Crear Documento</i>
-        </a>
-    </div>
-
 @stop
 
 @section('content')
 
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <table id="documentos" class="table table-bordered mb-4">
         <thead>
             <tr>
@@ -37,8 +36,8 @@
                     <td>
                         <a href="{{ route('documentos.edit', $documento->id) }}" class="btn btn-warning"><i
                                 class="fa fa-edit"></i></a>
-                        <form class="form-eliminar" action="{{ route('documentos.destroy', $documento->id) }}" method="POST"
-                            style="display:inline;">
+                        <form class="form-eliminar" action="{{ route('documentos.destroy', $documento->id) }}"
+                            method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>

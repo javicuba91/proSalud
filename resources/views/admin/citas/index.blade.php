@@ -14,7 +14,11 @@
 @stop
 
 @section('content')
-
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <table id="citas" class="table table-bordered mb-4">
         <thead>
             <tr>
@@ -34,8 +38,8 @@
                     <td>{{ date("d-m-Y H:i", strtotime($cita->fecha_hora)) }}</td>
                     <td>{{ ucfirst($cita->modalidad) }}</td>
                     <td><span class="badge bg-primary p-2">{{ ucfirst($cita->estado) }}</span></td>
-                    
-                    <td>  
+
+                    <td>
                         <a href="{{ route('citas.edit', $cita->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                         <form class="form-eliminar" action="{{ route('citas.destroy', $cita->id) }}" method="POST"
                             style="display:inline;">
@@ -61,7 +65,7 @@
                 responsive: true,
                 autoWidth: false
             });
-            
+
             $('.form-eliminar').submit(function(e) {
                 e.preventDefault();
 

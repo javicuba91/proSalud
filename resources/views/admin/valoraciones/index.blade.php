@@ -4,17 +4,14 @@
 
 @section('content_header')
     <h1>Valoraciones</h1>
-
-    <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('valoraciones.create') }}" class="btn btn-primary">
-            <i class="fa fa-plus"> Crear Valoración</i>
-        </a>
-    </div>
-
 @stop
 
 @section('content')
-
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <table id="valoraciones" class="table table-bordered mb-4">
         <thead>
             <tr>
@@ -27,14 +24,14 @@
             </tr>
         </thead>
         <tbody>
-           
+
             @foreach ($valoraciones as $valoracion)
                 <tr>
                     <td>{{ $valoracion->paciente->nombre_completo }}</td>
                     <td>{{ $valoracion->profesional->nombre_completo }}</td>
                     <td>{{ date("d-m-Y", strtotime($valoracion->fecha)) }}</td>
                     <td>{{ ucfirst($valoracion->modalidad) }}</td>
-                 
+
                     <td>
                         @for ($i = 1; $i <= $valoracion->puntuacion; $i++)
                             <i class="fas fa-star text-warning"></i>

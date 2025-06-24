@@ -14,7 +14,11 @@
 @stop
 
 @section('content')
-
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <table id="informes" class="table table-bordered mb-4">
         <thead>
             <tr>
@@ -31,7 +35,7 @@
                     <td>{{ $informe->cita->paciente->nombre_completo }}</td>
                     <td>{{ $informe->cita->profesional->nombre_completo }}</td>
                     <td>{{ date("d-m-Y H:i", strtotime($informe->created_at)) }}</td>
-                    <td>{{ ucfirst($informe->cita->modalidad) }}</td>                   
+                    <td>{{ ucfirst($informe->cita->modalidad) }}</td>
                     <td>
                         <a href="{{ route('informes.edit', $informe->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                         <form class="form-eliminar" action="{{ route('informes.destroy', $informe->id) }}" method="POST"

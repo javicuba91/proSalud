@@ -14,7 +14,11 @@
 @stop
 
 @section('content')
-
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <table id="usuarios" class="table table-bordered mb-4">
         <thead>
             <tr>
@@ -27,9 +31,9 @@
         <tbody>
             @foreach ($usuarios as $usuario)
                 <tr>
-                    <td>{{ $usuario->name }}</td>  
-                    <td>{{ $usuario->email }}</td>  
-                    <td>{{ ucfirst($usuario->role) }}</td>                    
+                    <td>{{ $usuario->name }}</td>
+                    <td>{{ $usuario->email }}</td>
+                    <td>{{ ucfirst($usuario->role) }}</td>
                     <td>
                         <a href="{{ route('usuarios.edit', $usuario->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                         <form class="form-eliminar" action="{{ route('usuarios.destroy', $usuario->id) }}" method="POST"

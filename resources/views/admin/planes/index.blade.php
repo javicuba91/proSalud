@@ -15,6 +15,11 @@
 
 @section('content')
 
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <table id="planes" class="table table-bordered mb-4">
         <thead>
             <tr>

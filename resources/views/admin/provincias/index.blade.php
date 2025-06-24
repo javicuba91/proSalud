@@ -15,6 +15,11 @@
 
 @section('content')
 
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <table id="provincias" class="table table-bordered mb-4">
         <thead>
             <tr>
@@ -26,8 +31,8 @@
         <tbody>
             @foreach ($provincias as $provincia)
                 <tr>
-                    <td>{{ $provincia->nombre }}</td>      
-                    <td>{{ $provincia->region->nombre }}</td>                    
+                    <td>{{ $provincia->nombre }}</td>
+                    <td>{{ $provincia->region->nombre }}</td>
                     <td>
                         <a href="{{ route('provincias.edit', $provincia->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                         <form class="form-eliminar" action="{{ route('provincias.destroy', $provincia->id) }}" method="POST"

@@ -14,6 +14,11 @@
 @stop
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 
     <table id="recetas" class="table table-bordered mb-4">
         <thead>
@@ -30,13 +35,15 @@
                 <tr>
                     <td>
                         <strong>ID: </strong> {{ $receta->informeConsulta->cita->id }}<br>
-                        <strong>Fecha: </strong> {{ date("d-m-Y H:i", strtotime($receta->informeConsulta->cita->fecha_hora)) }}
+                        <strong>Fecha: </strong>
+                        {{ date('d-m-Y H:i', strtotime($receta->informeConsulta->cita->fecha_hora)) }}
                     </td>
                     <td>{{ $receta->informeConsulta->cita->paciente->nombre_completo }}</td>
                     <td>{{ $receta->informeConsulta->cita->profesional->nombre_completo }}</td>
-                    <td>{{ date("d-m-Y H:i", strtotime($receta->fecha_emision)) }}</td>                                     
+                    <td>{{ date('d-m-Y H:i', strtotime($receta->fecha_emision)) }}</td>
                     <td>
-                        <a href="{{ route('recetas.edit', $receta->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                        <a href="{{ route('recetas.edit', $receta->id) }}" class="btn btn-warning"><i
+                                class="fa fa-edit"></i></a>
                         <form class="form-eliminar" action="{{ route('recetas.destroy', $receta->id) }}" method="POST"
                             style="display:inline;">
                             @csrf

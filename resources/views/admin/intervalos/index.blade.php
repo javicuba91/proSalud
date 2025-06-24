@@ -15,6 +15,11 @@
 
 @section('content')
 
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <table id="intervalos" class="table table-bordered mb-4">
         <thead>
             <tr>
@@ -25,7 +30,7 @@
         <tbody>
             @foreach ($intervalos as $intervalo)
                 <tr>
-                    <td>{{ $intervalo->nombre }}</td>                    
+                    <td>{{ $intervalo->nombre }}</td>
                     <td>
                         <a href="{{ route('intervalos.edit', $intervalo->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                         <form class="form-eliminar" action="{{ route('intervalos.destroy', $intervalo->id) }}" method="POST"
