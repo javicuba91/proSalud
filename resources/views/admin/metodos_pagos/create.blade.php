@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Crear Especialidad')
+@section('title', 'Crear Metodo de Pago')
 
 @section('content_header')
     <h1>Crear Metodo de Pago</h1>
