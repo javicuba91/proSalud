@@ -1,31 +1,34 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ArticuloBlogController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\EspecialidadController;
-use App\Http\Controllers\MedicamentosRecetaController;
-use App\Http\Controllers\PacienteController;
-use App\Http\Controllers\PacienteFrontendController;
-use App\Http\Controllers\ProfesionalController;
-use App\Http\Controllers\ProfesionalFrontendController;
-use App\Http\Controllers\ProveedorController;
-use App\Http\Controllers\MetodoPagoController;
-use App\Http\Controllers\RecetaController;
-use App\Http\Controllers\SeguroMedicoController;
+use App\Http\Controllers\CategoriaBlogController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\CiudadController;
 use App\Http\Controllers\DocumentoProfesionalController;
 use App\Http\Controllers\EmergenciaController;
+use App\Http\Controllers\EspecialidadController;
+use App\Http\Controllers\EtiquetaBlogController;
 use App\Http\Controllers\InformeConsultaController;
 use App\Http\Controllers\IntervaloMedicamentoController;
+use App\Http\Controllers\MedicamentosRecetaController;
 use App\Http\Controllers\MedicamentoController;
+use App\Http\Controllers\MetodoPagoController;
+use App\Http\Controllers\PacienteController;
+use App\Http\Controllers\PacienteFrontendController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PreguntaController;
 use App\Http\Controllers\PresentacionMedicamentoController;
+use App\Http\Controllers\ProfesionalController;
+use App\Http\Controllers\ProfesionalFrontendController;
+use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\ProveedorFrontendController;
 use App\Http\Controllers\ProvinciaController;
+use App\Http\Controllers\RecetaController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\RespuestaController;
+use App\Http\Controllers\SeguroMedicoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ValoracionController;
 use App\Http\Controllers\ViaMedicamentoController;
@@ -438,7 +441,39 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::delete('/respuestas-expertos/{respuesta}', [RespuestaController::class, 'destroy'])->name('respuestas.destroy');
         Route::get('/respuestas-expertos/profesionales-by-pregunta', [RespuestaController::class, 'ProfesionalesPregunta'])->name('respuestas.profesionales-by-pregunta');
 
+        // RUTAS DEL BLOG
+        Route::prefix('blog')->name('blog.')->group(function () {
+            // Categorías del blog
+            Route::get('/categorias', [CategoriaBlogController::class, 'index'])->name('categorias.index');
+            Route::get('/categorias/create', [CategoriaBlogController::class, 'create'])->name('categorias.create');
+            Route::post('/categorias', [CategoriaBlogController::class, 'store'])->name('categorias.store');
+            Route::get('/categorias/{categoria}/edit', [CategoriaBlogController::class, 'edit'])->name('categorias.edit');
+            Route::put('/categorias/{categoria}', [CategoriaBlogController::class, 'update'])->name('categorias.update');
+            Route::delete('/categorias/{categoria}', [CategoriaBlogController::class, 'destroy'])->name('categorias.destroy');
+            Route::get('/categorias/{categoria}', [CategoriaBlogController::class, 'show'])->name('categorias.show');
 
+            // Etiquetas del blog
+            Route::get('/etiquetas', [EtiquetaBlogController::class, 'index'])->name('etiquetas.index');
+            Route::get('/etiquetas/create', [EtiquetaBlogController::class, 'create'])->name('etiquetas.create');
+            Route::post('/etiquetas', [EtiquetaBlogController::class, 'store'])->name('etiquetas.store');
+            Route::get('/etiquetas/{etiqueta}/edit', [EtiquetaBlogController::class, 'edit'])->name('etiquetas.edit');
+            Route::put('/etiquetas/{etiqueta}', [EtiquetaBlogController::class, 'update'])->name('etiquetas.update');
+            Route::delete('/etiquetas/{etiqueta}', [EtiquetaBlogController::class, 'destroy'])->name('etiquetas.destroy');
+            Route::get('/etiquetas/{etiqueta}', [EtiquetaBlogController::class, 'show'])->name('etiquetas.show');
+
+            // Artículos del blog
+            Route::get('/articulos', [ArticuloBlogController::class, 'index'])->name('articulos.index');
+            Route::get('/articulos/create', [ArticuloBlogController::class, 'create'])->name('articulos.create');
+            Route::post('/articulos', [ArticuloBlogController::class, 'store'])->name('articulos.store');
+            Route::get('/articulos/{articulo}/edit', [ArticuloBlogController::class, 'edit'])->name('articulos.edit');
+            Route::put('/articulos/{articulo}', [ArticuloBlogController::class, 'update'])->name('articulos.update');
+            Route::delete('/articulos/{articulo}', [ArticuloBlogController::class, 'destroy'])->name('articulos.destroy');
+            Route::get('/articulos/{articulo}', [ArticuloBlogController::class, 'show'])->name('articulos.show');
+
+            // Acciones adicionales para artículos
+            Route::patch('/articulos/{articulo}/estado', [ArticuloBlogController::class, 'cambiarEstado'])->name('articulos.cambiarEstado');
+            Route::post('/articulos/{articulo}/duplicar', [ArticuloBlogController::class, 'duplicar'])->name('articulos.duplicar');
+        });
     });
 });
 

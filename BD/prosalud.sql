@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 23-06-2025 a las 16:56:50
--- Versión del servidor: 10.6.15-MariaDB
--- Versión de PHP: 8.3.4
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 24-06-2025 a las 20:10:33
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `proSalud`
+-- Base de datos: `prosalud`
 --
 
 -- --------------------------------------------------------
@@ -51,6 +51,45 @@ INSERT INTO `antecedentes` (`id`, `paciente_id`, `alergias`, `condiciones_medica
 (7, 4, 'Ibuprofeno', 'HTA, DM II, Cancer de cervix', 'Losartan, metformina', '2025-06-14 11:37:34', '2025-06-14 11:37:34'),
 (8, 4, 'Ibuprofeno', 'HTA, DM II, Cancer de cervix', 'Losartan, metformina', '2025-06-14 11:37:35', '2025-06-14 11:37:35'),
 (9, 5, 'Ibuprofeno', 'HTA, DM, epilepsia.', 'Losartán, metformina, aspirina, plávix.', '2025-06-14 18:28:06', '2025-06-14 18:28:06');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `articulos_blog`
+--
+
+CREATE TABLE `articulos_blog` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `resumen` text NOT NULL,
+  `contenido` longtext NOT NULL,
+  `imagen_destacada` varchar(255) DEFAULT NULL,
+  `estado` enum('borrador','publicado','archivado') NOT NULL DEFAULT 'borrador',
+  `categoria_id` bigint(20) UNSIGNED NOT NULL,
+  `autor_id` bigint(20) UNSIGNED NOT NULL,
+  `fecha_publicacion` timestamp NULL DEFAULT NULL,
+  `seo` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`seo`)),
+  `vistas` int(11) NOT NULL DEFAULT 0,
+  `destacado` tinyint(1) NOT NULL DEFAULT 0,
+  `permite_comentarios` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `articulo_etiqueta`
+--
+
+CREATE TABLE `articulo_etiqueta` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `articulo_id` bigint(20) UNSIGNED NOT NULL,
+  `etiqueta_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -98,6 +137,23 @@ CREATE TABLE `cache_locks` (
   `key` varchar(255) NOT NULL,
   `owner` varchar(255) NOT NULL,
   `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `categorias_blog`
+--
+
+CREATE TABLE `categorias_blog` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `color` varchar(7) NOT NULL DEFAULT '#007bff',
+  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -157,7 +213,7 @@ CREATE TABLE `citas` (
 --
 
 INSERT INTO `citas` (`id`, `paciente_id`, `profesional_id`, `fecha_hora`, `codigo_qr`, `modalidad`, `motivo`, `consultorio_id`, `url_meet`, `estado`, `recordatorio_enviado`, `informe_creado`, `created_at`, `updated_at`, `especializacion_id`) VALUES
-(44, 1, 1, '2025-06-23 23:21:52', 'XX', 'presencial', 'Dolor de cabeza', 32, NULL, 'pendiente', 0, 0, NULL, NULL, 19);
+(44, 1, 1, '2025-06-24 23:21:52', 'XX', 'presencial', 'Dolor de cabeza', 32, NULL, 'pendiente', 0, 0, NULL, NULL, 19);
 
 -- --------------------------------------------------------
 
@@ -2571,7 +2627,24 @@ CREATE TABLE `especializaciones` (
 --
 
 INSERT INTO `especializaciones` (`id`, `profesional_id`, `especialidad_id`, `sub_especialidad_id`, `centro_educativo`, `pais`, `created_at`, `updated_at`, `precio_presencial`, `precio_videoconsulta`) VALUES
-(19, 1, 1, 100, 'Escuela LAtinoamericana de Medicina La Habana', 'Ecuador', '2025-06-20 06:03:35', '2025-06-20 06:03:35', 50.00, 60.00);
+(19, 1, 1, 100, 'Escuela LAtinoamericana de Medicina La Habana', 'Ecuador', '2025-06-20 06:03:35', '2025-06-20 06:03:35', 50.00, 60.00),
+(20, 1, 35, 470, 'XX', 'AA', '2025-06-24 15:10:35', '2025-06-24 15:10:35', 200.00, 100.00);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `etiquetas_blog`
+--
+
+CREATE TABLE `etiquetas_blog` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `color` varchar(7) NOT NULL DEFAULT '#6c757d',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -4131,7 +4204,7 @@ CREATE TABLE `informes_consultas` (
 --
 
 INSERT INTO `informes_consultas` (`id`, `cita_id`, `motivo_consulta`, `antecedentes_familiares`, `antecedentes_personales`, `enfermedad_actual`, `exploracion_fisica`, `pruebas_complementarias`, `juicio_clinico`, `dibujo_dental`, `plan_terapeutico`, `created_at`, `updated_at`) VALUES
-(16, 44, 'Dolor de cabeza', 'fdsfsd', 'fds', 'fds', NULL, 'vcx', 'dfs', 'fds', 'fds', '2025-06-23 12:56:51', '2025-06-23 12:56:51');
+(16, 44, 'Dolor de cabeza', 'fdsfsd', 'fds', 'fds', 'DDD', 'vcx', 'dfs', 'AAA', 'WWW', '2025-06-23 12:56:51', '2025-06-23 12:56:51');
 
 -- --------------------------------------------------------
 
@@ -5046,7 +5119,13 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (52, '2025_06_08_164649_create_detalle_horarios_table', 27),
 (53, '2025_06_09_060707_add_precios_to_especializaciones_table', 28),
 (54, '2025_06_09_060717_add_especializacion_id_to_citas_table', 28),
-(55, '2025_06_19_093654_create_emergencias_table', 29);
+(55, '2025_06_19_093654_create_emergencias_table', 29),
+(56, '2025_06_11_140059_create_consultorio_imagenes_table', 30),
+(57, '2025_06_19_074124_add_activo_to_users_table', 31),
+(58, '2025_06_24_171007_create_categorias_blog_table', 32),
+(59, '2025_06_24_171015_create_articulos_blog_table', 32),
+(60, '2025_06_24_171027_create_etiquetas_blog_table', 32),
+(61, '2025_06_24_171035_create_articulo_etiqueta_table', 32);
 
 -- --------------------------------------------------------
 
@@ -5259,7 +5338,7 @@ CREATE TABLE `profesionales` (
 --
 
 INSERT INTO `profesionales` (`id`, `nombre_completo`, `foto`, `logo`, `fecha_nacimiento`, `genero`, `telefono_personal`, `telefono_profesional`, `cedula_identidad`, `email`, `idiomas`, `descripcion_profesional`, `anios_experiencia`, `licencia_medica`, `user_id`, `numero_cuenta`, `created_at`, `updated_at`, `plan_id`, `num_colegiado`, `categoria_id`, `ciudad_id`, `presencial`, `videoconsulta`) VALUES
-(1, 'Dr. Juan Pérez', 'imagenes/medicos/1/1-1749224851.jpg', 'imagenes/medicos/1/1-1749224851.webp', '1985-04-11', 'Mujer', '123456789', '987654321', 'CI1234567', 'profesional@prosalud.com', 'Español, Inglés', 'La doctora Teresa Riaño Avanzini es una destacada especialista en Alergología e Inmunología. Tras licenciarse en Medicina y Cirugía por la Universidad del País Vasco (UPV-EHU), se especializó vía M.I.R. en Alergología e Inmunología por el Hospital Universitario Ramón y Cajal de Madrid y amplió su formación en alergia alimentaria en niños mediante rotaciones externas en el Hospital Mount Sinai (Nueva York) y en el Hospital Sant Joan de Déu (Barcelona).\r\n\r\nConcretamente, la doctora es experta en rinoconjuntivitis alérgica, asma, alergia infantil, alergia a alimentos, urticaria, dermatitis atópica y alergia a medicamentos.\r\n\r\nTras completar su formación como alergóloga en el Hospital Ramón y Cajal inició su actividad en el Hospital de Basurto (Bilbao), ampliando extensamente su formación en asma grave. \r\n\r\nEn la actualidad compagina su actividad hospitalaria con la consulta de alergología privada, acumulando así una extensa trayectoria. Ejerce como especialista en Alergología en el Centro Médico IMQ las Mercedes (Getxo) y en el centro Medikosta Henao (Bilbao), ambos ubicados en Bizkaia.', 15, 'licencia_juan.pdf', 2, 'ES872100258714783698', '2025-05-13 14:59:52', '2025-06-21 05:59:27', 2, '159357456', 1, 19, 1, 1),
+(1, 'Dr. Juan Pérez', 'imagenes/medicos/1/1-1749224851.jpg', 'imagenes/medicos/1/1-1749224851.webp', '1985-04-11', 'Hombre', '123456789', '987654321', 'CI1234567', 'profesional@prosalud.com', 'Español, Inglés', 'La doctora Teresa Riaño Avanzini es una destacada especialista en Alergología e Inmunología. Tras licenciarse en Medicina y Cirugía por la Universidad del País Vasco (UPV-EHU), se especializó vía M.I.R. en Alergología e Inmunología por el Hospital Universitario Ramón y Cajal de Madrid y amplió su formación en alergia alimentaria en niños mediante rotaciones externas en el Hospital Mount Sinai (Nueva York) y en el Hospital Sant Joan de Déu (Barcelona).\r\n\r\nConcretamente, la doctora es experta en rinoconjuntivitis alérgica, asma, alergia infantil, alergia a alimentos, urticaria, dermatitis atópica y alergia a medicamentos.\r\n\r\nTras completar su formación como alergóloga en el Hospital Ramón y Cajal inició su actividad en el Hospital de Basurto (Bilbao), ampliando extensamente su formación en asma grave. \r\n\r\nEn la actualidad compagina su actividad hospitalaria con la consulta de alergología privada, acumulando así una extensa trayectoria. Ejerce como especialista en Alergología en el Centro Médico IMQ las Mercedes (Getxo) y en el centro Medikosta Henao (Bilbao), ambos ubicados en Bizkaia.', 15, 'licencia_juan.pdf', 2, 'ES872100258714783698', '2025-05-13 14:59:52', '2025-06-21 05:59:27', 2, '159357456', 1, 19, 1, 1),
 (3, 'Profesional Dos', 'imagenes/medicos/3/3-1749099253.jpg', 'imagenes/medicos/3/3-1749099253.avif', '1990-12-25', 'Hombre', '604389778', '644789456', '12345678X', 'profesional2@prosalud.com', 'Español, Alemán', 'Excelente médico profesional', 10, NULL, 6, 'es123454564684565465465', '2025-06-03 12:49:30', '2025-06-09 07:25:50', NULL, NULL, 3, 6, 1, 1),
 (4, 'Diego Cuenca', 'imagenes/medicos/4/4-1749646965.jpeg', 'imagenes/medicos/4/4-1749646965.avif', '1991-04-12', 'Hombre', '987654321', '987123456', '12345678X', 'diego@prosalud.com', 'Alemán, Español', 'La doctora Teresa Riaño Avanzini es una destacada especialista en Alergología e Inmunología. Tras licenciarse en Medicina y Cirugía por la Universidad del País Vasco (UPV-EHU), se especializó vía M.I.R. en Alergología e Inmunología por el Hospital Universitario Ramón y Cajal de Madrid y amplió su formación en alergia alimentaria en niños mediante rotaciones externas en el Hospital Mount Sinai (Nueva York) y en el Hospital Sant Joan de Déu (Barcelona).', 15, NULL, 11, 'ES1221003698741258963214', '2025-06-09 14:30:57', '2025-06-11 11:02:45', NULL, '147852369', NULL, 6, 1, 1),
 (5, 'José Suárez', NULL, NULL, NULL, NULL, '0993790028', NULL, '0700783622', 'josesuarez@prosalud.com', NULL, NULL, NULL, NULL, 12, NULL, '2025-06-09 19:46:03', '2025-06-09 19:46:03', NULL, NULL, NULL, NULL, 0, 0),
@@ -5524,8 +5603,9 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('X2wXRurtVQU6HWxxBtgrRqJwxSHC4rOqeQbCBlr4', 2, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoia3d4azluM2lHR1RjVmtUN2hCeXN6TEZYUjdlenhZWldFOUJDQzNNcCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wcm9mZXNpb25hbCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjI7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzUwNjkyNTIxO319', 1750692521),
-('XAvgQHdWBjBxlxvtWw4b04EuY8bnz8bBYDEFUr0r', 33, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiYkh3U1FUbmpXa2FJY1VIV1RaSDJtcUNRdG5iejVhZHhqaE5LWlZuSSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9jaXRhcyI7fXM6MzoidXJsIjthOjA6e31zOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NTA2ODExNzU7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjMzO30=', 1750695723);
+('rh8SGxbSDFmaFSAsXmM4K1hOkKklusi2tW0xFW4w', NULL, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTTZDQXV4Q0Z2czlsclR0OVlJQTBOcEcxd0Zoem1DQXhjRWQ3eUIzaiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wcm9mZXNpb25hbGVzL2ZpY2hhLzEiO319', 1750785460),
+('tLhZmk5tTPXw4i3TyrQM3QlwSYnCXyNHpuqGjs4y', 33, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiMktnQmN4MFdobUVtNFdHSlFMSFZ3UkhLNDYwY1FaWnRSRFlKc0NQdyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWRtaW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTozMztzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NTA3NzI5NDg7fX0=', 1750786010),
+('U5l7VYptcAZLFjkiyLiqSXqpjcyEuGQDMadorr9U', 33, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiWGxHN0wxNWVxMmp6RHM0Ujdlc2VVWjlQYnl1ZUd3TjNxN2VQTEFYdyI7czozOiJ1cmwiO2E6MDp7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQ5OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWRtaW4vYmxvZy9hcnRpY3Vsb3MvY3JlYXRlIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MzM7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzUwNzg4NDYwO319', 1750788497);
 
 -- --------------------------------------------------------
 
@@ -5612,7 +5692,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`, `activo`) VALUES
-(1, 'Paciente', 'paciente@prosalud.com', NULL, '$2y$12$G0DOWDpMpF2pJzwxP2zIxulqzaLisVjeSOvRes1BHBGOo5QLck5Em', 'ehFREAYcqjfRm2LgILjyVm9eMIp6o44fxcnv0GDtn1pIh5LqSk68Sdk18kgQ', '2025-03-17 15:58:18', '2025-06-19 06:52:46', 'paciente', 1),
+(1, 'Paciente', 'paciente@prosalud.com', NULL, '$2y$12$G0DOWDpMpF2pJzwxP2zIxulqzaLisVjeSOvRes1BHBGOo5QLck5Em', 'MS8KdFI2LsNVmbgQ5UWe5MNsil4CQIelkVHmHhAgX0rzEWBJin1J9WOySrOV', '2025-03-17 15:58:18', '2025-06-19 06:52:46', 'paciente', 1),
 (2, 'Profesional', 'profesional@prosalud.com', NULL, '$2y$12$G0DOWDpMpF2pJzwxP2zIxulqzaLisVjeSOvRes1BHBGOo5QLck5Em', NULL, '2025-03-17 15:58:18', '2025-05-29 20:42:12', 'profesional', 1),
 (3, 'Proveedor', 'proveedor@prosalud.com', NULL, '$2y$12$4G6kU0H9CAqhd/O57xaZP.KWW67g7FOwWf/FYajDreFn6Et6P0V/G', NULL, '2025-03-17 15:58:18', '2025-03-17 15:58:18', 'proveedor', 1),
 (4, 'Paciente2', 'paciente2@prosalud.com', NULL, '$2y$12$4G6kU0H9CAqhd/O57xaZP.KWW67g7FOwWf/FYajDreFn6Et6P0V/G', NULL, '2025-03-17 15:58:18', '2025-03-17 15:58:18', 'paciente', 1),
@@ -5723,6 +5803,26 @@ ALTER TABLE `antecedentes`
   ADD KEY `antecedentes_paciente_id_foreign` (`paciente_id`);
 
 --
+-- Indices de la tabla `articulos_blog`
+--
+ALTER TABLE `articulos_blog`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `articulos_blog_slug_unique` (`slug`),
+  ADD KEY `articulos_blog_categoria_id_foreign` (`categoria_id`),
+  ADD KEY `articulos_blog_autor_id_foreign` (`autor_id`),
+  ADD KEY `articulos_blog_estado_fecha_publicacion_index` (`estado`,`fecha_publicacion`),
+  ADD KEY `articulos_blog_slug_index` (`slug`),
+  ADD KEY `articulos_blog_destacado_index` (`destacado`);
+
+--
+-- Indices de la tabla `articulo_etiqueta`
+--
+ALTER TABLE `articulo_etiqueta`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `articulo_etiqueta_articulo_id_etiqueta_id_unique` (`articulo_id`,`etiqueta_id`),
+  ADD KEY `articulo_etiqueta_etiqueta_id_foreign` (`etiqueta_id`);
+
+--
 -- Indices de la tabla `cache`
 --
 ALTER TABLE `cache`
@@ -5733,6 +5833,13 @@ ALTER TABLE `cache`
 --
 ALTER TABLE `cache_locks`
   ADD PRIMARY KEY (`key`);
+
+--
+-- Indices de la tabla `categorias_blog`
+--
+ALTER TABLE `categorias_blog`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `categorias_blog_slug_unique` (`slug`);
 
 --
 -- Indices de la tabla `categoria_profesionales`
@@ -5838,6 +5945,13 @@ ALTER TABLE `especializaciones`
   ADD KEY `especializaciones_profesional_id_foreign` (`profesional_id`),
   ADD KEY `especializaciones_especialidad_id_foreign` (`especialidad_id`),
   ADD KEY `especializaciones_sub_especialidad_id_foreign` (`sub_especialidad_id`);
+
+--
+-- Indices de la tabla `etiquetas_blog`
+--
+ALTER TABLE `etiquetas_blog`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `etiquetas_blog_slug_unique` (`slug`);
 
 --
 -- Indices de la tabla `experiencias_laborales`
@@ -6090,6 +6204,24 @@ ALTER TABLE `antecedentes`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT de la tabla `articulos_blog`
+--
+ALTER TABLE `articulos_blog`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `articulo_etiqueta`
+--
+ALTER TABLE `articulo_etiqueta`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `categorias_blog`
+--
+ALTER TABLE `categorias_blog`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `categoria_profesionales`
 --
 ALTER TABLE `categoria_profesionales`
@@ -6105,7 +6237,7 @@ ALTER TABLE `citas`
 -- AUTO_INCREMENT de la tabla `ciudades`
 --
 ALTER TABLE `ciudades`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT de la tabla `consultorios`
@@ -6153,7 +6285,7 @@ ALTER TABLE `documentos_pacientes`
 -- AUTO_INCREMENT de la tabla `documentos_profesional`
 --
 ALTER TABLE `documentos_profesional`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `emergencias`
@@ -6165,13 +6297,19 @@ ALTER TABLE `emergencias`
 -- AUTO_INCREMENT de la tabla `especialidades`
 --
 ALTER TABLE `especialidades`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=504;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=505;
 
 --
 -- AUTO_INCREMENT de la tabla `especializaciones`
 --
 ALTER TABLE `especializaciones`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT de la tabla `etiquetas_blog`
+--
+ALTER TABLE `etiquetas_blog`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `experiencias_laborales`
@@ -6207,7 +6345,7 @@ ALTER TABLE `informes_consultas`
 -- AUTO_INCREMENT de la tabla `intervalo_medicamentos`
 --
 ALTER TABLE `intervalo_medicamentos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `jobs`
@@ -6219,7 +6357,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT de la tabla `medicamentos`
 --
 ALTER TABLE `medicamentos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=693;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=695;
 
 --
 -- AUTO_INCREMENT de la tabla `medicamentos_recetas`
@@ -6243,7 +6381,7 @@ ALTER TABLE `metodo_pago_profesional`
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT de la tabla `pacientes`
@@ -6267,7 +6405,7 @@ ALTER TABLE `planes`
 -- AUTO_INCREMENT de la tabla `preguntas_expertos`
 --
 ALTER TABLE `preguntas_expertos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `presentacion_medicamentos`
@@ -6297,7 +6435,7 @@ ALTER TABLE `proveedores`
 -- AUTO_INCREMENT de la tabla `provincias`
 --
 ALTER TABLE `provincias`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `recetas`
@@ -6309,13 +6447,13 @@ ALTER TABLE `recetas`
 -- AUTO_INCREMENT de la tabla `regiones`
 --
 ALTER TABLE `regiones`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `respuestas_expertos`
 --
 ALTER TABLE `respuestas_expertos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `seguros_medicos`
@@ -6351,7 +6489,7 @@ ALTER TABLE `valoraciones`
 -- AUTO_INCREMENT de la tabla `via_administracion_medicamentos`
 --
 ALTER TABLE `via_administracion_medicamentos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Restricciones para tablas volcadas
@@ -6362,6 +6500,20 @@ ALTER TABLE `via_administracion_medicamentos`
 --
 ALTER TABLE `antecedentes`
   ADD CONSTRAINT `antecedentes_paciente_id_foreign` FOREIGN KEY (`paciente_id`) REFERENCES `pacientes` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `articulos_blog`
+--
+ALTER TABLE `articulos_blog`
+  ADD CONSTRAINT `articulos_blog_autor_id_foreign` FOREIGN KEY (`autor_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `articulos_blog_categoria_id_foreign` FOREIGN KEY (`categoria_id`) REFERENCES `categorias_blog` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `articulo_etiqueta`
+--
+ALTER TABLE `articulo_etiqueta`
+  ADD CONSTRAINT `articulo_etiqueta_articulo_id_foreign` FOREIGN KEY (`articulo_id`) REFERENCES `articulos_blog` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `articulo_etiqueta_etiqueta_id_foreign` FOREIGN KEY (`etiqueta_id`) REFERENCES `etiquetas_blog` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `citas`
