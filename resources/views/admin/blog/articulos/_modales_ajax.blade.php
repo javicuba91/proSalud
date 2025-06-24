@@ -100,29 +100,32 @@ $(document).ready(function() {
                     $('#categoria_color').val('#007bff'); // Reset color to default
 
                     // Mostrar mensaje de éxito
-                    if (typeof toastr !== 'undefined') {
-                        toastr.success('Categoría creada correctamente');
-                    } else {
-                        alert('Categoría creada correctamente');
-                    }
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: response.message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                 }
             },
             error: function(xhr) {
-                let errors = xhr.responseJSON?.errors;
-                let message = 'Error al crear la categoría';
-
-                if (errors) {
-                    message = Object.values(errors).flat().join('\n');
-                }
-
-                if (typeof toastr !== 'undefined') {
-                    toastr.error(message);
-                } else {
-                    alert(message);
-                }
-            },
-            complete: function() {
                 submitBtn.prop('disabled', false).text(originalText);
+
+                let errorMessage = 'Ha ocurrido un error al crear la categoría';
+                if (xhr.responseJSON) {
+                    if (xhr.responseJSON.errors) {
+                        errorMessage = Object.values(xhr.responseJSON.errors).flat().join('\n');
+                    } else if (xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                }
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMessage
+                });
             }
         });
     });
@@ -148,20 +151,17 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (response.success) {
-                    // Agregar nueva etiqueta al contenedor
-                    const newEtiqueta = `
+                    // Agregar nueva etiqueta a la lista de selección
+                    let newTag = `
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="etiqueta_${response.etiqueta.id}"
-                                   name="etiquetas[]" value="${response.etiqueta.id}" checked>
+                            <input class="form-check-input" type="checkbox" name="etiquetas[]"
+                                   value="${response.etiqueta.id}" id="etiqueta_${response.etiqueta.id}" checked>
                             <label class="form-check-label" for="etiqueta_${response.etiqueta.id}">
-                                <span class="badge" style="background-color: ${response.etiqueta.color}">
-                                    ${response.etiqueta.nombre}
-                                </span>
+                                ${response.etiqueta.nombre}
                             </label>
                         </div>
                     `;
-
-                    $('#etiquetas-container').append(newEtiqueta);
+                    $('#etiquetas_container').append(newTag);
 
                     // Cerrar modal y limpiar formulario
                     $('#modalNuevaEtiqueta').modal('hide');
@@ -169,29 +169,32 @@ $(document).ready(function() {
                     $('#etiqueta_color').val('#28a745'); // Reset color to default
 
                     // Mostrar mensaje de éxito
-                    if (typeof toastr !== 'undefined') {
-                        toastr.success('Etiqueta creada correctamente');
-                    } else {
-                        alert('Etiqueta creada correctamente');
-                    }
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: response.message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                 }
             },
             error: function(xhr) {
-                let errors = xhr.responseJSON?.errors;
-                let message = 'Error al crear la etiqueta';
-
-                if (errors) {
-                    message = Object.values(errors).flat().join('\n');
-                }
-
-                if (typeof toastr !== 'undefined') {
-                    toastr.error(message);
-                } else {
-                    alert(message);
-                }
-            },
-            complete: function() {
                 submitBtn.prop('disabled', false).text(originalText);
+
+                let errorMessage = 'Ha ocurrido un error al crear la etiqueta';
+                if (xhr.responseJSON) {
+                    if (xhr.responseJSON.errors) {
+                        errorMessage = Object.values(xhr.responseJSON.errors).flat().join('\n');
+                    } else if (xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                }
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMessage
+                });
             }
         });
     });
