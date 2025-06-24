@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EtiquetaBlog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class EtiquetaBlogController extends Controller
 {
@@ -39,6 +40,45 @@ class EtiquetaBlogController extends Controller
 
         return redirect()->route('blog.etiquetas.index')
             ->with('success', 'Etiqueta creada correctamente.');
+    }
+
+    /**
+     * Store a newly created resource via AJAX.
+     */
+    public function ajaxStore(Request $request)
+    {
+        try {
+            $request->validate([
+                'nombre' => 'required|string|max:255|unique:etiquetas_blog,nombre',
+                'descripcion' => 'nullable|string',
+                'color' => 'required|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'
+            ]);
+
+            // Crear nueva etiqueta con slug generado manualmente
+            $etiqueta = EtiquetaBlog::create([
+                'nombre' => $request->nombre,
+                'slug' => Str::slug($request->nombre),
+                'descripcion' => $request->descripcion,
+                'color' => $request->color
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'etiqueta' => $etiqueta,
+                'message' => 'Etiqueta creada correctamente'
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => $e->errors(),
+                'message' => 'Error de validación'
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear la etiqueta: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

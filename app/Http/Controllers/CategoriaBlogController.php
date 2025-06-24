@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CategoriaBlog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoriaBlogController extends Controller
 {
@@ -40,6 +41,46 @@ class CategoriaBlogController extends Controller
 
         return redirect()->route('blog.categorias.index')
             ->with('success', 'Categoría creada correctamente.');
+    }
+
+    /**
+     * Store a newly created resource via AJAX.
+     */
+    public function ajaxStore(Request $request)
+    {
+        try {
+            $request->validate([
+                'nombre' => 'required|string|max:255|unique:categorias_blog,nombre',
+                'descripcion' => 'nullable|string',
+                'color' => 'required|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'
+            ]);
+
+            // Crear nueva categoría con slug generado manualmente
+            $categoria = CategoriaBlog::create([
+                'nombre' => $request->nombre,
+                'slug' => Str::slug($request->nombre),
+                'descripcion' => $request->descripcion,
+                'color' => $request->color,
+                'activo' => true
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'categoria' => $categoria,
+                'message' => 'Categoría creada correctamente'
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => $e->errors(),
+                'message' => 'Error de validación'
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear la categoría: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

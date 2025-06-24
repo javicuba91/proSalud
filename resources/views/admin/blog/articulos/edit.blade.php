@@ -9,6 +9,8 @@
 @section('css')
     <!-- Include TinyMCE -->
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         .form-check-input:checked {
             background-color: #007bff;
@@ -172,15 +174,22 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="categoria_id">Categoría *</label>
-                            <select name="categoria_id" id="categoria_id" class="form-control @error('categoria_id') is-invalid @enderror" required>
-                                <option value="">Seleccionar categoría</option>
-                                @foreach($categorias as $categoria)
-                                    <option value="{{ $categoria->id }}"
-                                            {{ old('categoria_id', $articulo->categoria_id) == $categoria->id ? 'selected' : '' }}>
-                                        {{ $categoria->nombre }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <div class="input-group">
+                                <select name="categoria_id" id="categoria_id" class="form-control @error('categoria_id') is-invalid @enderror" required>
+                                    <option value="">Seleccionar categoría</option>
+                                    @foreach($categorias as $categoria)
+                                        <option value="{{ $categoria->id }}"
+                                                {{ old('categoria_id', $articulo->categoria_id) == $categoria->id ? 'selected' : '' }}>
+                                            {{ $categoria->nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modalNuevaCategoria">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
                             @error('categoria_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -191,10 +200,15 @@
                 <!-- Etiquetas -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Etiquetas</h3>
+                        <h3 class="card-title">
+                            Etiquetas
+                            <button type="button" class="btn btn-sm btn-outline-primary float-right" data-toggle="modal" data-target="#modalNuevaEtiqueta">
+                                <i class="fa fa-plus"></i> Nueva
+                            </button>
+                        </h3>
                     </div>
                     <div class="card-body">
-                        <div class="form-group">
+                        <div class="form-group" id="etiquetas-container">
                             @foreach($etiquetas as $etiqueta)
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="etiqueta_{{ $etiqueta->id }}"
@@ -260,9 +274,13 @@
             </div>
         </div>
     </form>
+
+    @include('admin.blog.articulos._modales_ajax')
 @stop
 
 @section('js')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
     // TinyMCE
     tinymce.init({

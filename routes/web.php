@@ -449,6 +449,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
             Route::get('/categorias', [CategoriaBlogController::class, 'index'])->name('categorias.index');
             Route::get('/categorias/create', [CategoriaBlogController::class, 'create'])->name('categorias.create');
             Route::post('/categorias', [CategoriaBlogController::class, 'store'])->name('categorias.store');
+            Route::post('/categorias/ajax', [CategoriaBlogController::class, 'ajaxStore'])->name('categorias.ajax.store');
             Route::get('/categorias/{categoria}/edit', [CategoriaBlogController::class, 'edit'])->name('categorias.edit');
             Route::put('/categorias/{categoria}', [CategoriaBlogController::class, 'update'])->name('categorias.update');
             Route::delete('/categorias/{categoria}', [CategoriaBlogController::class, 'destroy'])->name('categorias.destroy');
@@ -458,6 +459,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
             Route::get('/etiquetas', [EtiquetaBlogController::class, 'index'])->name('etiquetas.index');
             Route::get('/etiquetas/create', [EtiquetaBlogController::class, 'create'])->name('etiquetas.create');
             Route::post('/etiquetas', [EtiquetaBlogController::class, 'store'])->name('etiquetas.store');
+            Route::post('/etiquetas/ajax', [EtiquetaBlogController::class, 'ajaxStore'])->name('etiquetas.ajax.store');
             Route::get('/etiquetas/{etiqueta}/edit', [EtiquetaBlogController::class, 'edit'])->name('etiquetas.edit');
             Route::put('/etiquetas/{etiqueta}', [EtiquetaBlogController::class, 'update'])->name('etiquetas.update');
             Route::delete('/etiquetas/{etiqueta}', [EtiquetaBlogController::class, 'destroy'])->name('etiquetas.destroy');
