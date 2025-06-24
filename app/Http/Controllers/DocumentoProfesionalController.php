@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DocumentoProfesional;
+use App\Models\Profesional;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -22,7 +23,8 @@ class DocumentoProfesionalController extends Controller
      */
     public function create()
     {
-        //
+        $profesionales = Profesional::with('user')->get();
+        return view('admin.documentos.create', compact('profesionales'));
     }
 
     /**
@@ -30,7 +32,34 @@ class DocumentoProfesionalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'profesional_id' => 'required|exists:profesionales,id',
+            'nombre' => 'required|string|max:255',
+            'tipo' => 'required|string',
+            'documento' => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120', // max 5MB
+        ]);
+
+        // Guardar archivo en public/documentos/{profesionalId}/
+        $file = $request->file('documento');
+        $profesionalId = $request->profesional_id;
+        $folder = public_path("documentos/{$profesionalId}");
+
+        if (!File::exists($folder)) {
+            File::makeDirectory($folder, 0755, true);
+        }
+
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->move($folder, $filename);
+
+        // Guardar registro en BD
+        DocumentoProfesional::create([
+            'profesional_id' => $profesionalId,
+            'nombre' => $request->nombre,
+            'tipo' => $request->tipo,
+            'archivo' => "documentos/{$profesionalId}/{$filename}",
+        ]);
+
+        return redirect()->route('documentos.index')->with('success', 'Documento guardado correctamente.');
     }
 
     /**

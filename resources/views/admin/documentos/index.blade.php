@@ -4,6 +4,11 @@
 
 @section('content_header')
     <h1>Documentos</h1>
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{{ route('documentos.create') }}" class="btn btn-primary">
+            <i class="fa fa-plus"> Crear Documento</i>
+        </a>
+    </div>
 
 @stop
 

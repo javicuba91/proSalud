@@ -6,8 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Emergencia extends Model
 {
-    //
     protected $table = "emergencias";
+
+    protected $fillable = [
+        'tipo',
+        'provincia_id',
+        'ciudad_id',
+        'direccion',
+        'telefono'
+    ];
 
     public function provincia()
     {
