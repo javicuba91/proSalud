@@ -313,6 +313,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::delete('/seguros-medicos/{seguro}', [SeguroMedicoController::class, 'destroy'])->name('seguros_medicos.destroy');
 
         Route::get('/citas', [CitaController::class, 'index'])->name('citas.index');
+        Route::get('/citas/{cita}', [CitaController::class, 'show'])->name('citas.show');
         Route::get('/citas/create', [CitaController::class, 'create'])->name('citas.create');
         Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');
         Route::get('/citas/{cita}/edit', [CitaController::class, 'edit'])->name('citas.edit');
@@ -403,6 +404,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/valoraciones/create', [ValoracionController::class, 'create'])->name('valoraciones.create');
         Route::post('/valoraciones', [ValoracionController::class, 'store'])->name('valoraciones.store');
         Route::get('/valoraciones/{valoracion}/edit', [ValoracionController::class, 'edit'])->name('valoraciones.edit');
+        Route::get('/valoraciones/{valoracion}', [ValoracionController::class, 'show'])->name('valoraciones.show');
         Route::put('/valoraciones/{valoracion}', [ValoracionController::class, 'update'])->name('valoraciones.update');
         Route::delete('/valoraciones/{valoracion}', [ValoracionController::class, 'destroy'])->name('valoraciones.destroy');
 

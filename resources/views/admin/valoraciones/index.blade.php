@@ -38,6 +38,7 @@
                         @endfor
                     </td>
                     <td>
+                        <a href="{{ route('valoraciones.show', $valoracion->id) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                         <a href="{{ route('valoraciones.edit', $valoracion->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                         <form action="{{ route('valoraciones.destroy', $valoracion->id) }}" method="POST"
                             style="display:inline;">

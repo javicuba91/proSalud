@@ -40,6 +40,7 @@
                     <td><span class="badge bg-primary p-2">{{ ucfirst($cita->estado) }}</span></td>
 
                     <td>
+                        <a href="{{ route('citas.show', $cita->id) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                         <a href="{{ route('citas.edit', $cita->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                         <form class="form-eliminar" action="{{ route('citas.destroy', $cita->id) }}" method="POST"
                             style="display:inline;">
