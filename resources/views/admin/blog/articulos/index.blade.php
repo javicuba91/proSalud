@@ -122,7 +122,7 @@
                                 <tr>
                                     <td>
                                         @if($articulo->imagen_destacada)
-                                            <img src="{{ asset('storage/' . $articulo->imagen_destacada) }}"
+                                            <img src="{{ asset($articulo->imagen_destacada) }}"
                                                  alt="{{ $articulo->titulo }}" class="img-thumbnail"
                                                  style="width: 50px; height: 50px; object-fit: cover;">
                                         @else

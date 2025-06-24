@@ -33,7 +33,6 @@ class EtiquetaBlogController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255|unique:etiquetas_blog,nombre',
             'descripcion' => 'nullable|string',
-            'color' => 'required|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'
         ]);
 
         EtiquetaBlog::create($request->all());
@@ -51,7 +50,6 @@ class EtiquetaBlogController extends Controller
             $request->validate([
                 'nombre' => 'required|string|max:255|unique:etiquetas_blog,nombre',
                 'descripcion' => 'nullable|string',
-                'color' => 'required|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'
             ]);
 
             // Crear nueva etiqueta con slug generado manualmente
@@ -59,7 +57,6 @@ class EtiquetaBlogController extends Controller
                 'nombre' => $request->nombre,
                 'slug' => Str::slug($request->nombre),
                 'descripcion' => $request->descripcion,
-                'color' => $request->color
             ]);
 
             return response()->json([
@@ -109,7 +106,6 @@ class EtiquetaBlogController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255|unique:etiquetas_blog,nombre,' . $etiqueta->id,
             'descripcion' => 'nullable|string',
-            'color' => 'required|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'
         ]);
 
         $etiqueta->update($request->all());

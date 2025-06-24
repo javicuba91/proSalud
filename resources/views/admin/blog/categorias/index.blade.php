@@ -64,9 +64,6 @@
                                 <span class="badge badge-info">{{ $categoria->articulos->count() }}</span>
                             </td>
                             <td>
-                                <a href="{{ route('blog.categorias.show', $categoria) }}" class="btn btn-info btn-sm">
-                                    <i class="fa fa-eye"></i>
-                                </a>
                                 <a href="{{ route('blog.categorias.edit', $categoria) }}" class="btn btn-warning btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </a>

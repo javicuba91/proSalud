@@ -22,7 +22,7 @@
                 <div class="card-body">
                     @if($articulo->imagen_destacada)
                         <div class="mb-4">
-                            <img src="{{ asset('storage/' . $articulo->imagen_destacada) }}"
+                            <img src="{{ asset($articulo->imagen_destacada) }}"
                                  alt="{{ $articulo->titulo }}" class="img-fluid rounded">
                         </div>
                     @endif

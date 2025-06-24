@@ -37,7 +37,6 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Descripción</th>
-                        <th>Color</th>
                         <th>Artículos</th>
                         <th>Acciones</th>
                     </tr>
@@ -51,14 +50,10 @@
                                 </span>
                             </td>
                             <td>{{ Str::limit($etiqueta->descripcion, 50) }}</td>
-                            <td>{{ $etiqueta->color }}</td>
                             <td>
                                 <span class="badge badge-info">{{ $etiqueta->articulos->count() }}</span>
                             </td>
                             <td>
-                                <a href="{{ route('blog.etiquetas.show', $etiqueta) }}" class="btn btn-info btn-sm">
-                                    <i class="fa fa-eye"></i>
-                                </a>
                                 <a href="{{ route('blog.etiquetas.edit', $etiqueta) }}" class="btn btn-warning btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </a>

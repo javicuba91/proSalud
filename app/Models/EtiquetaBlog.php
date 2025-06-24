@@ -13,7 +13,6 @@ class EtiquetaBlog extends Model
         'nombre',
         'slug',
         'descripcion',
-        'color'
     ];
 
     // Relaciones

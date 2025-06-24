@@ -79,30 +79,40 @@ class ArticuloBlogController extends Controller
             'seo_keywords' => 'nullable|string'
         ]);
 
-        $data = $request->all();
+        // Preparar datos sin imagen
+        $data = $request->except('imagen_destacada');
         $data['autor_id'] = Auth::id();
-
-        // Manejar imagen destacada
-        if ($request->hasFile('imagen_destacada')) {
-            $image = $request->file('imagen_destacada');
-            $filename = time() . '_' . Str::slug($request->titulo) . '.' . $image->getClientOriginalExtension();
-            $path = $image->storeAs('blog/imagenes', $filename, 'public');
-            $data['imagen_destacada'] = $path;
-        }
-
-        // Manejar SEO
         $data['seo'] = [
             'title' => $request->seo_title,
             'description' => $request->seo_description,
             'keywords' => $request->seo_keywords
         ];
 
-        // Si se publica, establecer fecha de publicación
         if ($data['estado'] === 'publicado' && !$data['fecha_publicacion']) {
             $data['fecha_publicacion'] = now();
         }
 
+        // Crear el artículo sin imagen
         $articulo = ArticuloBlog::create($data);
+
+        // Procesar la imagen ahora que tenemos el ID
+        if ($request->hasFile('imagen_destacada')) {
+            $image = $request->file('imagen_destacada');
+            $filename = time() . '_' . Str::slug($request->titulo) . '.' . $image->getClientOriginalExtension();
+
+            $destinationPath = public_path("blog/{$articulo->id}/imagenes");
+
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $image->move($destinationPath, $filename);
+
+            // Actualizar artículo con la ruta de la imagen
+            $articulo->update([
+                'imagen_destacada' => "blog/{$articulo->id}/imagenes/{$filename}"
+            ]);
+        }
 
         // Sincronizar etiquetas
         if ($request->filled('etiquetas')) {
@@ -160,15 +170,23 @@ class ArticuloBlogController extends Controller
 
         // Manejar imagen destacada
         if ($request->hasFile('imagen_destacada')) {
-            // Eliminar imagen anterior
-            if ($articulo->imagen_destacada) {
-                Storage::disk('public')->delete($articulo->imagen_destacada);
+            // Eliminar imagen anterior si existe
+            if ($articulo->imagen_destacada && file_exists(public_path($articulo->imagen_destacada))) {
+                unlink(public_path($articulo->imagen_destacada));
             }
 
             $image = $request->file('imagen_destacada');
             $filename = time() . '_' . Str::slug($request->titulo) . '.' . $image->getClientOriginalExtension();
-            $path = $image->storeAs('blog/imagenes', $filename, 'public');
-            $data['imagen_destacada'] = $path;
+
+            $destinationPath = public_path("blog/{$articulo->id}/imagenes");
+
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            $image->move($destinationPath, $filename);
+
+            $data['imagen_destacada'] = "blog/{$articulo->id}/imagenes/{$filename}";
         }
 
         // Manejar SEO
@@ -191,6 +209,7 @@ class ArticuloBlogController extends Controller
         return redirect()->route('blog.articulos.index')
             ->with('success', 'Artículo actualizado correctamente.');
     }
+
 
     /**
      * Remove the specified resource from storage.
