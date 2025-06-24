@@ -7,7 +7,7 @@
 
     <div class="d-flex justify-content-end mb-3">
         <a href="{{ route('planes.create') }}" class="btn btn-primary">
-            <i class="fa fa-plus"> Crear Método de Pago</i>
+            <i class="fa fa-plus"> Crear Plan</i>
         </a>
     </div>
 

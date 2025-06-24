@@ -15,7 +15,7 @@
         </div>
         <div class="form-group">
             <label for="descripcion">Descripción</label>
-            <textarea name="descripcion" id="descripcion" class="form-control"></textarea>
+            <textarea rows="6" name="descripcion" id="descripcion" class="form-control"></textarea>
         </div>
         <div class="form-group">
             <label for="precio">Precio</label>
@@ -23,7 +23,7 @@
         </div>
         <div class="form-group">
             <label for="caracteristicas">Caracteristicas</label>
-            <input type="text" name="caracteristicas" id="caracteristicas" class="form-control" required>
+            <textarea rows="6" required name="caracteristicas" id="caracteristicas" class="form-control"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
