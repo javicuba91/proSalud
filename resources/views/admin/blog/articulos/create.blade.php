@@ -6,6 +6,12 @@
     <h1>Crear Artículo del Blog</h1>
 @stop
 
+
+
+@push('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.min.css">
+@endpush
+
 @section('css')
     <!-- Include TinyMCE -->
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
@@ -238,16 +244,31 @@
 @stop
 
 @section('js')
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.min.js"></script>
 <script>
-    // TinyMCE
-    tinymce.init({
-        selector: '#contenido',
-        height: 400,
-        plugins: 'advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste code help wordcount',
-        toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-        content_css: 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'
+    var quill = new Quill('#contenido', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{
+                    'header': [1, 2, false]
+                }],
+                ['bold', 'italic', 'underline'],
+                [{
+                    'list': 'ordered'
+                }, {
+                    'list': 'bullet'
+                }],
+                ['link', 'image'],
+            ]
+        }
     });
 
+    document.getElementById('form-noticia').addEventListener('submit', function() {
+        document.getElementById('contenido').value = quill.root.innerHTML;
+    });
+</script>
+<script>
     // Preview de imagen
     document.getElementById('imagen_destacada').addEventListener('change', function(e) {
         const file = e.target.files[0];

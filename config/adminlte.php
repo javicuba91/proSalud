@@ -546,7 +546,18 @@ return [
                 ['text' => 'Seguros Médicos', 'url' => '/admin/seguros-medicos', 'icon' => '', 'can' => 'solo-admin'],
             ],
         ],
-        ['text' => 'Blog', 'url' => '/admin/blog', 'icon' => 'fas fa-blog', 'can' => 'solo-admin'],
+        [
+            'text' => 'Blog',
+            'url'  => '#',
+            'icon' => 'fas fa-blog',
+            'can'  => 'solo-admin',
+            'submenu' => [
+                ['text' => 'Listado', 'url' => '/admin/blog/articulos', 'icon' => '', 'can' => 'solo-admin'],
+                ['text' => 'Categorías', 'url' => '/admin/blog/categorias', 'icon' => '', 'can' => 'solo-admin'],
+                ['text' => 'Etiquetas', 'url' => '/admin/blog/etiquetas', 'icon' => '', 'can' => 'solo-admin'],
+            ],
+        ],
+        
         ['text' => 'Citas', 'url' => '/admin/citas', 'icon' => 'fas fa-calendar-check', 'can' => 'solo-admin'],
         ['text' => 'Documentos Profesional', 'url' => '/admin/documentos-profesional', 'icon' => 'fas fa-file-alt', 'can' => 'solo-admin'],
         ['text' => 'Emergencias', 'url' => '/admin/emergencias', 'icon' => 'fas fa-ambulance', 'can' => 'solo-admin'],
