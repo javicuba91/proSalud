@@ -12,11 +12,15 @@ class Cita extends Model
         'paciente_id',
         'profesional_id',
         'fecha_hora',
+        'codigo_qr',
         'modalidad',
         'motivo',
         'consultorio_id',
         'url_meet',
-        'codigo_qr',
+        'estado',
+        'recordatorio_enviado',
+        'informe_creado',
+        'especializacion_id'
     ];
 
     public function profesional()

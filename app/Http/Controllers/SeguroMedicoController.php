@@ -21,7 +21,7 @@ class SeguroMedicoController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.seguros_medicos.create');
     }
 
     /**
@@ -29,7 +29,14 @@ class SeguroMedicoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+
+        SegurosMedicos::create($request->all());
+
+        return redirect()->route('seguros_medicos.index')
+            ->with('success', 'Seguro Médico creado correctamente.');
     }
 
     /**

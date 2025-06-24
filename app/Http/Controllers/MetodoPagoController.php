@@ -21,7 +21,7 @@ class MetodoPagoController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.metodos_pagos.create');
     }
 
     /**
@@ -29,7 +29,14 @@ class MetodoPagoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+
+        MetodoPago::create($request->all());
+
+        return redirect()->route('metodos-pagos.index')
+            ->with('success', 'Método de Pago creado correctamente.');
     }
 
     /**

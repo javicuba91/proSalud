@@ -8,4 +8,7 @@ class SegurosMedicos extends Model
 {
     //
     protected $table = "seguros_medicos";
+    protected $fillable = [
+        'nombre',
+    ];
 }
