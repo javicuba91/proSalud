@@ -13,7 +13,8 @@ class Emergencia extends Model
         'provincia_id',
         'ciudad_id',
         'direccion',
-        'telefono'
+        'telefono',
+        'region_id',
     ];
 
     public function provincia()

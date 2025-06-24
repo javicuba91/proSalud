@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Emergencia;
 use App\Models\Provincia;
 use App\Models\Ciudad;
+use App\Models\Region;
 use Illuminate\Http\Request;
 
 class EmergenciaController extends Controller
@@ -14,7 +15,7 @@ class EmergenciaController extends Controller
      */
     public function index()
     {
-        
+
         $emergencias = Emergencia::all();
         return view('admin.emergencias.index', compact('emergencias'));
     }
@@ -24,9 +25,10 @@ class EmergenciaController extends Controller
      */
     public function create()
     {
+        $region = Region::all();
         $provincias = Provincia::all();
         $ciudades = Ciudad::all();
-        return view('admin.emergencias.create', compact('provincias', 'ciudades'));
+        return view('admin.emergencias.create', compact('region', 'provincias', 'ciudades'));
     }
 
     /**
@@ -44,6 +46,7 @@ class EmergenciaController extends Controller
 
         Emergencia::create([
             'tipo' => $request->tipo,
+
             'provincia_id' => $request->provincia_id,
             'ciudad_id' => $request->ciudad_id,
             'direccion' => $request->direccion,
