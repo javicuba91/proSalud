@@ -2,10 +2,17 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
+<<<<<<< HEAD:BD/prosalud.sql
 -- Servidor: 127.0.0.1
 -- Tiempo de generación: 24-06-2025 a las 20:10:33
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
+=======
+-- Servidor: localhost
+-- Tiempo de generación: 24-06-2025 a las 17:58:56
+-- Versión del servidor: 10.6.15-MariaDB
+-- Versión de PHP: 8.3.4
+>>>>>>> 21b51652afe7bc38e180da9ffb0c74e5c4eade0a:BD/proSalud(12).sql
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -2629,6 +2636,7 @@ CREATE TABLE `especializaciones` (
 INSERT INTO `especializaciones` (`id`, `profesional_id`, `especialidad_id`, `sub_especialidad_id`, `centro_educativo`, `pais`, `created_at`, `updated_at`, `precio_presencial`, `precio_videoconsulta`) VALUES
 (19, 1, 1, 100, 'Escuela LAtinoamericana de Medicina La Habana', 'Ecuador', '2025-06-20 06:03:35', '2025-06-20 06:03:35', 50.00, 60.00),
 (20, 1, 35, 470, 'XX', 'AA', '2025-06-24 15:10:35', '2025-06-24 15:10:35', 200.00, 100.00);
+<<<<<<< HEAD:BD/prosalud.sql
 
 -- --------------------------------------------------------
 
@@ -2645,6 +2653,8 @@ CREATE TABLE `etiquetas_blog` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+=======
+>>>>>>> 21b51652afe7bc38e180da9ffb0c74e5c4eade0a:BD/proSalud(12).sql
 
 -- --------------------------------------------------------
 
@@ -5121,11 +5131,15 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (54, '2025_06_09_060717_add_especializacion_id_to_citas_table', 28),
 (55, '2025_06_19_093654_create_emergencias_table', 29),
 (56, '2025_06_11_140059_create_consultorio_imagenes_table', 30),
+<<<<<<< HEAD:BD/prosalud.sql
 (57, '2025_06_19_074124_add_activo_to_users_table', 31),
 (58, '2025_06_24_171007_create_categorias_blog_table', 32),
 (59, '2025_06_24_171015_create_articulos_blog_table', 32),
 (60, '2025_06_24_171027_create_etiquetas_blog_table', 32),
 (61, '2025_06_24_171035_create_articulo_etiqueta_table', 32);
+=======
+(57, '2025_06_19_074124_add_activo_to_users_table', 31);
+>>>>>>> 21b51652afe7bc38e180da9ffb0c74e5c4eade0a:BD/proSalud(12).sql
 
 -- --------------------------------------------------------
 
@@ -5604,8 +5618,12 @@ CREATE TABLE `sessions` (
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
 ('rh8SGxbSDFmaFSAsXmM4K1hOkKklusi2tW0xFW4w', NULL, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTTZDQXV4Q0Z2czlsclR0OVlJQTBOcEcxd0Zoem1DQXhjRWQ3eUIzaiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wcm9mZXNpb25hbGVzL2ZpY2hhLzEiO319', 1750785460),
+<<<<<<< HEAD:BD/prosalud.sql
 ('tLhZmk5tTPXw4i3TyrQM3QlwSYnCXyNHpuqGjs4y', 33, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiMktnQmN4MFdobUVtNFdHSlFMSFZ3UkhLNDYwY1FaWnRSRFlKc0NQdyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWRtaW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTozMztzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NTA3NzI5NDg7fX0=', 1750786010),
 ('U5l7VYptcAZLFjkiyLiqSXqpjcyEuGQDMadorr9U', 33, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiWGxHN0wxNWVxMmp6RHM0Ujdlc2VVWjlQYnl1ZUd3TjNxN2VQTEFYdyI7czozOiJ1cmwiO2E6MDp7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQ5OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWRtaW4vYmxvZy9hcnRpY3Vsb3MvY3JlYXRlIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MzM7czo0OiJhdXRoIjthOjE6e3M6MjE6InBhc3N3b3JkX2NvbmZpcm1lZF9hdCI7aToxNzUwNzg4NDYwO319', 1750788497);
+=======
+('tLhZmk5tTPXw4i3TyrQM3QlwSYnCXyNHpuqGjs4y', 33, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiMktnQmN4MFdobUVtNFdHSlFMSFZ3UkhLNDYwY1FaWnRSRFlKc0NQdyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWRtaW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTozMztzOjQ6ImF1dGgiO2E6MTp7czoyMToicGFzc3dvcmRfY29uZmlybWVkX2F0IjtpOjE3NTA3NzI5NDg7fX0=', 1750786010);
+>>>>>>> 21b51652afe7bc38e180da9ffb0c74e5c4eade0a:BD/proSalud(12).sql
 
 -- --------------------------------------------------------
 
@@ -6304,12 +6322,15 @@ ALTER TABLE `especialidades`
 --
 ALTER TABLE `especializaciones`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+<<<<<<< HEAD:BD/prosalud.sql
 
 --
 -- AUTO_INCREMENT de la tabla `etiquetas_blog`
 --
 ALTER TABLE `etiquetas_blog`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+=======
+>>>>>>> 21b51652afe7bc38e180da9ffb0c74e5c4eade0a:BD/proSalud(12).sql
 
 --
 -- AUTO_INCREMENT de la tabla `experiencias_laborales`
@@ -6381,7 +6402,11 @@ ALTER TABLE `metodo_pago_profesional`
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
+<<<<<<< HEAD:BD/prosalud.sql
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+=======
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+>>>>>>> 21b51652afe7bc38e180da9ffb0c74e5c4eade0a:BD/proSalud(12).sql
 
 --
 -- AUTO_INCREMENT de la tabla `pacientes`

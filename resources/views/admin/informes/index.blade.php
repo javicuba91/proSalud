@@ -4,13 +4,6 @@
 
 @section('content_header')
     <h1>Informes de Consulta</h1>
-
-    <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('informes.create') }}" class="btn btn-primary">
-            <i class="fa fa-plus"> Crear Informe</i>
-        </a>
-    </div>
-
 @stop
 
 @section('content')
@@ -37,6 +30,8 @@
                     <td>{{ date("d-m-Y H:i", strtotime($informe->created_at)) }}</td>
                     <td>{{ ucfirst($informe->cita->modalidad) }}</td>
                     <td>
+                        <a href="{{ route('informes.show', $informe->id) }}" class="btn btn-primary"><i
+                            class="fa fa-eye"></i></a>
                         <a href="{{ route('informes.edit', $informe->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                         <form class="form-eliminar" action="{{ route('informes.destroy', $informe->id) }}" method="POST"
                             style="display:inline;">

@@ -8,11 +8,14 @@ class InformeConsulta extends Model
 {
     protected $table = "informes_consultas";
 
-    // App\Models\InformeConsulta.php
-
     public function cita()
     {
         return $this->belongsTo(Cita::class);
+    }
+
+    public function receta()
+    {
+        return $this->belongsTo(Receta::class);
     }
 
 }

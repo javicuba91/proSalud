@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\InformeConsulta;
+use App\Models\Receta;
 use Illuminate\Http\Request;
 
 class InformeConsultaController extends Controller
@@ -35,9 +36,11 @@ class InformeConsultaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(InformeConsulta $informe)
     {
-        //
+        $receta = Receta::where('informe_consulta_id','=',$informe->id)->firstOrFail();
+
+        return view('admin.informes.show', compact('informe','receta'));
     }
 
     /**

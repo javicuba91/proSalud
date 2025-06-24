@@ -31,7 +31,11 @@
         <tbody>
             @foreach ($respuestas as $respuesta)
                 <tr>
-                    <td>{{ $respuesta->pregunta->pregunta }}</td>
+                    <td>
+                        {{ $respuesta->pregunta->pregunta }} <br>
+                        <strong>Especialidad: </strong> {{$respuesta->pregunta->especialidad->nombre}} <br>
+                        <strong>Sub-Especialidad: </strong> {{$respuesta->pregunta->subespecialidad->nombre}}
+                    </td>
                     <td>{{ $respuesta->respuesta }}</td>
                     <td>{{ $respuesta->profesional->nombre_completo }}</td>
                     <td>

@@ -412,6 +412,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::delete('/valoraciones/{valoracion}', [ValoracionController::class, 'destroy'])->name('valoraciones.destroy');
 
         Route::get('/informes-consulta', [InformeConsultaController::class, 'index'])->name('informes.index');
+        Route::get('/informes-consulta/{informe}', [InformeConsultaController::class, 'show'])->name('informes.show');
         Route::get('/informes-consulta/create', [InformeConsultaController::class, 'create'])->name('informes.create');
         Route::post('/informes-consulta', action: [InformeConsultaController::class, 'store'])->name('informes.store');
         Route::get('/informes-consulta/{informe}/edit', [InformeConsultaController::class, 'edit'])->name('informes.edit');
@@ -419,6 +420,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::delete('/informes-consulta/{informe}', [InformeConsultaController::class, 'destroy'])->name('informes.destroy');
 
         Route::get('/recetas', [RecetaController::class, 'index'])->name('recetas.index');
+        Route::get('/recetas/{receta}', [RecetaController::class, 'show'])->name('recetas.show');
         Route::get('/recetas/create', [RecetaController::class, 'create'])->name('recetas.create');
         Route::post('/recetas', [RecetaController::class, 'store'])->name('recetas.store');
         Route::get('/recetas/{receta}/edit', [RecetaController::class, 'edit'])->name('recetas.edit');
