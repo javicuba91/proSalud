@@ -33,7 +33,10 @@
         <tbody>
             @foreach ($emergencias as $emergencia)
                 <tr>
-                    <td>{{ $emergencia->tipo }}</td>
+                    <td>
+                        {{ $emergencia->tipo }}<br>
+                        <strong>Dirección: </strong> {{$emergencia->direccion}}
+                    </td>
                     <td>{{ $emergencia->provincia->nombre }}</td>
                     <td>{{ $emergencia->ciudad->nombre }}</td>
                     <td>{{ $emergencia->telefono }}</td>

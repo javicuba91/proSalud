@@ -42,6 +42,8 @@
                     <td>{{ $receta->informeConsulta->cita->profesional->nombre_completo }}</td>
                     <td>{{ date('d-m-Y H:i', strtotime($receta->fecha_emision)) }}</td>
                     <td>
+                        <a href="{{ route('recetas.show', $receta->id) }}" class="btn btn-primary"><i
+                                class="fa fa-eye"></i></a>
                         <a href="{{ route('recetas.edit', $receta->id) }}" class="btn btn-warning"><i
                                 class="fa fa-edit"></i></a>
                         <form class="form-eliminar" action="{{ route('recetas.destroy', $receta->id) }}" method="POST"

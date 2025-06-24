@@ -91,6 +91,11 @@ class Profesional extends Model
         return $this->belongsTo(Ciudad::class);
     }
 
+    public function categoria()
+    {
+        return $this->belongsTo(CategoriaProfesional::class);
+    }
+
     public function metodosPago()
     {
         return $this->belongsToMany(MetodoPago::class, 'metodo_pago_profesional');
