@@ -84,9 +84,9 @@ class CitaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Cita $cita)
     {
-        //
+        return view('admin.citas.show', compact('cita'));
     }
 
     /**
