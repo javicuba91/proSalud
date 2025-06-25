@@ -35,6 +35,7 @@ use App\Http\Controllers\ViaMedicamentoController;
 use App\Models\Provincia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FacturacionController;
 
 Auth::routes();
 
@@ -289,6 +290,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
         // Aquí todas tus rutas de admin
         Route::get('/', [AdminController::class, 'index']);
 
+        Route::get('/facturacion', [FacturacionController::class, 'index'])->name('facturacion.index');
+        Route::get('/facturacion/{id}', [FacturacionController::class, 'show'])->name('facturacion.show');
+        Route::get('/facturacion/{id}/pagar', [FacturacionController::class, 'pagar'])->name('facturacion.pagar');
+        Route::post('/facturacion/{id}/pagar', [FacturacionController::class, 'pagarPost'])->name('facturacion.pagar.post');
+
         Route::get('/especialidades', [EspecialidadController::class, 'index'])->name('especialidades.index');
         Route::get('/especialidades/create', [EspecialidadController::class, 'create'])->name('especialidades.create');
         Route::post('/especialidades', [EspecialidadController::class, 'store'])->name('especialidades.store');
@@ -500,5 +506,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::post('/blog/etiquetas/ajax-store', [EtiquetaBlogController::class, 'ajaxStore'])->name('blog.etiquetas.ajax.store');
     });
 });
+
 
 

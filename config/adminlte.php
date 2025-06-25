@@ -572,6 +572,9 @@ return [
                 ['text' => 'Respuestas', 'url' => '/admin/respuestas-expertos', 'icon' => '', 'can' => 'solo-admin'],
             ],
         ],
+         ['text' => 'Facturación', 'url' => '/admin/facturacion', 'icon' => 'fas fa-file-invoice-dollar', 'can' => 'solo-admin'],
+
+
         [
             'text' => 'Informes de Consulta',
             'url'  => '#',
@@ -618,8 +621,7 @@ return [
             ],
         ],
         ['text' => 'Valoraciones', 'url' => '/admin/valoraciones', 'icon' => 'fas fa-star', 'can' => 'solo-admin'],
-
-
+       
 
         [
             'text' => 'Cerrar sesión',
