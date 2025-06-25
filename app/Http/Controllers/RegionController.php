@@ -52,7 +52,8 @@ class RegionController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $region = Region::find($id);
+        return view('admin.regiones.edit', compact('region'));
     }
 
     /**
@@ -60,7 +61,15 @@ class RegionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+
+        $region = Region::find($id);
+        $region->update($request->all());
+
+        return redirect()->route('regiones.index')
+            ->with('success', 'Región actualizada correctamente.');
     }
 
     /**

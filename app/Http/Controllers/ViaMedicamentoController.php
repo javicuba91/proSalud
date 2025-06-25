@@ -52,7 +52,8 @@ class ViaMedicamentoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $via = ViaAdministracionMedicamento::find($id);
+        return view('admin.vias.edit', compact('via'));
     }
 
     /**
@@ -60,7 +61,15 @@ class ViaMedicamentoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+
+        $via = ViaAdministracionMedicamento::find($id);
+        $via->update($request->all());
+
+        return redirect()->route('vias.index')
+            ->with('success', 'Vía de administración actualizada correctamente.');
     }
 
     /**

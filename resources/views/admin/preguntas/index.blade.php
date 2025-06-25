@@ -33,8 +33,8 @@
             @foreach ($preguntas as $pregunta)
                 <tr>
                     <td>{{ $pregunta->pregunta }}</td>
-                    <td>{{ $pregunta->especialidad->nombre }}</td>
-                    <td>{{ $pregunta->subespecialidad->nombre }}</td>
+                    <td>{{ $pregunta->especialidad->nombre ?? 'Sin especialidad' }}</td>
+                    <td>{{ $pregunta->subespecialidad->nombre ?? 'Sin subespecialidad' }}</td>
                     <td>
                         <a href="{{ route('preguntas.edit', $pregunta->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                         <form class="form-eliminar" action="{{ route('preguntas.destroy', $pregunta->id) }}" method="POST"

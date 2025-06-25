@@ -53,17 +53,27 @@ class PreguntaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(PreguntaExperto $pregunta)
     {
-        //
+        $especialidades = Especialidad::whereNull('padre_id')->get();
+        return view('admin.preguntas.edit', compact('pregunta', 'especialidades'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, PreguntaExperto $pregunta)
     {
-        //
+        $request->validate([
+            'especialidad_id' => 'required|exists:especialidades,id',
+            'sub_especialidad_id' => 'nullable|exists:especialidades,id',
+            'pregunta' => 'required|string',
+        ]);
+
+        $pregunta->update($request->all());
+
+        return redirect()->route('preguntas.index')
+            ->with('success', 'Pregunta actualizada correctamente.');
     }
 
     /**

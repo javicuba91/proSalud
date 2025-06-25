@@ -52,7 +52,8 @@ class PresentacionMedicamentoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $presentacion = PresentacionMedicamento::find($id);
+        return view('admin.presentaciones.edit', compact('presentacion'));
     }
 
     /**
@@ -60,7 +61,15 @@ class PresentacionMedicamentoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+
+        $presentacion = PresentacionMedicamento::find($id);
+        $presentacion->update($request->all());
+
+        return redirect()->route('presentaciones.index')
+            ->with('success', 'Presentación actualizada correctamente.');
     }
 
     /**

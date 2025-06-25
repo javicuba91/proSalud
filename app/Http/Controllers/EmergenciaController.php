@@ -38,6 +38,7 @@ class EmergenciaController extends Controller
     {
         $request->validate([
             'tipo' => 'required|in:Farmacia 24 horas,Ambulancia 24 horas',
+            'region_id' => 'required|exists:regiones,id',
             'provincia_id' => 'required|exists:provincias,id',
             'ciudad_id' => 'required|exists:ciudades,id',
             'direccion' => 'required|string|max:255',
@@ -46,7 +47,7 @@ class EmergenciaController extends Controller
 
         Emergencia::create([
             'tipo' => $request->tipo,
-
+            'region_id' => $request->region_id,
             'provincia_id' => $request->provincia_id,
             'ciudad_id' => $request->ciudad_id,
             'direccion' => $request->direccion,
@@ -67,17 +68,36 @@ class EmergenciaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Emergencia $emergencia)
     {
-        //
+        $region = Region::all();
+        $provincias = Provincia::all();
+        $ciudades = Ciudad::all();
+        return view('admin.emergencias.edit', compact('emergencia', 'region', 'provincias', 'ciudades'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Emergencia $emergencia)
     {
-        //
+        $request->validate([
+            'tipo' => 'required|in:Farmacia 24 horas,Ambulancia 24 horas',
+            'provincia_id' => 'required|exists:provincias,id',
+            'ciudad_id' => 'required|exists:ciudades,id',
+            'direccion' => 'required|string|max:255',
+            'telefono' => 'nullable|string|max:20'
+        ]);
+
+        $emergencia->update([
+            'tipo' => $request->tipo,
+            'provincia_id' => $request->provincia_id,
+            'ciudad_id' => $request->ciudad_id,
+            'direccion' => $request->direccion,
+            'telefono' => $request->telefono
+        ]);
+
+        return redirect()->route('emergencias.index')->with('actualizado', 'ok');
     }
 
     /**

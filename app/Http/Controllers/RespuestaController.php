@@ -61,17 +61,29 @@ class RespuestaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(RespuestaExperto $respuesta)
     {
-        //
+        $preguntas = PreguntaExperto::with(['especialidad', 'subespecialidad'])->get();
+        $profesionales = collect(); // Se cargarán vía AJAX
+
+        return view('admin.respuestas.edit', compact('respuesta', 'preguntas', 'profesionales'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, RespuestaExperto $respuesta)
     {
-        //
+        $request->validate([
+            'preguntas_expertos_id' => 'required|exists:preguntas_expertos,id',
+            'profesional_id' => 'required|exists:profesionales,id',
+            'respuesta' => 'required|string',
+        ]);
+
+        $respuesta->update($request->all());
+
+        return redirect()->route('respuestas.index')
+            ->with('success', 'Respuesta actualizada correctamente.');
     }
 
     /**

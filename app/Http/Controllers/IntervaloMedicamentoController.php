@@ -52,7 +52,8 @@ class IntervaloMedicamentoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $intervalo = IntervaloMedicamento::find($id);
+        return view('admin.intervalos.edit', compact('intervalo'));
     }
 
     /**
@@ -60,7 +61,15 @@ class IntervaloMedicamentoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+
+        $intervalo = IntervaloMedicamento::find($id);
+        $intervalo->update($request->all());
+
+        return redirect()->route('intervalos.index')
+            ->with('success', 'Intervalo actualizado correctamente.');
     }
 
     /**

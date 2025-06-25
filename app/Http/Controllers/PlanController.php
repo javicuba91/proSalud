@@ -45,25 +45,35 @@ class PlanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Plan $plan)
     {
-        //
+        return view('admin.planes.show', compact('plan'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Plan $plan)
     {
-        //
+        return view('admin.planes.edit', compact('plan'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Plan $plan)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'precio' => 'required|numeric|min:0',
+            'caracteristicas' => 'required|string',
+        ]);
+
+        $plan->update($request->all());
+
+        return redirect()->route('planes.index')
+            ->with('success', 'Plan actualizado correctamente.');
     }
 
     /**

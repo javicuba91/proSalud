@@ -55,7 +55,9 @@ class CiudadController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $ciudad = Ciudad::find($id);
+        $provincias = Provincia::all();
+        return view('admin.ciudades.edit', compact('ciudad', 'provincias'));
     }
 
     /**
@@ -63,7 +65,16 @@ class CiudadController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'provincia_id' => 'required|exists:provincias,id',
+        ]);
+
+        $ciudad = Ciudad::find($id);
+        $ciudad->update($request->all());
+
+        return redirect()->route('ciudades.index')
+            ->with('success', 'Ciudad actualizada correctamente.');
     }
 
     /**

@@ -7,6 +7,25 @@
 @stop
 
 @section('content')
+    <!-- Mensajes de éxito/error -->
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
     <div class="card shadow-sm rounded-3">
         <div class="card-header bg-primary text-white clearfix">
             <h5 class="mb-0 d-inline">Detalle del Informe</h5>
@@ -14,7 +33,7 @@
                 <i class="fa fa-arrow-left"></i> Volver al listado
             </a>
         </div>
-        <div class="card-body">
+
             <div class="border rounded p-3 bg-light mb-3">
                 <div class="row">
                     <div class="col-lg-2">
@@ -162,7 +181,7 @@
                     </div>
                     <div class="col-lg-6">
                         <label class="form-label">Exploración física</label>
-                        <textarea readonly rows="3" class="form-control" name="exploracion_fisica">{{ old('exploracion_fisica', $informe->exploracion_fisica ?? '') }}</textarea>            
+                        <textarea readonly rows="3" class="form-control" name="exploracion_fisica">{{ old('exploracion_fisica', $informe->exploracion_fisica ?? '') }}</textarea>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -178,11 +197,11 @@
                 <div class="row mb-3">
                     <div class="col-lg-6">
                         <label class="form-label">Odontograma --> Sólo odontólogos</label>
-                        <textarea readonly rows="3" class="form-control" name="dibujo_dental">{{ old('dibujo_dental', $informe->dibujo_dental ?? '') }}</textarea>                   
+                        <textarea readonly rows="3" class="form-control" name="dibujo_dental">{{ old('dibujo_dental', $informe->dibujo_dental ?? '') }}</textarea>
                     </div>
                     <div class="col-lg-6">
                         <label class="form-label">Plan terapéutico</label>
-                        <textarea readonly rows="3" class="form-control" name="plan_terapeutico">{{ old('plan_terapeutico', $informe->plan_terapeutico ?? '') }}</textarea>                   
+                        <textarea readonly rows="3" class="form-control" name="plan_terapeutico">{{ old('plan_terapeutico', $informe->plan_terapeutico ?? '') }}</textarea>
                     </div>
                 </div>
             </div>
@@ -191,7 +210,7 @@
 
     <div class="card shadow-sm rounded-3">
         <div class="card-header bg-primary text-white clearfix">
-            <h5 class="mb-0 d-inline">Detalle de la Receta</h5>          
+            <h5 class="mb-0 d-inline">Detalle de la Receta</h5>
         </div>
         <div class="card-body">
             <div class="row">
@@ -217,4 +236,30 @@
             </div>
         </div>
     </div>
+@stop
+
+@section('css')
+    <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
+
+@section('js')
+    <script>
+        // Confirmación antes de cambiar paciente
+        document.getElementById('changePacienteForm').addEventListener('submit', function(e) {
+            const select = document.getElementById('pacienteSelect');
+            const selectedOption = select.options[select.selectedIndex];
+
+            if (select.value === '') {
+                e.preventDefault();
+                alert('Por favor, seleccione un paciente');
+                return;
+            }
+
+            const confirmMessage = `¿Está seguro de cambiar el paciente asociado a este informe por:\n\n${selectedOption.text}?\n\nEsto también afectará la cita asociada y las recetas mantendrán su vinculación con este informe.`;
+
+            if (!confirm(confirmMessage)) {
+                e.preventDefault();
+            }
+        });
+    </script>
 @stop

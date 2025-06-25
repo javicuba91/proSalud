@@ -307,6 +307,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/planes/{plan}/edit', [PlanController::class, 'edit'])->name('planes.edit');
         Route::put('/planes/{plan}', [PlanController::class, 'update'])->name('planes.update');
         Route::delete('/planes/{plan}', [PlanController::class, 'destroy'])->name('planes.destroy');
+        Route::get('/planes/{plan}', [PlanController::class, 'show'])->name('planes.show');
 
         Route::get('/seguros-medicos', [SeguroMedicoController::class, 'index'])->name('seguros_medicos.index');
         Route::get('/seguros-medicos/create', [SeguroMedicoController::class, 'create'])->name('seguros_medicos.create');
@@ -442,6 +443,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::put('/respuestas-expertos/{respuesta}', [RespuestaController::class, 'update'])->name('respuestas.update');
         Route::delete('/respuestas-expertos/{respuesta}', [RespuestaController::class, 'destroy'])->name('respuestas.destroy');
         Route::get('/respuestas-expertos/profesionales-by-pregunta', [RespuestaController::class, 'ProfesionalesPregunta'])->name('respuestas.profesionales-by-pregunta');
+
+        // Métodos de Pago
+        Route::get('/metodos-pagos', [MetodoPagoController::class, 'index'])->name('metodos-pagos.index');
+        Route::get('/metodos-pagos/create', [MetodoPagoController::class, 'create'])->name('metodos-pagos.create');
+        Route::post('/metodos-pagos', [MetodoPagoController::class, 'store'])->name('metodos-pagos.store');
+        Route::get('/metodos-pagos/{metodo}/edit', [MetodoPagoController::class, 'edit'])->name('metodos-pagos.edit');
+        Route::put('/metodos-pagos/{metodo}', [MetodoPagoController::class, 'update'])->name('metodos-pagos.update');
+        Route::delete('/metodos-pagos/{metodo}', [MetodoPagoController::class, 'destroy'])->name('metodos-pagos.destroy');
+        Route::get('/metodos-pagos/{metodo}', [MetodoPagoController::class, 'show'])->name('metodos-pagos.show');
 
         // RUTAS DEL BLOG
         Route::prefix('blog')->name('blog.')->group(function () {

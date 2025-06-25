@@ -42,25 +42,32 @@ class MetodoPagoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(MetodoPago $metodo)
     {
-        //
+        return view('admin.metodos_pagos.show', compact('metodo'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(MetodoPago $metodo)
     {
-        //
+        return view('admin.metodos_pagos.edit', compact('metodo'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, MetodoPago $metodo)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+
+        $metodo->update($request->all());
+
+        return redirect()->route('metodos-pagos.index')
+            ->with('success', 'Método de Pago actualizado correctamente.');
     }
 
     /**

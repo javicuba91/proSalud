@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Receta extends Model
 {
     //
+    protected $fillable = [
+        'informe_consulta_id',
+        'qr',
+        'fecha_emision',
+        'diagnostico',
+        'comentarios',
+        'ruta_firma',
+    ];
 
     public function medicamentosRecetados()
     {

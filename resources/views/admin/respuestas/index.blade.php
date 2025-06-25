@@ -33,11 +33,11 @@
                 <tr>
                     <td>
                         {{ $respuesta->pregunta->pregunta }} <br>
-                        <strong>Especialidad: </strong> {{$respuesta->pregunta->especialidad->nombre}} <br>
-                        <strong>Sub-Especialidad: </strong> {{$respuesta->pregunta->subespecialidad->nombre}}
+                        <strong>Especialidad: </strong> {{ $respuesta->pregunta->especialidad->nombre ?? 'Sin especialidad' }} <br>
+                        <strong>Sub-Especialidad: </strong> {{ $respuesta->pregunta->subespecialidad->nombre ?? 'Sin subespecialidad' }}
                     </td>
                     <td>{{ $respuesta->respuesta }}</td>
-                    <td>{{ $respuesta->profesional->nombre_completo }}</td>
+                    <td>{{ $respuesta->profesional->nombre_completo ?? 'Sin profesional' }}</td>
                     <td>
                         <a href="{{ route('respuestas.edit', $respuesta->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                         <form class="form-eliminar" action="{{ route('respuestas.destroy', $respuesta->id) }}" method="POST"

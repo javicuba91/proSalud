@@ -36,6 +36,7 @@
                     <td>{{ $plan->descripcion }}</td>
                     <td>{{ $plan->precio }}€</td>
                     <td>
+                        <a href="{{ route('planes.show', $plan->id) }}" class="btn btn-info"><i class="fa fa-eye"></i></a>
                         <a href="{{ route('planes.edit', $plan->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                         <form class="form-eliminar" action="{{ route('planes.destroy', $plan->id) }}" method="POST"
                             style="display:inline;">

@@ -55,7 +55,9 @@ class ProvinciaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $provincia = Provincia::find($id);
+        $regiones = Region::all();
+        return view('admin.provincias.edit', compact('provincia', 'regiones'));
     }
 
     /**
@@ -63,7 +65,16 @@ class ProvinciaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'region_id' => 'required|exists:regiones,id',
+        ]);
+
+        $provincia = Provincia::find($id);
+        $provincia->update($request->all());
+
+        return redirect()->route('provincias.index')
+            ->with('success', 'Provincia actualizada correctamente.');
     }
 
     /**

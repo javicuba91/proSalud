@@ -42,7 +42,7 @@ class SeguroMedicoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(SegurosMedicos $seguro)
     {
         //
     }
@@ -50,17 +50,24 @@ class SeguroMedicoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(SegurosMedicos $seguro)
     {
-        //
+        return view('admin.seguros_medicos.edit', compact('seguro'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, SegurosMedicos $seguro)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+
+        $seguro->update($request->all());
+
+        return redirect()->route('seguros_medicos.index')
+            ->with('success', 'Seguro Médico actualizado correctamente.');
     }
 
     /**

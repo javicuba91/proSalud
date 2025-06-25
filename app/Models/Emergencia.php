@@ -21,6 +21,7 @@ class Emergencia extends Model
     {
         return $this->belongsTo(Provincia::class);
     }
+
     public function ciudad()
     {
         return $this->belongsTo(Ciudad::class);

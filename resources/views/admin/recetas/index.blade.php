@@ -4,13 +4,6 @@
 
 @section('content_header')
     <h1>Recetas</h1>
-
-    <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('recetas.create') }}" class="btn btn-primary">
-            <i class="fa fa-plus"> Crear Informe</i>
-        </a>
-    </div>
-
 @stop
 
 @section('content')

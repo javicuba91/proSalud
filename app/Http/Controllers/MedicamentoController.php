@@ -52,7 +52,8 @@ class MedicamentoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $medicamento = Medicamento::find($id);
+        return view('admin.medicamentos.edit', compact('medicamento'));
     }
 
     /**
@@ -60,7 +61,15 @@ class MedicamentoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+
+        $medicamento = Medicamento::find($id);
+        $medicamento->update($request->all());
+
+        return redirect()->route('medicamentos.index')
+            ->with('success', 'Medicamento actualizado correctamente.');
     }
 
     /**
