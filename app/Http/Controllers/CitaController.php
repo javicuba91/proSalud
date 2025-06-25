@@ -17,10 +17,37 @@ class CitaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $citas = Cita::all();
-        return view('admin.citas.index', compact('citas'));
+        $query = Cita::with(['paciente', 'profesional']);
+        
+        // Filtro por paciente
+        if ($request->filled('paciente_id')) {
+            $query->where('paciente_id', $request->paciente_id);
+        }
+        
+        // Filtro por profesional
+        if ($request->filled('profesional_id')) {
+            $query->where('profesional_id', $request->profesional_id);
+        }
+        
+        // Filtro por modalidad
+        if ($request->filled('modalidad')) {
+            $query->where('modalidad', $request->modalidad);
+        }
+        
+        // Filtro por estado
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+        
+        $citas = $query->get();
+        
+        // Obtener datos para los selectores de filtros
+        $pacientes = Paciente::orderBy('nombre_completo')->get();
+        $profesionales = Profesional::orderBy('nombre_completo')->get();
+        
+        return view('admin.citas.index', compact('citas', 'pacientes', 'profesionales'));
     }
 
     /**
