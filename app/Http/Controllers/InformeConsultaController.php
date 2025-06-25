@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\InformeConsulta;
 use App\Models\Receta;
 use App\Models\Paciente;
+use App\Models\Profesional;
 use Illuminate\Http\Request;
 
 class InformeConsultaController extends Controller
@@ -12,10 +13,36 @@ class InformeConsultaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $informes = InformeConsulta::all();
-        return view('admin.informes.index', compact('informes'));
+        $query = InformeConsulta::with(['cita.paciente', 'cita.profesional']);
+
+        // Aplicar filtros
+        if ($request->filled('paciente_id')) {
+            $query->whereHas('cita', function ($q) use ($request) {
+                $q->where('paciente_id', $request->paciente_id);
+            });
+        }
+
+        if ($request->filled('profesional_id')) {
+            $query->whereHas('cita', function ($q) use ($request) {
+                $q->where('profesional_id', $request->profesional_id);
+            });
+        }
+
+        if ($request->filled('modalidad')) {
+            $query->whereHas('cita', function ($q) use ($request) {
+                $q->where('modalidad', $request->modalidad);
+            });
+        }
+
+        $informes = $query->orderBy('created_at', 'desc')->get();
+
+        // Obtener datos para los filtros
+        $pacientes = Paciente::orderBy('nombre_completo', 'ASC')->get();
+        $profesionales = Profesional::orderBy('nombre_completo', 'ASC')->get();
+
+        return view('admin.informes.index', compact('informes', 'pacientes', 'profesionales'));
     }
 
     /**
