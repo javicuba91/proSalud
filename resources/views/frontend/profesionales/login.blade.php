@@ -21,7 +21,7 @@
                                 </span>
                             @enderror
                         </div>
-                        <div class="mb-3 text-start position-relative">
+                       <div class="mb-3 text-start position-relative">
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                         
                             <!-- Icono de ver/ocultar -->
@@ -34,7 +34,7 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                        </div> 
+                        </div>   
                         <div class="d-flex justify-content-between mb-3">
                             <small>Recordar</small>
                             <a href="#" class="text-decoration-none text-dark"><small>¿Contraseña

@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Title
@@ -304,14 +303,13 @@ return [
             'type' => 'navbar-search',
             'text' => 'search',
             'topnav_right' => true,
-
         ],
         [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
 
-        // Sidebar items:       
+        // Sidebar items:
         [
             'text' => 'Pedir Cita',
             'url' => '/paciente/pedir-cita',
@@ -557,7 +555,7 @@ return [
                 ['text' => 'Etiquetas', 'url' => '/admin/blog/etiquetas', 'icon' => '', 'can' => 'solo-admin'],
             ],
         ],
-        
+
         ['text' => 'Citas', 'url' => '/admin/citas', 'icon' => 'fas fa-calendar-check', 'can' => 'solo-admin'],
         ['text' => 'Documentos Profesional', 'url' => '/admin/documentos-profesional', 'icon' => 'fas fa-file-alt', 'can' => 'solo-admin'],
         ['text' => 'Emergencias', 'url' => '/admin/emergencias', 'icon' => 'fas fa-ambulance', 'can' => 'solo-admin'],
@@ -621,7 +619,7 @@ return [
             ],
         ],
         ['text' => 'Valoraciones', 'url' => '/admin/valoraciones', 'icon' => 'fas fa-star', 'can' => 'solo-admin'],
-       
+
 
         [
             'text' => 'Cerrar sesión',
@@ -653,6 +651,7 @@ return [
         JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\DataFilter::class,
+        App\AdminLTE\Menu\Filters\ProfesionalDocumentosAprobadosFilter::class,
     ],
 
     /*

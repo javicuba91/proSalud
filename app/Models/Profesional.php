@@ -101,4 +101,16 @@ class Profesional extends Model
         return $this->belongsToMany(MetodoPago::class, 'metodo_pago_profesional');
     }
 
+    /**
+     * Retorna true si todos los documentos del profesional están aprobados
+     */
+    public function documentosAprobados()
+    {
+        // Si no tiene documentos, retorna false
+        if ($this->documentos()->count() === 0) {
+            return false;
+        }
+        // Si todos los documentos están aprobados
+        return $this->documentos()->where('estado', '!=', 'aprobado')->count() === 0;
+    }
 }

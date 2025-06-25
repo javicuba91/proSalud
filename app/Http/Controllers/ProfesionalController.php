@@ -912,7 +912,7 @@ class ProfesionalController extends Controller
                 $hastaMin = strtotime($hasta);
 
                 if ($desdeMin >= $hastaMin) {
-                    return redirect()->back()->with('errors','El rango de horario no es válido: la hora de inicio debe ser menor que la hora de fin.');                    
+                    return redirect()->back()->with('errors', 'El rango de horario no es válido: la hora de inicio debe ser menor que la hora de fin.');
                 }
 
                 // Verificar solapamiento con otros rangos del mismo request
@@ -925,7 +925,7 @@ class ProfesionalController extends Controller
 
                     // Si hay solapamiento
                     if (($desdeMin < $oHastaMin && $hastaMin > $oDesdeMin)) {
-                        return redirect()->back()->with('errors','Los horarios no pueden solaparse entre sí en el mismo consultorio.');
+                        return redirect()->back()->with('errors', 'Los horarios no pueden solaparse entre sí en el mismo consultorio.');
                     }
                 }
 
@@ -944,7 +944,7 @@ class ProfesionalController extends Controller
                     if (
                         ($desdeMin < $exHasta && $hastaMin > $exDesde)
                     ) {
-                        return redirect()->back()->with('errors','Los horarios ingresados se solapan con horarios ya existentes en la base de datos.');                    
+                        return redirect()->back()->with('errors', 'Los horarios ingresados se solapan con horarios ya existentes en la base de datos.');
                     }
                 }
             }
@@ -1191,5 +1191,30 @@ class ProfesionalController extends Controller
         $pdf = Pdf::loadView('profesionales.recetasFarmaciaPDF', compact('receta'));
 
         return $pdf->download('informe_consulta' . $receta->id . '.pdf');
+    }
+
+    public function pagarPlan(Request $request)
+    {
+        $request->validate([
+            'plan_id' => 'required|exists:planes,id'
+        ]);
+
+        $profesional = Profesional::where('user_id', auth()->id())->firstOrFail();
+
+        // Actualizar el plan actual
+        $profesional->update([
+            'plan_id' => $request->plan_id,
+        ]);
+
+        // Registrar la suscripción (y marcarla como pagada)
+        $suscripcion = new SuscripcionPlan();
+        $suscripcion->profesional_id = $profesional->id;
+        $suscripcion->plan_id = $request->plan_id;
+        $suscripcion->fecha_inicio = now();
+        $suscripcion->fecha_fin = now()->addDays(30);
+        $suscripcion->pagado = 1; // Marcar como pagado
+        $suscripcion->save();
+
+        return redirect()->route('profesionales.misPlanes')->with('success', 'Plan activado correctamente.');
     }
 }

@@ -52,8 +52,8 @@
 
     @if ($profesional->suscripcion)
         <div class="mt-3 text-center">
-            <strong>Inicio:</strong> {{ date("d-m-y",strtotime($profesional->suscripcion->fecha_inicio)) }}<br>
-            <strong>Vence:</strong> {{ date("d-m-y",strtotime($profesional->suscripcion->fecha_fin)) }}
+            <strong>Inicio:</strong> {{ date('d-m-y', strtotime($profesional->suscripcion->fecha_inicio)) }}<br>
+            <strong>Vence:</strong> {{ date('d-m-y', strtotime($profesional->suscripcion->fecha_fin)) }}
         </div>
     @endif
 
@@ -78,16 +78,77 @@
                             @endforeach
                         </ul>
 
-                        @if ($profesional->plan_id === $plan->id)
-                            <button class="btn btn-dark w-100 mt-3" disabled>Plan actual</button>
-                        @else
-                            <button type="submit" class="btn btn-outline-dark w-100 mt-3">Cambiar a este plan</button>
+                        @if ($profesional->documentosAprobados())
+                            @if ($profesional->plan_id === $plan->id)
+                                <button class="btn btn-dark w-100 mt-3" disabled>Plan actual</button>
+                            @else
+                                <button type="button" class="btn btn-outline-dark w-100 mt-3 btn-abrir-modal"
+                                    data-id="{{ $plan->id }}" data-nombre="{{ $plan->nombre }}"
+                                    data-descripcion="{{ $plan->descripcion }}" data-precio="{{ $plan->precio }}">
+                                    Cambiar a este plan
+                                </button>
+                            @endif
                         @endif
+
                     </div>
                 </form>
             </div>
         @endforeach
-
-
     </div>
+
+    <!-- Modal de Pago -->
+    <div class="modal fade" id="modalPagoPlan" tabindex="-1" role="dialog" aria-labelledby="modalPagoPlanLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="POST" action="{{ route('profesional.pagar.plan') }}">
+                @csrf
+                <input type="hidden" name="plan_id" id="modal_plan_id">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalPagoPlanLabel">Confirmar Plan</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Nombre del plan:</strong> <span id="modal_plan_nombre"></span></p>
+                        <p><strong>Descripción:</strong> <span id="modal_plan_descripcion"></span></p>
+                        <p><strong>Precio:</strong> $<span id="modal_plan_precio"></span></p>
+                        <div class="form-group">
+                            <label for="metodo_pago">Método de pago</label>
+                            <select name="metodo_pago" id="metodo_pago" class="form-control" required>
+                                <option value="tarjeta">Tarjeta de crédito/débito</option>
+                                <option value="transferencia">Transferencia bancaria</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Confirmar pago y activar plan</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 @stop
+
+@section('js')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.btn-abrir-modal').click(function() {
+                let id = $(this).data('id');
+                let nombre = $(this).data('nombre');
+                let descripcion = $(this).data('descripcion');
+                let precio = $(this).data('precio');
+
+                $('#modal_plan_id').val(id);
+                $('#modal_plan_nombre').text(nombre);
+                $('#modal_plan_descripcion').text(descripcion);
+                $('#modal_plan_precio').text(precio);
+
+                $('#modalPagoPlan').modal('show');
+            });
+        });
+    </script>
+@endsection
