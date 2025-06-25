@@ -7,8 +7,9 @@
 @stop
 
 @section('css')
-    <!-- Include TinyMCE -->
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
@@ -54,12 +55,18 @@
 
                         <div class="form-group">
                             <label for="contenido">Contenido *</label>
-                            <textarea class="form-control @error('contenido') is-invalid @enderror"
-                                      id="contenido" name="contenido" rows="10" required>{{ old('contenido', $articulo->contenido) }}</textarea>
+                        
+                            <!-- Campo oculto para enviar HTML del editor -->
+                            <textarea name="contenido" id="contenido" hidden>{{ old('contenido', $articulo->contenido) }}</textarea>
+                        
+                            <!-- Editor visual -->
+                            <div id="editor" style="min-height: 300px;"></div>
+                        
                             @error('contenido')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
+                        
                     </div>
                 </div>
 
@@ -233,7 +240,7 @@
                     <div class="card-body">
                         @if($articulo->imagen_destacada)
                             <div class="mb-3">
-                                <img src="{{ asset('storage/' . $articulo->imagen_destacada) }}"
+                                <img src="{{ asset($articulo->imagen_destacada) }}"
                                      alt="{{ $articulo->titulo }}" class="img-fluid rounded">
                                 <small class="form-text text-muted">Imagen actual</small>
                             </div>
@@ -275,21 +282,210 @@
         </div>
     </form>
 
-    @include('admin.blog.articulos._modales_ajax')
+    
+    <!-- Modal Nueva Categoría -->
+    <div class="modal fade" id="modalNuevaCategoria" tabindex="-1" role="dialog"
+        aria-labelledby="modalNuevaCategoriaLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalNuevaCategoriaLabel">Nueva Categoría</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="formNuevaCategoria">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="categoria_nombre">Nombre *</label>
+                            <input type="text" class="form-control" id="categoria_nombre" name="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="categoria_descripcion">Descripción</label>
+                            <textarea class="form-control" id="categoria_descripcion" name="descripcion" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Crear Categoría</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nueva Etiqueta -->
+    <div class="modal fade" id="modalNuevaEtiqueta" tabindex="-1" role="dialog"
+        aria-labelledby="modalNuevaEtiquetaLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalNuevaEtiquetaLabel">Nueva Etiqueta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="formNuevaEtiqueta">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="etiqueta_nombre">Nombre *</label>
+                            <input type="text" class="form-control" id="etiqueta_nombre" name="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="etiqueta_descripcion">Descripción</label>
+                            <textarea class="form-control" id="etiqueta_descripcion" name="descripcion" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Crear Etiqueta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('js')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
-    // TinyMCE
-    tinymce.init({
-        selector: '#contenido',
-        height: 400,
-        plugins: 'advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste code help wordcount',
-        toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-        content_css: 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'
+    $(document).ready(function() {
+        // AJAX para crear nueva categoría
+        $('#formNuevaCategoria').on('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const submitBtn = $(this).find('button[type="submit"]');
+            const originalText = submitBtn.text();
+
+            submitBtn.prop('disabled', true).text('Creando...');
+
+
+            $.ajax({
+                url: '{{ route('blog.categorias.ajax.store') }}',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Agregar nueva opción al select
+                        $('#categoria_id').append(
+                            `<option value="${response.categoria.id}" selected>${response.categoria.nombre}</option>`
+                        );
+
+                        // Cerrar modal y limpiar formulario
+                        $('#modalNuevaCategoria').modal('hide');
+                        $('#formNuevaCategoria')[0].reset();
+
+                        // Mostrar mensaje de éxito
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Éxito!',
+                            text: response.message,
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    submitBtn.prop('disabled', false).text(originalText);
+
+                    let errorMessage = 'Ha ocurrido un error al crear la categoría';
+                    if (xhr.responseJSON) {
+                        if (xhr.responseJSON.errors) {
+                            errorMessage = Object.values(xhr.responseJSON.errors).flat()
+                                .join('\n');
+                        } else if (xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: errorMessage
+                    });
+                }
+            });
+
+        });
+
+        // AJAX para crear nueva etiqueta
+        $('#formNuevaEtiqueta').on('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const submitBtn = $(this).find('button[type="submit"]');
+            const originalText = submitBtn.text();
+
+            submitBtn.prop('disabled', true).text('Creando...');
+
+            $.ajax({
+                url: '{{ route('blog.etiquetas.ajax.store') }}',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Agregar nueva etiqueta a la lista de selección
+                        let newTag = `
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="etiquetas[]"
+                                   value="${response.etiqueta.id}" id="etiqueta_${response.etiqueta.id}" checked>
+                            <label class="form-check-label" for="etiqueta_${response.etiqueta.id}">
+                                ${response.etiqueta.nombre}
+                            </label>
+                        </div>
+                    `;
+                        $('#etiquetas-container').append(newTag);
+
+                        // Cerrar modal y limpiar formulario
+                        $('#modalNuevaEtiqueta').modal('hide');
+                        $('#formNuevaEtiqueta')[0].reset();
+
+                        // Mostrar mensaje de éxito
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Éxito!',
+                            text: response.message,
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    submitBtn.prop('disabled', false).text(originalText);
+
+                    let errorMessage = 'Ha ocurrido un error al crear la etiqueta';
+                    if (xhr.responseJSON) {
+                        if (xhr.responseJSON.errors) {
+                            errorMessage = Object.values(xhr.responseJSON.errors).flat()
+                                .join('\n');
+                        } else if (xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: errorMessage
+                    });
+                }
+            });
+        });
     });
+</script>
+<script>
 
     // Preview de imagen
     document.getElementById('imagen_destacada').addEventListener('change', function(e) {
@@ -304,6 +500,29 @@
         } else {
             document.getElementById('preview-imagen').style.display = 'none';
         }
+    });
+</script>
+<script>
+    // Inicializa el editor
+    var quill = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                ['link', 'image']
+            ]
+        }
+    });
+
+    // Obtener contenido del textarea (guardado previamente)
+    var contenidoGuardado = {!! json_encode(old('contenido', $articulo->contenido)) !!};
+    quill.clipboard.dangerouslyPasteHTML(contenidoGuardado);
+
+    // Al enviar el formulario, copiar contenido al textarea oculto
+    document.querySelector('form').addEventListener('submit', function() {
+        document.getElementById('contenido').value = quill.root.innerHTML;
     });
 </script>
 @stop

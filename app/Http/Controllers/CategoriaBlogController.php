@@ -33,7 +33,6 @@ class CategoriaBlogController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255|unique:categorias_blog,nombre',
             'descripcion' => 'nullable|string',
-            'color' => 'required|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
             'activo' => 'boolean'
         ]);
 
@@ -52,15 +51,13 @@ class CategoriaBlogController extends Controller
             $request->validate([
                 'nombre' => 'required|string|max:255|unique:categorias_blog,nombre',
                 'descripcion' => 'nullable|string',
-                'color' => 'required|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'
             ]);
 
             // Crear nueva categoría con slug generado manualmente
             $categoria = CategoriaBlog::create([
                 'nombre' => $request->nombre,
                 'slug' => Str::slug($request->nombre),
-                'descripcion' => $request->descripcion,
-                'color' => $request->color,
+                'descripcion' => $request->descripcion,               
                 'activo' => true
             ]);
 
@@ -110,8 +107,7 @@ class CategoriaBlogController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:255|unique:categorias_blog,nombre,' . $categoria->id,
-            'descripcion' => 'nullable|string',
-            'color' => 'required|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
+            'descripcion' => 'nullable|string',            
             'activo' => 'boolean'
         ]);
 

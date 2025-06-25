@@ -13,7 +13,6 @@ class CategoriaBlog extends Model
         'nombre',
         'slug',
         'descripcion',
-        'color',
         'activo'
     ];
 
