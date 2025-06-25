@@ -47,24 +47,47 @@
                                 <strong>Nombre paciente:</strong><br>
                                 <span>{{ $informe->cita->paciente->nombre_completo }}</span>
                             </div>
+
                             <div class="col-lg-3 mb-3">
                                 <strong>Fecha de nacimiento:</strong><br>
                                 <span>{{ \Carbon\Carbon::parse($informe->cita->paciente->fecha_nacimiento)->format('d-m-Y') }}</span>
                             </div>
+
                             <div class="col-lg-3 mb-3">
                                 <strong>Género:</strong><br>
                                 <span>{{ $informe->cita->paciente->genero }}</span>
                             </div>
+
                             <div class="col-lg-3 mb-3">
                                 <strong>Estado civil:</strong><br>
                                 <span>{{ $informe->cita->paciente->estado_civil }}</span>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <strong>Nacionalidad:</strong><br>
+                                <span>{{ $informe->cita->paciente->nacionalidad }}</span>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <strong>Teléfono:</strong><br>
+                                <span>{{ $informe->cita->paciente->celular }}</span>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <strong>Email:</strong><br>
+                                <span>{{ $informe->cita->paciente->email }}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <strong>Dirección de residencia:</strong>
+                                <span>{{ $informe->cita->paciente->direccion }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Información del Profesional -->
             <div class="border rounded p-3 bg-light mb-3">
                 <div class="row">
                     <div class="col-lg-2">
@@ -77,13 +100,60 @@
                                 <strong>Nombre profesional:</strong><br>
                                 <span>{{ $informe->cita->profesional->nombre_completo }}</span>
                             </div>
+
                             <div class="col-lg-3 mb-3">
-                                <strong>Número de colegiado:</strong><br>
+                                <strong>Fecha de nacimiento:</strong><br>
+                                <span>{{ \Carbon\Carbon::parse($informe->cita->profesional->fecha_nacimiento)->format('d-m-Y') }}</span>
+                            </div>
+
+                            <div class="col-lg-3 mb-3">
+                                <strong>Género:</strong><br>
+                                <span>{{ $informe->cita->profesional->genero }}</span>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <strong>Teléfono Personal:</strong><br>
+                                <span>{{ $informe->cita->profesional->telefono_personal }}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <strong>Teléfono Profesional:</strong><br>
+                                <span>{{ $informe->cita->profesional->telefono_profesional }}</span>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <strong>Email:</strong><br>
+                                <span>{{ $informe->cita->profesional->email }}</span>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <strong>Idiomas:</strong><br>
+                                <span>{{ $informe->cita->profesional->idiomas }}</span>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <strong>Plan:</strong><br>
+                                <span>{{ $informe->cita->profesional->plan->nombre }}
+                                    ({{ $informe->cita->profesional->plan->precio }}€)</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <strong>Número de colegiado:</strong> <br>
                                 <span>{{ $informe->cita->profesional->num_colegiado }}</span>
                             </div>
-                            <div class="col-lg-3 mb-3">
-                                <strong>Especialidad:</strong><br>
+                            <div class="col-md-3">
+                                <strong>Categoría:</strong> <br>
                                 <span>{{ $informe->cita->profesional->categoria->nombre }}</span>
+                            </div>
+                            <div class="col-md-3">
+                                <strong>Provincia:</strong> <br>
+                                <span>{{ $informe->cita->profesional->ciudad->provincia->nombre }}</span>
+                            </div>
+                            <div class="col-md-3">
+                                <strong>Ciudad:</strong> <br>
+                                <span>{{ $informe->cita->profesional->ciudad->nombre }}</span>
                             </div>
                         </div>
                     </div>

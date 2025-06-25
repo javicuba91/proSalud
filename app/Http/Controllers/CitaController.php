@@ -167,4 +167,11 @@ class CitaController extends Controller
                 ];
             }));
     }
+
+    public function cancelar(Cita $cita)
+    {
+        $cita->estado = 'cancelada';
+        $cita->save();
+        return redirect()->route('citas.index')->with('cancelado', 'ok');
+    }
 }

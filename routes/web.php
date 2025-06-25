@@ -323,6 +323,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/citas/{cita}/edit', [CitaController::class, 'edit'])->name('citas.edit');
         Route::put('/citas/{cita}', [CitaController::class, 'update'])->name('citas.update');
         Route::delete('/citas/{cita}', [CitaController::class, 'destroy'])->name('citas.destroy');
+       
+        Route::post('/citas/{cita}/cancelar', [CitaController::class, 'cancelar'])->name('citas.cancelar');
+       
         Route::get('/citas/profesional/{id}', [CitaController::class, 'especializacionesProfesional'])
             ->name('citas.especializaciones.profesional');
         Route::get('/citas/profesional/{id}/modalidades', [CitaController::class, 'modalidadesProfesional'])
