@@ -2,8 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cita;
+use App\Models\Emergencia;
 use App\Models\Medicamento;
+use App\Models\Paciente;
+use App\Models\Profesional;
+use App\Models\Proveedor;
+use App\Models\SuscripcionPlan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Smalot\PdfParser\Parser;
 use Spatie\PdfToText\Pdf;
 
@@ -14,7 +22,40 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.index');
+        $total_profesionales = Profesional::count();
+        $total_pacientes = Paciente::count();
+        $total_proveedores = Proveedor::count();
+        $total_emergencias = Emergencia::count();
+        $total_citas = Cita::count();
+        $total_citas_canceladas = Cita::where('estado', '=', 'cancelada')->count();
+        $total_citas_pendientes = Cita::where('estado', '=', 'pendiente')->count();
+        $total_ingresos = SuscripcionPlan::where('pagado', '=', 1)->count();
+
+        $year = Carbon::now()->year;
+        $tipos = ['proveedor', 'profesional', 'paciente'];
+
+        $datos = [];
+
+        foreach ($tipos as $tipo) {
+            $usuarios = DB::table('users')
+                ->selectRaw('MONTH(created_at) as mes, COUNT(*) as total')
+                ->whereYear('created_at', $year)
+                ->where('role', $tipo)
+                ->groupBy('mes')
+                ->pluck('total', 'mes');
+
+            $mensuales = [];
+            for ($i = 1; $i <= 12; $i++) {
+                $mensuales[] = $usuarios[$i] ?? 0;
+            }
+
+            $datos[$tipo] = $mensuales;
+        }
+
+        $usuariosPorTipo = $datos;
+
+
+        return view('admin.index', compact('usuariosPorTipo', 'total_ingresos', 'total_citas_pendientes', 'total_citas_canceladas', 'total_citas', 'total_profesionales', 'total_pacientes', 'total_proveedores', 'total_emergencias'));
     }
 
     /**
