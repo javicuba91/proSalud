@@ -199,11 +199,7 @@
                 });
             }
 
-            // Enviar formulario automáticamente cuando cambie un filtro
-            $('#paciente_id, #profesional_id, #modalidad, #estado').change(function() {
-                $('#filtros-form').submit();
-            });
-
+           
             $('.form-eliminar').submit(function(e) {
                 e.preventDefault();
 

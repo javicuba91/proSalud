@@ -2,6 +2,16 @@
 
 @section('title', 'Respuestas Expertos')
 
+@section('css')
+    <style>
+        .filtros-activos {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+        }
+    </style>
+@stop
+
+
 @section('content_header')
     <h1>Respuestas Expertos</h1>
 
@@ -19,6 +29,62 @@
             {{ session('success') }}
         </div>
     @endif
+
+    <!-- Panel de Filtros -->
+    <div class="card mb-4 {{ request()->hasAny(['especialidad_id', 'profesional_id']) ? 'filtros-activos' : '' }}">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-filter"></i> Filtros
+                @if(request()->hasAny(['especialidad_id', 'profesional_id']))
+                    <span class="badge badge-info ml-2">Activos</span>
+                @endif
+            </h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <form method="GET" action="{{ route('respuestas.index') }}" id="filtros-form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="especialidad_id">Especialidad</label>
+                            <select name="especialidad_id" id="especialidad_id" class="form-control">
+                                <option value="">Todas las especialidades</option>
+                                @foreach($especialidades as $especialidad)
+                                    <option value="{{ $especialidad->id }}" {{ request('especialidad_id') == $especialidad->id ? 'selected' : '' }}>{{ $especialidad->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="profesional_id">Profesional</label>
+                            <select name="profesional_id" id="profesional_id" class="form-control">
+                                <option value="">Todos los profesionales</option>
+                                @foreach($profesionales as $profesional)
+                                    <option value="{{ $profesional->id }}" {{ request('profesional_id') == $profesional->id ? 'selected' : '' }}>{{ $profesional->nombre_completo }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-filter"></i> Aplicar Filtros
+                        </button>
+                        <a href="{{ route('respuestas.index') }}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Limpiar Filtros
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <table id="respuestas" class="table table-bordered mb-4">
         <thead>
             <tr>

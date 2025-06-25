@@ -13,11 +13,29 @@ class EmergenciaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = Emergencia::query();
 
-        $emergencias = Emergencia::all();
-        return view('admin.emergencias.index', compact('emergencias'));
+        if ($request->filled('tipo')) {
+            $query->where('tipo', $request->tipo);
+        }
+        if ($request->filled('provincia')) {
+            $query->whereHas('provincia', function($q) use ($request) {
+                $q->where('nombre', $request->provincia);
+            });
+        }
+        if ($request->filled('ciudad')) {
+            $query->whereHas('ciudad', function($q) use ($request) {
+                $q->where('nombre', $request->ciudad);
+            });
+        }
+
+        $emergencias = $query->get();
+        $provincias = Provincia::orderBy('nombre')->get();
+        $ciudades = Ciudad::orderBy('nombre')->get();
+
+        return view('admin.emergencias.index', compact('emergencias', 'provincias', 'ciudades'));
     }
 
     /**

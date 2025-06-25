@@ -12,10 +12,26 @@ class PreguntaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $preguntas = PreguntaExperto::all();
-        return view('admin.preguntas.index', compact('preguntas'));
+        $query = PreguntaExperto::query();
+
+        if ($request->filled('especialidad_id')) {
+            $query->where('especialidad_id', $request->especialidad_id);
+        }
+        if ($request->filled('subespecialidad_id')) {
+            $query->where('sub_especialidad_id', $request->subespecialidad_id);
+        }
+
+        $preguntas = $query->get();
+        $especialidades = Especialidad::whereNull('padre_id')->get();
+        if ($request->filled('especialidad_id')) {
+            $subespecialidades = Especialidad::where('padre_id', $request->especialidad_id)->get();
+        } else {
+            $subespecialidades = Especialidad::whereNotNull('padre_id')->get();
+        }
+
+        return view('admin.preguntas.index', compact('preguntas', 'especialidades', 'subespecialidades'));
     }
 
     /**

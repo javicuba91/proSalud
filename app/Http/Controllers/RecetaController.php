@@ -10,10 +10,29 @@ class RecetaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $recetas = Receta::all();
-        return view('admin.recetas.index', compact('recetas'));
+        $query = \App\Models\Receta::query();
+
+        if ($request->filled('paciente_id')) {
+            $query->whereHas('informeConsulta.cita.paciente', function($q) use ($request) {
+                $q->where('id', $request->paciente_id);
+            });
+        }
+        if ($request->filled('profesional_id')) {
+            $query->whereHas('informeConsulta.cita.profesional', function($q) use ($request) {
+                $q->where('id', $request->profesional_id);
+            });
+        }
+        if ($request->filled('fecha')) {
+            $query->whereDate('fecha_emision', $request->fecha);
+        }
+
+        $recetas = $query->get();
+        $pacientes = \App\Models\Paciente::orderBy('nombre_completo')->get();
+        $profesionales = \App\Models\Profesional::orderBy('nombre_completo')->get();
+
+        return view('admin.recetas.index', compact('recetas', 'pacientes', 'profesionales'));
     }
 
     /**

@@ -2,6 +2,16 @@
 
 @section('title', 'Documentos')
 
+@section('css')
+    <style>
+        .filtros-activos {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+        }
+    </style>
+@stop
+
+
 @section('content_header')
     <h1>Documentos</h1>
     <div class="d-flex justify-content-end mb-3">
@@ -22,6 +32,7 @@
     <table id="documentos" class="table table-bordered mb-4">
         <thead>
             <tr>
+                <th>Profesional</th>
                 <th>Nombre</th>
                 <th>Archivo</th>
                 <th>Estado</th>
@@ -31,6 +42,7 @@
         <tbody>
             @foreach ($documentos as $documento)
                 <tr>
+                    <td>{{ $documento->profesional->nombre_completo }}</td>
                     <td>{{ $documento->nombre }}</td>
                     <td>
                         <a href="{{ asset($documento->archivo) }}" target="_blank" class="d-block mb-1">

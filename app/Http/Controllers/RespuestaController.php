@@ -14,10 +14,24 @@ class RespuestaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $respuestas = RespuestaExperto::all();
-        return view('admin.respuestas.index', compact('respuestas'));
+        $query = \App\Models\RespuestaExperto::query();
+
+        if ($request->filled('especialidad_id')) {
+            $query->whereHas('pregunta', function($q) use ($request) {
+                $q->where('especialidad_id', $request->especialidad_id);
+            });
+        }
+        if ($request->filled('profesional_id')) {
+            $query->where('profesional_id', $request->profesional_id);
+        }
+
+        $respuestas = $query->get();
+        $especialidades = \App\Models\Especialidad::whereNull('padre_id')->get();
+        $profesionales = \App\Models\Profesional::orderBy('nombre_completo')->get();
+
+        return view('admin.respuestas.index', compact('respuestas', 'especialidades', 'profesionales'));
     }
 
     /**
