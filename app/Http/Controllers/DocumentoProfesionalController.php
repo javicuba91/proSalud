@@ -12,10 +12,25 @@ class DocumentoProfesionalController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $documentos = DocumentoProfesional::all();
-        return view('admin.documentos.index', compact('documentos'));
+        $query = DocumentoProfesional::with('profesional');
+
+        // Aplicar filtros
+        if ($request->filled('profesional_id')) {
+            $query->where('profesional_id', $request->profesional_id);
+        }
+
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        $documentos = $query->orderBy('created_at', 'desc')->get();
+
+        // Obtener datos para los filtros
+        $profesionales = Profesional::orderBy('nombre_completo', 'ASC')->get();
+
+        return view('admin.documentos.index', compact('documentos', 'profesionales'));
     }
 
     /**
@@ -57,6 +72,7 @@ class DocumentoProfesionalController extends Controller
             'nombre' => $request->nombre,
             'tipo' => $request->tipo,
             'archivo' => "documentos/{$profesionalId}/{$filename}",
+            'estado' => 'pendiente', // Estado por defecto
         ]);
 
         return redirect()->route('documentos.index')->with('success', 'Documento guardado correctamente.');

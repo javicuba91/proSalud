@@ -8,7 +8,7 @@ class DocumentoProfesional extends Model
 {
         protected $table = "documentos_profesional";
 
-        protected $fillable = ['profesional_id', 'nombre', 'tipo', 'archivo'];
+        protected $fillable = ['profesional_id', 'nombre', 'tipo', 'archivo', 'estado'];
 
         public function profesional()
         {
