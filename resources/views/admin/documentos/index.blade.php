@@ -45,8 +45,6 @@
                         @endif
                     </td>
                     <td>
-                        <a href="{{ route('documentos.edit', $documento->id) }}" class="btn btn-warning"><i
-                                class="fa fa-edit"></i></a>
                         <form class="form-eliminar" action="{{ route('documentos.destroy', $documento->id) }}"
                             method="POST" style="display:inline;">
                             @csrf
