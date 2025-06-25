@@ -37,7 +37,13 @@
                             <i class="fa fa-file"></i> Abrir
                         </a>
                     </td>
-                    <td><span class="badge bg-danger p-2">{{ ucfirst($documento->estado) }}</span></td>
+                    <td>
+                        @if ($documento->estado == 'aprobado')
+                            <span class="badge bg-success p-2">{{ ucfirst($documento->estado) }}</span>
+                        @else
+                            <span class="badge bg-danger p-2">{{ ucfirst($documento->estado) }}</span>
+                        @endif
+                    </td>
                     <td>
                         <a href="{{ route('documentos.edit', $documento->id) }}" class="btn btn-warning"><i
                                 class="fa fa-edit"></i></a>
@@ -47,10 +53,20 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                         </form>
-                        @if ($documento->estado == 'pendiente')
-                            <a href="{{ route('documentos.edit', $documento->id) }}" class="btn btn-success"><i
-                                    class="fa fa-check"></i></a>
+                        {{-- Mostrar botón "Aprobar" si el estado es pendiente o denegado --}}
+                        @if ($documento->estado === 'pendiente' || $documento->estado === 'denegado')
+                            <button title="Aprobar" class="btn btn-success btn-aprobar" data-id="{{ $documento->id }}">
+                                <i class="fa fa-check"></i>
+                            </button>
                         @endif
+
+                        {{-- Mostrar botón "Denegar" solo si el estado es pendiente --}}
+                        @if ($documento->estado === 'pendiente' || $documento->estado === 'aprobado')
+                            <button title="Denegar" class="btn btn-info btn-denegar" data-id="{{ $documento->id }}">
+                                <i class="fa fa-ban"></i>
+                            </button>
+                        @endif
+
                     </td>
                 </tr>
             @endforeach
@@ -102,4 +118,75 @@
             );
         </script>
     @endif
+
+    <script>
+        $('.btn-aprobar').click(function() {
+            const id = $(this).data('id');
+
+            Swal.fire({
+                title: '¿Aprobar documento?',
+                text: "Esta acción marcará el documento como aprobado.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, aprobar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/admin/documentos-profesional/${id}/aprobar`,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            Swal.fire('Aprobado', response.message, 'success').then(() => {
+                                location.reload(); // Opcional: recargar tabla
+                            });
+                        },
+                        error: function() {
+                            Swal.fire('Error', 'No se pudo aprobar el documento.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).on('click', '.btn-denegar', function() {
+            const id = $(this).data('id');
+
+            Swal.fire({
+                title: '¿Denegar documento?',
+                text: "El estado cambiará a 'denegado'.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, denegar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Enviar solicitud POST via AJAX
+                    $.ajax({
+                        url: `/admin/documentos-profesional/${id}/denegar`,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            Swal.fire('Denegado', 'El documento ha sido denegado.', 'success')
+                                .then(() => location.reload());
+                        },
+                        error: function() {
+                            Swal.fire('Error', 'No se pudo denegar el documento.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
 @endsection

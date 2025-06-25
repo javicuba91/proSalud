@@ -98,4 +98,22 @@ class DocumentoProfesionalController extends Controller
         $documento->delete();
         return redirect()->route('documentos.index')->with('eliminado', 'ok');
     }
+
+    public function aprobar($id)
+    {
+        $documento = DocumentoProfesional::findOrFail($id);
+        $documento->estado = 'aprobado';
+        $documento->save();
+
+        return response()->json(['success' => true, 'message' => 'Documento aprobado']);
+    }
+
+    public function denegar($id)
+    {
+        $documento = DocumentoProfesional::findOrFail($id);
+        $documento->estado = 'denegado';
+        $documento->save();
+
+        return response()->json(['success' => true]);
+    }
 }

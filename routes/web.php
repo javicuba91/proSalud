@@ -403,6 +403,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/documentos-profesional/{documento}/edit', [DocumentoProfesionalController::class, 'edit'])->name('documentos.edit');
         Route::put('/documentos-profesional/{documento}', [DocumentoProfesionalController::class, 'update'])->name('documentos.update');
         Route::delete('/documentos-profesional/{documento}', [DocumentoProfesionalController::class, 'destroy'])->name('documentos.destroy');
+        Route::post('/documentos-profesional/{id}/aprobar', [DocumentoProfesionalController::class, 'aprobar'])->name('documentos.aprobar');
+        Route::post('/documentos-profesional/{id}/denegar', [DocumentoProfesionalController::class, 'denegar'])->name('documentos.denegar');
+
 
         Route::get('/valoraciones', [ValoracionController::class, 'index'])->name('valoraciones.index');
         Route::get('/valoraciones/create', [ValoracionController::class, 'create'])->name('valoraciones.create');
