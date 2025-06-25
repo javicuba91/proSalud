@@ -10,25 +10,35 @@ class EspecialidadController extends Controller
     // Mostrar todas las especialidades
     public function index()
     {
-        $especialidades = Especialidad::whereNull('padre_id')->get();
+        $especialidades = Especialidad::orderBy('nombre')->get();
         return view('admin.especialidades.index', compact('especialidades'));
     }
 
     // Formulario para crear una nueva especialidad
     public function create()
     {
-        return view('admin.especialidades.create');
+        // Obtener solo las especialidades principales (padre_id es NULL)
+        $especialidadesPadre = Especialidad::whereNull('padre_id')->orderBy('nombre')->get();
+        return view('admin.especialidades.create', compact('especialidadesPadre'));
     }
 
     // Almacenar nueva especialidad
     public function store(Request $request)
     {
+
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
+            'padre_id' => 'nullable|exists:especialidades,id',
         ]);
 
-        Especialidad::create($request->all());
+        $data = $request->all();
+        // Si padre_id está vacío, asignamos NULL
+        if (empty($data['padre_id'])) {
+            $data['padre_id'] = null;
+        }
+
+        Especialidad::create($data);
 
         return redirect()->route('especialidades.index')
             ->with('success', 'Especialidad creada correctamente.');
@@ -37,13 +47,29 @@ class EspecialidadController extends Controller
     // Mostrar detalles de una especialidad
     public function show(Especialidad $especialidad)
     {
-        return view('admin.especialidades.show', compact('especialidad'));
+        //
     }
 
     // Formulario para editar una especialidad
     public function edit(Especialidad $especialidad)
     {
-        return view('admin.especialidades.edit', compact('especialidad'));
+        // Obtener especialidades principales, excluyendo la especialidad actual si es principal
+        // Si la especialidad tiene padre, incluirlo en la lista para que pueda ser seleccionado
+        $especialidadesPadre = Especialidad::whereNull('padre_id')
+            ->where('id', '!=', $especialidad->id)
+            ->get();
+
+        // Si la especialidad actual tiene un padre, asegurarse de que esté incluido en la lista
+        if ($especialidad->padre_id && !$especialidadesPadre->contains('id', $especialidad->padre_id)) {
+            $padreActual = Especialidad::find($especialidad->padre_id);
+            if ($padreActual) {
+                $especialidadesPadre->push($padreActual);
+                // Ordenar por nombre para mantener consistencia
+                $especialidadesPadre = $especialidadesPadre->sortBy('nombre');
+            }
+        }
+
+        return view('admin.especialidades.edit', compact('especialidad', 'especialidadesPadre'));
     }
 
     // Actualizar especialidad
@@ -54,9 +80,16 @@ class EspecialidadController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
+            'padre_id' => 'nullable|exists:especialidades,id',
         ]);
 
-        $especialidad->update($request->all());
+        $data = $request->all();
+        // Si padre_id está vacío, asignamos NULL
+        if (empty($data['padre_id'])) {
+            $data['padre_id'] = null;
+        }
+
+        $especialidad->update($data);
 
         return redirect()->route('especialidades.index')
             ->with('success', 'Especialidad actualizada correctamente.');

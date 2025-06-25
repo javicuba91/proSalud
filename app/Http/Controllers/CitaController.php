@@ -41,51 +41,43 @@ class CitaController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $request->validate([
-                'paciente_id' => 'required|exists:pacientes,id',
-                'profesional_id' => 'required|exists:profesionales,id',
-                'fecha_hora' => 'required|date_format:Y-m-d\TH:i',
-                'modalidad' => 'required|in:presencial,videoconsulta',
-                'motivo' => 'required|string|max:255',
-                'consultorio_id' => 'nullable|exists:consultorios,id',
-                'url_meet' => 'nullable|url|max:255',
-                'estado' => 'required|in:pendiente,aceptada,cancelada,completada,noacude',
-                'especializacion_id' => 'required|exists:especializaciones,id',
-            ]);
+        $request->validate([
+            'paciente_id' => 'required|exists:pacientes,id',
+            'profesional_id' => 'required|exists:profesionales,id',
+            'fecha_hora' => 'required|date_format:Y-m-d\TH:i',
+            'modalidad' => 'required|in:presencial,videoconsulta',
+            'motivo' => 'required|string|max:255',
+            'consultorio_id' => 'nullable|exists:consultorios,id',
+            'url_meet' => 'nullable|url|max:255',
+            'estado' => 'required|in:pendiente,aceptada,cancelada,completada,noacude',
+            'especializacion_id' => 'required|exists:especializaciones,id',
+        ]);
 
-            // Para depuración
-            Log::info('Datos de la cita:', $request->all());
+        $citaData = $request->all();
+        // Establecer valores por defecto
+        $citaData['recordatorio_enviado'] = false;
+        $citaData['informe_creado'] = false;
+        // Generar código QR antes de crear la cita
+        $citaData['codigo_qr'] = strtoupper(Str::random(8));
 
-            $citaData = $request->all();
-            // Establecer valores por defecto
-            $citaData['recordatorio_enviado'] = false;
-            $citaData['informe_creado'] = false;
-            // Generar código QR antes de crear la cita
-            $citaData['codigo_qr'] = strtoupper(Str::random(8));
+        Cita::create($citaData);
 
-            $cita = Cita::create($citaData);
-
-            if (!$cita) {
-                Log::error('Error al crear la cita');
-                return back()->with('error', 'Error al crear la cita')->withInput();
-            }
-
-            return redirect()->route('citas.index')
-                ->with('success', 'Cita creada correctamente.');
-        } catch (\Exception $e) {
-            Log::error('Error en store: ' . $e->getMessage());
-            return back()
-                ->withErrors(['error' => 'Error al crear la cita: ' . $e->getMessage()])
-                ->withInput();
-        }
+        return redirect()->route('citas.index')
+            ->with('success', 'Cita creada correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
+
     public function show(Cita $cita)
     {
+        $cita->load([
+            'consultorio',
+            'especializacion.especialidad',
+            'especializacion.subespecialidad',
+            'informeConsulta',
+            'detalleCita'
+        ]);
+
         return view('admin.citas.show', compact('cita'));
     }
 
@@ -116,7 +108,7 @@ class CitaController extends Controller
 
     public function especializacionesProfesional($profesional_id)
     {
-        try {
+
             $especializaciones = EspecializacionesProfesional::with(['especialidad', 'subespecialidad'])
                 ->where('profesional_id', $profesional_id)
                 ->get();
@@ -135,45 +127,38 @@ class CitaController extends Controller
                     'nombre' => $nombre
                 ];
             }));
-        } catch (\Exception $e) {
-            Log::error('Error al obtener especializaciones: ' . $e->getMessage());
-            return response()->json(['error' => 'Error al obtener especializaciones'], 500);
-        }
+
     }
 
     public function modalidadesProfesional($profesional_id)
     {
-        try {
+
             $profesional = Profesional::findOrFail($profesional_id);
-            
+
             $modalidades = [];
-            
+
             if ($profesional->presencial) {
                 $modalidades[] = [
                     'value' => 'presencial',
                     'text' => 'Presencial'
                 ];
             }
-            
+
             if ($profesional->videoconsulta) {
                 $modalidades[] = [
                     'value' => 'videoconsulta',
                     'text' => 'Videoconsulta'
                 ];
             }
-            
+
             return response()->json($modalidades);
-        } catch (\Exception $e) {
-            Log::error('Error al obtener modalidades: ' . $e->getMessage());
-            return response()->json(['error' => 'Error al obtener modalidades'], 500);
         }
-    }
 
     public function consultoriosProfesional($profesional_id)
     {
-        try {
+
             $consultorios = ConsultorioProfesional::where('profesional_id', $profesional_id)->get();
-            
+
             return response()->json($consultorios->map(function ($consultorio) {
                 return [
                     'id' => $consultorio->id,
@@ -181,9 +166,5 @@ class CitaController extends Controller
                     'clinica' => $consultorio->clinica
                 ];
             }));
-        } catch (\Exception $e) {
-            Log::error('Error al obtener consultorios: ' . $e->getMessage());
-            return response()->json(['error' => 'Error al obtener consultorios'], 500);
-        }
     }
 }
