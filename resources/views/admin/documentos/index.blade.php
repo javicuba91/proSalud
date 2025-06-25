@@ -22,6 +22,15 @@
 
 @stop
 
+@section('css')
+    <style>
+        .filtros-activos {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+        }
+    </style>
+@stop
+
 @section('content')
 
     @if (session('success'))
@@ -29,11 +38,78 @@
             {{ session('success') }}
         </div>
     @endif
+
+    <!-- Panel de Filtros -->
+    <div class="card mb-4 {{ request()->hasAny(['profesional_id', 'estado']) ? 'filtros-activos' : '' }}">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-filter"></i> Filtros
+                @if(request()->hasAny(['profesional_id', 'estado']))
+                    <span class="badge badge-info ml-2">Activos</span>
+                @endif
+            </h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <form method="GET" action="{{ route('documentos.index') }}" id="filtros-form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="profesional_id">Profesional</label>
+                            <select name="profesional_id" id="profesional_id" class="form-control">
+                                <option value="">Todos los profesionales</option>
+                                @foreach($profesionales as $profesional)
+                                    <option value="{{ $profesional->id }}"
+                                        {{ request('profesional_id') == $profesional->id ? 'selected' : '' }}>
+                                        {{ $profesional->nombre_completo }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="estado">Estado</label>
+                            <select name="estado" id="estado" class="form-control">
+                                <option value="">Todos los estados</option>
+                                <option value="pendiente" {{ request('estado') == 'pendiente' ? 'selected' : '' }}>
+                                    Pendiente
+                                </option>
+                                <option value="aprobado" {{ request('estado') == 'aprobado' ? 'selected' : '' }}>
+                                    Aprobado
+                                </option>
+                                <option value="denegado" {{ request('estado') == 'denegado' ? 'selected' : '' }}>
+                                    Denegado
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-filter"></i> Aplicar Filtros
+                        </button>
+                        <a href="{{ route('documentos.index') }}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Limpiar Filtros
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
     <table id="documentos" class="table table-bordered mb-4">
         <thead>
             <tr>
                 <th>Profesional</th>
                 <th>Nombre</th>
+                <th>Profesional</th>
                 <th>Archivo</th>
                 <th>Estado</th>
                 <th>Acciones</th>
@@ -44,6 +120,7 @@
                 <tr>
                     <td>{{ $documento->profesional->nombre_completo }}</td>
                     <td>{{ $documento->nombre }}</td>
+                    <td>{{ $documento->profesional->nombre_completo ?? 'N/A' }}</td>
                     <td>
                         <a href="{{ asset($documento->archivo) }}" target="_blank" class="d-block mb-1">
                             <i class="fa fa-file"></i> Abrir
@@ -93,8 +170,17 @@
                     url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
                 },
                 responsive: true,
-                autoWidth: false
+                autoWidth: false,
+                order: [[0, 'asc']] // Ordenar por nombre de forma ascendente
             });
+
+            // Mejorar los selectores con Select2 si está disponible
+            if ($.fn.select2) {
+                $('#profesional_id').select2({
+                    placeholder: 'Seleccionar...',
+                    allowClear: true
+                });
+            }
 
             $('.form-eliminar').submit(function(e) {
                 e.preventDefault();
@@ -116,6 +202,14 @@
                     }
                 });
             });
+
+            // Mostrar contador de resultados
+            const totalDocumentos = $('#documentos tbody tr').length;
+            if (totalDocumentos === 0) {
+                $('#documentos_wrapper').after('<div class="alert alert-info mt-3"><i class="fas fa-info-circle"></i> No se encontraron documentos con los filtros aplicados.</div>');
+            } else {
+                $('#documentos_wrapper').after('<div class="alert alert-success mt-3"><i class="fas fa-check-circle"></i> Se encontraron ' + totalDocumentos + ' documento(s).</div>');
+            }
         });
     </script>
 
