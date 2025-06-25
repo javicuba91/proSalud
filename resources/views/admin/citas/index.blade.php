@@ -4,13 +4,6 @@
 
 @section('content_header')
     <h1>Citas</h1>
-
-    <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('citas.create') }}" class="btn btn-primary">
-            <i class="fa fa-plus"> Crear Cita</i>
-        </a>
-    </div>
-
 @stop
 
 @section('content')

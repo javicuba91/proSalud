@@ -503,26 +503,26 @@
     });
 </script>
 <script>
-    // Inicializa el editor
-    var quill = new Quill('#editor', {
-        theme: 'snow',
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, false] }],
-                ['bold', 'italic', 'underline'],
-                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                ['link', 'image']
-            ]
-        }
+    document.addEventListener('DOMContentLoaded', function () {
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['link', 'image']
+                ]
+            }
+        });
+    
+        var contenidoGuardado = {!! json_encode(old('contenido', $articulo->contenido)) !!};
+        quill.clipboard.dangerouslyPasteHTML(contenidoGuardado);
+    
+        document.querySelector('form').addEventListener('submit', function () {
+            document.getElementById('contenido').value = quill.root.innerHTML;
+        });
     });
-
-    // Obtener contenido del textarea (guardado previamente)
-    var contenidoGuardado = {!! json_encode(old('contenido', $articulo->contenido)) !!};
-    quill.clipboard.dangerouslyPasteHTML(contenidoGuardado);
-
-    // Al enviar el formulario, copiar contenido al textarea oculto
-    document.querySelector('form').addEventListener('submit', function() {
-        document.getElementById('contenido').value = quill.root.innerHTML;
-    });
-</script>
+    </script>
+    
 @stop

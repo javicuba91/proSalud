@@ -50,7 +50,7 @@
                         <li class="nav-item"><a href="/pacientes" class="nav-link">Inicio</a></li>
                         <li class="nav-item"><a href="/pacientes/preguntas-expertos" class="nav-link">Preguntar al
                                 experto</a></li>
-                        <li class="nav-item"><a href="#" class="nav-link">Blog</a></li>
+                        <li class="nav-item"><a href="{{route('pacientes.blog')}}" class="nav-link">Blog</a></li>
 
                         @guest
                             <li class="nav-item"><a href="/pacientes/login" class="nav-link">Iniciar sesión</a></li>

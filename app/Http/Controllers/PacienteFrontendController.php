@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ArticuloBlog;
+use App\Models\CategoriaBlog;
 use App\Models\Cita;
 use App\Models\DetalleCita;
 use App\Models\Emergencia;
@@ -211,7 +213,8 @@ class PacienteFrontendController extends Controller
         return view('frontend.pacientes.buscador.medicos', compact('especialidades', 'seguros', 'medicos', 'provincias'));
     }
 
-    public function buscarEmergenciasPaciente(Request $request){
+    public function buscarEmergenciasPaciente(Request $request)
+    {
         $provincias = Provincia::orderBy('nombre', 'ASC')->get();
 
         $query = Emergencia::with(['provincia', 'ciudad']);
@@ -258,32 +261,32 @@ class PacienteFrontendController extends Controller
     public function horariosPorDiaProfesional($profesional_id, $fecha)
     {
         $profesional = Profesional::findOrFail($profesional_id);
-    
+
         $horarios = HorarioProfesional::where('profesional_id', $profesional->id)
             ->whereDate('fecha', $fecha)
             ->with('detalles.consultorio')
             ->get();
-    
+
         $citas = Cita::where('profesional_id', $profesional->id)
             ->whereDate('fecha_hora', $fecha)
             ->pluck('fecha_hora')
-            ->map(function($f) {
+            ->map(function ($f) {
                 return date("H:i", strtotime($f));
             })
             ->toArray();
-    
+
         $respuesta = [];
-    
+
         foreach ($horarios as $horario) {
             foreach ($horario->detalles as $detalle) {
                 $desde = date("H:i", strtotime($detalle->hora_desde));
                 $hasta = date("H:i", strtotime($detalle->hora_hasta));
-    
+
                 // Genera los turnos de 30 min
                 $turnosDisponibles = [];
                 $start = strtotime($desde);
                 $end = strtotime($hasta);
-    
+
                 while ($start < $end) {
                     $hora = date("H:i", $start);
                     if (!in_array($hora, $citas)) {
@@ -291,7 +294,7 @@ class PacienteFrontendController extends Controller
                     }
                     $start = strtotime("+30 minutes", $start);
                 }
-    
+
                 if (!empty($turnosDisponibles)) {
                     $respuesta[] = [
                         'desde' => $desde,
@@ -302,11 +305,11 @@ class PacienteFrontendController extends Controller
                 }
             }
         }
-    
+
         return response()->json($respuesta);
     }
-    
-    
+
+
 
     public function storeAjax(Request $request)
     {
@@ -372,5 +375,57 @@ class PacienteFrontendController extends Controller
         $cita->save();
 
         return response()->json(['success' => true]);
+    }
+
+
+    public function blog(Request $request)
+    {
+        $query = ArticuloBlog::with(['categoria', 'autor', 'etiquetas']);
+
+        // Filtros
+        if ($request->filled('categoria')) {
+            $query->where('categoria_id', $request->categoria);
+        }
+
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        if ($request->filled('autor')) {
+            $query->where('autor_id', $request->autor);
+        }
+
+        if ($request->filled('buscar')) {
+            $query->buscar($request->buscar);
+        }
+
+        $articulos = $query->latest()->paginate(15);
+
+        // Para los filtros
+        $categorias = CategoriaBlog::activo()->orderBy('nombre')->get();
+        $autores = User::where('role', 'admin')->orderBy('name')->get();
+
+        return view('frontend.pacientes.blog', compact('articulos', 'categorias', 'autores'));
+    }
+
+    public function detalleBlog($slug)
+    {
+        $articulo = ArticuloBlog::with(['categoria', 'autor', 'etiquetas'])
+            ->where('slug', $slug)
+            ->publicado()
+            ->firstOrFail();
+
+        // Incrementar contador de vistas
+        $articulo->incrementarVistas();
+
+        // Artículos relacionados (opcional, por categoría)
+        $relacionados = ArticuloBlog::publicado()
+            ->where('categoria_id', $articulo->categoria_id)
+            ->where('id', '!=', $articulo->id)
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return view('frontend.pacientes.blog-detalle', compact('articulo', 'relacionados'));
     }
 }

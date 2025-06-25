@@ -260,6 +260,8 @@ Route::post('/profesionales/preguntas-expertos', [PacienteFrontendController::cl
 Route::get('/pacientes/preguntas-expertos/filtros', [PacienteFrontendController::class, 'pacientePreguntaRespuestaFiltro'])->name('pacientes.respuestas.index');
 Route::get('/pacientes/citas/{id}/resumen', [PacienteFrontendController::class, 'resumenCita'])->name('pacientes.citas.resumen');
 Route::post('/pacientes/citas/pago/{id}', [PacienteFrontendController::class, 'simularPago'])->name('pacientes.citas.pago');
+Route::get('/pacientes/blog', [PacienteFrontendController::class, 'blog'])->name('pacientes.blog');
+Route::get('/pacientes/blog/{slug}', [PacienteFrontendController::class, 'detalleBlog'])->name('blog.detalle');
 
 
 /* Buscadores por Categorías */

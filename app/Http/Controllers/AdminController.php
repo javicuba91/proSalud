@@ -109,38 +109,6 @@ class AdminController extends Controller
 
     public function cargarMedicamentos()
     {
-        /*$parser = new Parser();
-        $pdf = $parser->parseFile('medicamentos/medicamentos.pdf');
-
-        $text = $pdf->getText();
-
-        $lineas = explode("\n", $text);
-        $principios = [];
-
-        foreach ($lineas as $linea) {
-            // Intentamos separar por tabulaciones o múltiples espacios
-            $partes = preg_split('/\s{3,}/', trim($linea));
-
-            // Si tiene al menos 3 columnas, tomamos la tercera (índice 2)
-            if (isset($partes[2])) {
-                $principios[] = $partes[2];
-            }
-        }
-
-        $principios = array_unique($principios);
-        sort($principios);
-
-        // Eliminar duplicados
-        $principios = array_unique($principios);
-
-        // Guardar en la base de datos
-        foreach ($principios as $nombre) {
-            Medicamento::updateOrCreate(['nombre' => $nombre]);
-        }
-
-        return response()->json(['mensaje' => 'Medicamentos importados con éxito', 'cantidad' => count($principios)]);
-    */
-
         $rutaArchivo = public_path('medicamentos/medicamentos.txt');
 
         // Verificar si el archivo existe
