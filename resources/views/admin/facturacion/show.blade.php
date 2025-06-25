@@ -11,6 +11,8 @@
         <div class="card-body">
             <h5>Profesional: {{ $suscripcion->profesional->nombre_completo ?? 'N/A' }}</h5>
             <h5>Plan: {{ $suscripcion->plan->nombre ?? 'N/A' }}</h5>
+            <h5>Fecha Inicio: {{ date("d-m-Y",strtotime($suscripcion->fecha_inicio)) ?? 'N/A' }}</h5>
+            <h5>Fecha Fin: {{ date("d-m-Y",strtotime($suscripcion->fecha_fin)) ?? 'N/A' }}</h5>
             <h5>Estado de Pago: 
                 @if($suscripcion->pagado)
                     <span class="badge badge-success">Pagado</span>

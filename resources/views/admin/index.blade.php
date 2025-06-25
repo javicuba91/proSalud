@@ -101,7 +101,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Total de Ingresos</span>
-                    <span class="info-box-number">{{ $total_ingresos }}</span>
+                    <span class="info-box-number">${{ $total_ingresos }}</span>
                 </div>
             </div>
         </div>

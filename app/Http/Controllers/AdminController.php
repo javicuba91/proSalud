@@ -29,7 +29,12 @@ class AdminController extends Controller
         $total_citas = Cita::count();
         $total_citas_canceladas = Cita::where('estado', '=', 'cancelada')->count();
         $total_citas_pendientes = Cita::where('estado', '=', 'pendiente')->count();
-        $total_ingresos = SuscripcionPlan::where('pagado', '=', 1)->count();
+        $total_ingresos = SuscripcionPlan::where('pagado', '=',1)
+            ->with('plan')
+            ->get()
+            ->sum(function (SuscripcionPlan $suscripcion) {
+                return $suscripcion->plan->precio ?? 0;
+            });
 
         $year = Carbon::now()->year;
         $tipos = ['proveedor', 'profesional', 'paciente'];
