@@ -41,12 +41,10 @@
 
                     <td>
                         <a href="{{ route('citas.show', $cita->id) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
-                        <a href="{{ route('citas.edit', $cita->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                        <form class="form-eliminar" action="{{ route('citas.destroy', $cita->id) }}" method="POST"
+                        <form class="form-eliminar" action="{{ route('citas.cancelar', $cita->id) }}" method="POST"
                             style="display:inline;">
                             @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                            <button title="Cancelar Cita" type="submit" class="btn btn-info"><i class="fa fa-times"></i></button>
                         </form>
                     </td>
                 </tr>
@@ -74,12 +72,12 @@
 
                 Swal.fire({
                     title: '¿Estás seguro?',
-                    text: "¡Esta acción no se puede deshacer!",
+                    text: "¿Deseas cancelar esta cita?",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Sí, eliminar',
+                    confirmButtonText: 'Sí, cancelar',
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -90,11 +88,11 @@
         });
     </script>
 
-    @if (session('eliminado') == 'ok')
+    @if (session('cancelado') == 'ok')
         <script>
             Swal.fire(
-                'Eliminado',
-                'La cita médica ha sido eliminada correctamente.',
+                'Cancelado',
+                'La cita médica ha sido cancelada correctamente.',
                 'success'
             );
         </script>

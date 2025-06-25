@@ -186,4 +186,11 @@ class CitaController extends Controller
             return response()->json(['error' => 'Error al obtener consultorios'], 500);
         }
     }
+
+    public function cancelar(Cita $cita)
+    {
+        $cita->estado = 'cancelada';
+        $cita->save();
+        return redirect()->route('citas.index')->with('cancelado', 'ok');
+    }
 }
