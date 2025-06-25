@@ -49,9 +49,9 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('facturacion.show', $suscripcion->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
+                                <a href="{{ route('admin.facturacion.show', $suscripcion->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
                                 @if(!$suscripcion->pagado)
-                                    <a href="{{ route('facturacion.pagar', $suscripcion->id) }}" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Realizar Pago</a>
+                                    <a href="{{ route('admin.facturacion.pagar', $suscripcion->id) }}" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Realizar Pago</a>
                                 @endif
                             </td>
                         </tr>

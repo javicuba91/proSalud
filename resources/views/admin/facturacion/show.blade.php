@@ -18,7 +18,7 @@
                     <span class="badge badge-warning">Pendiente</span>
                 @endif
             </h5>
-            <a href="{{ route('facturacion.index') }}" class="btn btn-secondary">Volver</a>
+            <a href="{{ route('admin.facturacion.index') }}" class="btn btn-secondary">Volver</a>
         </div>
     </div>
 @endsection

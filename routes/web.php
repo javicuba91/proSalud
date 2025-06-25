@@ -290,10 +290,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
         // Aquí todas tus rutas de admin
         Route::get('/', [AdminController::class, 'index']);
 
-        Route::get('/facturacion', [FacturacionController::class, 'index'])->name('facturacion.index');
-        Route::get('/facturacion/{id}', [FacturacionController::class, 'show'])->name('facturacion.show');
-        Route::get('/facturacion/{id}/pagar', [FacturacionController::class, 'pagar'])->name('facturacion.pagar');
-        Route::post('/facturacion/{id}/pagar', [FacturacionController::class, 'pagarPost'])->name('facturacion.pagar.post');
+        Route::get('/facturacion', [FacturacionController::class, 'index'])->name('admin.facturacion.index');
+        Route::get('/facturacion/{id}', [FacturacionController::class, 'show'])->name('admin.facturacion.show');
+        Route::get('/facturacion/{id}/pagar', [FacturacionController::class, 'pagar'])->name('admin.facturacion.pagar');
+        Route::post('/facturacion/{id}/pagar', [FacturacionController::class, 'pagarPost'])->name('admin.facturacion.pagar.post');
 
         Route::get('/especialidades', [EspecialidadController::class, 'index'])->name('especialidades.index');
         Route::get('/especialidades/create', [EspecialidadController::class, 'create'])->name('especialidades.create');

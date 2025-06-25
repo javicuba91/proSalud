@@ -12,19 +12,19 @@ class FacturacionController extends Controller
     public function index()
     {
         $suscripciones = SuscripcionPlan::with(['profesional', 'plan'])->get();
-        return view('facturacion.index', compact('suscripciones'));
+        return view('admin.facturacion.index', compact('suscripciones'));
     }
 
     public function show($id)
     {
         $suscripcion = SuscripcionPlan::with(['profesional', 'plan'])->findOrFail($id);
-        return view('facturacion.show', compact('suscripcion'));
+        return view('admin.facturacion.show', compact('suscripcion'));
     }
 
     public function pagar($id)
     {
         $suscripcion = SuscripcionPlan::with(['profesional', 'plan'])->findOrFail($id);
-        return view('facturacion.pagar', compact('suscripcion'));
+        return view('admin.facturacion.pagar', compact('suscripcion'));
     }
 
     public function pagarPost(Request $request, $id)
@@ -33,6 +33,6 @@ class FacturacionController extends Controller
         // Simulación de pago
         $suscripcion->pagado = true;
         $suscripcion->save();
-        return redirect()->route('facturacion.index')->with('pago_exitoso', true);
+        return redirect()->route('admin.facturacion.index')->with('pago_exitoso', true);
     }
 }
