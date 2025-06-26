@@ -81,7 +81,7 @@
         <div class="col-lg-12">
             <h1>Mis Datos</h1>
         </div>
-       
+
     </div>
 
     @if (session('success'))
@@ -483,8 +483,7 @@
                         <input type="text" value="{{ $experiencia->pais }}" class="form-control" placeholder="País">
                     </div>
                     <div class="col-md mb-2">
-                        <input type="text" value="{{ $experiencia->anyo }}" class="form-control"
-                            placeholder="Año">
+                        <input type="text" value="{{ $experiencia->anyo }}" class="form-control" placeholder="Año">
                     </div>
                     <div class="col-md mb-2">
                         <button type="button" class="btn btn-danger w-100 eliminar-experiencia"
@@ -649,10 +648,15 @@
                 <label for="">Calendario Videoconsulta</label>
                 <div class="row">
                     <div class="col-lg-6">
-                        <button class="btn btn-danger w-100"><i class="fa fa-calendar"></i> Ver Calendario</button>
+                         <button class="btn btn-primary w-100" data-toggle="modal" data-target="#modalVerCalendarioVideollamada">
+                            <i class="fa fa-calendar"></i> Ver Calendario
+                        </button>
                     </div>
                     <div class="col-lg-6">
-                        <button class="btn btn-warning w-100"><i class="fa fa-plus"></i> Generar Calendario</button>
+                        <button class="btn btn-success w-100" data-toggle="modal"
+                        data-target="#modalGenerarCalendarioVideollamada">
+                        <i class="fa fa-plus"></i> Generar Calendario Videollamada
+                    </button>
                     </div>
                 </div>
             </div>
@@ -670,10 +674,6 @@
                 </button>
             </div>
         </div>
-
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
 
         <div class="row mt-1 border p-2">
             @php
@@ -694,10 +694,11 @@
                             </a>
                         </div>
                         <div class="col-lg-2 mb-3">
-                            <strong>Estado: </strong> {{ucfirst($doc->estado)}}
+                            <strong>Estado: </strong> {{ ucfirst($doc->estado) }}
                         </div>
                         <div class="col-lg-2 mb-3">
-                            <form action="{{ route('profesionales.documentos.destroy', $doc->id) }}" method="POST" onsubmit="return confirm('¿Eliminar documento?');">
+                            <form action="{{ route('profesionales.documentos.destroy', $doc->id) }}" method="POST"
+                                onsubmit="return confirm('¿Eliminar documento?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger w-100">
@@ -986,7 +987,8 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <input type="text" name="puesto" class="form-control" placeholder="Puesto/Cargo" required>
+                            <input type="text" name="puesto" class="form-control" placeholder="Puesto/Cargo"
+                                required>
                         </div>
                         <div class="form-group">
                             <input type="text" name="clinica" class="form-control" placeholder="Clínica/Centro">
@@ -1090,6 +1092,7 @@
                                                                     $detallesUnicos[$key] = $detalle;
                                                                 }
                                                             }
+
                                                         @endphp
 
                                                         @foreach ($detallesUnicos as $i => $detalle)
@@ -1172,6 +1175,138 @@
                         <div class="col-md-3">
                             <h6 class="text-center">Horarios disponibles</h6>
                             <ul id="lista-horarios" class="list-group"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalGenerarCalendarioVideollamada" tabindex="-1" aria-labelledby="modalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Generar calendario de videollamadas</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="form-calendario-videollamada" action="{{ route('profesional.horarios.videollamada.guardar') }}"
+                        method="POST">
+                        @csrf
+                        <div class="table-responsive">
+                            <table class="table table-bordered align-middle text-center">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Día</th>
+                                        <th>Horarios</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $dias = [
+                                            'Domingo',
+                                            'Lunes',
+                                            'Martes',
+                                            'Miércoles',
+                                            'Jueves',
+                                            'Viernes',
+                                            'Sábado',
+                                        ];
+
+                                    @endphp
+                                    @foreach ($dias as $index => $dia)
+                                        <tr>
+                                            <td class="fw-bold">{{ $dia }}</td>
+                                            <td>
+                                                <div class="horarios-dia-videollamada" data-dia="{{ $index }}">
+                                                    @php
+                                                        $horarios = $horariosVideollamada;   
+                                                    @endphp
+                                                    @if ($horarios->has($index))
+                                                        @php
+                                                            $detallesUnicosVideollamada = collect();
+
+                                                            foreach ($horarios[$index] as $horario) {
+                                                                foreach ($horario->detalles as $detalle) {
+                                                                    $key =
+                                                                        $detalle->hora_desde .
+                                                                        '-' .
+                                                                        $detalle->hora_hasta;
+                                                                    $detallesUnicosVideollamada[$key] = $detalle;
+                                                                }
+                                                            }
+
+                                                        @endphp
+
+                                                        @foreach ($detallesUnicosVideollamada as $i => $detalleVideollamada)                                                            
+                                                            <div class="row g-2 align-items-center mb-2 horario-item-videollamada"
+                                                                data-id="{{ $detalleVideollamada->id }}">
+                                                                <div class="col-md-5">
+                                                                    <input step="30" readonly disabled type="time"
+                                                                        name="horarios[{{ $index }}][{{ $loop->index }}][desde]"
+                                                                        class="form-control"
+                                                                        value="{{ $detalleVideollamada->hora_desde }}" required>
+                                                                </div>
+                                                                <div class="col-md-5">
+                                                                    <input readonly disabled type="time"
+                                                                        name="horarios[{{ $index }}][{{ $loop->index }}][hasta]"
+                                                                        class="form-control"
+                                                                        value="{{ $detalleVideollamada->hora_hasta }}" required>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-danger remove-horario-videollamada"
+                                                                        data-id="{{ $detalleVideollamada->id }}">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    @endif
+                                                </div>
+
+                                                <button type="button"
+                                                    class="btn btn-sm btn-outline-primary mt-2 add-horario-videollamada"
+                                                    data-dia="{{ $index }}">
+                                                    <i class="fa fa-plus"></i> Añadir horario
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" form="form-calendario-videollamada">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+      <div class="modal fade" id="modalVerCalendarioVideollamada" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Calendario de horarios de videollamada</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Calendario -->
+                        <div class="col-md-9">
+                            <div id="calendarioFullCalendarVideollamada"></div>
+                        </div>
+                        <!-- Horarios del día -->
+                        <div class="col-md-3">
+                            <h6 class="text-center">Horarios disponibles</h6>
+                            <ul id="lista-horarios-videollamada" class="list-group"></ul>
                         </div>
                     </div>
                 </div>
@@ -1694,6 +1829,43 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
+            document.querySelectorAll('.add-horario-videollamada').forEach(button => {
+               
+                button.addEventListener('click', function() {
+                    
+                    const dia = this.dataset.dia;
+                    const container = document.querySelector(`.horarios-dia-videollamada[data-dia="${dia}"]`);
+                    const index = container.querySelectorAll('.row').length;
+
+                    const html = `
+            <div class="row g-2 align-items-center mb-2 horario-item-videollamada">
+              <div class="col-md-5">
+                <input type="time" name="horarios[${dia}][${index}][desde]" class="form-control" required>
+              </div>
+              <div class="col-md-5">
+                <input type="time" name="horarios[${dia}][${index}][hasta]" class="form-control" required>
+              </div>
+              <div class="col-md-2">
+                <button type="button" class="btn btn-sm btn-danger remove-horario-videollamada"><i class="fa fa-trash"></i></button>
+              </div>
+            </div>
+          `;
+
+                container.insertAdjacentHTML('beforeend', html);
+                });
+            });
+
+            document.body.addEventListener('click', function(e) {
+                if (e.target.closest('.remove-horario-videollamada')) {
+                    e.target.closest('.horario-item-videollamada').remove();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             let calendarEl = document.getElementById('calendarioFullCalendar');
 
             let calendar = new FullCalendar.Calendar(calendarEl, {
@@ -1890,6 +2062,140 @@
         });
     </script>
 
+     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let calendarEl = document.getElementById('calendarioFullCalendarVideollamada');
 
+            let calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                height: 600,
+                eventDisplay: 'background',
+                validRange: {
+                    start: new Date().toISOString().split('T')[0] // hoy como mínimo
+                },
+                events: function(fetchInfo, successCallback, failureCallback) {
+                    $.ajax({
+                        url: '/api/profesional/horarios-videollamada',
+                        method: 'GET',
+                        success: function(data) {
+                            let eventos = data.map(item => ({
+                                title: '',
+                                start: item.fecha,
+                                allDay: true,
+                                backgroundColor: '#8B0000',
+                            }));
+                            successCallback(eventos);
+                        },
+                        error: failureCallback
+                    });
+                },
+                dateClick: function(info) {
+                    $.ajax({
+                        url: '/api/profesional/horarios-videollamada/' + info.dateStr,
+                        method: 'GET',
+                        success: function(response) {
 
+                            console.log(response);
+
+                            let lista = $('#lista-horarios-videollamada');
+                            lista.empty();
+
+                            if (response.length === 0) {
+                                lista.append(
+                                    '<li class="list-group-item text-muted">Sin horarios</li>'
+                                );
+                            } else {
+                                response.forEach((horario, index) => {
+                                    const turnos = generarTurnos(horario.desde,
+                                        horario.hasta);
+
+                                    let turnosHtml = turnos.map(t => `
+                                    <button data-id="${t.id}" class="btn btn-outline-success btn-sm m-1 btn-turno" data-hora="${t}">
+                                        ${t}
+                                    </button>
+                                `).join('');
+
+                                    lista.append(`
+                                    <li class="list-group-item">
+                                        <strong>${horario.desde} - ${horario.hasta}</strong><br>
+                                        <div class="mt-2">${turnosHtml}</div>
+                                    </li>
+                                `);
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+
+            $('#modalVerCalendarioVideollamada').on('shown.bs.modal', function() {
+                calendar.render();
+            });
+
+            // Función para generar turnos de 30 minutos
+            function generarTurnos(desde, hasta) {
+                const turnos = [];
+                const [hd, md] = desde.split(':').map(Number);
+                const [hh, mh] = hasta.split(':').map(Number);
+
+                let start = new Date();
+                start.setHours(hd, md, 0, 0);
+
+                const end = new Date();
+                end.setHours(hh, mh, 0, 0);
+
+                while (start < end) {
+                    const hora = start.getHours().toString().padStart(2, '0');
+                    const min = start.getMinutes().toString().padStart(2, '0');
+                    turnos.push(`${hora}:${min}`);
+                    start.setMinutes(start.getMinutes() + 30);
+                }
+
+                return turnos;
+            }
+
+            // Delegado para seleccionar turno (marcar activo)
+            $('#lista-horarios-videollamada').on('click', '.btn-turno', function() {
+                $('.btn-turno').removeClass('btn-success').addClass('btn-outline-success');
+                $(this).removeClass('btn-outline-success').addClass('btn-success');
+            });
+        });
+    </script>
+
+<script>
+        document.body.addEventListener('click', function(e) {
+            const button = e.target.closest('.remove-horario-videollamada');
+
+            if (button) {
+                const detalleId = button.dataset.id;
+
+                // Si es nuevo (aún sin guardar), lo elimina directamente del DOM
+                if (!detalleId) {
+                    button.closest('.horario-item-videollamada').remove();
+                    return;
+                }
+
+                if (confirm('¿Deseas eliminar este horario de videollamada definitivamente?')) {
+                    fetch(`/profesional/detalle-horarios-videollamada/${detalleId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                    'content'),
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                button.closest('.horario-item-videollamada').remove();
+                                window.location.reload();
+                            } else {
+                                alert('No se pudo eliminar el horario.');
+                            }
+                        })
+                        .catch(() => alert('Error al comunicarse con el servidor.'));
+                }
+            }
+        });
+    </script>
 @endsection

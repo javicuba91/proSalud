@@ -8,12 +8,14 @@ use App\Models\ConsultorioImagen;
 use App\Models\ConsultorioProfesional;
 use App\Models\ContactoAdminProfesional;
 use App\Models\DetalleHorario;
+use App\Models\DetalleHorarioVideollamada;
 use App\Models\DocumentoProfesional;
 use App\Models\Especialidad;
 use App\Models\EspecializacionesProfesional;
 use App\Models\ExperienciaLaboral;
 use App\Models\FormacionAdicional;
 use App\Models\HorarioProfesional;
+use App\Models\HorarioVideollamada;
 use App\Models\InformeConsulta;
 use App\Models\IntervaloMedicamento;
 use App\Models\Medicamento;
@@ -362,6 +364,11 @@ class ProfesionalController extends Controller
             ->get()
             ->groupBy('dia_semana');
 
+        $horariosVideollamada = HorarioVideollamada::with('detalles')
+            ->where('profesional_id', $profesional->id)
+            ->get()
+            ->groupBy('dia_semana');
+
         $provincias = Provincia::orderBy('nombre', 'ASC')->get();
 
 
@@ -375,6 +382,7 @@ class ProfesionalController extends Controller
             'ciudad_id',
             'metodosPago',
             'horarios',
+            'horariosVideollamada',
             'provincias'
         ));
     }
@@ -989,6 +997,83 @@ class ProfesionalController extends Controller
     }
 
 
+    public function guardarHorariosVideollamada(Request $request){
+        $profesional = Profesional::where('user_id', auth()->id())->firstOrFail();
+        $horariosData = $request->input('horarios', []);
+        $añoActual = now()->year;
+
+        foreach ($horariosData as $diaNumero => $rangos) {
+            if (empty($rangos)) continue;
+
+            // Validación local de los rangos enviados
+            foreach ($rangos as $i => $rango) {
+                $desde = $rango['desde'] ?? null;
+                $hasta = $rango['hasta'] ?? null;
+
+                if (!$desde || !$hasta) continue;
+
+                $desdeMin = strtotime($desde);
+                $hastaMin = strtotime($hasta);
+
+                if ($desdeMin >= $hastaMin) {
+                    return redirect()->back()->with('errors', 'El rango de horario no es válido: la hora de inicio debe ser menor que la hora de fin.');
+                }
+
+                // Verificar solapamiento con rangos ya existentes en DB
+                $existentes = DetalleHorarioVideollamada::whereHas('horario', function ($q) use ($profesional, $diaNumero) {
+                    $q->where('profesional_id', $profesional->id)
+                        ->where('dia_semana', $diaNumero);
+                })->get();
+
+                foreach ($existentes as $existente) {
+                    $exDesde = strtotime($existente->hora_desde);
+                    $exHasta = strtotime($existente->hora_hasta);
+
+                    if (
+                        ($desdeMin < $exHasta && $hastaMin > $exDesde)
+                    ) {
+                        return redirect()->back()->with('errors', 'Los horarios ingresados se solapan con horarios ya existentes en la base de datos.');
+                    }
+                }
+            }
+
+            // Si pasa la validación, seguimos creando
+            $diaCarbon = (int)$diaNumero;
+
+            $fecha = Carbon::create($añoActual, date("m"), date("d"))->startOfDay();
+            $fin = Carbon::create($añoActual, 12, 31)->endOfDay();
+
+            while ($fecha->dayOfWeek !== $diaCarbon) {
+                $fecha->addDay();
+            }
+
+            while ($fecha->lte($fin)) {
+                $horario = HorarioVideollamada::create([
+                    'profesional_id' => $profesional->id,
+                    'dia_semana' => $diaCarbon,
+                    'fecha' => $fecha->toDateString(),
+                ]);
+
+                foreach ($rangos as $rango) {
+                    if (
+                        empty($rango['desde']) ||
+                        empty($rango['hasta'])
+                    ) continue;
+
+                    $horario->detalles()->create([
+                        'hora_desde' => $rango['desde'],
+                        'hora_hasta' => $rango['hasta'],
+                        'bloqueado' => false,
+                    ]);
+                }
+
+                $fecha->addWeek();
+            }
+        }
+
+        return redirect()->back()->with('success', 'Horarios de videollamada generados correctamente.');
+    }
+
     public function eventosCalendario()
     {
         $profesional = Profesional::where('user_id', auth()->id())->firstOrFail();
@@ -1007,6 +1092,26 @@ class ProfesionalController extends Controller
 
         return response()->json($eventos);
     }
+
+    public function eventosCalendarioVideollamada()
+    {
+        $profesional = Profesional::where('user_id', auth()->id())->firstOrFail();
+
+        $eventos = HorarioVideollamada::where('profesional_id', $profesional->id)
+            ->get()
+            ->map(function ($horario) {
+                return [
+                    'title' => '',
+                    'start' => $horario->fecha,
+                    'allDay' => true,
+                    'display' => 'background',
+                    'color' => 'transparent'
+                ];
+            });
+
+        return response()->json($eventos);
+    }
+
 
     public function horariosPorDia($fecha)
     {
@@ -1029,6 +1134,32 @@ class ProfesionalController extends Controller
                     'desde' => date("H:i", strtotime($detalle->hora_desde)),
                     'hasta' => date("H:i", strtotime($detalle->hora_hasta)),
                     'consultorio' => $detalle->consultorio->direccion ?? 'Sin dirección',
+                ];
+            }
+        }
+
+        return response()->json($respuesta);
+    }
+
+    public function horariosPorDiaVideollamada($fecha)
+    {
+        $profesional = Profesional::where('user_id', auth()->id())->firstOrFail();
+
+        $horarios = HorarioVideollamada::where('profesional_id', $profesional->id)
+            ->whereDate('fecha', $fecha)
+            ->get();
+
+        if ($horarios->isEmpty()) {
+            return response()->json([]);
+        }
+
+        $respuesta = [];
+
+        foreach ($horarios as $horario) {
+            foreach ($horario->detalles as $detalle) {
+                $respuesta[] = [
+                    'desde' => date("H:i", strtotime($detalle->hora_desde)),
+                    'hasta' => date("H:i", strtotime($detalle->hora_hasta)),
                 ];
             }
         }
@@ -1061,6 +1192,44 @@ class ProfesionalController extends Controller
                 $query->where('hora_desde', $horaDesde)
                     ->where('hora_hasta', $horaHasta)
                     ->where('consultorio_id', $consultorioId);
+            }])
+            ->get();
+
+        foreach ($horarios as $h) {
+            foreach ($h->detalles as $d) {
+                $d->delete(); // Eliminar solo los detalles que coinciden con el rango y consultorio
+            }
+
+            // Si después de borrar detalles ya no quedan más, borro el horario también
+            if ($h->detalles()->count() === 0) {
+                $h->delete();
+            }
+        }
+
+        return response()->json(['success' => true]);
+    }
+    public function eliminarDetalleVideollamada($detalleId)
+    {
+        $profesional = Profesional::where('user_id', auth()->id())->firstOrFail();
+
+        $detalle = DetalleHorarioVideollamada::with('horario')->findOrFail($detalleId);
+        $horario = $detalle->horario;
+
+        if ($horario->profesional_id !== $profesional->id) {
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
+
+        // Parámetros para filtrar
+        $diaSemana = $horario->dia_semana;
+        $horaDesde = $detalle->hora_desde;
+        $horaHasta = $detalle->hora_hasta;
+
+        // Buscar todos los horarios con ese día y profesional
+        $horarios = HorarioVideollamada::where('profesional_id', $profesional->id)
+            ->where('dia_semana', $diaSemana)
+            ->with(['detalles' => function ($query) use ($horaDesde, $horaHasta) {
+                $query->where('hora_desde', $horaDesde)
+                    ->where('hora_hasta', $horaHasta);
             }])
             ->get();
 
@@ -1217,4 +1386,5 @@ class ProfesionalController extends Controller
 
         return redirect()->route('profesionales.misPlanes')->with('success', 'Plan activado correctamente.');
     }
+
 }

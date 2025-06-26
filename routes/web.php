@@ -117,6 +117,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profesional/elegir-plan', [ProfesionalController::class, 'elegirPlan'])->name('profesional.elegir.plan');
     Route::post('/profesional/pagar-plan', [ProfesionalController::class, 'pagarPlan'])->name('profesional.pagar.plan');
 
+    Route::get('/api/profesional/horarios', [ProfesionalController::class, 'eventosCalendario']);
+    Route::get('/api/profesional/horarios/{fecha}', [ProfesionalController::class, 'horariosPorDia']);
+    Route::delete('/profesional/detalle-horarios/{id}', [ProfesionalController::class, 'eliminarDetalle']);
+
+     Route::get('/api/profesional/horarios-videollamada', [ProfesionalController::class, 'eventosCalendarioVideollamada']);
+    Route::get('/api/profesional/horarios-videollamada/{fecha}', [ProfesionalController::class, 'horariosPorDiaVideollamada']);
+    Route::delete('/profesional/detalle-horarios-videollamada/{id}', [ProfesionalController::class, 'eliminarDetalleVideollamada']);
+
+
     // Agrupa el resto de rutas bajo el middleware de suscripción pagada
     Route::middleware(['suscripcion.pagada'])->group(function () {
         Route::get('/profesional/mis-citas-presenciales', [ProfesionalController::class, 'misCitasPresenciales'])->name('profesionales.misCitasPresenciales');
@@ -196,14 +205,11 @@ Route::middleware(['auth'])->group(function () {
             ->name('profesional.metodos_pago.update');
 
         Route::post('/profesional/guardar-horarios', [ProfesionalController::class, 'guardarHorariosPresencial'])->name('profesional.horarios.presencial.guardar');
+        Route::post('/profesional/guardar-horarios-videollamada', [ProfesionalController::class, 'guardarHorariosVideollamada'])->name('profesional.horarios.videollamada.guardar');
 
         Route::post('/profesional/consultorio/{id}/imagenes', [ProfesionalController::class, 'guardarImagenesConsultorio'])->name('profesional.consultorio.imagenes.store');
         Route::get('/profesional/consultorio/{id}/imagenes', [ProfesionalController::class, 'listaImagenesConsultorio'])->name('profesional.consultorio.imagenes.index');
         Route::delete('/profesional/consultorio/imagen/{id}', [ProfesionalController::class, 'eliminarImagenConsultorio']);
-
-        Route::get('/api/profesional/horarios', [ProfesionalController::class, 'eventosCalendario']);
-        Route::get('/api/profesional/horarios/{fecha}', [ProfesionalController::class, 'horariosPorDia']);
-        Route::delete('/profesional/detalle-horarios/{id}', [ProfesionalController::class, 'eliminarDetalle']);
 
         Route::post('/profesional/{id}/documentos', [ProfesionalController::class, 'guardarDocumento'])->name('profesionales.documentos.store');
         Route::delete('/profesional/documentos/{documento}', [ProfesionalController::class, 'eliminarDocumento'])->name('profesionales.documentos.destroy');
