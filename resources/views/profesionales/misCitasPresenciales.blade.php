@@ -87,7 +87,7 @@
                 fetch("{{ route('profesional.citasPresencialesJson') }}?filtro=" + filtro)
                     .then(response => response.json())
                     .then(data => {
-                      
+
 
                         calendar = new FullCalendar.Calendar(calendarEl, {
                             headerToolbar: {
@@ -234,5 +234,76 @@
             });
         });
     </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Función para enviar recordatorio de cita usando delegación de eventos
+    $(document).on('click', '.btn-enviar-recordatorio', function() {
+        const button = this;
+        const citaId = $(this).data('cita-id');
+
+        // Mostrar confirmación antes de enviar
+        Swal.fire({
+            title: '¿Enviar recordatorio?',
+            text: 'Se enviará un recordatorio de la cita al paciente por correo electrónico.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, enviar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Deshabilitar el botón y mostrar estado de carga
+                $(button).prop('disabled', true);
+                $(button).html('<i class="fas fa-spinner fa-spin"></i> Enviando...');
+
+                // Realizar petición AJAX
+                $.ajax({
+                    url: '{{ route("profesional.citas.enviarRecordatorio") }}',
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        cita_id: citaId
+                    },
+                    success: function(data) {
+                        if (data.success) {
+                            Swal.fire({
+                                title: '¡Éxito!',
+                                text: data.message,
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: data.message,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Ocurrió un error al enviar el recordatorio. Por favor, inténtelo de nuevo.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    },
+                    complete: function() {
+                        // Restaurar el botón
+                        $(button).prop('disabled', false);
+                        $(button).html('Enviar recordatorio de la cita');
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
 
 @endsection

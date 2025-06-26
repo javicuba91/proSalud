@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RecordatorioCitaMail;
 use App\Models\Cita;
 use App\Models\Ciudad;
 use App\Models\ConsultorioImagen;
@@ -41,6 +42,7 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
 
 class ProfesionalController extends Controller
 {
@@ -1385,6 +1387,52 @@ class ProfesionalController extends Controller
         $suscripcion->save();
 
         return redirect()->route('profesionales.misPlanes')->with('success', 'Plan activado correctamente.');
+    }
+
+    public function enviarRecordatorioCita(Request $request)
+    {
+        try {
+            $citaId = $request->input('cita_id');
+            $cita = Cita::with(['paciente', 'consultorio', 'profesional'])->find($citaId);
+
+            if (!$cita) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Cita no encontrada'
+                ], 404);
+            }
+
+            // Verificar que la cita pertenece al profesional autenticado
+            $profesional = Profesional::where('user_id', auth()->id())->firstOrFail();
+            if ($cita->profesional_id !== $profesional->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tienes permisos para enviar recordatorio de esta cita'
+                ], 403);
+            }
+
+            // Verificar que el paciente tiene email
+            if (!$cita->paciente || !$cita->paciente->email) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El paciente no tiene un email registrado'
+                ], 400);
+            }
+
+            // Enviar el correo recordatorio
+            Mail::to($cita->paciente->email)->send(new RecordatorioCitaMail($cita));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Recordatorio enviado correctamente al paciente'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al enviar el recordatorio: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
 }

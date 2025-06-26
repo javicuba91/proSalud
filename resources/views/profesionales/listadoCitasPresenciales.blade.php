@@ -36,7 +36,9 @@
                 <a href="#" class="btn btn-dark w-100">{{ucfirst($cita->estado)}}</a>
             </div>
             <div class="col-lg-3 mb-2">
-                <a href="#" class="btn btn-dark w-100">Enviar recordatorio de la cita</a>
+                <button type="button" class="btn btn-dark w-100 btn-enviar-recordatorio" data-cita-id="{{ $cita->id }}">
+                    Enviar recordatorio de la cita
+                </button>
             </div>
             <div class="col-lg-3 mb-2">
                 <a href="#" class="btn btn-dark w-100 btn-cambiar-fecha" data-toggle="modal"
@@ -76,7 +78,7 @@
             </div>
             <div class="col-lg-12 mb-2">
                 <a href="#" class="btn btn-dark w-100">Programar nueva cita</a>
-            </div>            
+            </div>
         @endif
     </div>
 @endforeach
@@ -132,4 +134,3 @@
         </form>
     </div>
 </div>
-

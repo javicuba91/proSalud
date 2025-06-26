@@ -174,6 +174,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/profesional/citas/videollamadas/json', [ProfesionalController::class, 'citasVideoLlamadasJson'])->name('profesional.citasVideoLlamadasJson');
 
         Route::post('/profesional/citas/actualizar-fecha', [ProfesionalController::class, 'actualizarFecha'])->name('profesional.citas.actualizarFecha');
+        Route::post('/profesional/citas/enviar-recordatorio', [ProfesionalController::class, 'enviarRecordatorioCita'])->name('profesional.citas.enviarRecordatorio');
 
 
         Route::get('/profesional/recetas/{id}/exportar-pdf', [ProfesionalController::class, 'exportarRecetaPDF'])->name('profesional.receta.exportarPDF');
