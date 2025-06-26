@@ -64,7 +64,7 @@
                 <p><strong>Consultorio:</strong> {{ $consultorio->direccion }}</p>
             @endif
             @if($cita->codigo_qr)
-                <p><strong>Código de Cita:</strong> {{ $cita->codigo_qr }}</p>
+                <p><strong>Código de Cita:</strong> {{ QrCode::size(60)->generate($cita->codigo_qr) }}</p>
             @endif
         </div>
 
