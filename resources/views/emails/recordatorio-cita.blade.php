@@ -43,6 +43,7 @@
 </head>
 <body>
     <div class="header">
+        <img width="250" src="{{ asset("imagenes/logo.png") }}" alt="">
         <h1>ProSalud</h1>
         <h2>Recordatorio de Cita</h2>
     </div>
