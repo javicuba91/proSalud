@@ -78,8 +78,8 @@
                                 <option value="presencial" {{ request('modalidad') == 'presencial' ? 'selected' : '' }}>
                                     Presencial
                                 </option>
-                                <option value="videoconsulta" {{ request('modalidad') == 'videoconsulta' ? 'selected' : '' }}>
-                                    Videoconsulta
+                                <option value="Videollamada" {{ request('modalidad') == 'Videollamada' ? 'selected' : '' }}>
+                                    Videollamada
                                 </option>
                             </select>
                         </div>
