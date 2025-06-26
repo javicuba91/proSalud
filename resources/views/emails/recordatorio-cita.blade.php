@@ -63,8 +63,11 @@
             @if($consultorio && $cita->modalidad == 'presencial')
                 <p><strong>Consultorio:</strong> {{ $consultorio->direccion }}</p>
             @endif
-            @if($cita->codigo_qr)
-                <p><strong>Código de Cita:</strong> {{ QrCode::size(60)->generate($cita->codigo_qr) }}</p>
+            @if($qrCodeData)
+                <p><strong>Código de Cita:</strong></p>
+                <div style="text-align: center; margin: 10px 0;">
+                    <img src="data:image/png;base64,{{ $qrCodeData }}" alt="Código QR de la cita" style="max-width: 150px; height: auto;">
+                </div>
             @endif
         </div>
 
