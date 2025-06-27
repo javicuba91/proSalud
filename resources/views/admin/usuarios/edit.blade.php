@@ -57,8 +57,8 @@
                     <div class="col-md-4 mb-3">
                         <label for="name" class="form-label"><strong>Nombre Completo:</strong></label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror"
-                               id="name" name="name" value="{{ old('name', $usuario->name) }}"
-                               data-label="Nombre Completo" required>
+                               id="name" name="name" value="{{ old('name', $usuario->name) }}  "
+                               data-label="Nombre Completo" disabled readonly>
                         @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

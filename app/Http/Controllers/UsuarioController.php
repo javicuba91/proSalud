@@ -288,11 +288,6 @@ class UsuarioController extends Controller
         $validatedData = $this->validateUserDataByRole($request, $usuario->role, $usuario->id);
         DB::beginTransaction();
 
-        // Actualizar datos básicos del usuario
-        $userUpdates = [
-            'name' => $validatedData['name'],
-        ];
-
         // Actualizar rol si ha cambiado
         if (isset($validatedData['role']) && $validatedData['role'] !== $usuario->role) {
             $userUpdates['role'] = $validatedData['role'];
@@ -340,7 +335,6 @@ class UsuarioController extends Controller
     private function validateUserDataByRole(Request $request, string $role, ?int $userId = null)
     {
         $rules = [
-            'name' => 'required|string|max:255',
             'password' => 'nullable|string|confirmed',
             'role' => 'required|in:admin,paciente,profesional,proveedor',
             'activo' => 'nullable|boolean',
@@ -563,17 +557,5 @@ class UsuarioController extends Controller
         return redirect()->route('usuarios.index')->with('eliminado', 'ok');
     }
 
-    /**
-     * Helper method for debugging request data
-     */
-    private function debugRequestData(Request $request, string $context = '')
-    {
-        Log::info("Debug Request Data - {$context}", [
-            'all_data' => $request->all(),
-            'files' => $request->allFiles(),
-            'method' => $request->method(),
-            'url' => $request->url(),
-            'headers' => $request->headers->all()
-        ]);
-    }
+
 }
