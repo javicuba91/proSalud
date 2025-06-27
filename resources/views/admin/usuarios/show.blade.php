@@ -119,8 +119,53 @@
                         </div>
 
                         <div class="col-md-4 mb-3">
+                            <strong>Email:</strong><br>
+                            <span>{{ $usuario->profesional->email ?? 'No especificado' }}</span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <strong>Fecha de Nacimiento:</strong><br>
+                            <span>{{ $usuario->profesional->fecha_nacimiento ? \Carbon\Carbon::parse($usuario->profesional->fecha_nacimiento)->format('d/m/Y') : 'No especificado' }}</span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <strong>Género:</strong><br>
+                            <span>{{ $usuario->profesional->genero ?? 'No especificado' }}</span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
                             <strong>Teléfono Personal:</strong><br>
                             <span>{{ $usuario->profesional->telefono_personal ?? 'No especificado' }}</span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <strong>Teléfono Profesional:</strong><br>
+                            <span>{{ $usuario->profesional->telefono_profesional ?? 'No especificado' }}</span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <strong>Licencia Médica:</strong><br>
+                            <span>{{ $usuario->profesional->licencia_medica ?? 'No especificado' }}</span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <strong>Número Colegiado:</strong><br>
+                            <span>{{ $usuario->profesional->num_colegiado ?? 'No especificado' }}</span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <strong>Años de Experiencia:</strong><br>
+                            <span>{{ $usuario->profesional->anios_experiencia ?? 'No especificado' }}</span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <strong>Idiomas:</strong><br>
+                            <span>{{ $usuario->profesional->idiomas ?? 'No especificado' }}</span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <strong>Número de Cuenta:</strong><br>
+                            <span>{{ $usuario->profesional->numero_cuenta ?? 'No especificado' }}</span>
                         </div>
 
                         @if($usuario->profesional->ciudad)
@@ -147,6 +192,27 @@
                         <div class="col-md-4 mb-3">
                             <strong>Plan Actual:</strong><br>
                             <span class="badge badge-warning">{{ $usuario->profesional->plan->nombre ?? 'Sin plan' }}</span>
+                        </div>
+                        @endif
+
+                        @if($usuario->profesional->descripcion_profesional)
+                        <div class="col-md-12 mb-3">
+                            <strong>Descripción Profesional:</strong><br>
+                            <p class="border p-3 bg-light">{{ $usuario->profesional->descripcion_profesional }}</p>
+                        </div>
+                        @endif
+
+                        @if($usuario->profesional->foto)
+                        <div class="col-md-6 mb-3">
+                            <strong>Foto:</strong><br>
+                            <img src="{{ asset($usuario->profesional->foto) }}" alt="Foto del profesional" class="img-thumbnail" style="max-width: 200px;">
+                        </div>
+                        @endif
+
+                        @if($usuario->profesional->logo)
+                        <div class="col-md-6 mb-3">
+                            <strong>Logo:</strong><br>
+                            <img src="{{ asset($usuario->profesional->logo) }}" alt="Logo del profesional" class="img-thumbnail" style="max-width: 200px;">
                         </div>
                         @endif
 
@@ -263,18 +329,23 @@
                         </div>
 
                         <div class="col-md-4 mb-3">
+                            <strong>Email:</strong><br>
+                            <span>{{ $usuario->paciente->email ?? 'No especificado' }}</span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
                             <strong>Fecha de Nacimiento:</strong><br>
                             <span>{{ $usuario->paciente->fecha_nacimiento ? \Carbon\Carbon::parse($usuario->paciente->fecha_nacimiento)->format('d/m/Y') : 'No especificado' }}</span>
                         </div>
 
                         <div class="col-md-4 mb-3">
                             <strong>Género:</strong><br>
-                            <span>{{ ucfirst($usuario->paciente->genero ?? 'No especificado') }}</span>
+                            <span>{{ $usuario->paciente->genero ?? 'No especificado' }}</span>
                         </div>
 
                         <div class="col-md-4 mb-3">
                             <strong>Estado Civil:</strong><br>
-                            <span>{{ ucfirst($usuario->paciente->estado_civil ?? 'No especificado') }}</span>
+                            <span>{{ $usuario->paciente->estado_civil ?? 'No especificado' }}</span>
                         </div>
 
                         <div class="col-md-4 mb-3">
@@ -292,19 +363,10 @@
                             <span>{{ $usuario->paciente->grupo_sanguineo ?? 'No especificado' }}</span>
                         </div>
 
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-12 mb-3">
                             <strong>Dirección:</strong><br>
                             <span>{{ $usuario->paciente->direccion ?? 'No especificado' }}</span>
                         </div>
-
-                        @if($usuario->paciente->segurosMedicos->count() > 0)
-                        <div class="col-md-12 mb-3">
-                            <strong>Seguros Médicos:</strong><br>
-                            @foreach($usuario->paciente->segurosMedicos as $seguro)
-                                <span class="badge badge-outline-info mr-1 mb-1">{{ $seguro->nombre }}</span>
-                            @endforeach
-                        </div>
-                        @endif
 
                         @if($usuario->paciente->foto)
                         <div class="col-md-12 mb-3">
@@ -373,7 +435,14 @@
 
                         <div class="col-md-4 mb-3">
                             <strong>Tipo de Proveedor:</strong><br>
-                            <span class="badge badge-warning">{{ ucfirst($usuario->proveedor->tipo ?? 'No especificado') }}</span>
+                            @php
+                                $tipoLabels = [
+                                    'farmacia' => 'Farmacia',
+                                    'laboratorio' => 'Laboratorio',
+                                    'centro_imagenes' => 'Centro de Imágenes'
+                                ];
+                            @endphp
+                            <span class="badge badge-warning">{{ $tipoLabels[$usuario->proveedor->tipo] ?? ucfirst($usuario->proveedor->tipo ?? 'No especificado') }}</span>
                         </div>
 
                         <div class="col-md-4 mb-3">
@@ -387,6 +456,11 @@
                         </div>
 
                         <div class="col-md-4 mb-3">
+                            <strong>Email:</strong><br>
+                            <span>{{ $usuario->proveedor->email ?? 'No especificado' }}</span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
                             <strong>Ciudad:</strong><br>
                             <span>{{ $usuario->proveedor->ciudad ?? 'No especificado' }}</span>
                         </div>
@@ -396,17 +470,10 @@
                             <span>{{ $usuario->proveedor->telefono ?? 'No especificado' }}</span>
                         </div>
 
-                        <div class="col-md-4 mb-3">
-                            <strong>Email de Contacto:</strong><br>
-                            <span>{{ $usuario->proveedor->email ?? 'No especificado' }}</span>
-                        </div>
-
-                        @if($usuario->proveedor->direccion)
                         <div class="col-md-12 mb-3">
                             <strong>Dirección:</strong><br>
-                            <span>{{ $usuario->proveedor->direccion }}</span>
+                            <span>{{ $usuario->proveedor->direccion ?? 'No especificado' }}</span>
                         </div>
-                        @endif
 
                         <!-- Información adicional del Proveedor -->
                         <div class="col-md-12">
@@ -538,7 +605,6 @@
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
     <style>
         .badge-outline-primary {
             color: #007bff;

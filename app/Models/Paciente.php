@@ -6,7 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Paciente extends Model
 {
-        protected $table = "pacientes";
+    protected $table = "pacientes";
+
+    protected $fillable = [
+        'user_id',
+        'nombre_completo',
+        'fecha_nacimiento',
+        'genero',
+        'estado_civil',
+        'nacionalidad',
+        'celular',
+        'email',
+        'direccion',
+        'cedula',
+        'grupo_sanguineo',
+        'foto'
+    ];
 
     public function user()
     {
@@ -36,5 +51,5 @@ class Paciente extends Model
     {
         return $this->hasMany(Valoracion::class);
     }
-    
+
 }

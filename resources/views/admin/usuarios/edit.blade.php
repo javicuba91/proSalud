@@ -57,7 +57,8 @@
                     <div class="col-md-4 mb-3">
                         <label for="name" class="form-label"><strong>Nombre Completo:</strong></label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror"
-                               id="name" name="name" value="{{ old('name', $usuario->name) }}" required>
+                               id="name" name="name" value="{{ old('name', $usuario->name) }}"
+                               data-label="Nombre Completo" required>
                         @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -65,16 +66,15 @@
 
                     <div class="col-md-4 mb-3">
                         <label for="email" class="form-label"><strong>Correo Electrónico:</strong></label>
-                        <input type="email" class="form-control @error('email') is-invalid @enderror"
-                               id="email" name="email" value="{{ old('email', $usuario->email) }}" required>
-                        @error('email')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <input type="email" class="form-control"
+                               id="email" name="email" value="{{ $usuario->email }}" disabled readonly>
+                        <small class="form-text text-muted">El correo electrónico no puede ser modificado</small>
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <label for="role" class="form-label"><strong>Rol:</strong></label>
-                        <select class="form-control @error('role') is-invalid @enderror" id="role" name="role" required onchange="toggleRoleFields()">
+                        <select class="form-control @error('role') is-invalid @enderror" id="role" name="role"
+                                data-label="Rol" required onchange="toggleRoleFields()">
                             <option value="paciente" {{ old('role', $usuario->role) == 'paciente' ? 'selected' : '' }}>Paciente</option>
                             <option value="profesional" {{ old('role', $usuario->role) == 'profesional' ? 'selected' : '' }}>Profesional</option>
                             <option value="proveedor" {{ old('role', $usuario->role) == 'proveedor' ? 'selected' : '' }}>Proveedor</option>
@@ -85,7 +85,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-2 mb-3">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="activo" name="activo" value="1"
                                    {{ old('activo', $usuario->activo) ? 'checked' : '' }}>
@@ -95,7 +95,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-2 mb-3 ">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="email_verified" name="email_verified" value="1"
                                    {{ old('email_verified', $usuario->email_verified_at ? 1 : 0) ? 'checked' : '' }}>
@@ -116,10 +116,11 @@
                         </div>
 
                         <div class="col-md-4 mb-3">
-                            <label for="paciente_nombre_completo" class="form-label">Nombre Completo:</label>
+                            <label for="paciente_nombre_completo" class="form-label">Nombre Completo: <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('paciente_nombre_completo') is-invalid @enderror"
                                    id="paciente_nombre_completo" name="paciente_nombre_completo"
-                                   value="{{ old('paciente_nombre_completo', $usuario->paciente->nombre_completo ?? '') }}">
+                                   value="{{ old('paciente_nombre_completo', $usuario->paciente->nombre_completo ?? '') }}"
+                                   data-label="Nombre Completo del Paciente" required>
                             @error('paciente_nombre_completo')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -133,6 +134,14 @@
                             @error('paciente_cedula')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="paciente_email" class="form-label">Email:</label>
+                            <input type="email" class="form-control"
+                                   id="paciente_email" name="paciente_email"
+                                   value="{{ $usuario->paciente->email ?? '' }}" disabled readonly>
+                            <small class="form-text text-muted">El email no puede ser modificado</small>
                         </div>
 
                         <div class="col-md-4 mb-3">
@@ -150,9 +159,9 @@
                             <select class="form-control @error('paciente_genero') is-invalid @enderror"
                                     id="paciente_genero" name="paciente_genero">
                                 <option value="">Seleccionar...</option>
-                                <option value="masculino" {{ old('paciente_genero', $usuario->paciente->genero ?? '') == 'masculino' ? 'selected' : '' }}>Masculino</option>
-                                <option value="femenino" {{ old('paciente_genero', $usuario->paciente->genero ?? '') == 'femenino' ? 'selected' : '' }}>Femenino</option>
-                                <option value="otro" {{ old('paciente_genero', $usuario->paciente->genero ?? '') == 'otro' ? 'selected' : '' }}>Otro</option>
+                                <option value="Masculino" {{ old('paciente_genero', $usuario->paciente->genero ?? '') == 'Masculino' ? 'selected' : '' }}>Masculino</option>
+                                <option value="Femenino" {{ old('paciente_genero', $usuario->paciente->genero ?? '') == 'Femenino' ? 'selected' : '' }}>Femenino</option>
+                                <option value="Otro" {{ old('paciente_genero', $usuario->paciente->genero ?? '') == 'Otro' ? 'selected' : '' }}>Otro</option>
                             </select>
                             @error('paciente_genero')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -161,15 +170,9 @@
 
                         <div class="col-md-4 mb-3">
                             <label for="paciente_estado_civil" class="form-label">Estado Civil:</label>
-                            <select class="form-control @error('paciente_estado_civil') is-invalid @enderror"
-                                    id="paciente_estado_civil" name="paciente_estado_civil">
-                                <option value="">Seleccionar...</option>
-                                <option value="soltero" {{ old('paciente_estado_civil', $usuario->paciente->estado_civil ?? '') == 'soltero' ? 'selected' : '' }}>Soltero</option>
-                                <option value="casado" {{ old('paciente_estado_civil', $usuario->paciente->estado_civil ?? '') == 'casado' ? 'selected' : '' }}>Casado</option>
-                                <option value="divorciado" {{ old('paciente_estado_civil', $usuario->paciente->estado_civil ?? '') == 'divorciado' ? 'selected' : '' }}>Divorciado</option>
-                                <option value="viudo" {{ old('paciente_estado_civil', $usuario->paciente->estado_civil ?? '') == 'viudo' ? 'selected' : '' }}>Viudo</option>
-                                <option value="union_libre" {{ old('paciente_estado_civil', $usuario->paciente->estado_civil ?? '') == 'union_libre' ? 'selected' : '' }}>Unión Libre</option>
-                            </select>
+                            <input type="text" class="form-control @error('paciente_estado_civil') is-invalid @enderror"
+                                   id="paciente_estado_civil" name="paciente_estado_civil"
+                                   value="{{ old('paciente_estado_civil', $usuario->paciente->estado_civil ?? '') }}">
                             @error('paciente_estado_civil')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -194,7 +197,6 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
                         <div class="col-md-4 mb-3">
                             <label for="paciente_grupo_sanguineo" class="form-label">Grupo Sanguíneo:</label>
                             <select class="form-control @error('paciente_grupo_sanguineo') is-invalid @enderror"
@@ -204,10 +206,10 @@
                                 <option value="A-" {{ old('paciente_grupo_sanguineo', $usuario->paciente->grupo_sanguineo ?? '') == 'A-' ? 'selected' : '' }}>A-</option>
                                 <option value="B+" {{ old('paciente_grupo_sanguineo', $usuario->paciente->grupo_sanguineo ?? '') == 'B+' ? 'selected' : '' }}>B+</option>
                                 <option value="B-" {{ old('paciente_grupo_sanguineo', $usuario->paciente->grupo_sanguineo ?? '') == 'B-' ? 'selected' : '' }}>B-</option>
-                                <option value="O+" {{ old('paciente_grupo_sanguineo', $usuario->paciente->grupo_sanguineo ?? '') == 'O+' ? 'selected' : '' }}>O+</option>
-                                <option value="O-" {{ old('paciente_grupo_sanguineo', $usuario->paciente->grupo_sanguineo ?? '') == 'O-' ? 'selected' : '' }}>O-</option>
                                 <option value="AB+" {{ old('paciente_grupo_sanguineo', $usuario->paciente->grupo_sanguineo ?? '') == 'AB+' ? 'selected' : '' }}>AB+</option>
                                 <option value="AB-" {{ old('paciente_grupo_sanguineo', $usuario->paciente->grupo_sanguineo ?? '') == 'AB-' ? 'selected' : '' }}>AB-</option>
+                                <option value="O+" {{ old('paciente_grupo_sanguineo', $usuario->paciente->grupo_sanguineo ?? '') == 'O+' ? 'selected' : '' }}>O+</option>
+                                <option value="O-" {{ old('paciente_grupo_sanguineo', $usuario->paciente->grupo_sanguineo ?? '') == 'O-' ? 'selected' : '' }}>O-</option>
                             </select>
                             @error('paciente_grupo_sanguineo')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -219,6 +221,18 @@
                             <textarea class="form-control @error('paciente_direccion') is-invalid @enderror"
                                       id="paciente_direccion" name="paciente_direccion" rows="3">{{ old('paciente_direccion', $usuario->paciente->direccion ?? '') }}</textarea>
                             @error('paciente_direccion')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="paciente_foto" class="form-label">Foto:</label>
+                            <input type="file" class="form-control-file @error('paciente_foto') is-invalid @enderror"
+                                   id="paciente_foto" name="paciente_foto" accept="image/*">
+                            @if($usuario->paciente && $usuario->paciente->foto)
+                                <small class="form-text text-muted">Foto actual: {{ basename($usuario->paciente->foto) }}</small>
+                            @endif
+                            @error('paciente_foto')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -255,11 +269,112 @@
                         </div>
 
                         <div class="col-md-4 mb-3">
+                            <label for="profesional_email" class="form-label">Email:</label>
+                            <input type="email" class="form-control"
+                                   id="profesional_email" name="profesional_email"
+                                   value="{{ $usuario->profesional->email ?? '' }}" disabled readonly>
+                            <small class="form-text text-muted">El email no puede ser modificado</small>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="profesional_fecha_nacimiento" class="form-label">Fecha de Nacimiento:</label>
+                            <input type="date" class="form-control @error('profesional_fecha_nacimiento') is-invalid @enderror"
+                                   id="profesional_fecha_nacimiento" name="profesional_fecha_nacimiento"
+                                   value="{{ old('profesional_fecha_nacimiento', $usuario->profesional->fecha_nacimiento ?? '') }}">
+                            @error('profesional_fecha_nacimiento')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="profesional_genero" class="form-label">Género:</label>
+                            <select class="form-control @error('profesional_genero') is-invalid @enderror"
+                                    id="profesional_genero" name="profesional_genero">
+                                <option value="">Seleccionar...</option>
+                                <option value="Hombre" {{ old('profesional_genero', $usuario->profesional->genero ?? '') == 'Hombre' ? 'selected' : '' }}>Hombre</option>
+                                <option value="Mujer" {{ old('profesional_genero', $usuario->profesional->genero ?? '') == 'Mujer' ? 'selected' : '' }}>Mujer</option>
+                                <option value="Otro" {{ old('profesional_genero', $usuario->profesional->genero ?? '') == 'Otro' ? 'selected' : '' }}>Otro</option>
+                            </select>
+                            @error('profesional_genero')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
                             <label for="profesional_telefono_personal" class="form-label">Teléfono Personal:</label>
                             <input type="text" class="form-control @error('profesional_telefono_personal') is-invalid @enderror"
                                    id="profesional_telefono_personal" name="profesional_telefono_personal"
                                    value="{{ old('profesional_telefono_personal', $usuario->profesional->telefono_personal ?? '') }}">
                             @error('profesional_telefono_personal')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="profesional_telefono_profesional" class="form-label">Teléfono Profesional:</label>
+                            <input type="text" class="form-control @error('profesional_telefono_profesional') is-invalid @enderror"
+                                   id="profesional_telefono_profesional" name="profesional_telefono_profesional"
+                                   value="{{ old('profesional_telefono_profesional', $usuario->profesional->telefono_profesional ?? '') }}">
+                            @error('profesional_telefono_profesional')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="profesional_licencia_medica" class="form-label">Licencia Médica:</label>
+                            <input type="text" class="form-control @error('profesional_licencia_medica') is-invalid @enderror"
+                                   id="profesional_licencia_medica" name="profesional_licencia_medica"
+                                   value="{{ old('profesional_licencia_medica', $usuario->profesional->licencia_medica ?? '') }}">
+                            @error('profesional_licencia_medica')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="profesional_num_colegiado" class="form-label">Número Colegiado:</label>
+                            <input type="text" class="form-control @error('profesional_num_colegiado') is-invalid @enderror"
+                                   id="profesional_num_colegiado" name="profesional_num_colegiado"
+                                   value="{{ old('profesional_num_colegiado', $usuario->profesional->num_colegiado ?? '') }}">
+                            @error('profesional_num_colegiado')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="profesional_anios_experiencia" class="form-label">Años de Experiencia:</label>
+                            <input type="number" class="form-control @error('profesional_anios_experiencia') is-invalid @enderror"
+                                   id="profesional_anios_experiencia" name="profesional_anios_experiencia"
+                                   value="{{ old('profesional_anios_experiencia', $usuario->profesional->anios_experiencia ?? '') }}">
+                            @error('profesional_anios_experiencia')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="profesional_idiomas" class="form-label">Idiomas:</label>
+                            <input type="text" class="form-control @error('profesional_idiomas') is-invalid @enderror"
+                                   id="profesional_idiomas" name="profesional_idiomas"
+                                   value="{{ old('profesional_idiomas', $usuario->profesional->idiomas ?? '') }}">
+                            @error('profesional_idiomas')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="profesional_numero_cuenta" class="form-label">Número de Cuenta:</label>
+                            <input type="text" class="form-control @error('profesional_numero_cuenta') is-invalid @enderror"
+                                   id="profesional_numero_cuenta" name="profesional_numero_cuenta"
+                                   value="{{ old('profesional_numero_cuenta', $usuario->profesional->numero_cuenta ?? '') }}">
+                            @error('profesional_numero_cuenta')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label for="profesional_descripcion_profesional" class="form-label">Descripción Profesional:</label>
+                            <textarea class="form-control @error('profesional_descripcion_profesional') is-invalid @enderror"
+                                      id="profesional_descripcion_profesional" name="profesional_descripcion_profesional" rows="4">{{ old('profesional_descripcion_profesional', $usuario->profesional->descripcion_profesional ?? '') }}</textarea>
+                            @error('profesional_descripcion_profesional')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -285,6 +400,30 @@
                                 </label>
                             </div>
                         </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="profesional_foto" class="form-label">Foto:</label>
+                            <input type="file" class="form-control-file @error('profesional_foto') is-invalid @enderror"
+                                   id="profesional_foto" name="profesional_foto" accept="image/*">
+                            @if($usuario->profesional && $usuario->profesional->foto)
+                                <small class="form-text text-muted">Foto actual: {{ basename($usuario->profesional->foto) }}</small>
+                            @endif
+                            @error('profesional_foto')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="profesional_logo" class="form-label">Logo:</label>
+                            <input type="file" class="form-control-file @error('profesional_logo') is-invalid @enderror"
+                                   id="profesional_logo" name="profesional_logo" accept="image/*">
+                            @if($usuario->profesional && $usuario->profesional->logo)
+                                <small class="form-text text-muted">Logo actual: {{ basename($usuario->profesional->logo) }}</small>
+                            @endif
+                            @error('profesional_logo')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
                 </div>
 
@@ -300,12 +439,11 @@
                         <div class="col-md-4 mb-3">
                             <label for="proveedor_tipo" class="form-label">Tipo de Proveedor:</label>
                             <select class="form-control @error('proveedor_tipo') is-invalid @enderror"
-                                    id="proveedor_tipo" name="proveedor_tipo">
+                                    id="proveedor_tipo" name="proveedor_tipo" required>
                                 <option value="">Seleccionar...</option>
-                                <option value="clinica" {{ old('proveedor_tipo', $usuario->proveedor->tipo ?? '') == 'clinica' ? 'selected' : '' }}>Clínica</option>
-                                <option value="laboratorio" {{ old('proveedor_tipo', $usuario->proveedor->tipo ?? '') == 'laboratorio' ? 'selected' : '' }}>Laboratorio</option>
                                 <option value="farmacia" {{ old('proveedor_tipo', $usuario->proveedor->tipo ?? '') == 'farmacia' ? 'selected' : '' }}>Farmacia</option>
-                                <option value="otros" {{ old('proveedor_tipo', $usuario->proveedor->tipo ?? '') == 'otros' ? 'selected' : '' }}>Otros</option>
+                                <option value="laboratorio" {{ old('proveedor_tipo', $usuario->proveedor->tipo ?? '') == 'laboratorio' ? 'selected' : '' }}>Laboratorio</option>
+                                <option value="centro_imagenes" {{ old('proveedor_tipo', $usuario->proveedor->tipo ?? '') == 'centro_imagenes' ? 'selected' : '' }}>Centro de Imágenes</option>
                             </select>
                             @error('proveedor_tipo')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -316,7 +454,7 @@
                             <label for="proveedor_nombre" class="form-label">Nombre del Negocio:</label>
                             <input type="text" class="form-control @error('proveedor_nombre') is-invalid @enderror"
                                    id="proveedor_nombre" name="proveedor_nombre"
-                                   value="{{ old('proveedor_nombre', $usuario->proveedor->nombre ?? '') }}">
+                                   value="{{ old('proveedor_nombre', $usuario->proveedor->nombre ?? '') }}" required>
                             @error('proveedor_nombre')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -326,17 +464,25 @@
                             <label for="proveedor_numero_identificacion" class="form-label">Número de Identificación:</label>
                             <input type="text" class="form-control @error('proveedor_numero_identificacion') is-invalid @enderror"
                                    id="proveedor_numero_identificacion" name="proveedor_numero_identificacion"
-                                   value="{{ old('proveedor_numero_identificacion', $usuario->proveedor->numero_identificacion ?? '') }}">
+                                   value="{{ old('proveedor_numero_identificacion', $usuario->proveedor->numero_identificacion ?? '') }}" required>
                             @error('proveedor_numero_identificacion')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="col-md-4 mb-3">
+                            <label for="proveedor_email" class="form-label">Email:</label>
+                            <input type="email" class="form-control"
+                                   id="proveedor_email" name="proveedor_email"
+                                   value="{{ $usuario->proveedor->email ?? '' }}" disabled readonly>
+                            <small class="form-text text-muted">El email no puede ser modificado</small>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
                             <label for="proveedor_ciudad" class="form-label">Ciudad:</label>
                             <input type="text" class="form-control @error('proveedor_ciudad') is-invalid @enderror"
                                    id="proveedor_ciudad" name="proveedor_ciudad"
-                                   value="{{ old('proveedor_ciudad', $usuario->proveedor->ciudad ?? '') }}">
+                                   value="{{ old('proveedor_ciudad', $usuario->proveedor->ciudad ?? '') }}" required>
                             @error('proveedor_ciudad')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -346,18 +492,8 @@
                             <label for="proveedor_telefono" class="form-label">Teléfono:</label>
                             <input type="text" class="form-control @error('proveedor_telefono') is-invalid @enderror"
                                    id="proveedor_telefono" name="proveedor_telefono"
-                                   value="{{ old('proveedor_telefono', $usuario->proveedor->telefono ?? '') }}">
+                                   value="{{ old('proveedor_telefono', $usuario->proveedor->telefono ?? '') }}" required>
                             @error('proveedor_telefono')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label for="proveedor_email" class="form-label">Email de Contacto:</label>
-                            <input type="email" class="form-control @error('proveedor_email') is-invalid @enderror"
-                                   id="proveedor_email" name="proveedor_email"
-                                   value="{{ old('proveedor_email', $usuario->proveedor->email ?? '') }}">
-                            @error('proveedor_email')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -365,7 +501,7 @@
                         <div class="col-md-12 mb-3">
                             <label for="proveedor_direccion" class="form-label">Dirección:</label>
                             <textarea class="form-control @error('proveedor_direccion') is-invalid @enderror"
-                                      id="proveedor_direccion" name="proveedor_direccion" rows="3">{{ old('proveedor_direccion', $usuario->proveedor->direccion ?? '') }}</textarea>
+                                      id="proveedor_direccion" name="proveedor_direccion" rows="3" required>{{ old('proveedor_direccion', $usuario->proveedor->direccion ?? '') }}</textarea>
                             @error('proveedor_direccion')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -407,7 +543,6 @@
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
     <style>
         .role-fields {
             transition: all 0.3s ease;
@@ -430,6 +565,24 @@
         .text-info { color: #17a2b8 !important; }
         .text-warning { color: #ffc107 !important; }
         .text-danger { color: #dc3545 !important; }
+
+        /* Estilos mejorados para campos con error */
+        .form-control.is-invalid {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+
+        .form-control.is-invalid:focus {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+
+        /* Animación para el botón de envío */
+        .btn-success:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
     </style>
 @stop
 
@@ -442,6 +595,11 @@
             // Ocultar todos los campos específicos de rol
             roleFields.forEach(field => {
                 field.style.display = 'none';
+                // Deshabilitar campos requeridos en secciones ocultas
+                const requiredFields = field.querySelectorAll('[required]');
+                requiredFields.forEach(reqField => {
+                    reqField.disabled = true;
+                });
             });
 
             // Mostrar solo los campos del rol seleccionado
@@ -449,6 +607,11 @@
                 const targetField = document.getElementById(role + '-fields');
                 if (targetField) {
                     targetField.style.display = 'block';
+                    // Habilitar campos requeridos en la sección visible
+                    const requiredFields = targetField.querySelectorAll('[required]');
+                    requiredFields.forEach(reqField => {
+                        reqField.disabled = false;
+                    });
                 }
             }
         }
@@ -456,6 +619,76 @@
         // Inicializar al cargar la página
         document.addEventListener('DOMContentLoaded', function() {
             toggleRoleFields();
+
+            // Agregar listener al formulario
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    console.log('Formulario enviado');
+                    console.log('Action:', form.action);
+                    console.log('Method:', form.method);
+
+                    // Antes de enviar, habilitar temporalmente todos los campos para que se envíen
+                    const allFields = form.querySelectorAll('input, select, textarea');
+                    allFields.forEach(field => {
+                        if (field.disabled && field.name) {
+                            field.disabled = false;
+                            field.setAttribute('data-was-disabled', 'true');
+                        }
+                    });
+
+                    // Verificar campos requeridos solo en secciones visibles
+                    const requiredFields = form.querySelectorAll('[required]:not([disabled])');
+                    let hasErrors = false;
+                    let missingFields = [];
+
+                    requiredFields.forEach(field => {
+                        // Solo verificar campos que están en secciones visibles
+                        const fieldContainer = field.closest('.role-fields');
+                        const isFieldVisible = !fieldContainer ||
+                                             fieldContainer.style.display !== 'none';
+
+                        if (isFieldVisible && !field.value.trim()) {
+                            console.log('Campo requerido vacío:', field.name || field.id);
+                            hasErrors = true;
+                            missingFields.push(field.getAttribute('data-label') || field.name || field.id);
+
+                            // Agregar clase de error visual
+                            field.classList.add('is-invalid');
+                        } else {
+                            // Remover clase de error si el campo está completo
+                            field.classList.remove('is-invalid');
+                        }
+                    });
+
+                    if (hasErrors) {
+                        console.log('Hay campos requeridos vacíos:', missingFields);
+                        e.preventDefault();
+
+                        // Restaurar estado de campos deshabilitados
+                        const fieldsToRestore = form.querySelectorAll('[data-was-disabled="true"]');
+                        fieldsToRestore.forEach(field => {
+                            field.disabled = true;
+                            field.removeAttribute('data-was-disabled');
+                        });
+
+                        alert('Por favor, complete todos los campos requeridos antes de continuar.');
+
+                        // Hacer scroll al primer campo con error
+                        const firstErrorField = form.querySelector('[required].is-invalid');
+                        if (firstErrorField) {
+                            firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            setTimeout(() => {
+                                firstErrorField.focus();
+                            }, 500);
+                        }
+                        return false;
+                    }
+
+                    // Si no hay errores, el formulario se enviará normalmente
+                    console.log('Formulario válido, enviando...');
+                });
+            }
         });
     </script>
 @stop

@@ -8,6 +8,7 @@ use App\Models\Profesional;
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UsuarioController extends Controller
 {
@@ -20,24 +21,36 @@ class UsuarioController extends Controller
         return view('admin.usuarios.index', compact('usuarios'));
     }
 
+    /**
+     * Mostrar listado de pacientes
+     */
     public function indexPaciente()
     {
         $usuarios = User::where('role','=','paciente')->get();
         return view('admin.usuarios.index', compact('usuarios'));
     }
 
+    /**
+     * Mostrar listado de profesionales
+     */
     public function indexProfesional()
     {
         $usuarios = User::where('role','=','profesional')->get();
         return view('admin.usuarios.index', compact('usuarios'));
     }
 
+    /**
+     * Mostrar listado de proveedores
+     */
     public function indexProveedor()
     {
         $usuarios = User::where('role','=','proveedor')->get();
         return view('admin.usuarios.index', compact('usuarios'));
     }
 
+    /**
+     * Mostrar listado de administradores
+     */
     public function indexAdmin()
     {
         $usuarios = User::where('role','=','admin')->get();
@@ -167,7 +180,7 @@ class UsuarioController extends Controller
         $usuario = User::findOrFail($id);
 
         // Redirect to specific edit method based on role
-        return match($usuario->role) {
+        return match ($usuario->role) {
             'paciente' => redirect()->route('pacientes.edit', $id),
             'profesional' => redirect()->route('profesionales.edit', $id),
             'proveedor' => redirect()->route('proveedores.edit', $id),
@@ -271,49 +284,54 @@ class UsuarioController extends Controller
      */
     private function updateUserByRole(Request $request, User $usuario)
     {
+
         $validatedData = $this->validateUserDataByRole($request, $usuario->role, $usuario->id);
+        DB::beginTransaction();
 
-        try {
-            DB::beginTransaction();
+        // Actualizar datos básicos del usuario
+        $userUpdates = [
+            'name' => $validatedData['name'],
+        ];
 
-            // Actualizar datos básicos del usuario
-            $usuario->update([
-                'name' => $validatedData['name'],
-                'email' => $validatedData['email'],
-                'telefono' => $validatedData['telefono'] ?? null,
-                'fecha_nacimiento' => $validatedData['fecha_nacimiento'] ?? null,
-                'genero' => $validatedData['genero'] ?? null,
-                'direccion' => $validatedData['direccion'] ?? null,
-            ]);
-
-            // Actualizar contraseña si se proporciona
-            if (!empty($validatedData['password'])) {
-                $usuario->update(['password' => bcrypt($validatedData['password'])]);
-            }
-
-            // Actualizar datos específicos del rol
-            $this->updateRoleSpecificData($usuario, $validatedData);
-
-            DB::commit();
-
-            $roleRoutes = [
-                'paciente' => 'usuarios.pacientes',
-                'profesional' => 'usuarios.profesionales',
-                'proveedor' => 'usuarios.proveedores',
-                'admin' => 'usuarios.admins'
-            ];
-
-            $redirectRoute = $roleRoutes[$usuario->role] ?? 'usuarios.index';
-
-            return redirect()->route($redirectRoute)
-                ->with('actualizado', 'ok')
-                ->with('mensaje', 'Usuario actualizado correctamente');
-
-        } catch (\Exception $e) {
-            DB::rollback();
-            return back()->withErrors(['error' => 'Error al actualizar el usuario: ' . $e->getMessage()])
-                        ->withInput();
+        // Actualizar rol si ha cambiado
+        if (isset($validatedData['role']) && $validatedData['role'] !== $usuario->role) {
+            $userUpdates['role'] = $validatedData['role'];
+            $usuario->role = $validatedData['role']; // Actualizar temporalmente para la lógica siguiente
         }
+
+        // Actualizar estado activo si está presente
+        if (isset($validatedData['activo'])) {
+            $userUpdates['activo'] = (bool)$validatedData['activo'];
+        }
+
+        // Actualizar verificación de email si está presente
+        if (isset($validatedData['email_verified'])) {
+            $userUpdates['email_verified_at'] = $validatedData['email_verified'] ? now() : null;
+        }
+
+        $usuario->update($userUpdates);
+
+        // Actualizar contraseña si se proporciona
+        if (!empty($validatedData['password'])) {
+            $usuario->update(['password' => bcrypt($validatedData['password'])]);
+        }
+
+        // Actualizar datos específicos del rol
+        $this->updateRoleSpecificData($usuario, $validatedData);
+
+        DB::commit();
+
+        $roleRoutes = [
+            'paciente' => 'usuarios.pacientes',
+            'profesional' => 'usuarios.profesionales',
+            'proveedor' => 'usuarios.proveedores',
+            'admin' => 'usuarios.administradores'
+        ];
+
+        $redirectRoute = $roleRoutes[$usuario->role] ?? 'usuarios.index';
+
+        return redirect()->route($redirectRoute)
+            ->with('success', 'Usuario actualizado correctamente');
     }
 
     /**
@@ -323,43 +341,71 @@ class UsuarioController extends Controller
     {
         $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email' . ($userId ? ",$userId" : ''),
-            'telefono' => 'nullable|string|max:20',
-            'fecha_nacimiento' => 'nullable|date|before:today',
-            'genero' => 'nullable|in:masculino,femenino,otro',
-            'direccion' => 'nullable|string|max:500',
-            'password' => 'nullable|string|min:8|confirmed',
+            'password' => 'nullable|string|confirmed',
+            'role' => 'required|in:admin,paciente,profesional,proveedor',
+            'activo' => 'nullable|boolean',
+            'email_verified' => 'nullable|boolean',
         ];
 
-        // Agregar validaciones específicas por rol
-        switch ($role) {
+        // Obtener el rol del request si es diferente (para cambios de rol)
+        $targetRole = $request->input('role', $role);
+
+        // Agregar validaciones específicas por rol objetivo
+        switch ($targetRole) {
             case 'paciente':
                 $rules = array_merge($rules, [
-                    'cedula' => 'nullable|string|max:20',
-                    'tipo_sangre' => 'nullable|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
-                    'altura' => 'nullable|numeric|min:0|max:300',
-                    'peso' => 'nullable|numeric|min:0|max:500',
+                    'paciente_foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                    'paciente_nombre_completo' => 'required|string|max:255',
+                    'paciente_fecha_nacimiento' => 'nullable|date|before:today',
+                    'paciente_genero' => 'nullable|in:Masculino,Femenino,Otro',
+                    'paciente_estado_civil' => 'nullable|string|max:255',
+                    'paciente_nacionalidad' => 'nullable|string|max:255',
+                    'paciente_celular' => 'nullable|string|max:255',
+                    'paciente_direccion' => 'nullable|string|max:1000',
+                    'paciente_cedula' => 'nullable|string|max:255',
+                    'paciente_grupo_sanguineo' => 'nullable|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
                 ]);
                 break;
 
             case 'profesional':
                 $rules = array_merge($rules, [
-                    'cedula' => 'required|string|max:20',
-                    'numero_licencia' => 'nullable|string|max:50',
-                    'descripcion' => 'nullable|string|max:1000',
+                    'profesional_nombre_completo' => 'nullable|string|max:255',
+                    'profesional_foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                    'profesional_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                    'profesional_fecha_nacimiento' => 'nullable|date|before:today',
+                    'profesional_genero' => 'nullable|in:Hombre,Mujer,Otro',
+                    'profesional_telefono_personal' => 'nullable|string|max:255',
+                    'profesional_telefono_profesional' => 'nullable|string|max:255',
+                    'profesional_cedula_identidad' => 'nullable|string|max:255',
+                    'profesional_idiomas' => 'nullable|string|max:255',
+                    'profesional_descripcion_profesional' => 'nullable|string|max:1000',
+                    'profesional_anios_experiencia' => 'nullable|integer|min:0|max:100',
+                    'profesional_licencia_medica' => 'nullable|string|max:255',
+                    'profesional_numero_cuenta' => 'nullable|string|max:255',
+                    'profesional_plan_id' => 'nullable|integer|exists:plans,id',
+                    'profesional_num_colegiado' => 'nullable|string|max:255',
+                    'profesional_categoria_id' => 'nullable|integer|exists:categorias,id',
+                    'profesional_ciudad_id' => 'nullable|integer|exists:ciudades,id',
+                    'profesional_presencial' => 'nullable|boolean',
+                    'profesional_videoconsulta' => 'nullable|boolean',
                 ]);
                 break;
 
             case 'proveedor':
                 $rules = array_merge($rules, [
-                    'nombre_empresa' => 'nullable|string|max:255',
-                    'ruc' => 'nullable|string|max:20',
-                    'descripcion' => 'nullable|string|max:1000',
+                    'proveedor_tipo' => 'required|in:farmacia,laboratorio,centro_imagenes',
+                    'proveedor_nombre' => 'required|string|max:255',
+                    'proveedor_ciudad' => 'required|string|max:255',
+                    'proveedor_direccion' => 'required|string|max:1000',
+                    'proveedor_numero_identificacion' => 'required|string|max:255',
+                    'proveedor_telefono' => 'required|string|max:255',
                 ]);
                 break;
         }
 
-        return $request->validate($rules);
+        $validated = $request->validate($rules);
+
+        return $validated;
     }
 
     /**
@@ -367,35 +413,136 @@ class UsuarioController extends Controller
      */
     private function updateRoleSpecificData(User $usuario, array $validatedData)
     {
+
         switch ($usuario->role) {
             case 'paciente':
+                $pacienteData = [
+                    'nombre_completo' => $validatedData['paciente_nombre_completo'] ?? null,
+                    'fecha_nacimiento' => $validatedData['paciente_fecha_nacimiento'] ?? null,
+                    'genero' => $validatedData['paciente_genero'] ?? null,
+                    'estado_civil' => $validatedData['paciente_estado_civil'] ?? null,
+                    'nacionalidad' => $validatedData['paciente_nacionalidad'] ?? null,
+                    'celular' => $validatedData['paciente_celular'] ?? null,
+                    'email' => $usuario->email,
+                    'direccion' => $validatedData['paciente_direccion'] ?? null,
+                    'cedula' => $validatedData['paciente_cedula'] ?? null,
+                    'grupo_sanguineo' => $validatedData['paciente_grupo_sanguineo'] ?? null,
+                ];
+
+                // Filtrar valores null para no sobreescribir datos existentes
+                $pacienteData = array_filter($pacienteData, function ($value) {
+                    return $value !== null;
+                });
+
+                // Manejar subida de foto
+                if (request()->hasFile('paciente_foto')) {
+                    $foto = request()->file('paciente_foto');
+                    $nombreFoto = time() . '_paciente_' . $usuario->id . '.' . $foto->getClientOriginalExtension();
+
+                    // Crear directorio si no existe
+                    $uploadPath = public_path('uploads/pacientes');
+                    if (!file_exists($uploadPath)) {
+                        mkdir($uploadPath, 0755, true);
+                    }
+
+                    $foto->move($uploadPath, $nombreFoto);
+                    $pacienteData['foto'] = 'uploads/pacientes/' . $nombreFoto;
+                }
+
                 if ($usuario->paciente) {
-                    $usuario->paciente->update([
-                        'cedula' => $validatedData['cedula'] ?? null,
-                        'tipo_sangre' => $validatedData['tipo_sangre'] ?? null,
-                        'altura' => $validatedData['altura'] ?? null,
-                        'peso' => $validatedData['peso'] ?? null,
-                    ]);
+                    $usuario->paciente->update($pacienteData);
+                } else {
+                    $pacienteData['user_id'] = $usuario->id;
+                    Paciente::create($pacienteData);
                 }
                 break;
 
             case 'profesional':
+                $profesionalData = [
+                    'nombre_completo' => $validatedData['profesional_nombre_completo'] ?? null,
+                    'fecha_nacimiento' => $validatedData['profesional_fecha_nacimiento'] ?? null,
+                    'genero' => $validatedData['profesional_genero'] ?? null,
+                    'telefono_personal' => $validatedData['profesional_telefono_personal'] ?? null,
+                    'telefono_profesional' => $validatedData['profesional_telefono_profesional'] ?? null,
+                    'cedula_identidad' => $validatedData['profesional_cedula_identidad'] ?? null,
+                    'email' => $usuario->email,
+                    'idiomas' => $validatedData['profesional_idiomas'] ?? null,
+                    'descripcion_profesional' => $validatedData['profesional_descripcion_profesional'] ?? null,
+                    'anios_experiencia' => $validatedData['profesional_anios_experiencia'] ?? null,
+                    'licencia_medica' => $validatedData['profesional_licencia_medica'] ?? null,
+                    'numero_cuenta' => $validatedData['profesional_numero_cuenta'] ?? null,
+                    'plan_id' => $validatedData['profesional_plan_id'] ?? null,
+                    'num_colegiado' => $validatedData['profesional_num_colegiado'] ?? null,
+                    'categoria_id' => $validatedData['profesional_categoria_id'] ?? null,
+                    'ciudad_id' => $validatedData['profesional_ciudad_id'] ?? null,
+                    'presencial' => isset($validatedData['profesional_presencial']) ? (bool)$validatedData['profesional_presencial'] : false,
+                    'videoconsulta' => isset($validatedData['profesional_videoconsulta']) ? (bool)$validatedData['profesional_videoconsulta'] : false,
+                ];
+
+                // Filtrar valores null para no sobreescribir datos existentes
+                $profesionalDataFiltered = array_filter($profesionalData, function ($value) {
+                    return $value !== null;
+                });
+
+                // Manejar subida de foto
+                if (request()->hasFile('profesional_foto')) {
+                    $foto = request()->file('profesional_foto');
+                    $nombreFoto = time() . '_profesional_foto_' . $usuario->id . '.' . $foto->getClientOriginalExtension();
+
+                    $uploadPath = public_path('uploads/profesionales');
+                    if (!file_exists($uploadPath)) {
+                        mkdir($uploadPath, 0755, true);
+                    }
+
+                    $foto->move($uploadPath, $nombreFoto);
+                    $profesionalDataFiltered['foto'] = 'uploads/profesionales/' . $nombreFoto;
+                }
+
+                // Manejar subida de logo
+                if (request()->hasFile('profesional_logo')) {
+                    $logo = request()->file('profesional_logo');
+                    $nombreLogo = time() . '_profesional_logo_' . $usuario->id . '.' . $logo->getClientOriginalExtension();
+
+                    $uploadPath = public_path('uploads/profesionales');
+                    if (!file_exists($uploadPath)) {
+                        mkdir($uploadPath, 0755, true);
+                    }
+
+                    $logo->move($uploadPath, $nombreLogo);
+                    $profesionalDataFiltered['logo'] = 'uploads/profesionales/' . $nombreLogo;
+                }
+
+
                 if ($usuario->profesional) {
-                    $usuario->profesional->update([
-                        'cedula' => $validatedData['cedula'],
-                        'numero_licencia' => $validatedData['numero_licencia'] ?? null,
-                        'descripcion' => $validatedData['descripcion'] ?? null,
-                    ]);
+                    $usuario->profesional->update($profesionalDataFiltered);
+                } else {
+                    $profesionalDataFiltered['user_id'] = $usuario->id;
+                    Profesional::create($profesionalDataFiltered);
                 }
                 break;
 
             case 'proveedor':
+                $proveedorData = [
+                    'tipo' => $validatedData['proveedor_tipo'] ?? null,
+                    'nombre' => $validatedData['proveedor_nombre'] ?? null,
+                    'ciudad' => $validatedData['proveedor_ciudad'] ?? null,
+                    'direccion' => $validatedData['proveedor_direccion'] ?? null,
+                    'numero_identificacion' => $validatedData['proveedor_numero_identificacion'] ?? null,
+                    'email' => $usuario->email,
+                    'telefono' => $validatedData['proveedor_telefono'] ?? null,
+                ];
+
+                // Filtrar valores null
+                $proveedorData = array_filter($proveedorData, function ($value) {
+                    return $value !== null;
+                });
+
+
                 if ($usuario->proveedor) {
-                    $usuario->proveedor->update([
-                        'nombre_empresa' => $validatedData['nombre_empresa'] ?? null,
-                        'ruc' => $validatedData['ruc'] ?? null,
-                        'descripcion' => $validatedData['descripcion'] ?? null,
-                    ]);
+                    $usuario->proveedor->update($proveedorData);
+                } else {
+                    $proveedorData['user_id'] = $usuario->id;
+                    Proveedor::create($proveedorData);
                 }
                 break;
         }
@@ -408,5 +555,19 @@ class UsuarioController extends Controller
     {
         $usuario->delete();
         return redirect()->route('usuarios.index')->with('eliminado', 'ok');
+    }
+
+    /**
+     * Helper method for debugging request data
+     */
+    private function debugRequestData(Request $request, string $context = '')
+    {
+        Log::info("Debug Request Data - {$context}", [
+            'all_data' => $request->all(),
+            'files' => $request->allFiles(),
+            'method' => $request->method(),
+            'url' => $request->url(),
+            'headers' => $request->headers->all()
+        ]);
     }
 }

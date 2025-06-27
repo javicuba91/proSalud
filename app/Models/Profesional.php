@@ -8,7 +8,29 @@ class Profesional extends Model
 {
     protected $table = "profesionales";
 
-    protected $fillable = ['plan_id'];
+    protected $fillable = [
+        'user_id',
+        'nombre_completo',
+        'fecha_nacimiento',
+        'genero',
+        'telefono_personal',
+        'telefono_profesional',
+        'cedula_identidad',
+        'email',
+        'idiomas',
+        'descripcion_profesional',
+        'anios_experiencia',
+        'licencia_medica',
+        'numero_cuenta',
+        'plan_id',
+        'num_colegiado',
+        'categoria_id',
+        'ciudad_id',
+        'presencial',
+        'videoconsulta',
+        'foto',
+        'logo'
+    ];
 
     public function user()
     {

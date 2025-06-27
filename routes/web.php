@@ -425,6 +425,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::put('/usuarios/{usuario}', [UsuarioController::class, 'update'])->name('usuarios.update');
         Route::delete('/usuarios/{usuario}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
 
+        // Rutas adicionales para redirecciones por rol desde el controlador
+        Route::get('/usuarios/pacientes', [UsuarioController::class, 'indexPaciente'])->name('usuarios.pacientes');
+        Route::get('/usuarios/profesionales', [UsuarioController::class, 'indexProfesional'])->name('usuarios.profesionales');
+        Route::get('/usuarios/proveedores', [UsuarioController::class, 'indexProveedor'])->name('usuarios.proveedores');
+        Route::get('/usuarios/administradores', [UsuarioController::class, 'indexAdmin'])->name('usuarios.administradores');
+
         // ADMINISTRADORES
         Route::get('/administradores', [UsuarioController::class, 'indexAdmin'])->name('administradores.index');
         Route::get('/administradores/show/{id}', [UsuarioController::class, 'showAdmin'])->name('administradores.show');
