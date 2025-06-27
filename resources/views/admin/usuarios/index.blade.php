@@ -31,11 +31,33 @@
         <tbody>
             @foreach ($usuarios as $usuario)
                 <tr>
-                    <td>{{ $usuario->name }}</td>
+                    @if ($usuario->role == 'paciente' && $usuario->paciente)
+                        <td>{{ $usuario->paciente->nombre_completo }}</td>
+                    @elseif ($usuario->role == 'profesional' && $usuario->profesional)
+                        <td>{{ $usuario->profesional->nombre_completo }}</td>
+                    @elseif ($usuario->role == 'proveedor' && $usuario->proveedor)
+                        <td>{{ $usuario->proveedor->nombre }}</td>
+                    @else
+                        <td>{{ $usuario->name }}</td>
+                    @endif
                     <td>{{ $usuario->email }}</td>
                     <td>{{ ucfirst($usuario->role) }}</td>
                     <td>
-                        <a href="{{ route('usuarios.edit', $usuario->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                        <a href="{{ route('usuarios.show', $usuario->id) }}" class="btn btn-primary" title="Ver detalles">
+                            <i class="fa fa-eye"></i>
+                        </a>
+                        @php
+                            $editRoute = match($usuario->role) {
+                                'paciente' => route('pacientes.edit', $usuario->id),
+                                'profesional' => route('profesionales.edit', $usuario->id),
+                                'proveedor' => route('proveedores.edit', $usuario->id),
+                                'admin' => route('administradores.edit', $usuario->id),
+                                default => route('usuarios.edit', $usuario->id)
+                            };
+                        @endphp
+                        <a href="{{ $editRoute }}" class="btn btn-warning" title="Editar usuario">
+                            <i class="fa fa-edit"></i>
+                        </a>
                         <form class="form-eliminar" action="{{ route('usuarios.destroy', $usuario->id) }}" method="POST"
                             style="display:inline;">
                             @csrf

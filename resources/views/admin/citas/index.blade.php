@@ -159,14 +159,14 @@
                     </td>
 
                     <td>
-                        <a href="{{ route('citas.show', $cita->id) }}" class="btn btn-primary btn-sm" title="Ver detalles">
+                        <a href="{{ route('citas.show', $cita->id) }}" class="btn btn-primary" title="Ver detalles">
                             <i class="fa fa-eye"></i>
                         </a>
                         @if($cita->estado !== 'cancelada' && $cita->estado !== 'completada')
                             <form class="form-eliminar" action="{{ route('citas.cancelar', $cita->id) }}" method="POST"
                                 style="display:inline;">
                                 @csrf
-                                <button title="Cancelar Cita" type="submit" class="btn btn-warning btn-sm">
+                                <button title="Cancelar Cita" type="submit" class="btn btn-warning">
                                     <i class="fa fa-times"></i>
                                 </button>
                             </form>
@@ -199,7 +199,7 @@
                 });
             }
 
-           
+
             $('.form-eliminar').submit(function(e) {
                 e.preventDefault();
 

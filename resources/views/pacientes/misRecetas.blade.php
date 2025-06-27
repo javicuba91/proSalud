@@ -33,7 +33,7 @@
             <div class="col-md">
                 <a href="/paciente/cita/informe-consulta/{{$receta->informe_consulta_id}}/receta" class="btn btn-dark w-100">Ver receta</a>
             </div>
-        </div>    
+        </div>
     @endforeach
-    
+
 @stop

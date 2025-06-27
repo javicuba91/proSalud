@@ -77,4 +77,28 @@ class User extends Authenticatable implements MustVerifyEmail
             }
         });
     }
+
+    /**
+     * Relación con el modelo Paciente
+     */
+    public function paciente()
+    {
+        return $this->hasOne(Paciente::class);
+    }
+
+    /**
+     * Relación con el modelo Profesional
+     */
+    public function profesional()
+    {
+        return $this->hasOne(Profesional::class);
+    }
+
+    /**
+     * Relación con el modelo Proveedor
+     */
+    public function proveedor()
+    {
+        return $this->hasOne(Proveedor::class);
+    }
 }

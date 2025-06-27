@@ -570,7 +570,7 @@ return [
                 ['text' => 'Respuestas', 'url' => '/admin/respuestas-expertos', 'icon' => '', 'can' => 'solo-admin'],
             ],
         ],
-         ['text' => 'Facturación', 'url' => '/admin/facturacion', 'icon' => 'fas fa-file-invoice-dollar', 'can' => 'solo-admin'],
+        ['text' => 'Facturación', 'url' => '/admin/facturacion', 'icon' => 'fas fa-file-invoice-dollar', 'can' => 'solo-admin'],
 
 
         [
@@ -613,6 +613,7 @@ return [
             'can'  => 'solo-admin',
             'submenu' => [
                 ['text' => 'Listado', 'url' => '/admin/usuarios', 'icon' => '', 'can' => 'solo-admin'],
+                ['text' => 'Administradores', 'url' => '/admin/administradores', 'icon' => '', 'can' => 'solo-admin'],
                 ['text' => 'Pacientes', 'url' => '/admin/pacientes', 'icon' => '', 'can' => 'solo-admin'],
                 ['text' => 'Profesionales', 'url' => '/admin/profesionales', 'icon' => '', 'can' => 'solo-admin'],
                 ['text' => 'Proveedores', 'url' => '/admin/proveedores', 'icon' => '', 'can' => 'solo-admin'],

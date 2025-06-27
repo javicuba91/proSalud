@@ -409,16 +409,38 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::put('/ciudades/{ciudad}', [CiudadController::class, 'update'])->name('ciudades.update');
         Route::delete('/ciudades/{ciudad}', [CiudadController::class, 'destroy'])->name('ciudades.destroy');
 
+        // USUARIOS
         Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
         Route::get('/usuarios/create', [UsuarioController::class, 'create'])->name('usuarios.create');
-        Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');
+        Route::get('/usuarios/show/{id}', [UsuarioController::class, 'show'])->name('usuarios.show');
         Route::get('/usuarios/{usuario}/edit', [UsuarioController::class, 'edit'])->name('usuarios.edit');
+        Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');
         Route::put('/usuarios/{usuario}', [UsuarioController::class, 'update'])->name('usuarios.update');
         Route::delete('/usuarios/{usuario}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
 
+        // ADMINISTRADORES
+        Route::get('/administradores', [UsuarioController::class, 'indexAdmin'])->name('administradores.index');
+        Route::get('/administradores/show/{id}', [UsuarioController::class, 'showAdmin'])->name('administradores.show');
+        Route::get('/administradores/{id}/edit', [UsuarioController::class, 'editAdmin'])->name('administradores.edit');
+        Route::put('/administradores/{id}', [UsuarioController::class, 'updateAdmin'])->name('administradores.update');
+
+        // PACIENTES
         Route::get('/pacientes', [UsuarioController::class, 'indexPaciente'])->name('pacientes.index');
+        Route::get('/pacientes/show/{id}', [UsuarioController::class, 'showPaciente'])->name('pacientes.show');
+        Route::get('/pacientes/{id}/edit', [UsuarioController::class, 'editPaciente'])->name('pacientes.edit');
+        Route::put('/pacientes/{id}', [UsuarioController::class, 'updatePaciente'])->name('pacientes.update');
+
+        // PROFESIONALES
         Route::get('/profesionales', [UsuarioController::class, 'indexProfesional'])->name('profesionales.index');
+        Route::get('/profesionales/show/{id}', [UsuarioController::class, 'showProfesional'])->name('profesionales.show');
+        Route::get('/profesionales/{id}/edit', [UsuarioController::class, 'editProfesional'])->name('profesionales.edit');
+        Route::put('/profesionales/{id}', [UsuarioController::class, 'updateProfesional'])->name('profesionales.update');
+
+        // PROVEEDORES
         Route::get('/proveedores', [UsuarioController::class, 'indexProveedor'])->name('proveedores.index');
+        Route::get('/proveedores/show/{id}', [UsuarioController::class, 'showProveedor'])->name('proveedores.show');
+        Route::get('/proveedores/{id}/edit', [UsuarioController::class, 'editProveedor'])->name('proveedores.edit');
+        Route::put('/proveedores/{id}', [UsuarioController::class, 'updateProveedor'])->name('proveedores.update');
 
         Route::get('/documentos-profesional', [DocumentoProfesionalController::class, 'index'])->name('documentos.index');
         Route::get('/documentos-profesional/create', [DocumentoProfesionalController::class, 'create'])->name('documentos.create');
