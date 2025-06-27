@@ -450,6 +450,8 @@ class UsuarioController extends Controller
                 }
 
                 if ($usuario->paciente) {
+                    $usuario->name = $pacienteData['nombre_completo'] ?? $usuario->name; // Actualizar nombre del usuario
+                    $usuario->save(); // Guardar cambios en el usuario
                     $usuario->paciente->update($pacienteData);
                 } else {
                     $pacienteData['user_id'] = $usuario->id;
@@ -514,6 +516,8 @@ class UsuarioController extends Controller
 
 
                 if ($usuario->profesional) {
+                    $usuario->name = $profesionalDataFiltered['nombre_completo'] ?? $usuario->name; // Actualizar nombre del usuario
+                    $usuario->save(); // Guardar cambios en el usuario
                     $usuario->profesional->update($profesionalDataFiltered);
                 } else {
                     $profesionalDataFiltered['user_id'] = $usuario->id;
@@ -539,6 +543,8 @@ class UsuarioController extends Controller
 
 
                 if ($usuario->proveedor) {
+                    $usuario->name = $proveedorData['nombre'] ?? $usuario->name; // Actualizar nombre del usuario
+                    $usuario->save(); // Guardar cambios en el usuario
                     $usuario->proveedor->update($proveedorData);
                 } else {
                     $proveedorData['user_id'] = $usuario->id;
