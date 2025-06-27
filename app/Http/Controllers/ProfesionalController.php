@@ -1396,6 +1396,7 @@ class ProfesionalController extends Controller
             $cita = Cita::with(['paciente', 'consultorio', 'profesional'])->find($citaId);
             $cita->recordatorio_enviado = 1; // Marcar como recordatorio enviado
             $cita->save();
+            
             if (!$cita) {
                 return response()->json([
                     'success' => false,

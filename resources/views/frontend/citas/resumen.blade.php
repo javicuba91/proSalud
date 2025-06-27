@@ -17,7 +17,15 @@
                         </div>
                         <div class="col-lg-10">
                             <p class="mt-2"><strong>Profesional:</strong> {{ $cita->profesional->nombre_completo }}</p>
-                            <p><strong>Consultorio:</strong> {{ $cita->consultorio->direccion }}</p>
+                            
+                            @if ($cita->modalidad == 'presencial')
+                                <p><strong>Modalidad:</strong> Presencial</p>
+                                <p><strong>Consultorio:</strong> {{ $cita->consultorio->direccion }}</p>
+                            @else
+                                <p><strong>Modalidad:</strong> Videoconsulta</p>
+                                <p><strong>Url Meet:</strong> {{ $cita->url_meet }}</p>
+                            @endif                            
+                            
                             <p><strong>Fecha y hora:</strong> {{ \Carbon\Carbon::parse($cita->fecha_hora)->format('d/m/Y H:i') }}
                             </p>
                             <p><strong>Motivo:</strong> {{ $cita->motivo }}</p>

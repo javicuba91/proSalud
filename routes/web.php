@@ -284,7 +284,14 @@ Route::get('/pacientes/buscar/emergencias', [PacienteFrontendController::class, 
 
 Route::get('/api/frontend/profesional/horarios/{id}', [PacienteFrontendController::class, 'eventosCalendarioProfesional']);
 Route::get('/api/frontend/profesional/horarios/{id}/{fecha}', [PacienteFrontendController::class, 'horariosPorDiaProfesional']);
+
+Route::get('/api/frontend/profesional/horarios-videollamada/{id}', [PacienteFrontendController::class, 'eventosCalendarioProfesionalVideollamada']);
+Route::get('/api/frontend/profesional/horarios-videollamada/{id}/{fecha}', [PacienteFrontendController::class, 'horariosPorDiaProfesionalVideollamada']);
+
+
 Route::post('/citas/ajax', [PacienteFrontendController::class, 'storeAjax'])->name('citas.ajax.store');
+
+Route::post('/citas/videollamadas/ajax', [PacienteFrontendController::class, 'storeAjaxVideollamada'])->name('citas.videollamada.ajax.store');
 
 /* Misceláneas */
 Route::get('/subespecialidades/{id}', [PacienteController::class, 'getSubespecialidades']);
