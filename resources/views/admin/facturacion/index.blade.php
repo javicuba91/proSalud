@@ -129,6 +129,7 @@
                         <th>ID</th>
                         <th>Profesional</th>
                         <th>Plan</th>
+                        <th>Monto</th>
                         <th>Fecha de Inicio</th>
                         <th>Fecha de Fin</th>
                         <th>Estado de Pago</th>
@@ -141,6 +142,7 @@
                             <td>{{ $suscripcion->id }}</td>
                             <td>{{ $suscripcion->profesional->nombre_completo ?? 'N/A' }}</td>
                             <td>{{ $suscripcion->plan->nombre ?? 'N/A' }}</td>
+                            <td>{{ $suscripcion->plan->precio }}€</td>
                             <td>{{ date("d-m-Y",strtotime($suscripcion->fecha_inicio)) ?? 'N/A' }}</td>
                             <td>{{ date("d-m-Y",strtotime($suscripcion->fecha_fin)) ?? 'N/A' }}</td>
                             <td>

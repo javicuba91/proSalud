@@ -43,9 +43,9 @@
 </head>
 <body>
     <div class="header">
-        <img width="250" src="{{ asset("imagenes/logo.png") }}" alt="">
+        <img width="180" src="https://40944671.servicio-online.net/imagenes/logo.png" alt="">
         <h1>ProSalud</h1>
-        <h2>Recordatorio de Cita</h2>
+        <h2>Recordatorio de Cita</h2> 
     </div>
 
     <div class="content">
@@ -64,11 +64,8 @@
             @if($consultorio && $cita->modalidad == 'presencial')
                 <p><strong>Consultorio:</strong> {{ $consultorio->direccion }}</p>
             @endif
-            @if($qrCodeData)
-                <p><strong>Código de Cita:</strong></p>
-                <div style="text-align: center; margin: 10px 0;">
-                    <img src="data:image/png;base64,{{ $qrCodeData }}" alt="Código QR de la cita" style="max-width: 150px; height: auto;">
-                </div>
+            @if($cita->codigo_qr)
+                <p><strong>Código de Cita:</strong> {{ $cita->codigo_qr }}</p>
             @endif
         </div>
 

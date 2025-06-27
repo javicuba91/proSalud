@@ -9,6 +9,7 @@ use App\Models\DetalleCita;
 use App\Models\Emergencia;
 use App\Models\Especialidad;
 use App\Models\HorarioProfesional;
+use App\Models\HorarioVideollamada;
 use App\Models\Paciente;
 use App\Models\PreguntaExperto;
 use App\Models\Profesional;
@@ -258,11 +259,31 @@ class PacienteFrontendController extends Controller
         return response()->json($eventos);
     }
 
+    public function eventosCalendarioProfesionalVideollamada($id)
+    {
+        $profesional = Profesional::find($id);
+
+        $eventos = HorarioVideollamada::where('profesional_id', $profesional->id)
+            ->get()
+            ->map(function (HorarioVideollamada $horario) {
+                return [
+                    'title' => '',
+                    'start' => $horario->fecha,
+                    'allDay' => true,
+                    'display' => 'background',
+                    'color' => 'transparent'
+                ];
+            });
+
+        return response()->json($eventos);
+    }
+
     public function horariosPorDiaProfesional($profesional_id, $fecha)
     {
         $profesional = Profesional::findOrFail($profesional_id);
 
         $horarios = HorarioProfesional::where('profesional_id', $profesional->id)
+            ->where('modalidad', '=', 'presencial')       
             ->whereDate('fecha', $fecha)
             ->with('detalles.consultorio')
             ->get();
@@ -310,6 +331,57 @@ class PacienteFrontendController extends Controller
     }
 
 
+    public function horariosPorDiaProfesionalVideollamada($profesional_id, $fecha)
+    {
+        $profesional = Profesional::findOrFail($profesional_id);
+
+        $horarios = HorarioVideollamada::where('profesional_id', $profesional->id)
+            ->whereDate('fecha', $fecha)
+            ->get();
+
+        $citas = Cita::where('profesional_id', $profesional->id)
+            ->whereDate('fecha_hora', $fecha)
+            ->where('modalidad', '=', 'videoconsulta')
+            ->pluck('fecha_hora')
+            ->map(function ($f) {
+                return date("H:i", strtotime($f));
+            })
+            ->toArray();
+
+        $respuesta = [];
+
+        foreach ($horarios as $horario) {
+            foreach ($horario->detalles as $detalle) {
+                $desde = date("H:i", strtotime($detalle->hora_desde));
+                $hasta = date("H:i", strtotime($detalle->hora_hasta));
+
+                // Genera los turnos de 30 min
+                $turnosDisponibles = [];
+                $start = strtotime($desde);
+                $end = strtotime($hasta);
+
+                while ($start < $end) {
+                    $hora = date("H:i", $start);
+                    if (!in_array($hora, $citas)) {
+                        $turnosDisponibles[] = $hora;
+                    }
+                    $start = strtotime("+30 minutes", $start);
+                }
+
+                if (!empty($turnosDisponibles)) {
+                    $respuesta[] = [
+                        'desde' => $desde,
+                        'hasta' => $hasta,
+                        'turnos' => $turnosDisponibles
+                    ];
+                }
+            }
+        }
+
+        return response()->json($respuesta);
+    }
+
+
 
     public function storeAjax(Request $request)
     {
@@ -325,6 +397,31 @@ class PacienteFrontendController extends Controller
         $cita->estado = "aceptada";
         $cita->consultorio_id = $request->consultorio_id;
         $cita->url_meet = null;
+        $cita->codigo_qr = strtoupper(Str::random(8));
+        $cita->save();
+
+        $detalleCita = new DetalleCita();
+        $detalleCita->cita_id = $cita->id;
+        $detalleCita->metodo_pago_id = $request->metodo_pago_id;
+        $detalleCita->monto = $cita->especializacion->precio_presencial;
+        $detalleCita->save();
+
+        return response()->json(['success' => true, 'redirect' => route('pacientes.citas.resumen', $cita->id)]);
+    }
+
+    public function storeAjaxVideollamada(Request $request)
+    {
+        $paciente = Paciente::where('user_id', '=', Auth::user()->id)->first();
+
+        $cita = new Cita();
+        $cita->paciente_id = $paciente->id;
+        $cita->profesional_id = $request->profesional_id;
+        $cita->fecha_hora = $request->fecha_hora;
+        $cita->modalidad = "videoconsulta";
+        $cita->motivo = $request->motivo;
+        $cita->especializacion_id = $request->especialidad_id;
+        $cita->estado = "aceptada";
+        $cita->url_meet = 'https://meet.google.com/' . Str::lower(Str::random(3)) . '-' . Str::lower(Str::random(4));
         $cita->codigo_qr = strtoupper(Str::random(8));
         $cita->save();
 

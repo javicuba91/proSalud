@@ -287,84 +287,146 @@
         <div class="col-lg-6" id="col-citas">
             
             <div class="card shadow-sm p-3 mt-2">
-                <form id="form-agendar-cita">
-                    @csrf
-                    <p class="fw-semibold text-primary mb-2">Pide cita ahora:</p>
-                    <p class="small text-muted mb-3">El servicio de gestión de cita es gratuito</p>
-                
+
                     <div class="btn-group mb-3 w-100" role="group">
-                        <button type="button" class="btn btn-warning text-white fw-bold">Cita presencial</button>
-                        <button type="button" class="btn btn-outline-secondary fw-bold">VideoConsulta</button>
-                    </div>
-                
-                    @php
-                        $consultorios = $profesional->consultorios;
-                    @endphp
-
-                    <input type="hidden" name="profesional_id" value="{{$profesional->id}}">
-                
-                    <div class="border rounded p-2 mb-2">
-                        <i class="fas fa-map-marker-alt text-primary me-1"></i>
-                        <span class="fw-semibold">{{ $consultorio->nombre ?? 'Consultorio' }}</span><br>
-                        <select name="consultorio_id" id="" class="form-control form-select mt-2">
-                            @foreach ($consultorios as $consultorio )
-                                <option value="{{$consultorio->id}}">Consultorio {{ $loop->index + 1 }}, {{$consultorio->clinica}}, {{ ucfirst($consultorio->direccion) }}{{ !$loop->last ? ',' : '' }}</option>
-                            @endforeach
-                        </select>
+                        <button type="button" class="btn btn-warning text-white fw-bold" id="btn-tab-presencial">Cita presencial</button>
+                        <button type="button" class="btn btn-outline-secondary fw-bold" id="btn-tab-videoconsulta">VideoConsulta</button>
                     </div>
 
-                    <div class="border rounded p-2 mb-2">
-                        <i class="fas fa-map-marker-alt text-primary me-1"></i>
-                        <span class="fw-semibold">Especialidad</span><br>
-                        <select name="especialidad_id" id="" class="form-control form-select mt-2">
-                            @foreach ($profesional->especializaciones as $especialidad )
-                                <option value="{{$especialidad->id}}">
-                                    {{$especialidad->especialidad->nombre}} ({{$especialidad->precio_presencial}}€)
-                                </option>
-                            @endforeach
-                        </select>
+                    {{-- FORMULARIO: CITA PRESENCIAL --}}
+                    <div id="form-presencial">
+                        <form id="form-agendar-cita">
+                            @csrf
+                            <input type="hidden" name="profesional_id" value="{{ $profesional->id }}">
+                            <input type="hidden" name="modalidad" value="presencial">
+
+                            <p class="fw-semibold text-primary mb-2">Pide cita presencial:</p>
+                            <p class="small text-muted mb-3">El servicio de gestión de cita es gratuito</p>
+
+                            <div class="border rounded p-2 mb-2">
+                                <i class="fas fa-map-marker-alt text-primary me-1"></i>
+                                <span class="fw-semibold">Consultorio</span><br>
+                                <select name="consultorio_id" class="form-control form-select mt-2">
+                                    @foreach ($profesional->consultorios as $consultorio )
+                                        <option value="{{ $consultorio->id }}">
+                                            {{ $consultorio->clinica }}, {{ ucfirst($consultorio->direccion) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="border rounded p-2 mb-2">
+                                <i class="fas fa-map-marker-alt text-primary me-1"></i>
+                                <span class="fw-semibold">Especialidad</span><br>
+                                <select name="especialidad_id" class="form-control form-select mt-2">
+                                    @foreach ($profesional->especializaciones as $especialidad )
+                                        <option value="{{ $especialidad->id }}">
+                                            {{ $especialidad->especialidad->nombre }} ({{ $especialidad->precio_presencial }}€)
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="border rounded p-2 mb-2">
+                                <i class="fas fa-edit text-primary me-1"></i>
+                                <span class="fw-semibold">Motivo de consulta</span><br>
+                                <input placeholder="Explique el motivo de la consulta" type="text" name="motivo" class="form-control mt-2">
+                            </div>
+
+                            <div class="border rounded p-2 mb-2">
+                                <i class="fas fa-credit-card text-primary me-1"></i>
+                                <span class="fw-semibold">Método de pago</span><br>
+                                <select name="metodo_pago_id" class="form-select form-control mt-1">
+                                    @forelse ($profesional->metodosPago as $metodo)
+                                        <option value="{{ $metodo->id }}">{{ $metodo->nombre }}</option>
+                                    @empty
+                                        <option selected>No especificado</option>
+                                    @endforelse
+                                </select>
+                            </div>
+
+                            <div class="border rounded p-2 mb-2 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-calendar text-primary me-1"></i>
+                                    <span class="fw-semibold">Disponibilidad</span><br>
+                                    <small class="text-muted">Ver disponibilidades</small>                        
+                                </div>
+                                <span class="badge bg-dark fs-6" role="button" data-bs-toggle="modal" data-bs-target="#modalVerCalendario">
+                                    Ver Calendario
+                                </span>    
+                                <div>
+                                    <input id="fecha_hora" class="form-control mt-2" type="datetime-local" name="fecha_hora">
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button id="btn-agendar-cita" type="button" class="btn btn-dark">Agendar Cita Presencial</button>
+                            </div>
+                        </form>
                     </div>
 
-                    <div class="border rounded p-2 mb-2">
-                        <i class="fas fa-edit text-primary me-1"></i>
-                        <span class="fw-semibold">Motivo de consulta</span><br>
-                        <input placeholder="Explique el motivo de la consulta" type="text" name="motivo" class="form-control mt-2"  id="">
-                    </div>
-                
-                    {{-- Método de pago --}}
-                    <div class="border rounded p-2 mb-2">
-                        <i class="fas fa-credit-card text-primary me-1"></i>
-                        <span class="fw-semibold">Método de pago</span><br>
-                    
-                        <select name="metodo_pago_id" class="form-select form-control mt-1">
-                            @forelse ($profesional->metodosPago as $metodo)
-                                <option value="{{$metodo->id}}">{{ $metodo->nombre }}</option>
-                            @empty
-                                <option selected>No especificado</option>
-                            @endforelse
-                        </select>
-                    </div>  
-                    {{-- Tipo de cita + precio --}}
-                    <div class="border rounded p-2 mb-2 d-flex justify-content-between align-items-center">
-                        <div>
-                            <i class="fas fa-calendar text-primary me-1"></i>
-                            <span class="fw-semibold">Disponibilidad</span><br>
-                            <small class="text-muted">Ver disponibilidades</small>                        
-                        </div>
-                        <span class="badge bg-dark fs-6" role="button" data-bs-toggle="modal" data-bs-target="#modalVerCalendario">
-                            Ver Calendario
-                        </span>    
-                        <div>
-                            <input class="form-control mt-2" type="datetime-local" name="fecha_hora" id="fecha_hora">                
-                        </div>
+                    {{-- FORMULARIO: VIDEOCONSULTA --}}
+                    <div id="form-videoconsulta" style="display: none;">
+                        <form id="form-agendar-cita-videollamada">
+                            @csrf
+                            <input type="hidden" name="profesional_id" value="{{ $profesional->id }}">
+                            <input type="hidden" name="modalidad" value="videoconsulta">
+
+                            <p class="fw-semibold text-primary mb-2">Solicita videoconsulta:</p>
+                            <p class="small text-muted mb-3">Recibirás un enlace seguro para acceder a tu cita virtual</p>
+
+                            <div class="border rounded p-2 mb-2">
+                                <i class="fas fa-map-marker-alt text-primary me-1"></i>
+                                <span class="fw-semibold">Especialidad</span><br>
+                                <select name="especialidad_id" class="form-control form-select mt-2">
+                                    @foreach ($profesional->especializaciones as $especialidad )
+                                        @if ($especialidad->precio_videoconsulta)
+                                            <option value="{{ $especialidad->id }}">
+                                                {{ $especialidad->especialidad->nombre }} ({{ $especialidad->precio_videoconsulta }}€)
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="border rounded p-2 mb-2">
+                                <i class="fas fa-edit text-primary me-1"></i>
+                                <span class="fw-semibold">Motivo de consulta</span><br>
+                                <input placeholder="Explique el motivo de la consulta" type="text" name="motivo" class="form-control mt-2">
+                            </div>
+
+                            <div class="border rounded p-2 mb-2">
+                                <i class="fas fa-credit-card text-primary me-1"></i>
+                                <span class="fw-semibold">Método de pago</span><br>
+                                <select name="metodo_pago_id" class="form-select form-control mt-1">
+                                    @forelse ($profesional->metodosPago as $metodo)
+                                        <option value="{{ $metodo->id }}">{{ $metodo->nombre }}</option>
+                                    @empty
+                                        <option selected>No especificado</option>
+                                    @endforelse
+                                </select>
+                            </div>
+
+                            <div class="border rounded p-2 mb-2 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-calendar text-primary me-1"></i>
+                                    <span class="fw-semibold">Disponibilidad</span><br>
+                                    <small class="text-muted">Ver disponibilidades</small>                        
+                                </div>
+                                <span class="badge bg-dark fs-6" role="button" data-bs-toggle="modal" data-bs-target="#modalVerCalendarioVideollamada">
+                                    Ver Calendario
+                                </span>    
+                                <div>
+                                    <input id="fecha_hora_videollamada" class="form-control mt-2" type="datetime-local" name="fecha_hora">
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button id="btn-agendar-cita-videollamada" type="button" class="btn btn-dark">Agendar Videoconsulta</button>
+                            </div>
+                        </form>
                     </div>
 
-                    <div class="border rounded p-2 mb-2 d-flex justify-content-between align-items-center">
-                        <div class="text-center mx-auto">
-                            <button type="button" id="btn-agendar-cita" class="btn btn-dark">Agendar Cita</button>
-                        </div>
-                    </div>
-                </form>
             </div>
           
             
@@ -418,6 +480,28 @@
                         <div class="col-lg-3">
                             <h6 class="text-center">Horarios disponibles</h6>
                             <ul id="lista-horarios" class="list-group"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="modal fade" id="modalVerCalendarioVideollamada" tabindex="-1" aria-labelledby="modalVerCalendarioVideollamadaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Seleccionar disponibilidad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div id="calendarioFullCalendarVideollamada"></div>
+                        </div>
+                        <div class="col-lg-3">
+                            <h6 class="text-center">Horarios disponibles</h6>
+                            <ul id="lista-horarios-videollamada" class="list-group"></ul>
                         </div>
                     </div>
                 </div>
@@ -612,8 +696,8 @@
                 $('#modalVerCalendario').modal('hide');
             }
         });
-        });
-        </script>
+    });
+    </script>
 
 <script>
     document.getElementById('btn-agendar-cita').addEventListener('click', function () {
@@ -622,6 +706,19 @@
             .then(data => {
                 if (data.authenticated) {
                     agendarCita();
+                } else {
+                    const modal = new bootstrap.Modal(document.getElementById('modalLogin'));
+                    modal.show();
+                }
+            });
+    });
+
+    document.getElementById('btn-agendar-cita-videollamada').addEventListener('click', function () {
+        fetch('/check-auth')
+            .then(res => res.json())
+            .then(data => {
+                if (data.authenticated) {
+                    agendarCitaVideollamada();
                 } else {
                     const modal = new bootstrap.Modal(document.getElementById('modalLogin'));
                     modal.show();
@@ -676,7 +773,158 @@
             alert('Error inesperado');
         });
     }
+
+    function agendarCitaVideollamada() {
+        const form = document.getElementById('form-agendar-cita-videollamada');
+        const formData = new FormData(form);
+    
+        fetch("{{ route('citas.videollamada.ajax.store') }}", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = data.redirect;
+            }else {
+                alert('Error al agendar la cita');
+            }
+        })
+        .catch(err => {
+            console.error('Error al crear cita:', err);
+            alert('Error inesperado');
+        });
+    }
     </script>
     
+    <script>
+    document.getElementById('btn-tab-presencial').addEventListener('click', function() {
+        document.getElementById('form-presencial').style.display = 'block';
+        document.getElementById('form-videoconsulta').style.display = 'none';
 
+        this.classList.add('btn-warning', 'text-white');
+        this.classList.remove('btn-outline-secondary');
+        document.getElementById('btn-tab-videoconsulta').classList.remove('btn-warning', 'text-white');
+        document.getElementById('btn-tab-videoconsulta').classList.add('btn-outline-secondary');
+    });
+
+    document.getElementById('btn-tab-videoconsulta').addEventListener('click', function() {
+        document.getElementById('form-presencial').style.display = 'none';
+        document.getElementById('form-videoconsulta').style.display = 'block';
+
+        this.classList.add('btn-warning', 'text-white');
+        this.classList.remove('btn-outline-secondary');
+        document.getElementById('btn-tab-presencial').classList.remove('btn-warning', 'text-white');
+        document.getElementById('btn-tab-presencial').classList.add('btn-outline-secondary');
+    });
+    </script>
+
+ <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let calendarEl = document.getElementById('calendarioFullCalendarVideollamada');
+            let fechaSeleccionada = null;
+
+            let calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                height: 600,
+                eventDisplay: 'background',
+                validRange: {
+                    start: new Date().toISOString().split('T')[0] // hoy como mínimo
+                },
+                events: function(fetchInfo, successCallback, failureCallback) {
+                    $.ajax({
+                        url: '/api/frontend/profesional/horarios-videollamada/{{$profesional->id}}',
+                        method: 'GET',
+                        success: function (data) {
+                            let eventos = data.map(item => ({
+                                title: '',
+                                start: item.fecha,
+                                allDay: true,
+                                backgroundColor: '#8B0000',
+                            }));
+                            successCallback(eventos);
+                        },
+                        error: failureCallback
+                    });
+                },
+                dateClick: function (info) {
+
+                    fechaSeleccionada = info.dateStr;
+
+                    $.ajax({
+                        url: '/api/frontend/profesional/horarios-videollamada/{{$profesional->id}}/' + info.dateStr,
+                        method: 'GET',
+                        success: function (response) {
+        
+                            let lista = $('#lista-horarios-videollamada');
+                            lista.empty();
+        
+                            if (response.length === 0) {
+                                lista.append('<li class="list-group-item text-muted">Sin horarios</li>');
+                            } else {
+                                response.forEach((horario, index) => {
+                                let turnosHtml = horario.turnos.map(t => `
+                                    <button class="btn btn-outline-success btn-sm m-1 btn-turno" data-hora="${t}">
+                                        ${t}
+                                    </button>
+                                `).join('');
+
+                                lista.append(`
+                                    <li class="list-group-item">
+                                        <strong>${horario.desde} - ${horario.hasta}</strong><br>
+                                        <div class="mt-2">${turnosHtml}</div>
+                                    </li>
+                                `);
+                            });
+                            }
+                        }
+                    });
+                }
+           
+             });
+        
+            $('#modalVerCalendarioVideollamada').on('shown.bs.modal', function () {
+                calendar.render();
+            });
+        
+            // Función para generar turnos de 30 minutos
+            function generarTurnos(desde, hasta) {
+                const turnos = [];
+                const [hd, md] = desde.split(':').map(Number);
+                const [hh, mh] = hasta.split(':').map(Number);
+        
+                let start = new Date();
+                start.setHours(hd, md, 0, 0);
+        
+                const end = new Date();
+                end.setHours(hh, mh, 0, 0);
+        
+                while (start < end) {
+                    const hora = start.getHours().toString().padStart(2, '0');
+                    const min = start.getMinutes().toString().padStart(2, '0');
+                    turnos.push(`${hora}:${min}`);
+                    start.setMinutes(start.getMinutes() + 30);
+                }
+        
+                return turnos;
+            }
+        
+            // Delegado para seleccionar turno (marcar activo)
+            $('#lista-horarios-videollamada').on('click', '.btn-turno', function () {
+            $('.btn-turno').removeClass('btn-success').addClass('btn-outline-success');
+            $(this).removeClass('btn-outline-success').addClass('btn-success');
+
+            if (fechaSeleccionada) {
+                const hora = $(this).data('hora');
+                const datetimeLocal = fechaSeleccionada + 'T' + hora;
+                $('#fecha_hora_videollamada').val(datetimeLocal);
+                $('#modalVerCalendarioVideollamada').modal('hide');
+            }
+        });
+    });
+    </script>
 @endsection
