@@ -264,8 +264,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        <div class="col-12 form-group">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
                             <a href="{{ route('informes.index') }}" class="btn btn-secondary">Cancelar</a>
                         </div>
                     </div>

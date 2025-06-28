@@ -47,6 +47,9 @@
             </small>
         </div>
 
-        <button type="submit" class="btn btn-primary">Actualizar</button>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a href="{{ route('especialidades.index') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 @stop

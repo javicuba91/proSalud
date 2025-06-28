@@ -136,8 +136,8 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
                     <a href="{{ route('recetas.index') }}" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-primary">Actualizar</button>
                 </div>
             </form>
         </div>

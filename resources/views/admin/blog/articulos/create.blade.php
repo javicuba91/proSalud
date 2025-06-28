@@ -250,13 +250,9 @@
                 <!-- Botones de acción -->
                 <div class="card">
                     <div class="card-body">
-                        <div class="form-group text-center">
-                            <button type="submit" class="btn btn-primary btn-block">
-                                <i class="fa fa-save"></i> Guardar Artículo
-                            </button>
-                            <a href="{{ route('blog.articulos.index') }}" class="btn btn-secondary btn-block">
-                                <i class="fa fa-arrow-left"></i> Volver
-                            </a>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a href="{{ route('blog.articulos.index') }}" class="btn btn-secondary">Cancelar</a>
                         </div>
                     </div>
                 </div>

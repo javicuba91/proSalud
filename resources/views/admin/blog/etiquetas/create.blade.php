@@ -40,12 +40,8 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fa fa-save"></i> Guardar
-                    </button>
-                    <a href="{{ route('blog.etiquetas.index') }}" class="btn btn-secondary">
-                        <i class="fa fa-arrow-left"></i> Volver
-                    </a>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="{{ route('blog.etiquetas.index') }}" class="btn btn-secondary">Cancelar</a>
                 </div>
             </form>
         </div>

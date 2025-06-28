@@ -52,8 +52,10 @@
             <label for="telefono">Teléfono</label>
             <input type="text" name="telefono" id="telefono" class="form-control" placeholder="Opcional">
         </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="{{ route('emergencias.index') }}" class="btn btn-secondary">Cancelar</a>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a href="{{ route('emergencias.index') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 @stop
 

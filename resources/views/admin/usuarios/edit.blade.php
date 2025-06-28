@@ -27,8 +27,8 @@
             <h5 class="mb-0 d-inline">
                 <i class="fas fa-user-edit mr-2"></i>Editar Usuario
             </h5>
-            <a style="font-weight: bold;" href="{{ route('usuarios.show', $usuario->id) }}" class="float-right text-white">
-                <i class="fa fa-arrow-left"></i> Volver a detalles
+            <a style="font-weight: bold;" href="{{ route('usuarios.index', $usuario->id) }}" class="float-right text-white">
+                <i class="fa fa-arrow-left"></i> Volver al listado
             </a>
         </div>
 
@@ -527,20 +527,14 @@
                 </div>
 
                 <!-- Botones de acción -->
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <button type="submit" class="btn btn-success btn-lg mr-3">
-                            <i class="fas fa-save mr-2"></i>Guardar Cambios
-                        </button>
-                        <a href="{{ route('usuarios.show', $usuario->id) }}" class="btn btn-secondary btn-lg">
-                            <i class="fas fa-times mr-2"></i>Cancelar
-                        </a>
-                    </div>
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="{{ route('usuarios.index', $usuario->id) }}" class="btn btn-secondary">Cancelar</a>
                 </div>
             </form>
         </div>
     </div>
-@stop
+@endsection
 
 @section('css')
     <style>
@@ -584,7 +578,7 @@
             transition: all 0.2s ease;
         }
     </style>
-@stop
+@endsection
 
 @section('js')
     <script>
@@ -691,4 +685,4 @@
             }
         });
     </script>
-@stop
+@endsection

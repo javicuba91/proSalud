@@ -25,6 +25,9 @@
             <label for="caracteristicas">Caracteristicas</label>
             <textarea rows="6" required name="caracteristicas" id="caracteristicas" class="form-control"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a href="{{ route('planes.index') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 @stop

@@ -18,7 +18,7 @@
                     <select name="especialidad_id" id="especialidad_id" class="form-control @error('especialidad_id') is-invalid @enderror" required>
                         <option value="">Seleccione una especialidad</option>
                         @foreach($especialidades as $especialidad)
-                            <option value="{{ $especialidad->id }}" 
+                            <option value="{{ $especialidad->id }}"
                                 {{ (old('especialidad_id', $pregunta->especialidad_id) == $especialidad->id) ? 'selected' : '' }}>
                                 {{ $especialidad->nombre }}
                             </option>
@@ -42,7 +42,7 @@
 
                 <div class="form-group">
                     <label for="pregunta">Pregunta <span class="text-danger">*</span></label>
-                    <textarea name="pregunta" id="pregunta" class="form-control @error('pregunta') is-invalid @enderror" 
+                    <textarea name="pregunta" id="pregunta" class="form-control @error('pregunta') is-invalid @enderror"
                         rows="6" required placeholder="Escriba aquí la pregunta...">{{ old('pregunta', $pregunta->pregunta) }}</textarea>
                     @error('pregunta')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -50,12 +50,8 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Actualizar Pregunta
-                    </button>
-                    <a href="{{ route('preguntas.index') }}" class="btn btn-secondary">
-                        <i class="fas fa-times"></i> Cancelar
-                    </a>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="{{ route('preguntas.index') }}" class="btn btn-secondary">Cancelar</a>
                 </div>
             </form>
         </div>
@@ -74,12 +70,12 @@
                         success: function(response) {
                             var subespecialidadSelect = $('#sub_especialidad_id');
                             subespecialidadSelect.html('<option value="">Seleccione una sub-especialidad (opcional)</option>');
-                            
+
                             if (response.length > 0) {
                                 $.each(response, function(index, subespecialidad) {
                                     var selected = (selectedSubespecialidad && subespecialidad.id == selectedSubespecialidad) ? 'selected' : '';
                                     subespecialidadSelect.append(
-                                        '<option value="' + subespecialidad.id + '" ' + selected + '>' + 
+                                        '<option value="' + subespecialidad.id + '" ' + selected + '>' +
                                         subespecialidad.nombre + '</option>'
                                     );
                                 });
@@ -103,7 +99,7 @@
             // Cargar sub-especialidades al inicializar si hay una especialidad seleccionada
             var especialidadInicial = $('#especialidad_id').val();
             var subespecialidadInicial = {{ old('sub_especialidad_id', $pregunta->sub_especialidad_id) ?? 'null' }};
-            
+
             if (especialidadInicial) {
                 cargarSubespecialidades(especialidadInicial, subespecialidadInicial);
             }

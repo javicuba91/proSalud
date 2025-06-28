@@ -44,12 +44,8 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Guardar Respuesta
-                    </button>
-                    <a href="{{ route('respuestas.index') }}" class="btn btn-secondary">
-                        <i class="fas fa-times"></i> Cancelar
-                    </a>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="{{ route('respuestas.index') }}" class="btn btn-secondary">Cancelar</a>
                 </div>
             </form>
         </div>

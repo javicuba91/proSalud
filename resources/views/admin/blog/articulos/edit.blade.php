@@ -7,9 +7,9 @@
 @stop
 
 @section('css')
-    
+
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
@@ -55,18 +55,18 @@
 
                         <div class="form-group">
                             <label for="contenido">Contenido *</label>
-                        
+
                             <!-- Campo oculto para enviar HTML del editor -->
                             <textarea name="contenido" id="contenido" hidden>{{ old('contenido', $articulo->contenido) }}</textarea>
-                        
+
                             <!-- Editor visual -->
                             <div id="editor" style="min-height: 300px;"></div>
-                        
+
                             @error('contenido')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                     </div>
                 </div>
 
@@ -268,13 +268,9 @@
                 <!-- Botones de acción -->
                 <div class="card">
                     <div class="card-body">
-                        <div class="form-group text-center">
-                            <button type="submit" class="btn btn-primary btn-block">
-                                <i class="fa fa-save"></i> Actualizar Artículo
-                            </button>
-                            <a href="{{ route('blog.articulos.index') }}" class="btn btn-secondary btn-block">
-                                <i class="fa fa-arrow-left"></i> Volver
-                            </a>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a href="{{ route('blog.articulos.index') }}" class="btn btn-secondary">Cancelar</a>
                         </div>
                     </div>
                 </div>
@@ -282,7 +278,7 @@
         </div>
     </form>
 
-    
+
     <!-- Modal Nueva Categoría -->
     <div class="modal fade" id="modalNuevaCategoria" tabindex="-1" role="dialog"
         aria-labelledby="modalNuevaCategoriaLabel" aria-hidden="true">
@@ -515,14 +511,14 @@
                 ]
             }
         });
-    
+
         var contenidoGuardado = {!! json_encode(old('contenido', $articulo->contenido)) !!};
         quill.clipboard.dangerouslyPasteHTML(contenidoGuardado);
-    
+
         document.querySelector('form').addEventListener('submit', function () {
             document.getElementById('contenido').value = quill.root.innerHTML;
         });
     });
     </script>
-    
+
 @stop
