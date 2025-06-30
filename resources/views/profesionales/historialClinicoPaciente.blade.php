@@ -13,8 +13,12 @@
 @section('content')
     <div class="border p-2 mb-2">
         <div class="row">
-            <div class="col-lg-12 mb-2">
-                <input type="text" class="form-control" readonly value="{{ $paciente->foto }}" placeholder="Foto">
+            <div class="col-lg-12 mb-2 text-center">
+                @if($paciente->foto)
+                    <img src="{{ asset($paciente->foto) }}" alt="Foto del paciente" class="img-fluid rounded" style="max-width: 400px; max-height: 400px;">
+                @else
+                    <span class="text-muted">Sin foto</span>
+                @endif
             </div>
 
             <div class="col-lg-6 mb-2">
@@ -148,7 +152,7 @@
                 <div class="col-md-2 mb-2">
                     <a href="" class="btn btn-dark w-100">Contactar</a>
                 </div>
-            </div>        
+            </div>
         @endforeach
     </div>
 

@@ -22,10 +22,11 @@ return new class extends Migration
             $table->string('celular')->nullable();
             $table->string('email')->nullable();
             $table->string('direccion')->nullable();
+            $table->foreignId('ciudad_id')->nullable()->constrained('ciudad');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
-        
+
     }
 
     /**

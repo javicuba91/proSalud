@@ -16,4 +16,28 @@ class Especialidad extends Model
         'padre_id',
     ];
 
+    public function preguntasExpertos()
+    {
+        return $this->hasMany(PreguntaExperto::class);
+    }
+
+    public function preguntasExpertosComoSub()
+    {
+        return $this->hasMany(PreguntaExperto::class, 'sub_especialidad_id');
+    }
+
+    public function especializacionesProfesional()
+    {
+        return $this->hasMany(EspecializacionesProfesional::class);
+    }
+
+    public function padre()
+    {
+        return $this->belongsTo(Especialidad::class, 'padre_id');
+    }
+
+    public function hijos()
+    {
+        return $this->hasMany(Especialidad::class, 'padre_id');
+    }
 }

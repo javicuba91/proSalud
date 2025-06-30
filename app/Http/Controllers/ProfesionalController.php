@@ -23,9 +23,11 @@ use App\Models\Medicamento;
 use App\Models\MetodoPago;
 use App\Models\Paciente;
 use App\Models\Plan;
+use App\Models\PreguntaExperto;
 use App\Models\PresentacionMedicamento;
 use App\Models\Profesional;
 use App\Models\Provincia;
+use App\Models\RespuestaExperto;
 use App\Models\Receta;
 use App\Models\Region;
 use App\Models\SegurosMedicos;
@@ -328,7 +330,9 @@ class ProfesionalController extends Controller
 
     public function pedidosLaboratorioCrear()
     {
-        return view('profesionales.pedidosLaboratorioCrear');
+        $profesional = Profesional::where('user_id', auth()->id())->firstOrFail();
+
+        return view('profesionales.pedidosLaboratorioCrear', compact('profesional'));
     }
 
     public function pedidosImagenes()
@@ -408,9 +412,16 @@ class ProfesionalController extends Controller
         return view('profesionales.contactarAdministrador', compact('profesional'));
     }
 
-    public function agendarCitaProfesional()
+    public function agendarCitaProfesional(Request $request)
     {
-        return view('profesionales.agendarCita');
+        $pacienteSeleccionado = null;
+
+        // Si viene un paciente_id en la URL, buscarlo
+        if ($request->has('paciente_id')) {
+            $pacienteSeleccionado = Paciente::find($request->paciente_id);
+        }
+
+        return view('profesionales.agendarCita', compact('pacienteSeleccionado'));
     }
 
     public function historialClinicoPaciente($id)
@@ -1396,7 +1407,7 @@ class ProfesionalController extends Controller
             $cita = Cita::with(['paciente', 'consultorio', 'profesional'])->find($citaId);
             $cita->recordatorio_enviado = 1; // Marcar como recordatorio enviado
             $cita->save();
-            
+
             if (!$cita) {
                 return response()->json([
                     'success' => false,
@@ -1435,6 +1446,79 @@ class ProfesionalController extends Controller
                 'message' => 'Error al enviar el recordatorio: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Mostrar preguntas y respuestas de expertos para el profesional
+     */
+    public function preguntasRespuestas()
+    {
+        $profesional = Profesional::where('user_id', Auth::id())->first();
+
+        if (!$profesional) {
+            return redirect()->route('login');
+        }
+
+        // Obtener las especialidades del profesional
+        $especialidadesProfesional = $profesional->especializaciones()->pluck('especialidad_id')->toArray();
+
+        // Obtener preguntas de las especialidades del profesional
+        $preguntas = PreguntaExperto::whereIn('especialidad_id', $especialidadesProfesional)
+            ->orWhereIn('sub_especialidad_id', $especialidadesProfesional)
+            ->with(['especialidad', 'subespecialidad', 'respuestas.profesional'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        // Obtener las respuestas del profesional actual
+        $misRespuestas = RespuestaExperto::where('profesional_id', $profesional->id)
+            ->with(['pregunta.especialidad', 'pregunta.subespecialidad'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('profesionales.preguntas-respuestas', compact('preguntas', 'misRespuestas', 'profesional'));
+    }
+
+    /**
+     * Responder a una pregunta de experto
+     */
+    public function responderPregunta(Request $request)
+    {
+        $request->validate([
+            'pregunta_id' => 'required|exists:preguntas_expertos,id',
+            'respuesta' => 'required|string|min:10'
+        ]);
+
+        $profesional = Profesional::where('user_id', Auth::id())->first();
+
+        if (!$profesional) {
+            return response()->json(['success' => false, 'message' => 'Profesional no encontrado']);
+        }
+
+        // Verificar que el profesional puede responder esta pregunta (tiene la especialidad)
+        $pregunta = PreguntaExperto::findOrFail($request->pregunta_id);
+        $especialidadesProfesional = $profesional->especializaciones()->pluck('especialidad_id')->toArray();
+
+        if (!in_array($pregunta->especialidad_id, $especialidadesProfesional) &&
+            !in_array($pregunta->sub_especialidad_id, $especialidadesProfesional)) {
+            return response()->json(['success' => false, 'message' => 'No tienes autorización para responder esta pregunta']);
+        }
+
+        // Verificar que no haya respondido ya
+        $yaRespondio = RespuestaExperto::where('preguntas_expertos_id', $request->pregunta_id)
+            ->where('profesional_id', $profesional->id)
+            ->exists();
+
+        if ($yaRespondio) {
+            return response()->json(['success' => false, 'message' => 'Ya has respondido a esta pregunta']);
+        }
+
+        RespuestaExperto::create([
+            'preguntas_expertos_id' => $request->pregunta_id,
+            'respuesta' => $request->respuesta,
+            'profesional_id' => $profesional->id
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Respuesta enviada correctamente']);
     }
 
 }

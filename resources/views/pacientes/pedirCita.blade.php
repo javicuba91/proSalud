@@ -38,10 +38,12 @@
                 </a>
             </div>
             <div class="col-md-4 mb-4">
+                <a class="text-dark" href="/paciente/buscar-proveedores">
                 <div class="icon-card text-center">
                     <i class="fas fa-dumbbell icon-fa"></i>
                     <p>Proveedores</p>
                 </div>
+                </a>
             </div>
             <div class="col-md-4 mb-4">
                 <a class="text-dark" href="/pacientes/buscar/emergencias">

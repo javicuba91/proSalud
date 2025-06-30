@@ -455,6 +455,12 @@ return [
             'can'  => 'solo-profesional',
         ],
         [
+            'text' => 'Preguntas y Respuestas',
+            'url' => '/profesional/preguntas-respuestas',
+            'icon' => '',
+            'can'  => 'solo-profesional',
+        ],
+        [
             'text' => 'Contactar administrador',
             'url' => '/profesional/contactar-administrador',
             'icon' => '',

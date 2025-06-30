@@ -17,13 +17,23 @@
     <div class="row border p-2">
 
         <div class="col-lg-12 mb-2">
-            <input type="text" class="form-control" id="buscar_paciente" placeholder="Buscar paciente...">
-            <input type="hidden" name="paciente_id" id="paciente_id">
+            <input type="text" class="form-control" id="buscar_paciente"
+                   placeholder="Buscar paciente..."
+                   value="{{ isset($pacienteSeleccionado) ? $pacienteSeleccionado->nombre_completo : '' }}">
+            <input type="hidden" name="paciente_id" id="paciente_id"
+                   value="{{ isset($pacienteSeleccionado) ? $pacienteSeleccionado->id : '' }}">
             <div id="resultados-pacientes"></div>
+            @if(isset($pacienteSeleccionado))
+                <div class="alert alert-info mt-2">
+                    <i class="fa fa-info-circle"></i>
+                    <strong>Paciente seleccionado:</strong> {{ $pacienteSeleccionado->nombre_completo }}<br>
+                    <strong>Email:</strong> {{ $pacienteSeleccionado->email }}
+                </div>
+            @endif
         </div>
 
         <div class="col-lg-2 mb-2">
-            <input type="text" class="form-control" name="codigo_qr" id="codigo_qr" readonly>
+            <input type="text" class="form-control" name="codigo_qr" id="codigo_qr" readonly placeholder="Código QR">
         </div>
 
         <div class="col-lg-2 mb-2">

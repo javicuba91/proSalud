@@ -123,6 +123,11 @@ class Profesional extends Model
         return $this->belongsToMany(MetodoPago::class, 'metodo_pago_profesional');
     }
 
+    public function respuestasExpertos()
+    {
+        return $this->hasMany(RespuestaExperto::class);
+    }
+
     /**
      * Retorna true si todos los documentos del profesional están aprobados
      */

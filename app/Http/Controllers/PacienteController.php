@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Antecedente;
 use App\Models\CategoriaProfesional;
 use App\Models\Cita;
+use App\Models\Ciudad;
 use App\Models\ContactosEmergencia;
 use App\Models\Emergencia;
 use App\Models\Especialidad;
@@ -18,8 +19,8 @@ use App\Models\SegurosMedicos;
 use App\Models\User;
 use App\Models\Valoracion;
 use App\Models\ViaAdministracionMedicamento;
-use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
@@ -93,6 +94,7 @@ class PacienteController extends Controller
         $paciente->celular = $request->celular;
         $paciente->direccion = $request->direccion;
         $paciente->cedula = $request->cedula;
+        $paciente->ciudad_id = $request->ciudad_id;
         $paciente->grupo_sanguineo = $request->grupo . "" . $request->rh;
         $paciente->save();
 
@@ -174,7 +176,7 @@ class PacienteController extends Controller
             $receta = Receta::where('informe_consulta_id', '=', $informe->id)->first();
             return view('pacientes.detalleCita', compact('cita', 'receta'));
         } else {
-            return view('pacientes.detalleCita', compact('cita'));
+            return view('pacientes.detalleCita', compact('cita', 'receta'));
         }
     }
 
@@ -191,6 +193,13 @@ class PacienteController extends Controller
     public function misCitasCanceladas()
     {
         return view('pacientes.misCitasCanceladas');
+    }
+    public function cancelar($id)
+    {
+        $cita = Cita::findOrFail($id);
+        $cita->estado = 'cancelada'; // o elimínala si prefieres
+        $cita->save();
+        return redirect()->back()->with('success', 'Cita cancelada correctamente.');
     }
 
     public function buscarProfesionales()
@@ -313,9 +322,10 @@ class PacienteController extends Controller
 
     public function datos()
     {
+        $paciente = Paciente::where('user_id', Auth::user()->id)->first();
         $seguros = SegurosMedicos::all();
-        $paciente = Paciente::where('user_id', Auth()->user()->id)->first();
-        return view('pacientes.datos', data: compact('seguros', 'paciente'));
+        $ciudades = Ciudad::orderBy('nombre', 'asc')->get(); // Obtener todas las ciudades
+        return view('pacientes.datos', compact('seguros', 'paciente', 'ciudades'));
     }
 
     public function notificaciones()

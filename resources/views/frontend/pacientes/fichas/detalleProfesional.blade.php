@@ -168,7 +168,7 @@
                         <div class="card border position-relative">
                             <div class="card-body">
                                 <h5 class="text-primary"><i class="fa fa-images"></i> Imágenes Consultorios</h5>
-                                @if ($consultorio->imagenes)                               
+                                @if ($consultorio->imagenes)
                                 <div class="row">
                                     @foreach ($profesional->consultorios as $consultorio)
                                         <h6>Consultorio {{ $loop->index + 1 }}, {{$consultorio->clinica}}, {{ ucfirst($consultorio->direccion) }}{{ !$loop->last ? ',' : '' }}</h6>
@@ -176,19 +176,19 @@
                                             $imagenes = App\Models\ConsultorioImagen::where('consultorio_id', $consultorio->id)->get();
                                         @endphp
                                         @foreach ($imagenes as $imagen)
-                                            <div class="col-lg-6 position-relative mb-3"> 
+                                            <div class="col-lg-6 position-relative mb-3">
                                                 <img src="{{ asset($imagen->imagen_path) }}" alt="Imagen"
                                                     class="img img-thumbnail w-100 shadow imgConsultorio">
                                             </div>
                                         @endforeach
                                     @endforeach
                                 </div>
-                            @endif   
+                            @endif
                             </div>
                         </div>
                     </div>
 
-                    
+
 
                     <div class="col-md-12 mb-3">
                         <div class="card border position-relative">
@@ -202,14 +202,14 @@
                     <div class="col-md-12 mb-4">
                         <div class="card border position-relative">
                             <div class="card-body">
-                    
+
                                 {{-- Calcular promedio --}}
                                 @php
                                     $promedio = $profesional->valoraciones->avg('puntuacion') ?? 0;
                                     $entero = floor($promedio);
                                     $decimal = $promedio - $entero;
                                 @endphp
-                    
+
                                 {{-- Título + Promedio de estrellas --}}
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h5 class="mb-0">
@@ -228,16 +228,16 @@
                                         <span class="ms-1 text-muted">({{ number_format($promedio, 1) }})</span>
                                     </div>
                                 </div>
-                    
+
                                 {{-- Opiniones --}}
                                 @forelse ($profesional->valoraciones->sortByDesc('fecha') as $valoracion)
                                     @php
                                         $entero = floor($valoracion->puntuacion);
                                         $decimal = $valoracion->puntuacion - $entero;
                                         $nombre = $valoracion->paciente->nombre_completo ?? 'N/A';
-                                        
+
                                     @endphp
-                    
+
                                     <div class="d-flex justify-content-between align-items-start p-3 border rounded mb-3 bg-white shadow-sm">
                                         <div class="me-3">
                                             <div class="mb-1">
@@ -252,17 +252,17 @@
                                                     @endif
                                                 @endfor
                                             </div>
-                    
+
                                             <div class="text-muted">
                                                 <i class="fas fa-quote-left me-2 text-secondary"></i>
                                                 {{ $valoracion->comentario }}
                                             </div>
-                    
+
                                             <div class="mt-2 text-secondary small fw-bold">
                                                 {{ $nombre }} &nbsp; {{ date('d/m/Y', strtotime($valoracion->fecha)) }}
                                             </div>
                                         </div>
-                    
+
                                         <div class="text-success fw-semibold small d-flex align-items-center">
                                             <i class="fas fa-thumbs-up me-1"></i>
                                             Verificada
@@ -271,12 +271,12 @@
                                 @empty
                                     <p class="text-muted">No hay valoraciones disponibles.</p>
                                 @endforelse
-                    
+
                             </div>
                         </div>
                     </div>
-                    
-                    
+
+
 
                 </div>
 
@@ -285,7 +285,7 @@
         </div>
 
         <div class="col-lg-6" id="col-citas">
-            
+
             <div class="card shadow-sm p-3 mt-2">
 
                     <div class="btn-group mb-3 w-100" role="group">
@@ -349,11 +349,11 @@
                                 <div>
                                     <i class="fas fa-calendar text-primary me-1"></i>
                                     <span class="fw-semibold">Disponibilidad</span><br>
-                                    <small class="text-muted">Ver disponibilidades</small>                        
+                                    <small class="text-muted">Ver disponibilidades</small>
                                 </div>
                                 <span class="badge bg-dark fs-6" role="button" data-bs-toggle="modal" data-bs-target="#modalVerCalendario">
                                     Ver Calendario
-                                </span>    
+                                </span>
                                 <div>
                                     <input id="fecha_hora" class="form-control mt-2" type="datetime-local" name="fecha_hora">
                                 </div>
@@ -411,11 +411,11 @@
                                 <div>
                                     <i class="fas fa-calendar text-primary me-1"></i>
                                     <span class="fw-semibold">Disponibilidad</span><br>
-                                    <small class="text-muted">Ver disponibilidades</small>                        
+                                    <small class="text-muted">Ver disponibilidades</small>
                                 </div>
                                 <span class="badge bg-dark fs-6" role="button" data-bs-toggle="modal" data-bs-target="#modalVerCalendarioVideollamada">
                                     Ver Calendario
-                                </span>    
+                                </span>
                                 <div>
                                     <input id="fecha_hora_videollamada" class="form-control mt-2" type="datetime-local" name="fecha_hora">
                                 </div>
@@ -428,8 +428,8 @@
                     </div>
 
             </div>
-          
-            
+
+
         </div>
     </div>
 
@@ -462,7 +462,7 @@
             </div>
             </div>
         </div>
-  
+
 
 
     <div class="modal fade" id="modalVerCalendario" tabindex="-1" aria-labelledby="modalVerCalendarioLabel" aria-hidden="true">
@@ -508,11 +508,11 @@
             </div>
         </div>
     </div>
-    
+
 @endsection
 
 @section('js')
-    
+
     <script>
         const consultorios = @json(
         $profesional->consultorios->map(function ($consultorio) use ($profesional) {
@@ -629,10 +629,10 @@
                         url: '/api/frontend/profesional/horarios/{{$profesional->id}}/' + info.dateStr,
                         method: 'GET',
                         success: function (response) {
-        
+
                             let lista = $('#lista-horarios');
                             lista.empty();
-        
+
                             if (response.length === 0) {
                                 lista.append('<li class="list-group-item text-muted">Sin horarios</li>');
                             } else {
@@ -655,35 +655,35 @@
                         }
                     });
                 }
-           
+
              });
-        
+
             $('#modalVerCalendario').on('shown.bs.modal', function () {
                 calendar.render();
             });
-        
+
             // Función para generar turnos de 30 minutos
             function generarTurnos(desde, hasta) {
                 const turnos = [];
                 const [hd, md] = desde.split(':').map(Number);
                 const [hh, mh] = hasta.split(':').map(Number);
-        
+
                 let start = new Date();
                 start.setHours(hd, md, 0, 0);
-        
+
                 const end = new Date();
                 end.setHours(hh, mh, 0, 0);
-        
+
                 while (start < end) {
                     const hora = start.getHours().toString().padStart(2, '0');
                     const min = start.getMinutes().toString().padStart(2, '0');
                     turnos.push(`${hora}:${min}`);
                     start.setMinutes(start.getMinutes() + 30);
                 }
-        
+
                 return turnos;
             }
-        
+
             // Delegado para seleccionar turno (marcar activo)
             $('#lista-horarios').on('click', '.btn-turno', function () {
             $('.btn-turno').removeClass('btn-success').addClass('btn-outline-success');
@@ -725,11 +725,11 @@
                 }
             });
     });
-    
+
     document.getElementById('login-form').addEventListener('submit', function (e) {
         e.preventDefault();
         const formData = new FormData(this);
-    
+
         fetch("{{ route('ajax.login') }}", {
             method: 'POST',
             headers: {
@@ -748,11 +748,18 @@
             }
         });
     });
-    
+
     function agendarCita() {
         const form = document.getElementById('form-agendar-cita');
         const formData = new FormData(form);
-    
+
+        // Validación del campo fecha_hora
+        const fechaHora = document.getElementById('fecha_hora').value;
+        if (!fechaHora) {
+            alert('Por favor seleccione una fecha y hora para la cita');
+            return;
+        }
+
         fetch("{{ route('citas.ajax.store') }}", {
             method: 'POST',
             headers: {
@@ -777,7 +784,14 @@
     function agendarCitaVideollamada() {
         const form = document.getElementById('form-agendar-cita-videollamada');
         const formData = new FormData(form);
-    
+
+        // Validación del campo fecha_hora_videollamada
+        const fechaHora = document.getElementById('fecha_hora_videollamada').value;
+        if (!fechaHora) {
+            alert('Por favor seleccione una fecha y hora para la videoconsulta');
+            return;
+        }
+
         fetch("{{ route('citas.videollamada.ajax.store') }}", {
             method: 'POST',
             headers: {
@@ -799,7 +813,7 @@
         });
     }
     </script>
-    
+
     <script>
     document.getElementById('btn-tab-presencial').addEventListener('click', function() {
         document.getElementById('form-presencial').style.display = 'block';
@@ -859,10 +873,10 @@
                         url: '/api/frontend/profesional/horarios-videollamada/{{$profesional->id}}/' + info.dateStr,
                         method: 'GET',
                         success: function (response) {
-        
+
                             let lista = $('#lista-horarios-videollamada');
                             lista.empty();
-        
+
                             if (response.length === 0) {
                                 lista.append('<li class="list-group-item text-muted">Sin horarios</li>');
                             } else {
@@ -884,35 +898,35 @@
                         }
                     });
                 }
-           
+
              });
-        
+
             $('#modalVerCalendarioVideollamada').on('shown.bs.modal', function () {
                 calendar.render();
             });
-        
+
             // Función para generar turnos de 30 minutos
             function generarTurnos(desde, hasta) {
                 const turnos = [];
                 const [hd, md] = desde.split(':').map(Number);
                 const [hh, mh] = hasta.split(':').map(Number);
-        
+
                 let start = new Date();
                 start.setHours(hd, md, 0, 0);
-        
+
                 const end = new Date();
                 end.setHours(hh, mh, 0, 0);
-        
+
                 while (start < end) {
                     const hora = start.getHours().toString().padStart(2, '0');
                     const min = start.getMinutes().toString().padStart(2, '0');
                     turnos.push(`${hora}:${min}`);
                     start.setMinutes(start.getMinutes() + 30);
                 }
-        
+
                 return turnos;
             }
-        
+
             // Delegado para seleccionar turno (marcar activo)
             $('#lista-horarios-videollamada').on('click', '.btn-turno', function () {
             $('.btn-turno').removeClass('btn-success').addClass('btn-outline-success');

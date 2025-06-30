@@ -66,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/paciente/mis-citas', [PacienteController::class, 'misCitas'])->name('pacientes.misCitas');
     Route::get('/paciente/mis-citas/pendientes', [PacienteController::class, 'misCitasPendiente'])->name('pacientes.misCitas.pendiente');
     Route::get('/paciente/mis-citas/canceladas', [PacienteController::class, 'misCitasCanceladas'])->name('pacientes.misCitas.canceladas');
+    Route::get('/paciente/mis-citas/cancelar/{id}', [PacienteController::class, 'cancelar'])->name('pacientes.misCitas.cancelar');
     Route::get('/paciente/mis-citas/aceptadas', [PacienteController::class, 'misCitasAceptadas'])->name('pacientes.misCitas.aceptadas');
     Route::get('/paciente/mis-citas/{id}/detalle', [PacienteController::class, 'detalleCita'])->name('pacientes.misCitas.detalle');
     Route::post('/pacientes/valoraciones', [PacienteController::class, 'guardarValoracion'])->name('pacientes.valoraciones.store');
@@ -113,6 +114,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profesional/mis-datos', [ProfesionalController::class, 'misDatos'])->name('profesionales.misDatos');
     Route::get('/profesional/mis-planes', [ProfesionalController::class, 'misPlanes'])->name('profesionales.misPlanes');
     Route::get('/profesional/contactar-administrador', [ProfesionalController::class, 'contactarAdministrador'])->name('profesionales.contactarAdministrador');
+
+    // Rutas para preguntas y respuestas de expertos
+    Route::get('/profesional/preguntas-respuestas', [ProfesionalController::class, 'preguntasRespuestas'])->name('profesionales.preguntasRespuestas');
+    Route::post('/profesional/responder-pregunta', [ProfesionalController::class, 'responderPregunta'])->name('profesionales.responderPregunta');
 
     Route::post('/profesional/elegir-plan', [ProfesionalController::class, 'elegirPlan'])->name('profesional.elegir.plan');
     Route::post('/profesional/pagar-plan', [ProfesionalController::class, 'pagarPlan'])->name('profesional.pagar.plan');

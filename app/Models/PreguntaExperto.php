@@ -11,20 +11,20 @@ class PreguntaExperto extends Model
 
     protected $fillable = [
         'especialidad_id',
-        'sub_especialidad_id', 
+        'sub_especialidad_id',
         'pregunta'
     ];
 
     public function respuestas()
     {
-        return $this->hasMany(RespuestaExperto::class);
+        return $this->hasMany(RespuestaExperto::class, 'preguntas_expertos_id');
     }
-    
+
     public function especialidad()
     {
         return $this->belongsTo(Especialidad::class);
     }
-    
+
     public function subespecialidad()
 {
     return $this->belongsTo(Especialidad::class, 'sub_especialidad_id');

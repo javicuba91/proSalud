@@ -19,6 +19,7 @@ class Paciente extends Model
         'email',
         'direccion',
         'cedula',
+        'ciudad_id',
         'grupo_sanguineo',
         'foto'
     ];
@@ -43,7 +44,8 @@ class Paciente extends Model
         return $this->belongsToMany(SegurosMedicos::class, 'paciente_seguro', 'paciente_id', 'seguro_id');
     }
 
-    public function citas() {
+    public function citas()
+    {
         return $this->hasMany(Cita::class);
     }
 
@@ -52,4 +54,8 @@ class Paciente extends Model
         return $this->hasMany(Valoracion::class);
     }
 
+    public function ciudad()
+    {
+        return $this->belongsTo(Ciudad::class);
+    }
 }

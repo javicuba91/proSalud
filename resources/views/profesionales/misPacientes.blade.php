@@ -37,7 +37,7 @@
                     <input type="text" class="form-control" value="{{ $paciente->nombre_completo }}" placeholder="Nombre paciente" readonly>
                 </div>
                 <div class="col-lg-2">
-                    <a href="/profesional/mis-citas/agendar" class="btn btn-dark w-100">Agendar Cita</a>
+                    <a href="/profesional/mis-citas/agendar?paciente_id={{ $paciente->id }}" class="btn btn-dark w-100">Agendar Cita</a>
                 </div>
                 <div class="col-lg-2">
                     <a href="/profesional/mis-pacientes/historial/{{$paciente->id}}" class="btn btn-dark w-100">Ver historial clínico</a>

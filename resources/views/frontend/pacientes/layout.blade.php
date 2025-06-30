@@ -27,7 +27,7 @@
                 @if (Auth::user())
                 <a href="/paciente/pedir-cita" class="btn btn-dark btn-sm me-2">Hola,{{Auth::user()->name}}</a>
                 @endif
-                
+
                 <a href="/profesionales/registro" class="btn btn-outline-secondary btn-sm me-2">Soy médico o profesional
                     de la salud</a>
                 <a href="/proveedores/registro" class="btn btn-outline-secondary btn-sm">Soy farmacia o proveedor</a>
@@ -48,8 +48,7 @@
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
                         <li class="nav-item"><a href="/pacientes" class="nav-link">Inicio</a></li>
-                        <li class="nav-item"><a href="/pacientes/preguntas-expertos" class="nav-link">Preguntar al
-                                experto</a></li>
+                        <li class="nav-item"><a href="/pacientes/preguntas-expertos" class="nav-link">Preguntas y Respuestas</a></li>
                         <li class="nav-item"><a href="{{route('pacientes.blog')}}" class="nav-link">Blog</a></li>
 
                         @guest

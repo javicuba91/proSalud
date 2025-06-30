@@ -111,9 +111,19 @@
                     <input disabled type="text"value="{{ $paciente->user->email }}" class="form-control"
                         placeholder="Email">
                 </div>
-                <div class="col-md-12 mb-2">
+                <div class="col-md-6 mb-2">
                     <input name="direccion" disabled type="text" value="{{ $paciente->direccion }}" class="form-control"
                         placeholder="Dirección de residencia">
+                </div>
+                <div class="col-md-6 mb-2">
+                    <select name="ciudad_id" disabled class="form-control form-select" id="ciudad_id">
+                        <option value="">Seleccione una ciudad</option>
+                        @foreach ($ciudades as $ciudad)
+                            <option value="{{ $ciudad->id }}" {{ ($paciente->ciudad_id == $ciudad->id) ? 'selected' : '' }}>
+                                {{ $ciudad->nombre }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-md-6 mb-2">
                     <input name="cedula" disabled type="text" value="{{ $paciente->cedula }}" class="form-control"
@@ -141,7 +151,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <button id="guardarDatos" type="submit" class="btn btn-success mt-4" disabled>Guardar
+                    <button id="guardarDatos" type="submit" class="btn btn-dark mr-2" disabled>Guardar
                         cambios</button>
                 </div>
             </div>
@@ -282,7 +292,7 @@
                     <h5>Darme de baja</h5>
                 </div>
                 <div class="col-md-12">
-                    <button id="btnEliminarCuenta" class="btn btn-danger">Eliminar cuenta</button>                   
+                    <button id="btnEliminarCuenta" class="btn btn-danger">Eliminar cuenta</button>
                 </div>
                 <div class="col-md-12">
                     <div id="mensajeEliminacion" class="mt-3 text-success" style="display: none;"></div>
@@ -446,7 +456,7 @@
     </script>
 
     <script>
-        $('#btnEliminarCuenta').click(function (e) {
+        $('#btnEliminarCuenta').click(function(e) {
             e.preventDefault();
 
             if (!confirm('¿Estás seguro de que deseas eliminar tu cuenta?')) {
@@ -459,15 +469,15 @@
                 data: {
                     _token: '{{ csrf_token() }}'
                 },
-                success: function (response) {
+                success: function(response) {
                     $('#mensajeEliminacion').text(response.message).show();
 
                     // Redirigir o cerrar sesión luego de un tiempo
-                    setTimeout(function () {
+                    setTimeout(function() {
                         window.location.href = '/pacientes/login';
                     }, 2000);
                 },
-                error: function (xhr) {
+                error: function(xhr) {
                     alert('Ocurrió un error al eliminar la cuenta.');
                 }
             });

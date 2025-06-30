@@ -25,7 +25,7 @@
                 {{ session('success') }}
             </div>
         @endif
-        <div class="row mb-3 border p-3">            
+        <div class="row mb-3 border p-3">
             <div class="col-lg-3 mb-2">
                 {!! QrCode::size(pixels: 150)->generate($cita->codigo_qr) !!}
             </div>
@@ -60,7 +60,7 @@
                     <div class="col-12 mb-3 mt-3">
                         <h5 class="mb-0">Medicamentos recetados</h5>
                     </div>
-                
+                    @if ($receta)
                     <div class="col-lg-12">
                         @foreach ($receta->medicamentosRecetados as $med)
                             <div class="border rounded p-3 mb-2 position-relative">
@@ -75,7 +75,7 @@
                             </div>
                         @endforeach
                     </div>
-                    
+                    @endif
                     <div class="col-md-4 mb-2">
                         <a href="/profesionales/ficha/{{ $cita->profesional->id }}" target="_blank"
                             class="btn btn-dark w-100">Pedir cita con mismo médico</a>
