@@ -87,7 +87,7 @@
                                                 <h6>Otras respuestas de profesionales:</h6>
                                                 @foreach($pregunta->respuestas as $respuesta)
                                                     <div class="alert alert-info">
-                                                        <strong>Dr. {{ $respuesta->profesional->nombre_completo }}</strong>
+                                                        <strong> {{ $respuesta->profesional->nombre_completo }}</strong>
                                                         <small class="text-muted">({{ $respuesta->created_at->format('d/m/Y H:i') }})</small>
                                                         <p class="mb-0 mt-2">{{ $respuesta->respuesta }}</p>
                                                     </div>
