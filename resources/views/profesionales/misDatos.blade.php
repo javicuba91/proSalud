@@ -118,20 +118,25 @@
         </div>
         <div class="row border p-2">
             <div class="col-md-3 mb-2">
+                <label for="foto">Foto de Perfil</label>
                 <input id="foto" name="foto" type="file" class="form-control">
             </div>
             <div class="col-md-3 mb-2">
+                <label for="logo">Logo Profesional</label>
                 <input id="logo" name="logo" type="file" class="form-control">
             </div>
             <div class="col-md-6 mb-2">
-                <input id="nombre_completo"type="text" value="{{ $profesional->nombre_completo }}" class="form-control"
+                <label for="nombre_completo">Nombre Completo</label>
+                <input id="nombre_completo" type="text" value="{{ $profesional->nombre_completo }}" class="form-control"
                     placeholder="Nombre completo">
             </div>
             <div class="col-md-6 mb-2">
+                <label for="fecha_nacimiento">Fecha de Nacimiento</label>
                 <input id="fecha_nacimiento" type="date" value="{{ $profesional->fecha_nacimiento }}"
                     class="form-control" placeholder="Fecha de nacimiento">
             </div>
             <div class="col-md-6 mb-2">
+                <label for="genero">Género</label>
                 <select name="" id="genero" class="form-control form-select">
                     <option value="">Seleccione su género</option>
                     <option value="Hombre" {{ $profesional->genero == 'Hombre' ? 'selected' : '' }}>Hombre</option>
@@ -140,26 +145,32 @@
                 </select>
             </div>
             <div class="col-md-4 mb-2">
+                <label for="telefono_personal">Teléfono Personal</label>
                 <input id="telefono_personal" type="text" value="{{ $profesional->telefono_personal }}"
                     class="form-control" placeholder="Teléfono personal">
             </div>
             <div class="col-md-4 mb-2">
+                <label for="cedula_identidad">Cédula de Identidad</label>
                 <input id="cedula_identidad" type="text" value="{{ $profesional->cedula_identidad }}"
                     class="form-control" placeholder="Cédula de identidad">
             </div>
             <div class="col-md-4 mb-2">
+                <label for="telefono_profesional">Teléfono Profesional</label>
                 <input id="telefono_profesional" type="text" value="{{ $profesional->telefono_profesional }}"
                     class="form-control" placeholder="Teléfono profesional">
             </div>
             <div class="col-md-12 mb-2">
+                <label>Email</label>
                 <input type="text" readonly disabled value="{{ $profesional->user->email }}" class="form-control"
                     placeholder="Email">
             </div>
             <div class="col-md-12 mb-2">
+                <label for="idiomas">Idiomas</label>
                 <input id="idiomas" type="text" value="{{ $profesional->idiomas }}" class="form-control"
                     placeholder="Idiomas">
             </div>
             <div class="col-md-4 mb-2">
+                <label for="region_id">Región</label>
                 <select class="form-control form-select" name="region_id" id="region_id">
                     <option value="">-- Selecciona una región --</option>
                     @foreach ($regiones as $region)
@@ -171,11 +182,13 @@
                 </select>
             </div>
             <div class="col-md-4 mb-2">
+                <label for="provincia_id">Provincia</label>
                 <select class="form-control form-select" name="provincia_id" id="provincia_id">
                     <option value="">-- Seleccione la provincia -- </option>
                 </select>
             </div>
             <div class="col-md-4 mb-2">
+                <label for="ciudad_id">Ciudad</label>
                 <select class="form-control form-select" name="ciudad_id" id="ciudad_id">
                     <option value="">-- Seleccione la ciudad -- </option>
                 </select>
@@ -212,6 +225,7 @@
 
         <div class="row">
             <div class="col-md-12 mb-2">
+                <label for="descripcion_profesional">Descripción Profesional</label>
                 <textarea name="" id="descripcion_profesional" rows="5" class="form-control"
                     placeholder="Descríbete como profesional">{{ $profesional->descripcion_profesional }}</textarea>
             </div>
@@ -219,12 +233,15 @@
 
         <div class="row">
             <div class="col-md-6 mb-2">
+                <label for="anios_experiencia">Años de Experiencia</label>
                 <input id="anios_experiencia" value="{{ $profesional->anios_experiencia }}" type="text"
                     class="form-control" placeholder="¿Años de experiencia?">
             </div>
             <div class="col-md-6 mb-2">
-                <input id="licencia_medica" type="text" value="{{ $profesional->licencia_medica }}"
-                    class="form-control" placeholder="Licencia médica (opción de subir documento)">
+                        <label>&nbsp;</label>
+                        <button class="btn w-100 btn-dark" data-toggle="modal" data-target="#modalDocumento">
+                            <i class="fa fa-plus"></i> Subir licencia médica
+                        </button>
             </div>
         </div>
 
@@ -252,23 +269,28 @@
             @foreach ($profesional->titulosUniversitarios as $titulo)
                 <div class="row mb-2" id="titulo-{{ $titulo->id }}">
                     <div class="col-md-3">
+                        <label>Nombre del Título</label>
                         <input type="text" value="{{ $titulo->nombre }}" class="form-control"
                             placeholder="Nombre del título">
                     </div>
                     <div class="col-md-3">
+                        <label>Centro Educativo</label>
                         <input type="text" value="{{ $titulo->centro_educativo }}" class="form-control"
                             placeholder="Centro educativo">
                     </div>
                     <div class="col-md-2">
+                        <label>País</label>
                         <input type="text" value="{{ $titulo->pais }}" class="form-control" placeholder="País">
                     </div>
                     <div class="col-md-2">
+                        <label>&nbsp;</label>
                         <button type="button" data-id="{{ $titulo->id }}"
                             class="btn btn-danger w-100 eliminar-titulo">
                             <i class="fa fa-trash"></i> Eliminar
                         </button>
                     </div>
                     <div class="col-md-2">
+                        <label>&nbsp;</label>
                         <button class="btn w-100 btn-dark" data-toggle="modal" data-target="#modalDocumento">
                             <i class="fa fa-plus"></i> Subir documento
                         </button>
@@ -292,6 +314,7 @@
             @foreach ($profesional->especializaciones as $especialidad)
                 <div class="row" id="especializacion-{{ $especialidad->id }}">
                     <div class="col-md-2 mb-2">
+                        <label>Especialidad</label>
                         @if ($especialidad->subespecialidad != null)
                             <input type="text"
                                 value="{{ $especialidad->especialidad->nombre }} / {{ $especialidad->subespecialidad->nombre }}"
@@ -302,28 +325,34 @@
                         @endif
                     </div>
                     <div class="col-md-2 mb-2">
+                        <label>Centro Educativo</label>
                         <input type="text" value="{{ $especialidad->centro_educativo }}" class="form-control"
                             placeholder="Centro educativo">
                     </div>
                     <div class="col-md-2 mb-2">
+                        <label>País</label>
                         <input type="text" value="{{ $especialidad->pais }}" class="form-control"
                             placeholder="País">
                     </div>
                     <div class="col-md-1 mb-2">
+                        <label>Precio Presencial</label>
                         <input type="text" value="${{ $especialidad->precio_presencial }}" class="form-control"
                             placeholder="Precio consulta presencial">
                     </div>
                     <div class="col-md-1 mb-2">
+                        <label>Precio Videoconsulta</label>
                         <input type="text" value="${{ $especialidad->precio_videoconsulta }}" class="form-control"
                             placeholder="Precio videoconsulta">
                     </div>
                     <div class="col-md-2 mb-2">
+                        <label>&nbsp;</label>
                         <button type="button" data-id="{{ $especialidad->id }}"
                             class="btn btn-danger w-100 eliminar-especializacion">
                             <i class="fa fa-trash"></i> Eliminar
                         </button>
                     </div>
                     <div class="col-md-2">
+                        <label>&nbsp;</label>
                         <button class="btn w-100 btn-dark" data-toggle="modal" data-target="#modalDocumento">
                             <i class="fa fa-plus"></i> Subir documento
                         </button>
@@ -351,14 +380,17 @@
         @foreach ($profesional->formacionesAdicionales->where('tipo', 'curso') as $curso)
             <div class="row" id="curso-{{ $curso->id }}">
                 <div class="col-md-8 mb-2">
+                    <label>Nombre del Curso</label>
                     <input type="text" value="{{ $curso->nombre }}" class="form-control" placeholder="Nombre curso">
                 </div>
                 <div class="col-md-2 mb-2">
+                    <label>&nbsp;</label>
                     <button type="button" class="btn btn-danger w-100 eliminar-curso" data-id="{{ $curso->id }}">
                         <i class="fa fa-trash"></i> Eliminar
                     </button>
                 </div>
                 <div class="col-lg-2 text-right">
+                    <label>&nbsp;</label>
                     <button class="btn w-100 btn-dark" data-toggle="modal" data-target="#modalDocumento">
                         <i class="fa fa-plus"></i> Subir documento
                     </button>
@@ -373,15 +405,18 @@
         @foreach ($profesional->formacionesAdicionales->where('tipo', 'master') as $master)
             <div class="row" id="curso-{{ $master->id }}">
                 <div class="col-md-8 mb-2">
+                    <label>Nombre del Máster</label>
                     <input type="text" value="{{ $master->nombre }}" class="form-control"
-                        placeholder="Nombre curso">
+                        placeholder="Nombre máster">
                 </div>
                 <div class="col-md-2 mb-2">
+                    <label>&nbsp;</label>
                     <button type="button" class="btn btn-danger w-100 eliminar-curso" data-id="{{ $master->id }}">
                         <i class="fa fa-trash"></i> Eliminar
                     </button>
                 </div>
                 <div class="col-lg-2 text-right">
+                    <label>&nbsp;</label>
                     <button class="btn w-100 btn-dark" data-toggle="modal" data-target="#modalDocumento">
                         <i class="fa fa-plus"></i> Subir documento
                     </button>
@@ -396,15 +431,18 @@
         @foreach ($profesional->formacionesAdicionales->where('tipo', 'taller') as $taller)
             <div class="row" id="curso-{{ $taller->id }}">
                 <div class="col-md-8 mb-2">
+                    <label>Nombre del Taller</label>
                     <input type="text" value="{{ $taller->nombre }}" class="form-control"
                         placeholder="Nombre taller">
                 </div>
                 <div class="col-md-2 mb-2">
+                    <label>&nbsp;</label>
                     <button type="button" class="btn btn-danger w-100 eliminar-curso" data-id="{{ $taller->id }}">
                         <i class="fa fa-trash"></i> Eliminar
                     </button>
                 </div>
                 <div class="col-lg-2 text-right">
+                    <label>&nbsp;</label>
                     <button class="btn w-100 btn-dark" data-toggle="modal" data-target="#modalDocumento">
                         <i class="fa fa-plus"></i> Subir documento
                     </button>
@@ -419,15 +457,18 @@
         @foreach ($profesional->formacionesAdicionales->where('tipo', 'seminario') as $seminario)
             <div class="row" id="curso-{{ $seminario->id }}">
                 <div class="col-md-8 mb-2">
+                    <label>Nombre del Seminario</label>
                     <input type="text" value="{{ $seminario->nombre }}" class="form-control"
-                        placeholder="Nombre taller">
+                        placeholder="Nombre seminario">
                 </div>
                 <div class="col-md-2 mb-2">
+                    <label>&nbsp;</label>
                     <button type="button" class="btn btn-danger w-100 eliminar-curso" data-id="{{ $seminario->id }}">
                         <i class="fa fa-trash"></i> Eliminar
                     </button>
                 </div>
                 <div class="col-lg-2 text-right">
+                    <label>&nbsp;</label>
                     <button class="btn w-100 btn-dark" data-toggle="modal" data-target="#modalDocumento">
                         <i class="fa fa-plus"></i> Subir documento
                     </button>
@@ -442,14 +483,17 @@
         @foreach ($profesional->formacionesAdicionales->where('tipo', 'doctorado') as $curso)
             <div class="row" id="curso-{{ $curso->id }}">
                 <div class="col-md-8 mb-2">
-                    <input type="text" value="{{ $curso->nombre }}" class="form-control" placeholder="Nombre curso">
+                    <label>Nombre del Doctorado</label>
+                    <input type="text" value="{{ $curso->nombre }}" class="form-control" placeholder="Nombre doctorado">
                 </div>
                 <div class="col-md-2 mb-2">
+                    <label>&nbsp;</label>
                     <button type="button" class="btn btn-danger w-100 eliminar-curso" data-id="{{ $curso->id }}">
                         <i class="fa fa-trash"></i> Eliminar
                     </button>
                 </div>
                 <div class="col-lg-2 text-right">
+                    <label>&nbsp;</label>
                     <button class="btn w-100 btn-dark" data-toggle="modal" data-target="#modalDocumento">
                         <i class="fa fa-plus"></i> Subir documento
                     </button>
@@ -472,20 +516,25 @@
             @foreach ($profesional->experienciasLaborales as $experiencia)
                 <div class="row container-fluid mb-2" id="experiencia-{{ $experiencia->id }}">
                     <div class="col-md mb-2">
+                        <label>Puesto</label>
                         <input value="{{ $experiencia->puesto }}" type="text" class="form-control"
                             placeholder="Puesto">
                     </div>
                     <div class="col-md mb-2">
+                        <label>Clínica/Centro</label>
                         <input type="text" value="{{ $experiencia->clinica }}" class="form-control"
                             placeholder="Clínica/centro">
                     </div>
                     <div class="col-md mb-2">
+                        <label>País</label>
                         <input type="text" value="{{ $experiencia->pais }}" class="form-control" placeholder="País">
                     </div>
                     <div class="col-md mb-2">
+                        <label>Año</label>
                         <input type="text" value="{{ $experiencia->anyo }}" class="form-control" placeholder="Año">
                     </div>
                     <div class="col-md mb-2">
+                        <label>&nbsp;</label>
                         <button type="button" class="btn btn-danger w-100 eliminar-experiencia"
                             data-id="{{ $experiencia->id }}">
                             <i class="fa fa-trash"></i> Eliminar
@@ -519,16 +568,19 @@
                 </div>
                 <div class="row mt-1 border p-2 mb-4 position-relative" id="consultorio-{{ $consultorio->id }}">
                     <div class="col-md-8 mb-2">
+                        <label>Dirección</label>
                         <input type="text" value="{{ $consultorio->direccion }}" class="form-control"
                             placeholder="Dirección escrita">
                     </div>
                     <div class="col-md-2 mb-2">
+                        <label>&nbsp;</label>
                         <button type="button" class="btn btn-success w-100 cargarImagenes"
                             data-id="{{ $consultorio->id }}" title="Cargar Imágenes">
                             <i class="fa fa-images"></i>
                         </button>
                     </div>
                     <div class="col-md-2 mb-2">
+                        <label>&nbsp;</label>
                         <button type="button" class="btn btn-danger w-100 eliminar-consultorio"
                             data-id="{{ $consultorio->id }}" title="Eliminar"
                             onclick="eliminarConsultorio({{ $consultorio->id }})">
@@ -536,17 +588,19 @@
                         </button>
                     </div>
                     <div class="col-md-6 mb-2">
+                        <label>Clínica/Edificio</label>
                         <input type="text" value="{{ $consultorio->clinica }}" class="form-control"
                             placeholder="Clínica/edificio">
                     </div>
                     <div class="col-md-6 mb-2">
+                        <label>Información Adicional</label>
                         <input type="text" value="{{ $consultorio->info_adicional }}" class="form-control"
                             placeholder="Información adicional">
                     </div>
                     @php
                         $imagenes = App\Models\ConsultorioImagen::where('consultorio_id', $consultorio->id)->get();
                     @endphp
-                    @if ($imagenes->count() > 0)                      
+                    @if ($imagenes->count() > 0)
                         <div class="row">
                             @foreach ($imagenes as $imagen)
                                 <div class="col-lg-3 position-relative mb-3" id="imagen-{{ $imagen->id }}">
@@ -602,6 +656,7 @@
 
         <div class="row mt-1 border p-2">
             <div class="col-md-12 mb-2">
+                <label for="seguros_medicos">Seguros Médicos</label>
                 <select class="form-control form-select" name="seguros_medicos[]" id="seguros_medicos" multiple>
                     <option value="-1">-- Sin seguro --</option>
                     @foreach ($seguros as $seguro)
@@ -681,17 +736,21 @@
                 <div class="row">
                     @foreach ($documentosPorTipo as $doc)
                         <div class="col-lg-4 mb-3">
+                            <label>Nombre del Documento</label>
                             <input type="text" value="{{ $doc->nombre }}" class="form-control" readonly>
                         </div>
                         <div class="col-lg-4 mb-3">
+                            <label>Archivo</label>
                             <a href="{{ asset($doc->archivo) }}" target="_blank" class="d-block mb-1 form-control">
                                 <i class="fa fa-file"></i> Abrir
                             </a>
                         </div>
                         <div class="col-lg-2 mb-3">
-                            <strong>Estado: </strong> {{ ucfirst($doc->estado) }}
+                            <label>Estado</label>
+                            <div class="mt-2"><strong>{{ ucfirst($doc->estado) }}</strong></div>
                         </div>
                         <div class="col-lg-2 mb-3">
+                            <label>&nbsp;</label>
                             <form action="{{ route('profesionales.documentos.destroy', $doc->id) }}" method="POST"
                                 onsubmit="return confirm('¿Eliminar documento?');">
                                 @csrf
@@ -764,16 +823,20 @@
         </div>
         <div class="row mt-1 border p-2">
             <div class="col-md-3 mb-2">
+                <label>Usuario</label>
                 <input value="{{ $profesional->email }}" readonly type="text" class="form-control"
                     placeholder="Usuario">
             </div>
             <div class="col-md-3 mb-2">
+                <label for="nueva_contrasena">Nueva Contraseña</label>
                 <input id="nueva_contrasena" type="password" class="form-control" placeholder="Contraseña nueva">
             </div>
             <div class="col-md-3 mb-2">
+                <label for="repetir_contrasena">Repetir Contraseña</label>
                 <input id="repetir_contrasena" type="password" class="form-control" placeholder="Repetir contraseña">
             </div>
             <div class="col-md-3 mb-2">
+                <label>&nbsp;</label>
                 <button id="btn_actualizar_contrasena" class="btn btn-dark w-100"><i class="fa fa-key"></i>
                     Actualizar
                     Contraseña</button>
@@ -818,14 +881,17 @@
         </div>
         <div class="row mt-1 border p-2">
             <div class="col-lg-3">
+                <label>Nombre del Titular</label>
                 <input readonly disabled type="text" value="{{ $profesional->nombre_completo }}" class="form-control"
                     placeholder="Nombre del titular">
             </div>
             <div class="col-md-7 mb-2">
+                <label for="numero_cuenta">Número de Cuenta</label>
                 <input type="text" value="{{ $profesional->numero_cuenta }}" class="form-control"
                     placeholder="Número de cuenta" id="numero_cuenta">
             </div>
             <div class="col-md-2">
+                <label>&nbsp;</label>
                 <button id="guardar_numero_cuenta" class="btn btn-dark w-100">
                     <i class="fa {{ $profesional->numero_cuenta ? 'fa-edit' : 'fa-plus' }}"></i>
                     {{ $profesional->numero_cuenta ? 'Actualizar' : 'Añadir' }}
@@ -1218,7 +1284,7 @@
                                             <td>
                                                 <div class="horarios-dia-videollamada" data-dia="{{ $index }}">
                                                     @php
-                                                        $horarios = $horariosVideollamada;   
+                                                        $horarios = $horariosVideollamada;
                                                     @endphp
                                                     @if ($horarios->has($index))
                                                         @php
@@ -1236,7 +1302,7 @@
 
                                                         @endphp
 
-                                                        @foreach ($detallesUnicosVideollamada as $i => $detalleVideollamada)                                                            
+                                                        @foreach ($detallesUnicosVideollamada as $i => $detalleVideollamada)
                                                             <div class="row g-2 align-items-center mb-2 horario-item-videollamada"
                                                                 data-id="{{ $detalleVideollamada->id }}">
                                                                 <div class="col-md-5">
@@ -1826,9 +1892,9 @@
         document.addEventListener('DOMContentLoaded', function() {
 
             document.querySelectorAll('.add-horario-videollamada').forEach(button => {
-               
+
                 button.addEventListener('click', function() {
-                    
+
                     const dia = this.dataset.dia;
                     const container = document.querySelector(`.horarios-dia-videollamada[data-dia="${dia}"]`);
                     const index = container.querySelectorAll('.row').length;
