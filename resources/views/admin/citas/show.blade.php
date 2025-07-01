@@ -200,155 +200,160 @@
                         <div class="row">
                             <div class="col-md-3 mb-3">
                                 <strong>Teléfono Profesional:</strong><br>
-                                <span>{{ $cita->profesional->telefono_profesional }}</span>
+                                <span>{{ $cita->profesional->telefono_profesional ?? 'No disponible' }}</span>
                             </div>
 
                             <div class="col-md-3 mb-3">
                                 <strong>Email:</strong><br>
-                                <span>{{ $cita->profesional->email }}</span>
+                                <span>{{ $cita->profesional->email ?? 'No disponible' }}</span>
                             </div>
 
                             <div class="col-md-3 mb-3">
                                 <strong>Idiomas:</strong><br>
-                                <span>{{ $cita->profesional->idiomas }}</span>
+                                <span>{{ $cita->profesional->idiomas ?? 'No especificado' }}</span>
                             </div>
 
                             <div class="col-md-3 mb-3">
                                 <strong>Plan:</strong><br>
-                                <span>{{ $cita->profesional->plan->nombre }}
-                                    ({{ $cita->profesional->plan->precio }}€)</span>
+                                <span>
+                                    {{ optional($cita->profesional->plan)->nombre ?? 'Sin plan' }}
+                                    ({{ optional($cita->profesional->plan)->precio ?? '0' }}€)
+                                </span>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-md-3">
                                 <strong>Número de colegiado:</strong> <br>
-                                <span>{{ $cita->profesional->num_colegiado }}</span>
+                                <span>{{ $cita->profesional->num_colegiado ?? 'No registrado' }}</span>
                             </div>
                             <div class="col-md-3">
                                 <strong>Categoría:</strong> <br>
-                                <span>{{ $cita->profesional->categoria->nombre }}</span>
+                                <span>{{ optional($cita->profesional->categoria)->nombre ?? 'No especificada' }}</span>
                             </div>
                             <div class="col-md-3">
                                 <strong>Provincia:</strong> <br>
-                                <span>{{ $cita->profesional->ciudad->provincia->nombre }}</span>
+                                <span>{{ optional(optional($cita->profesional->ciudad)->provincia)->nombre ?? 'No disponible' }}</span>
                             </div>
                             <div class="col-md-3">
                                 <strong>Ciudad:</strong> <br>
-                                <span>{{ $cita->profesional->ciudad->nombre }}</span>
+                                <span>{{ optional($cita->profesional->ciudad)->nombre ?? 'No disponible' }}</span>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
-
-            <!-- Especialización -->
-            @if ($cita->especializacion)
-                <div class="row mb-4">
-                    <div class="col-md-12">
-                        <h6 class="text-warning border-bottom pb-2 mb-3"><i
-                                class="fas fa-stethoscope mr-2"></i>Especialización</h6>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <strong>Especialidad:</strong><br>
-                        <span>{{ $cita->especializacion->especialidad->nombre ?? 'No disponible' }}</span>
-                    </div>
-                    @if ($cita->especializacion->subespecialidad)
-                        <div class="col-md-6 mb-3">
-                            <strong>Subespecialidad:</strong><br>
-                            <span>{{ $cita->especializacion->subespecialidad->nombre }}</span>
-                        </div>
-                    @endif
-                </div>
-            @endif
-
-            <!-- Información del Consultorio (solo para citas presenciales) -->
-            @if ($cita->modalidad == 'presencial' && $cita->consultorio)
-                <div class="row mb-4">
-                    <div class="col-md-12">
-                        <h6 class="text-secondary border-bottom pb-2 mb-3"><i class="fas fa-hospital mr-2"></i>Información
-                            del Consultorio</h6>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <strong>Dirección:</strong><br>
-                        <span>{{ $cita->consultorio->direccion ?? 'No disponible' }}</span>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <strong>Clínica/Centro:</strong><br>
-                        <span>{{ $cita->consultorio->clinica ?? 'No disponible' }}</span>
-                    </div>
-                </div>
-            @endif
-
-            <!-- URL de Videoconsulta (solo para videoconsultas) -->
-            @if ($cita->modalidad == 'videoconsulta' && $cita->url_meet)
-                <div class="row mb-4">
-                    <div class="col-md-12">
-                        <h6 class="text-success border-bottom pb-2 mb-3"><i class="fas fa-video mr-2"></i>Videoconsulta
-                        </h6>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <strong>URL de la Reunión:</strong><br>
-                        <a href="{{ $cita->url_meet }}" target="_blank" class="btn btn-success btn-sm">
-                            <i class="fas fa-external-link-alt mr-1"></i>
-                            Abrir Videoconsulta
-                        </a>
-                        <br><small class="text-muted">{{ $cita->url_meet }}</small>
-                    </div>
-                </div>
-            @endif
-
-            <!-- Información Adicional -->
-            @if ($cita->informeConsulta || $cita->detalleCita)
-                <div class="row">
-                    <div class="col-md-12">
-                        <h6 class="text-dark border-bottom pb-2 mb-3"><i class="fas fa-clipboard mr-2"></i>Documentos
-                            Relacionados</h6>
-                    </div>
-
-                    @if ($cita->informeConsulta)
-                        <div class="col-md-12">
-                            <div class="card border-success">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <h6 class="card-title text-success">
-                                                <i class="fas fa-file-medical mr-2"></i>Informe de Consulta
-                                            </h6>
-                                            <p class="card-text">Informe médico disponible</p>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <a href="{{ route('informes.show', $cita->informeConsulta->id) }}"
-                                                class="btn btn-success btn-sm float-right float-end">
-                                                <i class="fas fa-eye mr-1"></i>Ver Informe
-                                            </a>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-
-                    @if ($cita->detalleCita)
-                        <div class="col-md-6 mb-1">
-                            <div class="card border-info">
-                                <div class="card-body">
-                                    <h6 class="card-title text-info">
-                                        <i class="fas fa-info-circle mr-2"></i>Detalle de Cita
-                                    </h6>
-                                    <p class="card-text">Información detallada disponible</p>
-                                    <button class="btn btn-info btn-sm" disabled>
-                                        <i class="fas fa-eye mr-1"></i>Ver Detalle
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                </div>
-            @endif
-
         </div>
+
+        <!-- Especialización -->
+        @if ($cita->especializacion)
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <h6 class="text-warning border-bottom pb-2 mb-3"><i class="fas fa-stethoscope mr-2"></i>Especialización
+                    </h6>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Especialidad:</strong><br>
+                    <span>{{ $cita->especializacion->especialidad->nombre ?? 'No disponible' }}</span>
+                </div>
+                @if ($cita->especializacion->subespecialidad)
+                    <div class="col-md-6 mb-3">
+                        <strong>Subespecialidad:</strong><br>
+                        <span>{{ $cita->especializacion->subespecialidad->nombre }}</span>
+                    </div>
+                @endif
+            </div>
+        @endif
+
+        <!-- Información del Consultorio (solo para citas presenciales) -->
+        @if ($cita->modalidad == 'presencial' && $cita->consultorio)
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <h6 class="text-secondary border-bottom pb-2 mb-3"><i class="fas fa-hospital mr-2"></i>Información
+                        del Consultorio</h6>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Dirección:</strong><br>
+                    <span>{{ $cita->consultorio->direccion ?? 'No disponible' }}</span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Clínica/Centro:</strong><br>
+                    <span>{{ $cita->consultorio->clinica ?? 'No disponible' }}</span>
+                </div>
+            </div>
+        @endif
+
+        <!-- URL de Videoconsulta (solo para videoconsultas) -->
+        @if ($cita->modalidad == 'videoconsulta' && $cita->url_meet)
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <h6 class="text-success border-bottom pb-2 mb-3"><i class="fas fa-video mr-2"></i>Videoconsulta
+                    </h6>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <strong>URL de la Reunión:</strong><br>
+                    <a href="{{ $cita->url_meet }}" target="_blank" class="btn btn-success btn-sm">
+                        <i class="fas fa-external-link-alt mr-1"></i>
+                        Abrir Videoconsulta
+                    </a>
+                    <br><small class="text-muted">{{ $cita->url_meet }}</small>
+                </div>
+            </div>
+        @endif
+
+        <!-- Información Adicional -->
+        @if ($cita->informeConsulta || $cita->detalleCita)
+            <div class="row">
+                <div class="col-md-12">
+                    <h6 class="text-dark border-bottom pb-2 mb-3"><i class="fas fa-clipboard mr-2"></i>Documentos
+                        Relacionados</h6>
+                </div>
+
+                @if ($cita->informeConsulta)
+                    <div class="col-md-12">
+                        <div class="card border-success">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <h6 class="card-title text-success">
+                                            <i class="fas fa-file-medical mr-2"></i>Informe de Consulta
+                                        </h6>
+                                        <p class="card-text">Informe médico disponible</p>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <a href="{{ route('informes.show', $cita->informeConsulta->id) }}"
+                                            class="btn btn-success btn-sm float-right float-end">
+                                            <i class="fas fa-eye mr-1"></i>Ver Informe
+                                        </a>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                @if ($cita->detalleCita)
+                    <div class="col-md-6 mb-1">
+                        <div class="card border-info">
+                            <div class="card-body">
+                                <h6 class="card-title text-info">
+                                    <i class="fas fa-info-circle mr-2"></i>Detalle de Cita
+                                </h6>
+                                <p class="card-text">Información detallada disponible</p>
+                                <button class="btn btn-info btn-sm" disabled>
+                                    <i class="fas fa-eye mr-1"></i>Ver Detalle
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        @endif
+
+    </div>
     </div>
 
     <!-- Información de Timestamps -->
