@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CategoriaProfesional;
 use App\Models\Plan;
 use App\Models\Profesional;
 use App\Models\User;
@@ -90,7 +91,8 @@ class ProfesionalFrontendController extends Controller
     }
     public function registro()
     {
-        return view('frontend.profesionales.registro');
+        $categorias=CategoriaProfesional::all();
+        return view('frontend.profesionales.registro', compact('categorias'));
     }
 
     public function registroProfesional(Request $request)
@@ -101,13 +103,14 @@ class ProfesionalFrontendController extends Controller
         $usuario->role = "profesional";
         $usuario->password = bcrypt($request->cedula);
         $usuario->save();
-        
+
         $profesional = new Profesional();
         $profesional->user_id = $usuario->id;
         $profesional->nombre_completo = $request->nombre." ".$request->apellidos;
         $profesional->telefono_personal = $request->telefono;
         $profesional->email = $request->email;
         $profesional->cedula_identidad = $request->cedula;
+        $profesional->categoria_id = $request->categoria_id;
         $profesional->save();
 
         return redirect()->route('profesionales.registro')->with('success','Gracias por registrate. Accede a tu panel');
@@ -120,9 +123,9 @@ class ProfesionalFrontendController extends Controller
 
     public function detalleProfesional($id)
     {
-        
+
         $profesional = Profesional::find($id);
         return view('frontend.pacientes.fichas.detalleProfesional',compact('profesional'));
     }
-    
+
 }

@@ -163,13 +163,12 @@
                             <i class="fa fa-eye"></i>
                         </a>
                         @if($cita->estado !== 'cancelada' && $cita->estado !== 'completada')
-                            <form class="form-eliminar" action="{{ route('citas.cancelar', $cita->id) }}" method="POST"
-                                style="display:inline;">
-                                @csrf
-                                <button title="Cancelar Cita" type="submit" class="btn btn-warning">
-                                    <i class="fa fa-times"></i>
-                                </button>
-                            </form>
+                        <form class="form-eliminar" action="{{ route('citas.destroy', $cita->id) }}" method="POST"
+                            style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                        </form>
                         @endif
                     </td>
                 </tr>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\RecordatorioCitaMail;
+use App\Mail\RecordatorioCitaPacienteMail;
+use App\Mail\RecordatorioCitaProfesionalMail;
 use App\Models\Cita;
 use App\Models\Ciudad;
 use App\Models\ConsultorioImagen;
@@ -1433,7 +1435,8 @@ class ProfesionalController extends Controller
             }
 
             // Enviar el correo recordatorio
-            Mail::to($cita->paciente->email)->send(new RecordatorioCitaMail($cita));
+            Mail::to($cita->paciente->email)->send(new RecordatorioCitaPacienteMail($cita));
+            Mail::to($cita->profesional->email)->send(new RecordatorioCitaProfesionalMail($cita));
 
             return response()->json([
                 'success' => true,

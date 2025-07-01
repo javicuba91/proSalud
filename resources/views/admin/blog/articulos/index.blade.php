@@ -171,14 +171,14 @@
                                     <td>
                                         <div class="btn-group" role="group">
                                             <a href="{{ route('blog.articulos.show', $articulo) }}"
-                                               class="btn btn-info btn-sm">
+                                               class="btn btn-info ">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                             <a href="{{ route('blog.articulos.edit', $articulo) }}"
-                                               class="btn btn-warning btn-sm">
+                                               class="btn btn-warning ">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            <button type="button" class="btn btn-secondary btn-sm dropdown-toggle"
+                                            <button type="button" class="btn btn-secondary  dropdown-toggle"
                                                     data-toggle="dropdown">
                                                 <i class="fa fa-cog"></i>
                                             </button>

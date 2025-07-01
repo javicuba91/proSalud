@@ -156,6 +156,7 @@ class UsuarioController extends Controller
                     'profesional.especializaciones.especialidad',
                     'profesional.especializaciones.subespecialidad',
                     'profesional.ciudad.provincia',
+                    'profesional.categoria',
                     'profesional.plan',
                     'profesional.consultorios',
                     'profesional.segurosMedicos',
@@ -195,7 +196,8 @@ class UsuarioController extends Controller
     private function editGeneral(string $id)
     {
         $usuario = $this->loadUserWithRelations($id);
-        return view('admin.usuarios.edit', compact('usuario'));
+        $categorias = $this->getCategoriasProfesionales();
+        return view('admin.usuarios.edit', compact('usuario', 'categorias'));
     }
 
     /**
@@ -204,7 +206,8 @@ class UsuarioController extends Controller
     public function editPaciente(string $id)
     {
         $usuario = $this->loadUserWithRelations($id, 'paciente');
-        return view('admin.usuarios.edit', compact('usuario'));
+        $categorias = $this->getCategoriasProfesionales();
+        return view('admin.usuarios.edit', compact('usuario', 'categorias'));
     }
 
     /**
@@ -213,7 +216,8 @@ class UsuarioController extends Controller
     public function editProfesional(string $id)
     {
         $usuario = $this->loadUserWithRelations($id, 'profesional');
-        return view('admin.usuarios.edit', compact('usuario'));
+        $categorias = $this->getCategoriasProfesionales();
+        return view('admin.usuarios.edit', compact('usuario', 'categorias'));
     }
 
     /**
@@ -222,7 +226,8 @@ class UsuarioController extends Controller
     public function editProveedor(string $id)
     {
         $usuario = $this->loadUserWithRelations($id, 'proveedor');
-        return view('admin.usuarios.edit', compact('usuario'));
+        $categorias = $this->getCategoriasProfesionales();
+        return view('admin.usuarios.edit', compact('usuario', 'categorias'));
     }
 
     /**
@@ -231,7 +236,8 @@ class UsuarioController extends Controller
     public function editAdmin(string $id)
     {
         $usuario = User::where('role', 'admin')->findOrFail($id);
-        return view('admin.usuarios.edit', compact('usuario'));
+        $categorias = $this->getCategoriasProfesionales();
+        return view('admin.usuarios.edit', compact('usuario', 'categorias'));
     }
 
     /**
@@ -355,7 +361,7 @@ class UsuarioController extends Controller
                     'paciente_estado_civil' => 'nullable|string|max:255',
                     'paciente_nacionalidad' => 'nullable|string|max:255',
                     'paciente_celular' => 'nullable|string|max:255',
-                    'paciente_direccion' => 'nullable|string|max:1000',
+                    'paciente_direccion' => 'nullable|string',
                     'paciente_cedula' => 'nullable|string|max:255',
                     'paciente_grupo_sanguineo' => 'nullable|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
                 ]);
@@ -372,13 +378,13 @@ class UsuarioController extends Controller
                     'profesional_telefono_profesional' => 'nullable|string|max:255',
                     'profesional_cedula_identidad' => 'nullable|string|max:255',
                     'profesional_idiomas' => 'nullable|string|max:255',
-                    'profesional_descripcion_profesional' => 'nullable|string|max:1000',
+                    'profesional_descripcion_profesional' => 'nullable|string',
                     'profesional_anios_experiencia' => 'nullable|integer|min:0|max:100',
                     'profesional_licencia_medica' => 'nullable|string|max:255',
                     'profesional_numero_cuenta' => 'nullable|string|max:255',
                     'profesional_plan_id' => 'nullable|integer|exists:plans,id',
                     'profesional_num_colegiado' => 'nullable|string|max:255',
-                    'profesional_categoria_id' => 'nullable|integer|exists:categorias,id',
+                    'profesional_categoria_id' => 'nullable|integer|exists:categoria_profesionales,id',
                     'profesional_ciudad_id' => 'nullable|integer|exists:ciudades,id',
                     'profesional_presencial' => 'nullable|boolean',
                     'profesional_videoconsulta' => 'nullable|boolean',
@@ -390,7 +396,7 @@ class UsuarioController extends Controller
                     'proveedor_tipo' => 'required|in:farmacia,laboratorio,centro_imagenes',
                     'proveedor_nombre' => 'required|string|max:255',
                     'proveedor_ciudad' => 'required|string|max:255',
-                    'proveedor_direccion' => 'required|string|max:1000',
+                    'proveedor_direccion' => 'required|string',
                     'proveedor_numero_identificacion' => 'required|string|max:255',
                     'proveedor_telefono' => 'required|string|max:255',
                 ]);
@@ -557,5 +563,12 @@ class UsuarioController extends Controller
         return redirect()->route('usuarios.index')->with('eliminado', 'ok');
     }
 
+    /**
+     * Get all professional categories for form select options
+     */
+    private function getCategoriasProfesionales()
+    {
+        return \App\Models\CategoriaProfesional::orderBy('orden')->orderBy('nombre')->get();
+    }
 
 }

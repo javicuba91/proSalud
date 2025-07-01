@@ -350,12 +350,31 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="profesional_idiomas" class="form-label">Idiomas:</label>
                             <input type="text" class="form-control @error('profesional_idiomas') is-invalid @enderror"
                                    id="profesional_idiomas" name="profesional_idiomas"
                                    value="{{ old('profesional_idiomas', $usuario->profesional->idiomas ?? '') }}">
                             @error('profesional_idiomas')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="profesional_categoria_id" class="form-label">Categoría:</label>
+                            <select class="form-control @error('profesional_categoria_id') is-invalid @enderror"
+                                   id="profesional_categoria_id" name="profesional_categoria_id">
+                                <option value="">Seleccione una categoría</option>
+                                @if(isset($categorias))
+                                    @foreach($categorias as $categoria)
+                                        <option value="{{ $categoria->id }}"
+                                                {{ old('profesional_categoria_id', $usuario->profesional->categoria_id ?? '') == $categoria->id ? 'selected' : '' }}>
+                                            {{ $categoria->nombre }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            @error('profesional_categoria_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>

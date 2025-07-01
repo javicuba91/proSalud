@@ -49,6 +49,14 @@
                         <div class="mb-3 text-start">
                             <input type="text" class="form-control" name="cedula" placeholder="Número de cédula">
                         </div>
+                        <div class="mb-3 text-start">
+                                <select class="form-select" name="categoria_id" required>
+                                    <option value="" disabled selected>Selecciona una categoría</option>
+                                    @foreach ($categorias as $categoria)
+                                        <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                                    @endforeach
+                                </select>
+                        </div>
                         <div class="d-flex justify-content-between mb-3">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
@@ -59,7 +67,8 @@
                         </div>
                         <div class="row mb-0">
                             <div class="col-lg-12">
-                                <button type="submit" class="btn btn-dark w-30 btnLogin float-start">Solicitar unirme</button>
+                                <button type="submit" class="btn btn-dark w-30 btnLogin float-start">Solicitar
+                                    unirme</button>
                             </div>
                         </div>
                     </form>

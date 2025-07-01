@@ -159,11 +159,16 @@
                 <input id="telefono_profesional" type="text" value="{{ $profesional->telefono_profesional }}"
                     class="form-control" placeholder="Teléfono profesional">
             </div>
-            <div class="col-md-12 mb-2">
+            <div class="col-md-6 mb-2">
                 <label>Email</label>
                 <input type="text" readonly disabled value="{{ $profesional->user->email }}" class="form-control"
                     placeholder="Email">
             </div>
+            <div class="col-md-6 mb-2">
+                <label>Categoria Profesional</label>
+                <input type="text" readonly disabled value="{{ $profesional->categoria->nombre }}" class="form-control">
+            </div>
+
             <div class="col-md-12 mb-2">
                 <label for="idiomas">Idiomas</label>
                 <input id="idiomas" type="text" value="{{ $profesional->idiomas }}" class="form-control"

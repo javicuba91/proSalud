@@ -45,22 +45,21 @@
                     @foreach ($etiquetas as $etiqueta)
                         <tr>
                             <td>
-                                <span class="badge" style="background-color: {{ $etiqueta->color }}">
                                     {{ $etiqueta->nombre }}
-                                </span>
+
                             </td>
                             <td>{{ Str::limit($etiqueta->descripcion, 50) }}</td>
                             <td>
                                 <span class="badge badge-info">{{ $etiqueta->articulos->count() }}</span>
                             </td>
                             <td>
-                                <a href="{{ route('blog.etiquetas.edit', $etiqueta) }}" class="btn btn-warning btn-sm">
+                                <a href="{{ route('blog.etiquetas.edit', $etiqueta) }}" class="btn btn-warning">
                                     <i class="fa fa-edit"></i>
                                 </a>
                                 <form action="{{ route('blog.etiquetas.destroy', $etiqueta) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" 
+                                    <button type="submit" class="btn btn-danger"
                                             onclick="return confirm('¿Está seguro de eliminar esta etiqueta?')">
                                         <i class="fa fa-trash"></i>
                                     </button>

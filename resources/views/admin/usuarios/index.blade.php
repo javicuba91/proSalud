@@ -25,6 +25,7 @@
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Rol</th>
+                <th>Categoria</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -43,16 +44,25 @@
                     <td>{{ $usuario->email }}</td>
                     <td>{{ ucfirst($usuario->role) }}</td>
                     <td>
+                        @if ($usuario->role == 'profesional' && $usuario->profesional && $usuario->profesional->categoria)
+                            {{ $usuario->profesional->categoria->nombre }}
+                        @elseif ($usuario->role == 'proveedor' && $usuario->proveedor && $usuario->proveedor->tipo)
+                            {{ $usuario->proveedor->tipo }}
+                        @else
+                            -
+                        @endif
+                    </td>
+                    <td>
                         <a href="{{ route('usuarios.show', $usuario->id) }}" class="btn btn-primary" title="Ver detalles">
                             <i class="fa fa-eye"></i>
                         </a>
                         @php
-                            $editRoute = match($usuario->role) {
+                            $editRoute = match ($usuario->role) {
                                 'paciente' => route('pacientes.edit', $usuario->id),
                                 'profesional' => route('profesionales.edit', $usuario->id),
                                 'proveedor' => route('proveedores.edit', $usuario->id),
                                 'admin' => route('administradores.edit', $usuario->id),
-                                default => route('usuarios.edit', $usuario->id)
+                                default => route('usuarios.edit', $usuario->id),
                             };
                         @endphp
                         <a href="{{ $editRoute }}" class="btn btn-warning" title="Editar usuario">

@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticuloBlogController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoriaBlogController;
+use App\Http\Controllers\CategoriasProfesionalesController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\CiudadController;
 use App\Http\Controllers\DocumentoProfesionalController;
@@ -326,6 +327,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/especialidades/{especialidad}/edit', [EspecialidadController::class, 'edit'])->name('especialidades.edit');
         Route::put('/especialidades/{especialidad}', [EspecialidadController::class, 'update'])->name('especialidades.update');
         Route::delete('/especialidades/{especialidad}', [EspecialidadController::class, 'destroy'])->name('especialidades.destroy');
+
+        Route::get('/categorias-profesionales', [CategoriasProfesionalesController::class, 'index'])->name('categorias-profesionales.index');
+        Route::get('/categorias-profesionales/create', [CategoriasProfesionalesController::class, 'create'])->name('categorias-profesionales.create');
+        Route::post('/categorias-profesionales', [CategoriasProfesionalesController::class, 'store'])->name('categorias-profesionales.store');
+        Route::get('/categorias-profesionales/{categoriaProfesional}/edit', [CategoriasProfesionalesController::class, 'edit'])->name('categorias-profesionales.edit');
+        Route::put('/categorias-profesionales/{categoriaProfesional}', [CategoriasProfesionalesController::class, 'update'])->name('categorias-profesionales.update');
+        Route::delete('/categorias-profesionales/{categoriaProfesional}', [CategoriasProfesionalesController::class, 'destroy'])->name('categorias-profesionales.destroy');
 
         Route::get('/metodos-pago', [MetodoPagoController::class, 'index'])->name('metodos-pagos.index');
         Route::get('/metodos-pago/create', [MetodoPagoController::class, 'create'])->name('metodos-pagos.create');

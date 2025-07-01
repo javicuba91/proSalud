@@ -31,15 +31,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="color">Color *</label>
-                    <input type="color" class="form-control @error('color') is-invalid @enderror"
-                           id="color" name="color" value="{{ old('color', '#6c757d') }}" required>
-                    @error('color')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
                     <button type="submit" class="btn btn-primary">Guardar</button>
                     <a href="{{ route('blog.etiquetas.index') }}" class="btn btn-secondary">Cancelar</a>
                 </div>
