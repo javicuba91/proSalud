@@ -467,7 +467,6 @@ class ProfesionalController extends Controller
         $usuario->password = bcrypt($request->cedula);
         $usuario->save();
 
-
         $paciente = new Paciente();
         $paciente->profesional_id = $profesional->id; // Asignar el profesional al paciente
         $paciente->genero=$request->genero;
@@ -482,6 +481,18 @@ class ProfesionalController extends Controller
         $paciente->user_id = $usuario->id; // Asignar el usuario al paciente
         $paciente->ciudad_id = $request->ciudad_id;
         $paciente->grupo_sanguineo = $request->grupo."".$request->rh;
+        $paciente->save();
+        
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $filename = Str::slug($paciente->id . '-' . time()) . '.' . $file->getClientOriginalExtension();
+            $path = 'imagenes/pacientes/' . $paciente->id;
+            $file->move(public_path($path), $filename);
+
+            // Guardar la ruta relativa en la base de datos
+            $paciente->foto = $path . '/' . $filename;
+        }
+
         $paciente->save();
 
         return redirect()->route('profesionales.misPacientes')->with('success', 'Paciente creado correctamente.');
