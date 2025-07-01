@@ -6,9 +6,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Cita;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
-class RecordatorioCitaMail extends Mailable
+
+class RecordatorioCitaProfesionalMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -28,7 +28,7 @@ class RecordatorioCitaMail extends Mailable
     public function build()
     {
         return $this->subject('Recordatorio de Cita - ProSalud')
-                    ->view('emails.recordatorio-cita')
+                    ->view('emails.recordatorio-cita-profesional')
                     ->with([
                         'cita' => $this->cita,
                         'paciente' => $this->cita->paciente,

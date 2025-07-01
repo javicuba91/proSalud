@@ -37,7 +37,6 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Descripción</th>
-                        <th>Color</th>
                         <th>Estado</th>
                         <th>Artículos</th>
                         <th>Acciones</th>
@@ -49,11 +48,6 @@
                             <td>{{ $categoria->nombre }}</td>
                             <td>{{ Str::limit($categoria->descripcion, 50) }}</td>
                             <td>
-                                <span class="badge" style="background-color: {{ $categoria->color }}">
-                                    {{ $categoria->color }}
-                                </span>
-                            </td>
-                            <td>
                                 @if($categoria->activo)
                                     <span class="badge badge-success">Activo</span>
                                 @else
@@ -64,13 +58,13 @@
                                 <span class="badge badge-info">{{ $categoria->articulos->count() }}</span>
                             </td>
                             <td>
-                                <a href="{{ route('blog.categorias.edit', $categoria) }}" class="btn btn-warning btn-sm">
+                                <a href="{{ route('blog.categorias.edit', $categoria) }}" class="btn btn-warning ">
                                     <i class="fa fa-edit"></i>
                                 </a>
                                 <form action="{{ route('blog.categorias.destroy', $categoria) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm"
+                                    <button type="submit" class="btn btn-danger "
                                             onclick="return confirm('¿Está seguro de eliminar esta categoría?')">
                                         <i class="fa fa-trash"></i>
                                     </button>

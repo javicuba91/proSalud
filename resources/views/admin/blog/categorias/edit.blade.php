@@ -32,15 +32,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="color">Color *</label>
-                    <input type="color" class="form-control @error('color') is-invalid @enderror"
-                           id="color" name="color" value="{{ old('color', $categoria->color) }}" required>
-                    @error('color')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="activo" name="activo" value="1"
                                {{ old('activo', $categoria->activo) ? 'checked' : '' }}>

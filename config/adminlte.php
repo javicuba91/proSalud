@@ -545,6 +545,7 @@ return [
             'icon' => 'fas fa-cogs',
             'can'  => 'solo-admin',
             'submenu' => [
+                ['text' => 'Categorias Profesionales', 'url' => '/admin/categorias-profesionales', 'icon' => '', 'can' => 'solo-admin'],
                 ['text' => 'Métodos de Pago', 'url' => '/admin/metodos-pago', 'icon' => '', 'can' => 'solo-admin'],
                 ['text' => 'Planes', 'url' => '/admin/planes', 'icon' => '', 'can' => 'solo-admin'],
                 ['text' => 'Seguros Médicos', 'url' => '/admin/seguros-medicos', 'icon' => '', 'can' => 'solo-admin'],

@@ -1,13 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'Ciudades')
+@section('title', 'Categorías Profesionales')
 
 @section('content_header')
-    <h1>Ciudades</h1>
+    <h1>Categorías Profesionales</h1>
 
     <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('ciudades.create') }}" class="btn btn-primary">
-            <i class="fa fa-plus"> Crear Ciudad</i>
+        <a href="{{ route('categorias-profesionales.create') }}" class="btn btn-primary">
+            <i class="fa fa-plus"> Crear Categoría Profesional</i>
         </a>
     </div>
 
@@ -20,25 +20,28 @@
             {{ session('success') }}
         </div>
     @endif
-    <table id="ciudades" class="table table-bordered mb-4">
+    <table id="categorias-profesionales" class="table table-bordered mb-4">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Nombre</th>
-                <th>Provincia</th>
-                <th>Región</th>
+                <th>Descripción</th>
+                <th>Orden</th>
+
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($ciudades as $ciudad)
+            @foreach ($categorias as $categoria)
                 <tr>
-                    <td>{{ $ciudad->nombre }}</td>
-                    <td>{{ $ciudad->provincia->nombre }}</td>
-                    <td>{{ $ciudad->provincia->region->nombre }}</td>
+                    <td>{{ $categoria->id }}</td>
+                    <td>{{ $categoria->nombre }}</td>
+                    <td>{{ Str::limit($categoria->descripcion, 50) }}</td>
+                    <td>{{ $categoria->orden ?? '-' }}</td>
                     <td>
-                        <a href="{{ route('ciudades.edit', $ciudad->id) }}" class="btn btn-warning"><i
+                        <a href="{{ route('categorias-profesionales.edit', $categoria->id) }}" class="btn btn-warning"><i
                                 class="fa fa-edit"></i></a>
-                        <form class="form-eliminar" action="{{ route('ciudades.destroy', $ciudad->id) }}" method="POST"
+                        <form class="form-eliminar" action="{{ route('categorias-profesionales.destroy', $categoria->id) }}" method="POST"
                             style="display:inline;">
                             @csrf
                             @method('DELETE')
@@ -57,12 +60,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
-            $('#ciudades').DataTable({
+            $('#categorias-profesionales').DataTable({
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
                 },
                 responsive: true,
-                autoWidth: false
+                autoWidth: false,
+                order: [[3, 'asc']] // Ordenar por columna de orden por defecto
             });
 
             $('.form-eliminar').submit(function(e) {
@@ -92,7 +96,7 @@
         <script>
             Swal.fire(
                 'Eliminado',
-                'La ciudad ha sido eliminada correctamente.',
+                'La categoría profesional ha sido eliminada correctamente.',
                 'success'
             );
         </script>

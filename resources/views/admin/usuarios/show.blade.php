@@ -164,6 +164,15 @@
                         </div>
 
                         <div class="col-md-4 mb-3">
+                            <strong>Categoría:</strong><br>
+                            @if($usuario->profesional->categoria)
+                                <span class="badge badge-primary">{{ $usuario->profesional->categoria->nombre }}</span>
+                            @else
+                                <span class="text-muted">No especificado</span>
+                            @endif
+                        </div>
+
+                        <div class="col-md-4 mb-3">
                             <strong>Número de Cuenta:</strong><br>
                             <span>{{ $usuario->profesional->numero_cuenta ?? 'No especificado' }}</span>
                         </div>
