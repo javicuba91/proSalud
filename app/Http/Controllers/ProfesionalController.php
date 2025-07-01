@@ -295,7 +295,9 @@ class ProfesionalController extends Controller
             ->unique('id')
             ->values();
 
-        return view('profesionales.misPacientes', compact('profesional', 'pacientes'));
+        $pacientes_contactos= Paciente::where('profesional_id', $profesional->id)->get();
+
+        return view('profesionales.misPacientes', compact('profesional', 'pacientes','pacientes_contactos'));
     }
 
     public function recetasFarmacia()
@@ -450,8 +452,39 @@ class ProfesionalController extends Controller
 
     public function crearPaciente()
     {
+        $profesional = Profesional::where('user_id', Auth::user()->id)->first();
         $seguros = SegurosMedicos::all();
-        return view('profesionales.crearPaciente', compact('seguros'));
+        $ciudades = Ciudad::orderBy('nombre', 'asc')->get(); // Obtener todas las ciudades
+        return view('profesionales.crearPaciente', compact('seguros', 'profesional', 'ciudades'));
+    }
+    public function guardarPaciente(Request $request)
+    {
+        $profesional = Profesional::where('user_id', Auth::user()->id)->first();
+        $usuario = new User();
+        $usuario->name = $request->nombre_completo;
+        $usuario->email = $request->email;
+        $usuario->role = "paciente";
+        $usuario->password = bcrypt($request->cedula);
+        $usuario->save();
+
+
+        $paciente = new Paciente();
+        $paciente->profesional_id = $profesional->id; // Asignar el profesional al paciente
+        $paciente->genero=$request->genero;
+        $paciente->estado_civil=$request->estado_civil;
+        $paciente->nombre_completo = $request->nombre_completo;
+        $paciente->nacionalidad = $request->nacionalidad;
+        $paciente->cedula = $request->cedula;
+        $paciente->email = $request->email;
+        $paciente->celular = $request->celular;
+        $paciente->fecha_nacimiento = $request->fecha_nacimiento;
+        $paciente->direccion = $request->direccion;
+        $paciente->user_id = $usuario->id; // Asignar el usuario al paciente
+        $paciente->ciudad_id = $request->ciudad_id;
+        $paciente->grupo_sanguineo = $request->grupo."".$request->rh;
+        $paciente->save();
+
+        return redirect()->route('profesionales.misPacientes')->with('success', 'Paciente creado correctamente.');
     }
 
     public function listadoCitasPresencialesAceptadas()

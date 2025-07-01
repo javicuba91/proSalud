@@ -197,6 +197,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/profesional/mis-citas/agendar', [ProfesionalController::class, 'agendarCitaProfesional'])->name('profesionales.agendarCitaProfesional');
         Route::get('/profesional/mis-pacientes/historial/{id}', [ProfesionalController::class, 'historialClinicoPaciente'])->name('profesionales.historialClinicoPaciente');
         Route::get('/profesional/paciente/crear', [ProfesionalController::class, 'crearPaciente'])->name('profesionales.crearPaciente');
+        Route::post('/profesional/paciente/guardar', [ProfesionalController::class, 'guardarPaciente'])->name('profesionales.guardarPaciente');
+
+
         Route::get('/profesional/cita/informe-consulta/{id}', [ProfesionalController::class, 'informeConsulta'])->name('profesionales.informeConsulta');
         Route::post('/pacientes/cita/informe-consulta/{id}', [ProfesionalController::class, 'informeConsultaCrear'])->name('profesionales.informeConsultaCrear');
         Route::get('/profesional/cita/informe-consulta/{id}/receta', [ProfesionalController::class, 'recetaInformeConsulta'])->name('profesionales.informeConsulta.receta');
