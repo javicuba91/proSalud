@@ -88,7 +88,7 @@
                                                 @foreach($pregunta->respuestas as $respuesta)
                                                     <div class="alert alert-info">
                                                         <strong> {{ $respuesta->profesional->nombre_completo }}</strong>
-                                                        <small class="text-muted">({{ $respuesta->created_at->format('d/m/Y H:i') }})</small>
+                                                        <small class="text-muted">({{ date("d/m/Y H:i", strtotime($respuesta->created_at)) }})</small>
                                                         <p class="mb-0 mt-2">{{ $respuesta->respuesta }}</p>
                                                     </div>
                                                 @endforeach
@@ -133,7 +133,7 @@
                                                     <span class="badge badge-secondary">{{ $respuesta->pregunta->subespecialidad->nombre }}</span>
                                                 @endif
                                             </div>
-                                            <small class="text-muted">Respondida el {{ $respuesta->created_at->format('d/m/Y H:i') }}</small>
+                                            <small class="text-muted">Respondida el {{ date("d/m/Y H:i", strtotime($respuesta->created_at)) }})</small></small>
                                         </div>
                                     </div>
                                     <div class="card-body">

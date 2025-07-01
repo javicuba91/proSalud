@@ -235,6 +235,10 @@ class PacienteFrontendController extends Controller
             $query->where('tipo', '=', $request->tipo);
         }
 
+        if ($request->filled('ciudad')) {           
+            $query->where('direccion', 'LIKE', '%' . $request->ciudad . '%');
+        }
+
         $emergencias = $query->paginate(10);
 
         return view('frontend.pacientes.buscador.emergencias', compact('emergencias', 'provincias'));

@@ -256,7 +256,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'pacientes',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',

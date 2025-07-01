@@ -28,14 +28,29 @@
                         <option value="">-- Seleccione la ciudad -- </option>
                     </select>
                 </div>
-                <div class="col">
-                    <input type="text" placeholder="Geolocalizar" class="form-control">
-                </div>
+                <!--<div class="col">
+                    <button type="button" id="btn-geolocalizar"
+                        class="btn btn-outline-primary w-100 mb-2">Geolocalizar</button>
+                    @if (request('ciudad'))
+                        <input type="hidden" name="ciudad" value="{{ request('ciudad') }}">
+                    @endif
+                </div>-->
                 <div class="col">
                     <button type="submit" class="btn btn-dark w-100">Buscar</button>
                 </div>
             </div>
         </form>
+
+        <div class="row">
+            <div class="col-lg-12">
+                @if (request('ciudad'))
+                    <div class="alert alert-info mt-2">
+                        Emergencias filtradas por ciudad: <strong>{{ request('ciudad') }}</strong>
+                        <a href="{{ url()->current() }}" class="btn btn-sm btn-outline-secondary ms-2">Quitar filtro</a>
+                    </div>
+                @endif
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-lg-5" id="col-listado">
@@ -49,20 +64,25 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-lg-12 mb-2">
-                                                    <button class="btn btn-dark w-100">Tipo de servicio: {{$emergencia->tipo}}</button>
+                                                    <button class="btn btn-dark w-100">Tipo de servicio:
+                                                        {{ $emergencia->tipo }}</button>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-6 mb-2">
-                                                    <input type="text" class="form-control" value="{{$emergencia->provincia->nombre}}" placeholder="Provincia">
+                                                    <input type="text" class="form-control"
+                                                        value="{{ $emergencia->provincia->nombre }}"
+                                                        placeholder="Provincia">
                                                 </div>
                                                 <div class="col-lg-6 mb-2">
-                                                    <input type="text" value="{{$emergencia->ciudad->nombre}}" class="form-control" placeholder="Ciudad">
+                                                    <input type="text" value="{{ $emergencia->ciudad->nombre }}"
+                                                        class="form-control" placeholder="Ciudad">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-12 mb-2">
-                                                    <input type="text" value="{{$emergencia->direccion}}" class="form-control" placeholder="Dirección completa">
+                                                    <input type="text" value="{{ $emergencia->direccion }}"
+                                                        class="form-control" placeholder="Dirección completa">
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -72,25 +92,25 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-6 mb-2">
-                                                    <a type="text" class="btn btn-dark btn-danger text-white w-100">Favorito</a>
+                                                    <a type="text"
+                                                        class="btn btn-dark btn-danger text-white w-100">Favorito</a>
                                                 </div>
-                                                @if(Auth::user())
+                                                @if (Auth::user())
                                                     <div class="col-lg-6 mb-2">
-                                                        <button 
-                                                            class="btn btn-dark w-100"
+                                                        <button class="btn btn-dark w-100"
                                                             data-telefono="{{ $emergencia->telefono }}"
-                                                        onclick="mostrarTelefono(this)">
+                                                            onclick="mostrarTelefono(this)">
                                                             Solicitar
                                                         </button>
-                                                    </div>  
+                                                    </div>
                                                 @else
-                                                <div class="col-lg-6 mb-2">
-                                                    <button disabled class="btn btn-dark w-100">
-                                                        Solicitar
-                                                    </button>
-                                                </div>  
+                                                    <div class="col-lg-6 mb-2">
+                                                        <button disabled class="btn btn-dark w-100">
+                                                            Solicitar
+                                                        </button>
+                                                    </div>
                                                 @endif
-                                                                                              
+
                                             </div>
                                         </div>
                                     </div>
@@ -123,7 +143,7 @@
             boton.disabled = true; // opcional, para que no pueda cambiarse otra vez
         }
     </script>
-    
+
     <script>
         $(document).ready(function() {
 
@@ -238,6 +258,67 @@
             setTimeout(() => {
                 map.invalidateSize(); // Corrige el tamaño del mapa tras el cambio de tamaño
             }, 300);
+        });
+    </script>
+
+
+    <script>
+        document.getElementById('btn-geolocalizar').addEventListener('click', function() {
+            if (navigator.geolocation) {
+               navigator.geolocation.getCurrentPosition(success, error, {
+                    enableHighAccuracy: true
+                });
+               
+            } else {
+                alert('Tu navegador no soporta geolocalización.');
+            }
+
+            function success(position) {
+
+
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                const apiKey = '7e23c4c064ce4c3a8fa0f7400f082735'; // ← Reemplaza esto por tu clave real
+
+                
+
+                fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${apiKey}&language=es`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.results.length > 0) {
+                            const components = data.results[0].components;
+
+                            // Obtenemos la ciudad
+                            const ciudad = components.city || components.town || components.village ||
+                                components.municipality;
+
+                            if (ciudad) {
+                                const url = new URL(window.location.href);
+                                url.searchParams.set('ciudad', ciudad);
+
+
+
+                                console.log('Coordenadas:', lat, lon);
+                                console.log('Respuesta OpenCage:', data);
+
+                                //window.location.href = url.toString();
+
+                            } else {
+                                alert('No se pudo determinar tu ciudad.');
+                            }
+                        } else {
+                            alert('No se encontró ninguna coincidencia para tu ubicación.');
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert('Error al obtener los datos de ubicación.');
+                    });
+            }
+
+            function error(err) {
+                alert('No se pudo obtener tu ubicación: ' + err.message);
+            }
         });
     </script>
 @endsection
