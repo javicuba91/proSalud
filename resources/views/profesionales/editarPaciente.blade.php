@@ -239,7 +239,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="float-right">
-                        <button type="button" id="anyadirContactoEmergencia" class="btn btn-dark mr-2">
+                        <button disabled type="button" id="anyadirContactoEmergencia" class="btn btn-dark mr-2">
                             <i class="fa fa-plus"></i> Añadir
                         </button>
                     </div>
