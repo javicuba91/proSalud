@@ -52,7 +52,7 @@
                         @if ($usuario->role == 'profesional' && $usuario->profesional && $usuario->profesional->categoria)
                             {{ $usuario->profesional->categoria->nombre }}
                         @elseif ($usuario->role == 'proveedor' && $usuario->proveedor && $usuario->proveedor->tipo)
-                            {{ $usuario->proveedor->tipo }}
+                            {{ ucfirst($usuario->proveedor->tipo) }}
                         @else
                             -
                         @endif

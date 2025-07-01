@@ -104,4 +104,49 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Proveedor::class);
     }
+
+   public function adminlte_image()
+{
+    switch ($this->role) {
+        case 'paciente':
+            $paciente = \App\Models\Paciente::where('user_id', $this->id)->first();
+            return $paciente && $paciente->foto
+                ? asset($paciente->foto)
+                : 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
+                
+        case 'profesional':
+            $profesional = \App\Models\Profesional::where('user_id', $this->id)->first();
+            return $profesional && $profesional->foto
+                ? asset($profesional->foto)
+                : 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
+
+        case 'proveedor':
+            $proveedor = \App\Models\Proveedor::where('user_id', $this->id)->first();
+            return $proveedor && $proveedor->foto
+                ? asset($proveedor->foto)
+                : 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
+
+        default:
+            return 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
+    }
+}
+
+
+    public function adminlte_desc()
+    {
+         switch ($this->role) {
+            case 'paciente':
+                return ucfirst($this->role ?? 'Sin categoría');
+            case 'profesional':
+                $profesional = Profesional::where('user_id', auth()->id())->first();
+                return ucfirst($profesional->categoria->nombre ?? 'Sin categoría');
+            case 'proveedor':
+                $proveedor = Proveedor::where('user_id', auth()->id())->first();
+                return ucfirst($proveedor->tipo ?? 'Sin categoría');
+            default:
+                return '';
+        }
+        
+    }
+
 }
