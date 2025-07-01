@@ -80,7 +80,7 @@
                         historial clínico</a>
                 </div>
                 <div class="col-lg-2">
-                    <a href="/profesional/mis-pacientes/editar/{{ $paciente->id }}" class="btn btn-dark w-100">Editar</a>
+                    <a href="/profesional/mis-pacientes/edit/{{ $paciente->id }}" class="btn btn-dark w-100">Editar</a>
                 </div>
             </div>
         @endforeach
