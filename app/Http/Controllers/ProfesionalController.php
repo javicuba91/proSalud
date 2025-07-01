@@ -299,6 +299,88 @@ class ProfesionalController extends Controller
 
         return view('profesionales.misPacientes', compact('profesional', 'pacientes','pacientes_contactos'));
     }
+    public function editPacientes($id)
+    {
+        $paciente = Paciente::findOrFail($id);
+        $profesional = Profesional::where('user_id', auth()->id())->first();
+        $seguros = SegurosMedicos::all();
+        $ciudades = Ciudad::orderBy('nombre', 'asc')->get(); // Obtener todas las ciudades
+        return view('profesionales.editarPaciente', compact('paciente', 'profesional', 'seguros', 'ciudades'));
+    }
+
+    public function updatePacientes(Request $request, $id)
+    {
+        $paciente = Paciente::findOrFail($id);
+
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $filename = Str::slug($paciente->id . '-' . time()) . '.' . $file->getClientOriginalExtension();
+            $path = 'imagenes/pacientes/' . $paciente->id;
+            $file->move(public_path($path), $filename);
+
+            // Guardar la ruta relativa en la base de datos
+            $paciente->foto = $path . '/' . $filename;
+        }
+
+        $paciente->nombre_completo = $request->nombre_completo;
+        $paciente->fecha_nacimiento = $request->fecha_nacimiento;
+        $paciente->genero = $request->genero;
+        $paciente->estado_civil = $request->estado_civil;
+        $paciente->nacionalidad = $request->nacionalidad;
+        $paciente->celular = $request->celular;
+        $paciente->direccion = $request->direccion;
+        $paciente->cedula = $request->cedula;
+        $paciente->ciudad_id = $request->ciudad_id;
+        $paciente->grupo_sanguineo = $request->grupo . "" . $request->rh;
+        $paciente->save();
+
+        $usuario = User::find($paciente->user_id);
+        $usuario->name =  $request->nombre_completo;
+        $usuario->save();
+
+        // Validación opcional, ajusta según tus necesidades
+        $request->validate([
+            'antecedentes.*.alergias' => 'nullable|string|max:255',
+            'antecedentes.*.condiciones_medicas' => 'nullable|string|max:255',
+            'antecedentes.*.medicamentos' => 'nullable|string|max:255',
+
+
+
+            'contactos_emergencia.*.nombre' => 'nullable|string|max:255',
+            'contactos_emergencia.*.relacion' => 'nullable|string|max:255',
+            'contactos_emergencia.*.telefono' => 'nullable|string|max:50',
+        ]);
+
+        // Insertar nuevos antecedentes (sin borrar los existentes)
+        if ($request->has('antecedentes')) {
+            foreach ($request->input('antecedentes') as $antecedenteData) {
+                $paciente->antecedentes()->create($antecedenteData);
+            }
+        }
+
+        if ($request->has('contactos_emergencia')) {
+            foreach ($request->input('contactos_emergencia') as $contactoData) {
+                $paciente->contactos_emergencia()->create($contactoData);
+            }
+        }
+
+        if ($request->has('seguros_medicos')) {
+            $paciente->segurosMedicos()->sync($request->input('seguros_medicos'));
+        } else {
+            $paciente->segurosMedicos()->detach();
+        }
+
+        if ($request->has('password')) {
+            if ($request->password == $request->repetir_password) {
+                $usuario = User::find($paciente->user_id);
+                $usuario->password = bcrypt($request->password);
+                $usuario->save();
+            }
+        }
+
+
+        return redirect()->back()->with('success', 'Datos actualizados correctamente');
+    }
 
     public function recetasFarmacia()
     {

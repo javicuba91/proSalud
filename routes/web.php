@@ -180,6 +180,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/profesional/mis-citas-videoconsulta', [ProfesionalController::class, 'misCitasVideoconsulta'])->name('profesionales.misCitasVideoconsulta');
         Route::get('/profesional/mis-citas-videoconsulta/pendientes', [ProfesionalController::class, 'misCitasVideoconsultaPendientes'])->name('profesionales.misCitasVideoconsultaPendientes');
         Route::get('/profesional/mis-pacientes', [ProfesionalController::class, 'misPacientes'])->name('profesionales.misPacientes');
+        Route::get('/profesional/mis-pacientes/edit/{id}', [ProfesionalController::class, 'editPacientes'])->name('profesionales.editPacientes');
+        Route::put('/profesional/mis-pacientes/update/{id}', [ProfesionalController::class, 'updatePacientes'])->name('profesionales.updatePacientes');
         Route::get('/profesional/listado-citas-videollamada', [ProfesionalController::class, 'listadoCitasVideollamada'])->name('profesional.listadoCitasVideollamada');
 
 
