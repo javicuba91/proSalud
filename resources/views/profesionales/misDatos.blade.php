@@ -543,11 +543,10 @@
                         <input type="text" value="{{ $consultorio->info_adicional }}" class="form-control"
                             placeholder="Información adicional">
                     </div>
-
-                    @if ($consultorio->imagenes)
-                        @php
-                            $imagenes = App\Models\ConsultorioImagen::where('consultorio_id', $consultorio->id)->get();
-                        @endphp
+                    @php
+                        $imagenes = App\Models\ConsultorioImagen::where('consultorio_id', $consultorio->id)->get();
+                    @endphp
+                    @if ($imagenes->count() > 0)                      
                         <div class="row">
                             @foreach ($imagenes as $imagen)
                                 <div class="col-lg-3 position-relative mb-3" id="imagen-{{ $imagen->id }}">
@@ -566,10 +565,6 @@
                             @endforeach
                         </div>
                     @endif
-
-
-
-
                 </div>
             @endforeach
 

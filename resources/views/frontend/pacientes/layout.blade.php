@@ -68,7 +68,7 @@
                             </li>
                         @endauth
 
-                        <li class="nav-item"><a href="#" class="nav-link">Ayuda</a></li>
+                        <li class="nav-item"><a href="/pacientes/ayuda" class="nav-link">Ayuda</a></li>
                         <li class="nav-item"><a href="/pacientes/contacto" class="nav-link">Contacto</a></li>
                         <li class="nav-item mt-2 mt-lg-0">
                             <a href="/pacientes/login" class="btn btn-dark btn-unirme ms-lg-2">Pedir Cita</a>

@@ -174,10 +174,8 @@ class PacienteController extends Controller
         if ($cita->informeConsulta != null) {
             $informe = $cita->informeConsulta;
             $receta = Receta::where('informe_consulta_id', '=', $informe->id)->first();
-            return view('pacientes.detalleCita', compact('cita', 'receta'));
-        } else {
-            return view('pacientes.detalleCita', compact('cita', 'receta'));
         }
+        return view('pacientes.detalleCita', compact('cita', 'receta'));
     }
 
     public function misCitasPendiente()

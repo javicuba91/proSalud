@@ -120,6 +120,7 @@ class ProfesionalFrontendController extends Controller
 
     public function detalleProfesional($id)
     {
+        
         $profesional = Profesional::find($id);
         return view('frontend.pacientes.fichas.detalleProfesional',compact('profesional'));
     }

@@ -282,8 +282,7 @@ class PacienteFrontendController extends Controller
     {
         $profesional = Profesional::findOrFail($profesional_id);
 
-        $horarios = HorarioProfesional::where('profesional_id', $profesional->id)
-            ->where('modalidad', '=', 'presencial')       
+        $horarios = HorarioProfesional::where('profesional_id', $profesional->id)           
             ->whereDate('fecha', $fecha)
             ->with('detalles.consultorio')
             ->get();
@@ -524,5 +523,10 @@ class PacienteFrontendController extends Controller
             ->get();
 
         return view('frontend.pacientes.blog-detalle', compact('articulo', 'relacionados'));
+    }
+
+     public function ayuda()
+    {
+        return view('frontend.pacientes.ayuda');
     }
 }

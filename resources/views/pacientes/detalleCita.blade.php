@@ -75,6 +75,10 @@
                             </div>
                         @endforeach
                     </div>
+                    @else
+                        <div class="col-lg-12">
+                            <p class="text-muted">No se han recetado medicamentos para esta cita.</p>
+                        </div>
                     @endif
                     <div class="col-md-4 mb-2">
                         <a href="/profesionales/ficha/{{ $cita->profesional->id }}" target="_blank"

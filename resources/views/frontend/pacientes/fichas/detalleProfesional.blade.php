@@ -168,7 +168,7 @@
                         <div class="card border position-relative">
                             <div class="card-body">
                                 <h5 class="text-primary"><i class="fa fa-images"></i> Imágenes Consultorios</h5>
-                                @if ($consultorio->imagenes)
+                                
                                 <div class="row">
                                     @foreach ($profesional->consultorios as $consultorio)
                                         <h6>Consultorio {{ $loop->index + 1 }}, {{$consultorio->clinica}}, {{ ucfirst($consultorio->direccion) }}{{ !$loop->last ? ',' : '' }}</h6>
@@ -183,7 +183,7 @@
                                         @endforeach
                                     @endforeach
                                 </div>
-                            @endif
+                           
                             </div>
                         </div>
                     </div>

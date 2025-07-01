@@ -9,7 +9,7 @@ class ConsultorioProfesional extends Model
     protected $table = "consultorios";
 
     public function imagenes()
-{
-    return $this->hasMany(ConsultorioImagen::class);
-}
+    {
+        return $this->hasMany(ConsultorioImagen::class);
+    }
 }
