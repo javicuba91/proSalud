@@ -6,22 +6,11 @@
     <h1>Elaboración receta digital</h1>
 @stop
 
-@section('content')
-    <div class="row border p-2">
-        <div class="col-lg-12">
-            <a href="/profesional/recetas-farmacia-digitales/crear" class="btn btn-dark w-100 ">Crear una nueva receta</a>
-        </div>
-    </div>
+@section('content')   
 
     <div class="row mt-3">
         <div class="col-lg-12">
             <h5>Historial de recetas</h5>
-        </div>
-    </div>
-
-    <div class="row mb-2">
-        <div class="col-lg-12 border p-2">
-            <input type="text" class="form-control" placeholder="Buscar paciente">
         </div>
     </div>
 

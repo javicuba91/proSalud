@@ -910,11 +910,11 @@
                         </div>
                         <div class="form-group">
                             <input type="number" name="precio_presencial" class="form-control"
-                                placeholder="Precion consulta presencial" required>
+                                placeholder="Precio consulta presencial" required>
                         </div>
                         <div class="form-group">
                             <input type="number" name="precio_videoconsulta" class="form-control"
-                                placeholder="Precion videoconsulta" required>
+                                placeholder="Precio videoconsulta" required>
                         </div>
                         <input type="hidden" name="profesional_id" value="{{ $profesional->id }}">
                     </div>

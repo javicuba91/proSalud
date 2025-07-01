@@ -157,7 +157,7 @@
                                                         class="btn btn-dark w-100">Ver perfil</a>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <a href="#" class="btn btn-dark w-100">Pedir cita</a>
+                                                    <a href="/profesionales/ficha/{{ $medico->id }}" class="btn btn-dark w-100">Pedir cita</a>
                                                 </div>
                                             </div>
                                         </div>

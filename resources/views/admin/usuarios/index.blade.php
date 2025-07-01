@@ -25,6 +25,7 @@
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Rol</th>
+                <th>Fecha registro</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -42,6 +43,7 @@
                     @endif
                     <td>{{ $usuario->email }}</td>
                     <td>{{ ucfirst($usuario->role) }}</td>
+                    <td>{{ date("d-m-Y H:i:s",strtotime($usuario->created_at) ) }}</td>
                     <td>
                         <a href="{{ route('usuarios.show', $usuario->id) }}" class="btn btn-primary" title="Ver detalles">
                             <i class="fa fa-eye"></i>
