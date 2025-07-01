@@ -53,7 +53,7 @@
         <div class="row mb-2">
             <div class="col-md-2 col-lg-2">
                 @if ($paciente->foto)
-                    <label for="">Foto de Perfil</label>
+                    <label for="foto_perfil">Foto de Perfil</label>
                     <img src="{{ asset($paciente->foto) }}" alt="Foto Perfil"
                         class="img img-responsive img-fluid profile-image">
                 @endif
@@ -186,19 +186,19 @@
             @foreach ($paciente->antecedentes as $antecedente)
                 <div class="row mt-2 border p-2">
                     <div class="col-md-3 mb-2">
-                        <label>Alergias</label>
-                        <input disabled type="text" class="form-control" placeholder="Alergias"
+                        <label for="alergias_{{ $antecedente->id }}">Alergias</label>
+                        <input disabled type="text" id="alergias_{{ $antecedente->id }}" class="form-control" placeholder="Alergias"
                             value="{{ $antecedente->alergias }}">
                     </div>
                     <div class="col-md-3 mb-2">
-                        <label>Condiciones médicas preexistentes</label>
-                        <input disabled type="text" class="form-control"
+                        <label for="condiciones_{{ $antecedente->id }}">Condiciones médicas preexistentes</label>
+                        <input disabled type="text" id="condiciones_{{ $antecedente->id }}" class="form-control"
                             placeholder="Condiciones médicas preexistentes"
                             value="{{ $antecedente->condiciones_medicas }}">
                     </div>
                     <div class="col-md-3">
-                        <label>Medicamentos habituales</label>
-                        <input disabled type="text" class="form-control"
+                        <label for="medicamentos_{{ $antecedente->id }}">Medicamentos habituales</label>
+                        <input disabled type="text" id="medicamentos_{{ $antecedente->id }}" class="form-control"
                             placeholder="Medicamentos que consume habitualmente"
                             value="{{ $antecedente->medicamentos }}">
                     </div>
@@ -249,18 +249,18 @@
             @foreach ($paciente->contactos_emergencia as $contacto)
                 <div class="row mt-2 border p-2">
                     <div class="col-md-3 mb-2">
-                        <label>Nombre</label>
-                        <input disabled type="text" class="form-control" placeholder="Nombre"
+                        <label for="nombre_{{ $contacto->id }}">Nombre</label>
+                        <input disabled type="text" id="nombre_{{ $contacto->id }}" class="form-control" placeholder="Nombre"
                             value="{{ $contacto->nombre }}">
                     </div>
                     <div class="col-md-3 mb-2">
-                        <label>Relación</label>
-                        <input disabled type="text" class="form-control" placeholder="Relación"
+                        <label for="relacion_{{ $contacto->id }}">Relación</label>
+                        <input disabled type="text" id="relacion_{{ $contacto->id }}" class="form-control" placeholder="Relación"
                             value="{{ $contacto->relacion }}">
                     </div>
                     <div class="col-md-4 mb-2">
-                        <label>Teléfono</label>
-                        <input disabled type="text" class="form-control" placeholder="Teléfono"
+                        <label for="telefono_{{ $contacto->id }}">Teléfono</label>
+                        <input disabled type="text" id="telefono_{{ $contacto->id }}" class="form-control" placeholder="Teléfono"
                             value="{{ $contacto->telefono }}">
                     </div>
                     <div class="col-md-2 mb-3">
@@ -380,16 +380,22 @@
 
             row.innerHTML = `
         <div class="col-md-3 mb-2">
-            <label>Alergias</label>
-            <input type="text" name="antecedentes[${antecedenteIndex}][alergias]" class="form-control" placeholder="Alergias">
+            <label for="alergias_nuevo_${antecedenteIndex}">Alergias</label>
+            <input type="text" id="alergias_nuevo_${antecedenteIndex}"
+                name="antecedentes[${antecedenteIndex}][alergias]"
+                class="form-control" placeholder="Alergias">
         </div>
         <div class="col-md-3 mb-2">
-            <label>Condiciones médicas preexistentes</label>
-            <input type="text" name="antecedentes[${antecedenteIndex}][condiciones_medicas]" class="form-control" placeholder="Condiciones médicas preexistentes">
+            <label for="condiciones_nuevo_${antecedenteIndex}">Condiciones médicas preexistentes</label>
+            <input type="text" id="condiciones_nuevo_${antecedenteIndex}"
+                name="antecedentes[${antecedenteIndex}][condiciones_medicas]"
+                class="form-control" placeholder="Condiciones médicas preexistentes">
         </div>
         <div class="col-md-3">
-            <label>Medicamentos habituales</label>
-            <input type="text" name="antecedentes[${antecedenteIndex}][medicamentos]" class="form-control" placeholder="Medicamentos que consume habitualmente">
+            <label for="medicamentos_nuevo_${antecedenteIndex}">Medicamentos habituales</label>
+            <input type="text" id="medicamentos_nuevo_${antecedenteIndex}"
+                name="antecedentes[${antecedenteIndex}][medicamentos]"
+                class="form-control" placeholder="Medicamentos que consume habitualmente">
         </div>
     `;
             container.appendChild(row);
@@ -432,22 +438,27 @@
 
         document.getElementById('anyadirContactoEmergencia').addEventListener('click', function() {
             const container = document.getElementById('contactosEmergenciaNuevos');
-
             const row = document.createElement('div');
             row.classList.add('row', 'mt-2', 'border', 'p-2');
 
             row.innerHTML = `
         <div class="col-md-4 mb-2">
-            <label>Nombre</label>
-            <input type="text" name="contactos_emergencia[${contactoEmergenciaIndex}][nombre]" class="form-control" placeholder="Nombre">
+            <label for="nombre_nuevo_${contactoEmergenciaIndex}">Nombre</label>
+            <input type="text" id="nombre_nuevo_${contactoEmergenciaIndex}"
+                name="contactos_emergencia[${contactoEmergenciaIndex}][nombre]"
+                class="form-control" placeholder="Nombre">
         </div>
         <div class="col-md-4 mb-2">
-            <label>Relación</label>
-            <input type="text" name="contactos_emergencia[${contactoEmergenciaIndex}][relacion]" class="form-control" placeholder="Relación">
+            <label for="relacion_nuevo_${contactoEmergenciaIndex}">Relación</label>
+            <input type="text" id="relacion_nuevo_${contactoEmergenciaIndex}"
+                name="contactos_emergencia[${contactoEmergenciaIndex}][relacion]"
+                class="form-control" placeholder="Relación">
         </div>
         <div class="col-md-3 mb-2">
-            <label>Teléfono</label>
-            <input type="text" name="contactos_emergencia[${contactoEmergenciaIndex}][telefono]" class="form-control" placeholder="Teléfono">
+            <label for="telefono_nuevo_${contactoEmergenciaIndex}">Teléfono</label>
+            <input type="text" id="telefono_nuevo_${contactoEmergenciaIndex}"
+                name="contactos_emergencia[${contactoEmergenciaIndex}][telefono]"
+                class="form-control" placeholder="Teléfono">
         </div>
         <div class="col-md-1 mb-2">
             <label>&nbsp;</label>
@@ -456,7 +467,7 @@
     `;
 
             container.appendChild(row);
-            contactoEmergenciaIndex++; // incrementar índice
+            contactoEmergenciaIndex++;
         });
 
 
