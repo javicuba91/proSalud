@@ -143,37 +143,44 @@
             <h5>Pruebas de laboratorio</h5>
         </div>
         <div class="col-lg-2">
-            <button type="button" class="btn btn-dark w-100" id="agregar-prueba">
+            <button data-toggle="modal" data-target="#modalAgregarPrueba" type="button" class="btn btn-dark w-100"
+                id="agregar-prueba">
                 <i class="fa fa-plus"></i> Agregar prueba
             </button>
         </div>
     </div>
 
     <div id="contenedor-pruebas">
-        <!-- Prueba 1 (inicial) -->
-        <div class="prueba-item mb-3 border p-3" data-prueba="1">
-            <div class="row">
-                <div class="col-lg-10">
-                    <h6>Prueba 1</h6>
+        @if ($pedido->pruebas->count() > 0)
+            @foreach ($pedido->pruebas as $prueba)
+                <div class="prueba-item mb-3 border p-3" data-prueba="{{ $prueba->id }}">
+                    <div class="row mb-2 mt-2">
+                        <div class="col-lg-10">
+                            <h6>Prueba {{ $loop->iteration }}</h6>
+                        </div>
+                        <div class="col-lg-2">
+                            <button type="button" class="btn btn-danger btn-sm eliminar-prueba float-end float-right"
+                                data-prueba="{{ $prueba->id }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <input readonly value="{{ old('tipo', $prueba->tipo ?? '') }}" type="text"
+                        class="form-control mb-2" name="tipo"
+                        placeholder="Tipo de análisis solicitado (hemograma, perfil bioquímico, etc.)">
+                    <input readonly value="{{ old('muestras', $prueba->muestras ?? '') }}" type="text"
+                        class="form-control mb-2" name="muestras"
+                        placeholder="Muestras a recolectar (sangre, orina, etc.)">
+                    <input readonly value="{{ old('indicaciones', $prueba->indicaciones ?? '') }}" type="text"
+                        class="form-control mb-2" name="indicaciones"
+                        placeholder="Indicaciones">
+                    <input readonly value="{{ old('prioridad', ucfirst($prueba->prioridad) ?? '') }}" type="text"
+                        class="form-control mb-2" name="prioridad"
+                        placeholder="Prioridad del examen (urgente, programado, etc.)">
                 </div>
-                <div class="col-lg-2">
-                    <button type="button" class="btn btn-danger btn-sm eliminar-prueba" data-prueba="1"
-                        style="display: none;">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </div>
-            </div>
-            <input type="text" class="form-control mb-2" name="pruebas[1][tipo_analisis]"
-                placeholder="Tipo de análisis solicitado (hemograma, perfil bioquímico, etc.)">
-            <input type="text" class="form-control mb-2" name="pruebas[1][muestras]"
-                placeholder="Muestras a recolectar (sangre, orina, etc.)">
-            <input type="text" class="form-control mb-2" name="pruebas[1][preparacion]"
-                placeholder="Indicaciones sobre la preparación del paciente (ayuno, suspensión de medicamentos, etc.)">
-            <input type="text" class="form-control mb-2" name="pruebas[1][prioridad]"
-                placeholder="Prioridad del examen (urgente, programado, etc.)">
-            <input type="text" class="form-control mb-2" name="pruebas[1][lugar_realizacion]"
-                placeholder="Lugar de realización y/o envío de muestras">
-        </div>
+            @endforeach
+        @endif
+
     </div>
 
     <div class="row mb-3">
@@ -193,50 +200,47 @@
             </button>
         </div>
     </div>
+
+    <div class="modal fade" id="modalAgregarPrueba" tabindex="-1" role="dialog"
+        aria-labelledby="modalAgregarPruebaLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="POST" action="{{ route('profesional.pruebas.laboratorios') }}">
+                @csrf
+                <input type="hidden" value="{{ $pedido->id }}" name="pedido_id" id="pedido_id">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Agregar Prueba</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control mb-2" name="tipo"
+                            placeholder="Tipo de análisis solicitado (hemograma, perfil bioquímico, etc.)">
+                        <input type="text" class="form-control mb-2" name="muestras"
+                            placeholder="Muestras a recolectar (sangre, orina, etc.)">
+                        <input type="text" class="form-control mb-2" name="indicaciones"
+                            placeholder="Indicaciones">
+                        <select class="form-control mb-2" name="prioridad">
+                            <option value="programado">Programado</option>
+                            <option value="urgente">Urgente</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 @stop
 
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        let contadorPruebas = 1;
-
         $(document).ready(function() {
-
-            // Agregar nueva prueba
-            $('#agregar-prueba').on('click', function() {
-                contadorPruebas++;
-
-                const nuevaPrueba = `
-                <div class="prueba-item mb-3 border p-3" data-prueba="${contadorPruebas}">
-                    <div class="row">
-                        <div class="col-lg-10">
-                            <h6>Prueba ${contadorPruebas}</h6>
-                        </div>
-                        <div class="col-lg-2">
-                            <button type="button" class="btn btn-danger btn-sm eliminar-prueba" data-prueba="${contadorPruebas}">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <input type="text" class="form-control mb-2" name="pruebas[${contadorPruebas}][tipo_analisis]"
-                        placeholder="Tipo de análisis solicitado (hemograma, perfil bioquímico, etc.)">
-                    <input type="text" class="form-control mb-2" name="pruebas[${contadorPruebas}][muestras]"
-                        placeholder="Muestras a recolectar (sangre, orina, etc.)">
-                    <input type="text" class="form-control mb-2" name="pruebas[${contadorPruebas}][preparacion]"
-                        placeholder="Indicaciones sobre la preparación del paciente (ayuno, suspensión de medicamentos, etc.)">
-                    <input type="text" class="form-control mb-2" name="pruebas[${contadorPruebas}][prioridad]"
-                        placeholder="Prioridad del examen (urgente, programado, etc.)">
-                    <input type="text" class="form-control mb-2" name="pruebas[${contadorPruebas}][lugar_realizacion]"
-                        placeholder="Lugar de realización y/o envío de muestras">
-                </div>
-            `;
-
-                $('#contenedor-pruebas').append(nuevaPrueba);
-
-                // Mostrar botón de eliminar para todas las pruebas si hay más de una
-                if ($('.prueba-item').length > 1) {
-                    $('.eliminar-prueba').show();
-                }
-            });
 
             // Eliminar prueba
             $(document).on('click', '.eliminar-prueba', function() {
@@ -247,18 +251,25 @@
                 if ($('.prueba-item').length <= 1) {
                     $('.eliminar-prueba').hide();
                 }
-
-                // Renumerar las pruebas
-                renumerarPruebas();
-            });
-
-            function renumerarPruebas() {
-                $('.prueba-item').each(function(index) {
-                    const nuevoNumero = index + 1;
-                    $(this).find('h6').text(`Prueba ${nuevoNumero}`);
+                // por ajax eliminar la prueba por su id
+                $.ajax({
+                    url: `/profesional/pedidoLaboratorio/prueba/${pruebaId}`,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // un sweeet alert
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Prueba eliminada',
+                            text: 'La prueba ha sido eliminada correctamente.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
                 });
-            }
-
+            });
         });
     </script>
 @endsection

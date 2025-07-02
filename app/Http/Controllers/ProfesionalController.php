@@ -31,6 +31,7 @@ use App\Models\PreguntaExperto;
 use App\Models\PresentacionMedicamento;
 use App\Models\Profesional;
 use App\Models\Provincia;
+use App\Models\Prueba;
 use App\Models\RespuestaExperto;
 use App\Models\Receta;
 use App\Models\Region;
@@ -1735,6 +1736,55 @@ class ProfesionalController extends Controller
         return redirect()->route('profesionales.informeConsulta.pedidoImagen', $pedido->informe_consulta_id)
             ->with('success', 'Pedido de imagen actualizado correctamente');
 
+    }
+
+
+    public function crearPedidoPruebasLaboratorio(Request $request)
+    {
+        $prueba = new Prueba();
+        $prueba->pedido_laboratorio_id = $request->input('pedido_id');
+        $prueba->tipo = $request->input('tipo');
+        $prueba->muestras = $request->input('muestras');
+        $prueba->indicaciones = $request->input('indicaciones');
+        $prueba->prioridad = $request->input('prioridad');
+        $prueba->save();
+
+        $pedido = PedidoLaboratorio::findOrFail($prueba->pedido_laboratorio_id);
+
+        return redirect()->route('profesionales.informeConsulta.pedidoLaboratorio', $pedido->informe_consulta_id)
+            ->with('success', 'Prueba añadida al pedido correctamente');
+    }
+
+    public function eliminarPruebaLaboratorio($id)
+    {
+        $prueba = Prueba::findOrFail($id);
+        $prueba->delete();
+
+        return response()->json(['success' => true, 'message' => 'Prueba eliminada correctamente']);
+    }
+
+    public function crearPedidoPruebasImagen(Request $request)
+    {
+        $prueba = new Prueba();
+        $prueba->pedido_imagen_id = $request->input('pedido_id');
+        $prueba->tipo = $request->input('tipo');
+        $prueba->region_anatomica = $request->input('region_anatomica');
+        $prueba->indicaciones = $request->input('indicaciones');
+        $prueba->prioridad = $request->input('prioridad');
+        $prueba->save();
+
+        $pedido = PedidoImagen::findOrFail($prueba->pedido_imagen_id);
+
+        return redirect()->route('profesionales.informeConsulta.pedidoImagen', $pedido->informe_consulta_id)
+            ->with('success', 'Prueba añadida al pedido correctamente');
+    }
+
+    public function eliminarPruebaImagen($id)
+    {
+        $prueba = Prueba::findOrFail($id);
+        $prueba->delete();
+
+        return response()->json(['success' => true, 'message' => 'Prueba eliminada correctamente']);
     }
 
 }

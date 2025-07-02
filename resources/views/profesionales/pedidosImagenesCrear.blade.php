@@ -146,20 +146,43 @@
             <h5>Pruebas de imágenes</h5>
         </div>
         <div class="col-lg-2">
-            <button type="button" class="btn btn-dark w-100" id="agregar-prueba">
+            <button data-toggle="modal" data-target="#modalAgregarPrueba" type="button" class="btn btn-dark w-100"
+                id="agregar-prueba">
                 <i class="fa fa-plus"></i> Agregar prueba
             </button>
         </div>
     </div>
-    <div class="mb-3 border p-3">
-        <input type="text" class="form-control mb-2"
-            placeholder="Tipo de estudio solicitado (radiografía, ecografía, tomografía, resonancia, etc.)">
-        <input type="text" class="form-control mb-2"
-            placeholder="Región anatómica a estudiar (cráneo, abdomen, articulaciones, etc.)">
-        <input type="text" class="form-control mb-2"
-            placeholder="Instrucciones especiales (contraste, ayuno, movimientos, etc.)">
-        <input type="text" class="form-control mb-2" placeholder="Prioridad del examen (urgente, programado, etc.)">
-        <input type="text" class="form-control mb-2" placeholder="Lugar de realización y/o envío de muestras">
+
+    <div id="contenedor-pruebas">
+        @if ($pedido->pruebas->count() > 0)
+            @foreach ($pedido->pruebas as $prueba)
+                <div class="prueba-item mb-3 border p-3" data-prueba="{{ $prueba->id }}">
+                    <div class="row mb-2 mt-2">
+                        <div class="col-lg-10">
+                            <h6>Prueba {{ $loop->iteration }}</h6>
+                        </div>
+                        <div class="col-lg-2">
+                            <button type="button" class="btn btn-danger btn-sm eliminar-prueba float-end float-right"
+                                data-prueba="{{ $prueba->id }}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <input readonly value="{{ old('tipo', $prueba->tipo ?? '') }}" type="text"
+                        class="form-control mb-2" name="tipo"
+                        placeholder="Tipo de análisis solicitado (hemograma, perfil bioquímico, etc.)">
+                    <input readonly value="{{ old('region_anatomica', $prueba->region_anatomica ?? '') }}" type="text"
+                        class="form-control mb-2" name="region_anatomica"
+                        placeholder="Región anatómica a estudiar (cráneo, abdomen, articulaciones, etc.)">
+                    <input readonly value="{{ old('indicaciones', $prueba->indicaciones ?? '') }}" type="text"
+                        class="form-control mb-2" name="indicaciones" placeholder="Indicaciones">
+                    <input readonly value="{{ old('prioridad', ucfirst($prueba->prioridad) ?? '') }}" type="text"
+                        class="form-control mb-2" name="prioridad"
+                        placeholder="Prioridad del examen (urgente, programado, etc.)">
+                </div>
+            @endforeach
+        @endif
+
     </div>
 
     <!-- Botones -->
@@ -168,4 +191,75 @@
         <div class="col-lg-4"><button class="btn btn-dark w-100">Imprimir</button></div>
         <div class="col-lg-4"><button class="btn btn-dark w-100">Exportar en PDF</button></div>
     </div>
+
+
+    <div class="modal fade" id="modalAgregarPrueba" tabindex="-1" role="dialog"
+        aria-labelledby="modalAgregarPruebaLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="POST" action="{{ route('profesional.pruebas.imagenes') }}">
+                @csrf
+                <input type="hidden" value="{{ $pedido->id }}" name="pedido_id" id="pedido_id">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Agregar Prueba</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control mb-2" name="tipo"
+                            placeholder="Tipo de estudio solicitado (radiografía, ecografía, tomografía, etc.)">
+                        <input type="text" class="form-control mb-2" name="region_anatomica"
+                            placeholder="Región anatómica a estudiar (cráneo, abdomen, articulaciones, etc.)">
+                        <input type="text" class="form-control mb-2" name="indicaciones" placeholder="Indicaciones">
+                        <select class="form-control mb-2" name="prioridad">
+                            <option value="programado">Programado</option>
+                            <option value="urgente">Urgente</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @stop
+
+@section('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function() {
+
+            // Eliminar prueba
+            $(document).on('click', '.eliminar-prueba', function() {
+                const pruebaId = $(this).data('prueba');
+                $(`.prueba-item[data-prueba="${pruebaId}"]`).remove();
+
+                // Ocultar botón de eliminar si solo queda una prueba
+                if ($('.prueba-item').length <= 1) {
+                    $('.eliminar-prueba').hide();
+                }
+                // por ajax eliminar la prueba por su id
+                $.ajax({
+                    url: `/profesional/pedidoImagen/prueba/${pruebaId}`,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // un sweeet alert
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Prueba eliminada',
+                            text: 'La prueba ha sido eliminada correctamente.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+@endsection

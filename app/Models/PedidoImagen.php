@@ -21,4 +21,9 @@ class PedidoImagen extends Model
     {
         return $this->hasOne(InformeConsulta::class,'informe_consulta_id');
     }
+
+         public function pruebas()
+    {
+        return $this->hasMany(Prueba::class);
+    }
 }

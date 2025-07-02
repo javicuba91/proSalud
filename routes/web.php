@@ -236,6 +236,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/profesional/citas/actualizar-fecha', [ProfesionalController::class, 'actualizarFecha'])->name('profesional.citas.actualizarFecha');
         Route::post('/profesional/citas/enviar-recordatorio', [ProfesionalController::class, 'enviarRecordatorioCita'])->name('profesional.citas.enviarRecordatorio');
 
+        Route::post('/profesional/pedido/pruebas-laboratorio/crear', [ProfesionalController::class, 'crearPedidoPruebasLaboratorio'])->name('profesional.pruebas.laboratorios');
+        Route::delete('/profesional/pedidoLaboratorio/prueba/{id}', [ProfesionalController::class, 'eliminarPruebaLaboratorio'])->name('profesional.pruebas.laboratorios.eliminar');
+
+        Route::post('/profesional/pedido/pruebas-imagen/crear', [ProfesionalController::class, 'crearPedidoPruebasImagen'])->name('profesional.pruebas.imagenes');
+        Route::delete('/profesional/pedidoImagen/prueba/{id}', [ProfesionalController::class, 'eliminarPruebaImagen'])->name('profesional.pruebas.imagenes.eliminar');
 
         Route::get('/profesional/recetas/{id}/exportar-pdf', [ProfesionalController::class, 'exportarRecetaPDF'])->name('profesional.receta.exportarPDF');
 
