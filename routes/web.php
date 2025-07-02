@@ -128,50 +128,50 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/api/profesional/horarios/{fecha}', [ProfesionalController::class, 'horariosPorDia']);
     Route::delete('/profesional/detalle-horarios/{id}', [ProfesionalController::class, 'eliminarDetalle']);
 
-     Route::get('/api/profesional/horarios-videollamada', [ProfesionalController::class, 'eventosCalendarioVideollamada']);
+    Route::get('/api/profesional/horarios-videollamada', [ProfesionalController::class, 'eventosCalendarioVideollamada']);
     Route::get('/api/profesional/horarios-videollamada/{fecha}', [ProfesionalController::class, 'horariosPorDiaVideollamada']);
     Route::delete('/profesional/detalle-horarios-videollamada/{id}', [ProfesionalController::class, 'eliminarDetalleVideollamada']);
 
 
 
-        /* Eliminar título universitario */
-        Route::delete('/profesional/titulo-universitario/{id}', [ProfesionalController::class, 'eliminarTitulo'])->name('profesional.titulo.delete');
-        Route::delete('/profesional/especializacion/{id}', [ProfesionalController::class, 'eliminarEspecializacion']);
-        Route::delete('/profesional/formacion-adicional/{id}', [ProfesionalController::class, 'eliminarFormacion']);
-        Route::delete('/profesional/experiencia/{id}', [ProfesionalController::class, 'eliminarExperiencia']);
-        Route::delete('/profesional/consultorios/{id}', [ProfesionalController::class, 'eliminarConsultorio']);
-        Route::post('/profesional/guardar-seguro', [ProfesionalController::class, 'guardarSeguro']);
-        Route::post('/profesional/eliminar-seguro', [ProfesionalController::class, 'eliminarSeguro']);
-        Route::post('/profesional/actualizar-numero-cuenta', [ProfesionalController::class, 'actualizarNumeroCuenta']);
-        Route::post('/profesional/actualizar-datos', [ProfesionalController::class, 'actualizarDatos']);
-        Route::post('/profesional/actualizar-contrasena', [ProfesionalController::class, 'actualizarContrasena'])->name('profesional.actualizarContrasena');
-        Route::post('/profesional/titulos-universitarios', [ProfesionalController::class, 'guardarTitulo'])->name('profesional.titulos.guardar');
-        Route::post('/profesional/especializaciones/guardar', [ProfesionalController::class, 'guardarEspecializacion'])
-            ->name('profesional.especializaciones.guardar');
-        Route::post('/profesional/formaciones-adicionales/guardar', [ProfesionalController::class, 'guardarFormacionAdicional'])
-            ->name('profesional.formaciones-adicionales.guardar');
-        Route::post('/profesional/experiencias/guardar', [ProfesionalController::class, 'guardarExperiencia'])
-            ->name('profesional.experiencias.guardar');
-        Route::post('/profesional/consultorios/guardar', [ProfesionalController::class, 'guardarConsultorio'])
-            ->name('profesional.consultorios.guardar');
-        Route::post('/profesional/citas/cancelar/{id}', [ProfesionalController::class, 'cancelar']);
+    /* Eliminar título universitario */
+    Route::delete('/profesional/titulo-universitario/{id}', [ProfesionalController::class, 'eliminarTitulo'])->name('profesional.titulo.delete');
+    Route::delete('/profesional/especializacion/{id}', [ProfesionalController::class, 'eliminarEspecializacion']);
+    Route::delete('/profesional/formacion-adicional/{id}', [ProfesionalController::class, 'eliminarFormacion']);
+    Route::delete('/profesional/experiencia/{id}', [ProfesionalController::class, 'eliminarExperiencia']);
+    Route::delete('/profesional/consultorios/{id}', [ProfesionalController::class, 'eliminarConsultorio']);
+    Route::post('/profesional/guardar-seguro', [ProfesionalController::class, 'guardarSeguro']);
+    Route::post('/profesional/eliminar-seguro', [ProfesionalController::class, 'eliminarSeguro']);
+    Route::post('/profesional/actualizar-numero-cuenta', [ProfesionalController::class, 'actualizarNumeroCuenta']);
+    Route::post('/profesional/actualizar-datos', [ProfesionalController::class, 'actualizarDatos']);
+    Route::post('/profesional/actualizar-contrasena', [ProfesionalController::class, 'actualizarContrasena'])->name('profesional.actualizarContrasena');
+    Route::post('/profesional/titulos-universitarios', [ProfesionalController::class, 'guardarTitulo'])->name('profesional.titulos.guardar');
+    Route::post('/profesional/especializaciones/guardar', [ProfesionalController::class, 'guardarEspecializacion'])
+        ->name('profesional.especializaciones.guardar');
+    Route::post('/profesional/formaciones-adicionales/guardar', [ProfesionalController::class, 'guardarFormacionAdicional'])
+        ->name('profesional.formaciones-adicionales.guardar');
+    Route::post('/profesional/experiencias/guardar', [ProfesionalController::class, 'guardarExperiencia'])
+        ->name('profesional.experiencias.guardar');
+    Route::post('/profesional/consultorios/guardar', [ProfesionalController::class, 'guardarConsultorio'])
+        ->name('profesional.consultorios.guardar');
+    Route::post('/profesional/citas/cancelar/{id}', [ProfesionalController::class, 'cancelar']);
 
-        Route::put('/profesional/{profesional}/metodos-pago', [ProfesionalController::class, 'updateMetodosPago'])
-            ->name('profesional.metodos_pago.update');
+    Route::put('/profesional/{profesional}/metodos-pago', [ProfesionalController::class, 'updateMetodosPago'])
+        ->name('profesional.metodos_pago.update');
 
-        Route::post('/profesional/guardar-horarios', [ProfesionalController::class, 'guardarHorariosPresencial'])->name('profesional.horarios.presencial.guardar');
-        Route::post('/profesional/guardar-horarios-videollamada', [ProfesionalController::class, 'guardarHorariosVideollamada'])->name('profesional.horarios.videollamada.guardar');
+    Route::post('/profesional/guardar-horarios', [ProfesionalController::class, 'guardarHorariosPresencial'])->name('profesional.horarios.presencial.guardar');
+    Route::post('/profesional/guardar-horarios-videollamada', [ProfesionalController::class, 'guardarHorariosVideollamada'])->name('profesional.horarios.videollamada.guardar');
 
-        Route::post('/profesional/consultorio/{id}/imagenes', [ProfesionalController::class, 'guardarImagenesConsultorio'])->name('profesional.consultorio.imagenes.store');
-        Route::get('/profesional/consultorio/{id}/imagenes', [ProfesionalController::class, 'listaImagenesConsultorio'])->name('profesional.consultorio.imagenes.index');
-        Route::delete('/profesional/consultorio/imagen/{id}', [ProfesionalController::class, 'eliminarImagenConsultorio']);
+    Route::post('/profesional/consultorio/{id}/imagenes', [ProfesionalController::class, 'guardarImagenesConsultorio'])->name('profesional.consultorio.imagenes.store');
+    Route::get('/profesional/consultorio/{id}/imagenes', [ProfesionalController::class, 'listaImagenesConsultorio'])->name('profesional.consultorio.imagenes.index');
+    Route::delete('/profesional/consultorio/imagen/{id}', [ProfesionalController::class, 'eliminarImagenConsultorio']);
 
-        Route::post('/profesional/{id}/documentos', [ProfesionalController::class, 'guardarDocumento'])->name('profesionales.documentos.store');
-        Route::delete('/profesional/documentos/{documento}', [ProfesionalController::class, 'eliminarDocumento'])->name('profesionales.documentos.destroy');
+    Route::post('/profesional/{id}/documentos', [ProfesionalController::class, 'guardarDocumento'])->name('profesionales.documentos.store');
+    Route::delete('/profesional/documentos/{documento}', [ProfesionalController::class, 'eliminarDocumento'])->name('profesionales.documentos.destroy');
 
 
-        Route::get('/get-provincias/{region_id}', [ProfesionalController::class, 'getProvincias']);
-        Route::get('/get-ciudades/{provincia_id}', [ProfesionalController::class, 'getCiudades']);
+    Route::get('/get-provincias/{region_id}', [ProfesionalController::class, 'getProvincias']);
+    Route::get('/get-ciudades/{provincia_id}', [ProfesionalController::class, 'getCiudades']);
 
     // Agrupa el resto de rutas bajo el middleware de suscripción pagada
     Route::middleware(['suscripcion.pagada'])->group(function () {
@@ -217,7 +217,7 @@ Route::middleware(['auth'])->group(function () {
 
 
         Route::get('/profesional/cita/informe-consulta/{id}/pedido-imagen', [ProfesionalController::class, 'pedidoImagen'])->name('profesionales.informeConsulta.pedidoImagen');
-         Route::post('/profesional/cita/informe-consulta/pedido-imagen/update', [ProfesionalController::class, 'actualizarPedidoImagen'])->name('profesional.pedido-imagenes.update');
+        Route::post('/profesional/cita/informe-consulta/pedido-imagen/update', [ProfesionalController::class, 'actualizarPedidoImagen'])->name('profesional.pedido-imagenes.update');
 
         Route::get('/profesional/cita/informe-consulta/{id}/pedido-laboratorio', [ProfesionalController::class, 'pedidoLaboratorio'])->name('profesionales.informeConsulta.pedidoLaboratorio');
 
@@ -243,6 +243,10 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/profesional/pedidoImagen/prueba/{id}', [ProfesionalController::class, 'eliminarPruebaImagen'])->name('profesional.pruebas.imagenes.eliminar');
 
         Route::get('/profesional/recetas/{id}/exportar-pdf', [ProfesionalController::class, 'exportarRecetaPDF'])->name('profesional.receta.exportarPDF');
+
+        Route::get('/profesional/cita/informe-consulta/{id}/exportar-pdf-laboratorio', [ProfesionalController::class, 'exportarPedidoLaboratorioPDF'])->name('profesional.pedido.laboratorio.exportarPDF');
+
+        Route::get('/profesional/cita/informe-consulta/{id}/exportar-pdf-imagen', [ProfesionalController::class, 'exportarPedidoImagenPDF'])->name('profesional.pedido.imagen.exportarPDF');
 
 
         /* URLS SIDEBAR: Proveedor*/

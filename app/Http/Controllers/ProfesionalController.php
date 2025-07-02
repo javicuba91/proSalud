@@ -443,7 +443,7 @@ class ProfesionalController extends Controller
         $pedido->antecedentes = $request->input('antecedentes');
          if($pedido->qr == null || $pedido->qr == ''){
             $pedido->qr = $request->input('qr');
-        }  
+        }
         $pedido->save();
 
         return redirect()->route('profesionales.informeConsulta.pedidoLaboratorio', $pedido->informe_consulta_id)->with('success', 'Pedido de laboratorio actualizado correctamente.');
@@ -822,7 +822,7 @@ class ProfesionalController extends Controller
      public function pedidoImagen($id)
     {
         $profesional = Profesional::where('user_id', auth()->id())->first();
-        $informe = InformeConsulta::find($id);       
+        $informe = InformeConsulta::find($id);
 
         $cita = Cita::where('id', '=', $informe->cita_id)->first();
 
@@ -1730,7 +1730,7 @@ class ProfesionalController extends Controller
         $pedido->antecedentes = $request->input('antecedentes');
         if($pedido->qr == null || $pedido->qr == ''){
             $pedido->qr = $request->input('qr');
-        }        
+        }
         $pedido->save();
 
         return redirect()->route('profesionales.informeConsulta.pedidoImagen', $pedido->informe_consulta_id)
@@ -1786,5 +1786,22 @@ class ProfesionalController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Prueba eliminada correctamente']);
     }
+        public function exportarPedidoLaboratorioPDF($id)
+    {
+        $pedido = PedidoLaboratorio::findOrFail($id);
+
+        $pdf = Pdf::loadView('profesionales.pedidosLaboratorioPDF', compact('pedido'));
+
+        return $pdf->download('Pedido_Laboratorio' . $pedido->id . '.pdf');
+    }
+        public function exportarPedidoImagenPDF($id)
+    {
+        $pedido = PedidoImagen::findOrFail($id);
+
+        $pdf = Pdf::loadView('profesionales.pedidosImagenPDF', compact('pedido'));
+
+        return $pdf->download('Pedido_Laboratorio' . $pedido->id . '.pdf');
+    }
+
 
 }

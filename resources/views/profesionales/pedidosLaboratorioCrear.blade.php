@@ -195,9 +195,9 @@
             </button>
         </div>
         <div class="col-lg-4">
-            <button type="submit" class="btn btn-dark w-100" name="accion" value="pdf">
+            <a class="btn btn-dark w-100" href="{{ route("profesional.pedido.laboratorio.exportarPDF", $pedido->id) }}">
                 Exportar en PDF
-            </button>
+            </a>
         </div>
     </div>
 
