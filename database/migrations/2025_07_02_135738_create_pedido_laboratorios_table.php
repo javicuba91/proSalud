@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('pedido_laboratorios', function (Blueprint $table) {
             $table->id();
+            $table->string('qr')->nullable();
+            $table->dateTime('fecha_hora')->nullable();
+            $table->text('motivo')->nullable();
+            $table->text('sintoma')->nullable();
+            $table->text('antecedentes')->nullable();
+            $table->foreignId('informe_consulta_id')->constrained('informes_consultas')->onDelete('cascade');
             $table->timestamps();
+
         });
     }
 

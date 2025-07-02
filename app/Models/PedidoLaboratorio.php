@@ -6,5 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class PedidoLaboratorio extends Model
 {
-    //
+    protected $table = 'pedido_laboratorios';
+    protected $fillable = [
+        'qr',
+        'fecha_hora',
+        'motivo',
+        'sintoma',
+        'antecedentes',
+        'informe_consulta_id'
+    ];
+    public function informeConsulta()
+    {
+        return $this->hasOne(InformeConsulta::class, 'informe_consulta_id');
+    }
 }
