@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 
 class ProveedorController extends Controller
 {
@@ -109,6 +110,7 @@ class ProveedorController extends Controller
     }
     public function GuardarMisDatos(Request $request)
     {
+
         // Validar los datos
         $request->validate([
             'fecha_nacimiento' => 'nullable|date',
@@ -125,7 +127,8 @@ class ProveedorController extends Controller
             'seguros_medicos' => 'nullable|array',
             'seguros_medicos.*' => 'exists:seguros_medicos,id',
             'imagenes' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'imagen_corporativa' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'imagen_corporativa' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'clinica_edificio' => 'nullable|string|max:255'
         ]);
 
         // Buscar el proveedor
@@ -231,6 +234,7 @@ class ProveedorController extends Controller
             'informacion_adicional' => $request->informacion_adicional,
             'listado_servicios' => $request->listado_servicios,
             'horarios' => $request->horarios,
+            'clinica_edificio' => $request->clinica_edificio,
             'propietario_id' => $propietario->id
         ]);
 
@@ -245,6 +249,15 @@ class ProveedorController extends Controller
         } else {
             // Si no se seleccionó ningún seguro, limpiar la relación
             $proveedor->segurosMedicos()->detach();
+        }
+
+        // Actualizar la contraseña de gestión si se proporcionó
+        if ($request->filled('password_gestion') && $request->filled('password_gestion_repetir')) {
+            if($request->password_gestion == $request->password_gestion_repetir) {
+                $proveedor->user->update([
+                    'password' => Hash::make($request->password_gestion)
+                ]);
+            }
         }
 
         return redirect()->route('proveedores.misDatos')->with('success', 'Datos actualizados correctamente.');

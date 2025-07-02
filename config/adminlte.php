@@ -413,6 +413,12 @@ return [
             'can'  => 'solo-profesional',
         ],
         [
+            'text' => 'Mis contactos',
+            'url' => '/profesional/mis-contactos',
+            'icon' => '',
+            'can'  => 'solo-profesional',
+        ],
+        [
             'text' => 'Recetas de farmacia',
             'url' => '/profesional/recetas-farmacia-digitales',
             'icon' => '',

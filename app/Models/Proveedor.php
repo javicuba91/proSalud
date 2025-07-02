@@ -27,6 +27,7 @@ class Proveedor extends Model
         'informacion_adicional',
         'listado_servicios',
         'horarios',
+        'clinica_edificio',
     ];
 
     public function user()

@@ -166,16 +166,13 @@
 
         <div class="row mt-2">
             <div class="col-lg-12">
-                <h5>Datos clínica/centro</h5>
+                <h5>Datos {{ ucfirst($proveedor->tipo) }}</h5>
             </div>
         </div>
 
-        <div class="row mt-2 border p-2">
-            <div class="col-lg-12">
-                <h6>Clínica/centro 1</h6>
-            </div>
+        <div class="row mt-2 border p-2">            
             <div class="col-md-12 mb-2">
-                <label for="nombre" class="form-label">Nombre clínica/centro <span class="text-danger">*</span></label>
+                <label for="nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
                 <input type="text" name="nombre" id="nombre" class="form-control form-input"
                     placeholder="Ingrese nombre de la clínica/centro" value="{{ $proveedor->nombre ?? '' }}" disabled>
             </div>
@@ -238,7 +235,7 @@
             <div class="col-md-4 mb-2">
                 <label for="clinica_edificio" class="form-label">Clínica/edificio</label>
                 <input type="text" name="clinica_edificio" id="clinica_edificio" class="form-control form-input"
-                    placeholder="Nombre del edificio/clínica" disabled>
+                    placeholder="Nombre del edificio/clínica" value="{{ $proveedor->clinica_edificio ?? '' }}" disabled>
             </div>
             <div class="col-md-12 mb-2">
                 <label for="informacion_adicional" class="form-label">Información adicional</label>
@@ -410,13 +407,18 @@
         <div class="row mt-2 border p-2">
             <div class="col-md-6">
                 <label for="usuario_gestion" class="form-label">Usuario de gestión</label>
-                <input type="text" name="usuario_gestion" id="usuario_gestion" class="form-control form-input"
+                <input value="{{ $proveedor->email }}" type="text" name="usuario_gestion" id="usuario_gestion" class="form-control form-input"
                     placeholder="Ingrese nombre de usuario" disabled>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <label for="password_gestion" class="form-label">Contraseña</label>
-                <input type="password" name="password_gestion" id="password_gestion" class="form-control form-input"
+                <input value="*****" type="password" name="password_gestion" id="password_gestion" class="form-control form-input"
                     placeholder="Ingrese contraseña" disabled>
+            </div>
+             <div class="col-md-3">
+                <label for="password_gestion_repetir" class="form-label">Repetir Contraseña</label>
+                <input type="password" name="password_gestion_repetir" id="password_gestion_repetir" class="form-control form-input"
+                    placeholder="Repite contraseña" disabled>
             </div>
         </div>
 

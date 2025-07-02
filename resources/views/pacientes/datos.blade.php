@@ -172,23 +172,23 @@
 
             @foreach ($paciente->antecedentes as $antecedente)
                 <div class="row mt-2 border p-2">
-                    <div class="col-md-3 mb-2">
+                    <div class="col-md-12 mb-2">
                         <input disabled type="text" class="form-control" placeholder="Alergias"
                             value="{{ $antecedente->alergias }}">
                     </div>
-                    <div class="col-md-3 mb-2">
+                    <div class="col-md-12 mb-2">
                         <input disabled type="text" class="form-control"
                             placeholder="Condiciones médicas preexistentes"
                             value="{{ $antecedente->condiciones_medicas }}">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-12">
                         <input disabled type="text" class="form-control"
                             placeholder="Medicamentos que consume habitualmente"
                             value="{{ $antecedente->medicamentos }}">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-12 text-center mx-auto mt-2">
                         <button disabled data-id="{{ $antecedente->id }}"
-                            class="btn btn-danger w-100 btn-eliminarAntecedente"><i class="fa fa-trash"></i>
+                            class="btn btn-danger text-center mx-auto btn-eliminarAntecedente"><i class="fa fa-trash"></i>
                             Eliminar</button>
                     </div>
                 </div>
@@ -353,14 +353,14 @@
             row.classList.add('row', 'mt-2', 'border', 'p-2');
 
             row.innerHTML = `
-        <div class="col-md-3 mb-2">
+        <div class="col-md-12 mb-2">
             <input type="text" name="antecedentes[${antecedenteIndex}][alergias]" class="form-control" placeholder="Alergias">
         </div>
-        <div class="col-md-3 mb-2">
-            <input type="text" name="antecedentes[${antecedenteIndex}][condiciones_medicas]" class="form-control" placeholder="Condiciones médicas preexistentes">
+        <div class="col-md-12 mb-2">
+            <input type="text" name="antecedentes[${antecedenteIndex}][condiciones_medicas]" class="form-control" placeholder="Antecedentes patológicos personales">
         </div>
-        <div class="col-md-3">
-            <input type="text" name="antecedentes[${antecedenteIndex}][medicamentos]" class="form-control" placeholder="Medicamentos que consume habitualmente">
+        <div class="col-md-12">
+            <input type="text" name="antecedentes[${antecedenteIndex}][medicamentos]" class="form-control" placeholder="Tratamiento habitual">
         </div>
     `;
             container.appendChild(row);

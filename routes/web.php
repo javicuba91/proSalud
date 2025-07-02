@@ -95,7 +95,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/paciente/contactar-administrador', [PacienteController::class, 'contactoAdministrador'])->name('pacientes.contactoAdministrador');
 
     Route::get('/paciente/cita/informe-consulta/{id}/receta', [PacienteController::class, 'misRecetasDetalle'])->name('profesionales.informeConsulta.receta');
-
+    Route::get('/paciente/cita/{id}/exportar-pdf', [PacienteController::class, 'exportarCitaPdf'])->name('paciente.cita.exportarPdf');
+    
     Route::get('/subespecialidades/{id}', [PacienteController::class, 'getSubespecialidades']);
 
 
@@ -184,6 +185,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/profesional/mis-pacientes/update/{id}', [ProfesionalController::class, 'updatePacientes'])->name('profesionales.updatePacientes');
         Route::get('/profesional/listado-citas-videollamada', [ProfesionalController::class, 'listadoCitasVideollamada'])->name('profesional.listadoCitasVideollamada');
 
+        Route::get('/profesional/mis-contactos', [ProfesionalController::class, 'misContactos'])->name('profesionales.misContactos');
 
         Route::get('/profesional/recetas-farmacia-digitales', [ProfesionalController::class, 'recetasFarmacia'])->name('profesionales.recetasFarmacia');
         Route::get('/profesional/recetas-farmacia-digitales/crear', [ProfesionalController::class, 'recetasFarmaciaCrear'])->name('profesionales.recetasFarmaciaCrear');

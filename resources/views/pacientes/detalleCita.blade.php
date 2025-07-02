@@ -85,7 +85,7 @@
                             class="btn btn-dark w-100">Pedir cita con mismo médico</a>
                     </div>
                     <div class="col-md-4 mb-2">
-                        <a href="#" class="btn btn-dark w-100">Exportar datos</a>
+                        <a href="{{ route('paciente.cita.exportarPdf', $cita->id) }}" class="btn btn-dark w-100" target="_blank">Exportar datos</a>
                     </div>
                     <div class="col-md-4 mb-2">
                         <button class="btn btn-dark w-100" data-toggle="modal" data-target="#modalValoracion">
@@ -285,7 +285,7 @@
                             class="btn btn-dark w-100">Pedir cita con mismo médico</a>
                     </div>
                     <div class="col-md-4 mb-2">
-                        <a href="#" class="btn btn-dark w-100">Exportar datos</a>
+                        <a href="{{ route('paciente.cita.exportarPdf', $cita->id) }}" class="btn btn-dark w-100" target="_blank">Exportar datos</a>
                     </div>
                     <div class="col-md-4 mb-2">
                         <button class="btn btn-dark w-100" data-toggle="modal" data-target="#modalValoracion">

@@ -1,12 +1,23 @@
 @extends('adminlte::page')
 
-@section('title', 'Mis Pacientes e Historiales')
+@section('title', 'Mis Contactos')
 
 @section('content_header')
-    <h1>Mis Pacientes / Historiales</h1>
+    <h1>Mis Contactos</h1>
 @stop
 
 @section('content')
+
+    @if (session('success'))
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="alert alert-success mt-2">
+                    {{ session('success') }}
+                </div>
+            </div>
+        </div>
+    @endif
+
     <div class="row mb-2">
         <div class="col-lg-10">
             <input type="text" class="form-control" id="buscar_paciente" placeholder="Buscar paciente...">
@@ -20,14 +31,14 @@
 
     <div class="row mt-3">
         <div class="col-lg-12">
-            <h5>Listado de pacientes con Citas</h5>
+            <h5>Listado de contactos</h5>
         </div>
     </div>
 
     <div id="listado-pacientes">
         @foreach ($pacientes as $index => $paciente)
             <div class="row mt-3 border p-2 paciente-item" data-id="{{ $paciente->id }}">
-                <div class="col-lg-2">
+                <div class="col-lg-1">
                     <input type="text" class="form-control"
                         value="P-{{ str_pad($paciente->id + 1, 4, '0', STR_PAD_LEFT) }}" placeholder="P-0017">
                 </div>
@@ -35,7 +46,7 @@
                     <input type="email" class="form-control" value="{{ $paciente->email }}"
                         placeholder="paciente1@prosalud.com" readonly>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <input type="text" class="form-control" value="{{ $paciente->nombre_completo }}"
                         placeholder="Nombre paciente" readonly>
                 </div>
@@ -47,12 +58,16 @@
                     <a href="/profesional/mis-pacientes/historial/{{ $paciente->id }}" class="btn btn-dark w-100">Ver
                         historial clínico</a>
                 </div>
+                <div class="col-lg-2">
+                    <a href="/profesional/mis-pacientes/edit/{{ $paciente->id }}" class="btn btn-dark w-100">Editar</a>
+                </div>
             </div>
         @endforeach
     </div>
+
     <div class="row border pt-2 pb-2 shadow fixed-bottom">
         <div class="col-lg-12">
-            <a href="/profesional/paciente/crear" class="btn btn-success w-100"><i class="fa fa-plus"></i> Añadir nuevo paciente / contacto</a>
+            <a href="/profesional/paciente/crear" class="btn btn-success w-100"><i class="fa fa-plus"></i>Añadir nuevo paciente / contacto</a>
         </div>
     </div>
 @stop

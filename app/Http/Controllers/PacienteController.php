@@ -19,6 +19,7 @@ use App\Models\SegurosMedicos;
 use App\Models\User;
 use App\Models\Valoracion;
 use App\Models\ViaAdministracionMedicamento;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -395,5 +396,18 @@ class PacienteController extends Controller
         auth()->logout();
 
         return response()->json(['message' => 'Tu cuenta ha sido eliminada correctamente.']);
+    }
+    public function exportarCitaPdf($id)
+    {
+        $cita = Cita::findOrFail($id);
+        $receta = null;
+        if ($cita->informeConsulta != null) {
+            $informe = $cita->informeConsulta;
+            $receta = \App\Models\Receta::where('informe_consulta_id', '=', $informe->id)->first();
+        }
+        $paciente = $cita->paciente;
+        $profesional = $cita->profesional;
+        $pdf = \PDF::loadView('pacientes.pdf.cita', compact('cita', 'receta', 'paciente', 'profesional'));
+        return $pdf->download('cita_'.$cita->id.'.pdf');
     }
 }

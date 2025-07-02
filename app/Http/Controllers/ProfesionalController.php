@@ -299,6 +299,16 @@ class ProfesionalController extends Controller
 
         return view('profesionales.misPacientes', compact('profesional', 'pacientes','pacientes_contactos'));
     }
+
+    public function misContactos()
+    {
+        $profesional = Profesional::where('user_id', auth()->id())->first();
+
+        $pacientes= Paciente::where('profesional_id', $profesional->id)->get();
+
+        return view('profesionales.misContactos', compact('profesional', 'pacientes'));
+    }
+
     public function editPacientes($id)
     {
         $paciente = Paciente::findOrFail($id);
@@ -577,7 +587,7 @@ class ProfesionalController extends Controller
 
         $paciente->save();
 
-        return redirect()->route('profesionales.misPacientes')->with('success', 'Paciente creado correctamente.');
+        return redirect()->route('profesionales.misContactos')->with('success', 'Paciente - Contacto creado correctamente.');
     }
 
     public function listadoCitasPresencialesAceptadas()
@@ -684,8 +694,7 @@ class ProfesionalController extends Controller
         $profesional = Profesional::where('user_id', auth()->id())->first();
 
         $request->validate([
-            'paciente_id'    => 'required|exists:pacientes,id',
-            'fecha_hora'     => 'required|date',
+            'paciente_id'    => 'required|exists:pacientes,id',            
             'modalidad'      => 'required|in:presencial,videoconsulta',
             'motivo'         => 'nullable|string',
             'consultorio_id' => 'nullable|exists:consultorios,id',
@@ -694,7 +703,7 @@ class ProfesionalController extends Controller
         $cita = new Cita();
         $cita->paciente_id = $request->paciente_id;
         $cita->profesional_id = $profesional->id;
-        $cita->fecha_hora = $request->fecha_hora;
+        $cita->fecha_hora = $request->modalidad === 'presencial' ? $request->fecha_hora : $request->fecha_hora_videollamada;
         $cita->modalidad = $request->modalidad;
         $cita->motivo = $request->motivo;
         $cita->consultorio_id = $request->modalidad === 'presencial' ? $request->consultorio_id : null;

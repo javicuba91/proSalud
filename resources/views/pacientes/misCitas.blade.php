@@ -38,7 +38,7 @@
                     placeholder="Médico asignado">
             </div>
             <div class="col-md-2">
-                <a href="/paciente/mis-citas/{{ $cita->id }}/detalle" class="btn btn-dark w-100">Ver/modificar cita</a>
+                <a href="/paciente/mis-citas/{{ $cita->id }}/detalle" class="btn btn-dark w-100">Ver cita</a>
             </div>
         </div>
     @endforeach
@@ -69,7 +69,7 @@
                 <input type="text" value="{{ ucfirst($cita->estado) }}" class="form-control" placeholder="Estado">
             </div>
             <div class="col-md">
-                <a href="/paciente/mis-citas/{{ $cita->id }}/detalle" class="btn btn-dark w-100">Ver/modificar cita</a>
+                <a href="/paciente/mis-citas/{{ $cita->id }}/detalle" class="btn btn-dark w-100">Ver cita</a>
 
 
                 <form class="form-eliminar d-inline w-100" action="{{ route('pacientes.misCitas.cancelar', $cita->id) }}" method="GET" style="display:inline;">
