@@ -171,10 +171,15 @@
         </div>
 
         <div class="row mt-2 border p-2">            
-            <div class="col-md-12 mb-2">
+            <div class="col-md-8 mb-2">
                 <label for="nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
                 <input type="text" name="nombre" id="nombre" class="form-control form-input"
                     placeholder="Ingrese nombre de la clínica/centro" value="{{ $proveedor->nombre ?? '' }}" disabled>
+            </div>
+            <div class="col-md-4 mb-2">
+                <label for="tipo" class="form-label">Tipo <span class="text-danger">*</span></label>
+                <input type="text" name="tipo" id="tipo" class="form-control form-input"
+                    value="{{ ucfirst($proveedor->tipo) }}" disabled readonly>
             </div>
             <div class="col-md-12 mb-2">
                 <label for="ciudad" class="form-label">Ciudad <span class="text-danger">*</span></label>
