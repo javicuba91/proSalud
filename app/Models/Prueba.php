@@ -15,4 +15,14 @@ class Prueba extends Model
     {
         return $this->belongsTo(PedidoLaboratorio::class);
     }
+
+    public function presupuestos()
+    {
+        return $this->hasMany(PresupuestoPrueba::class);
+    }
+
+    public function presupuestoProveedor($proveedorId)
+    {
+        return $this->presupuestos()->where('proveedor_id', $proveedorId)->first();
+    }
 }

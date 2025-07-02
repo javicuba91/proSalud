@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FacturacionController;
 use App\Http\Controllers\MailTestController;
+use App\Http\Controllers\PresupuestoPruebaController;
 
 Auth::routes(['verify' => true]);
 
@@ -273,6 +274,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/proveedor/historial-pruebas', [ProveedorController::class, 'historialPruebas'])->name('profesionales.historialPruebas');
 
         Route::get('/proveedor/mis-pedidos-presupuestos', [ProveedorController::class, 'misPedidosPresupuestos'])->name('profesionales.misPedidosPresupuestos');
+
+
+         Route::post('/proveedor/presupuestos/store', [PresupuestoPruebaController::class, 'store'])->name('presupuestos.store');
+
 
     });
 });
