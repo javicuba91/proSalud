@@ -94,7 +94,7 @@
             <div class="col-md-6">
                 {!! QrCode::size(100)->generate('LAB-' . $profesional->id . '-' . date('YmdHis')) !!}
                 <input name="qr" type="text" class="form-control mt-3 align-self-end" placeholder="Código QR"
-                    value="{{ 'LAB-' . $profesional->id . '-' . date('YmdHis') }}" readonly disabled>
+                    value="{{ 'LAB-' . $profesional->id . '-' . date('YmdHis') }}">
 
             </div>
             <div class="col-md-6">
