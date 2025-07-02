@@ -22,7 +22,7 @@
 
 @section('content')
 
- @if (session('success'))
+    @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
@@ -92,10 +92,15 @@
         <h5>Datos del pedido</h5>
         <div class="row mb-3 border p-2">
             <div class="col-md-6">
-                {!! QrCode::size(100)->generate('LAB-' . $profesional->id . '-' . date('YmdHis')) !!}
-                <input name="qr" type="text" class="form-control mt-3 align-self-end" placeholder="Código QR"
-                    value="{{ 'LAB-' . $profesional->id . '-' . date('YmdHis') }}">
-
+                @if ($pedido->qr == null)
+                    {!! QrCode::size(100)->generate('LAB-' . $profesional->id . '-' . date('YmdHis')) !!}
+                    <input name="qr" type="text" class="form-control mt-3 align-self-end" placeholder="Código QR"
+                        value="{{ 'LAB-' . $profesional->id . '-' . date('YmdHis') }}" readonly>
+                @else
+                    {!! QrCode::size(100)->generate($pedido->qr) !!}
+                    <input type="text" class="form-control mt-3 align-self-end" placeholder="Código QR"
+                        value="{{ $pedido->qr }}" readonly>
+                @endif
             </div>
             <div class="col-md-6">
                 <div class="d-flex flex-column h-100 justify-content-end" style="height: 100%;">
@@ -112,20 +117,17 @@
         <h5>Información clínica</h5>
         <div class="mb-3 border p-2">
             <label for="motivo">Motivo:</label>
-            <input type="text" class="form-control mb-2"
-                name="motivo"
+            <input type="text" class="form-control mb-2" name="motivo"
                 value="{{ old('motivo', $pedido->motivo ?? '') }}"
                 placeholder="Motivo del estudio (dolor abdominal, trauma, sospecha de patología específica, etc.)">
 
             <label for="sintomas">Síntomas:</label>
-            <input type="text" class="form-control mb-2"
-                name="sintomas"
+            <input type="text" class="form-control mb-2" name="sintomas"
                 value="{{ old('sintomas', $pedido->sintomas ?? '') }}"
                 placeholder="Síntomas relevantes y hallazgos del examen físico">
 
             <label for="antecedentes">Antecedentes:</label>
-            <input type="text" class="form-control"
-                name="antecedentes"
+            <input type="text" class="form-control" name="antecedentes"
                 value="{{ old('antecedentes', $pedido->antecedentes ?? '') }}"
                 placeholder="Antecedentes clínicos que puedan influir en la elección del estudio">
         </div>

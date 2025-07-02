@@ -89,10 +89,15 @@
         <h5>Datos del pedido</h5>
         <div class="row mb-3 border p-2">
             <div class="col-md-6">
-                {!! QrCode::size(100)->generate('LAB-' . $profesional->id . '-' . date('YmdHis')) !!}
-                <input type="text" class="form-control mt-3 align-self-end" placeholder="Código QR"
-                    value="{{ 'LAB-' . $profesional->id . '-' . date('YmdHis') }}" readonly disabled>
-
+                @if ($pedido->qr == null)
+                    {!! QrCode::size(100)->generate('LAB-' . $profesional->id . '-' . date('YmdHis')) !!}
+                    <input name="qr" type="text" class="form-control mt-3 align-self-end" placeholder="Código QR"
+                        value="{{ 'LAB-' . $profesional->id . '-' . date('YmdHis') }}" readonly>
+                @else
+                    {!! QrCode::size(100)->generate($pedido->qr) !!}
+                    <input type="text" class="form-control mt-3 align-self-end" placeholder="Código QR"
+                        value="{{ $pedido->qr }}" readonly>
+                @endif
             </div>
             <div class="col-md-6">
                 <div class="d-flex flex-column h-100 justify-content-end" style="height: 100%;">

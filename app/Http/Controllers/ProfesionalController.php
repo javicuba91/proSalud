@@ -440,7 +440,9 @@ class ProfesionalController extends Controller
         $pedido->motivo = $request->input('motivo');
         $pedido->sintoma = $request->input('sintoma');
         $pedido->antecedentes = $request->input('antecedentes');
-        $pedido->qr = $request->input('qr');
+         if($pedido->qr == null || $pedido->qr == ''){
+            $pedido->qr = $request->input('qr');
+        }  
         $pedido->save();
 
         return redirect()->route('profesionales.informeConsulta.pedidoLaboratorio', $pedido->informe_consulta_id)->with('success', 'Pedido de laboratorio actualizado correctamente.');
@@ -1725,7 +1727,9 @@ class ProfesionalController extends Controller
         $pedido->motivo = $request->input('motivo');
         $pedido->sintomas = $request->input('sintomas');
         $pedido->antecedentes = $request->input('antecedentes');
-        $pedido->qr = $request->input('qr');
+        if($pedido->qr == null || $pedido->qr == ''){
+            $pedido->qr = $request->input('qr');
+        }        
         $pedido->save();
 
         return redirect()->route('profesionales.informeConsulta.pedidoImagen', $pedido->informe_consulta_id)
