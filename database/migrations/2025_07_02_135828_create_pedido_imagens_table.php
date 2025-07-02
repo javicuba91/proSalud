@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pedido_imagens', function (Blueprint $table) {
+        Schema::create('pedido_imagenes', function (Blueprint $table) {
             $table->id();
+            $table->string('qr')->nullable();
+            $table->dateTime('fecha_hora');
+            $table->text('motivo')->nullable();
+            $table->text('sintomas')->nullable();
+            $table->text(column: 'antecedentes')->nullable();
+            $table->foreignId('informe_consulta_id')->constrained('informes_consultas')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -22,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pedido_imagens');
+        Schema::dropIfExists('pedido_imagenes');
     }
 };
