@@ -6,6 +6,7 @@ use App\Models\DocumentosProveedor;
 use App\Models\Propietario;
 use App\Models\Proveedor;
 use App\Models\SegurosMedicos;
+use App\Models\Prueba;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -241,7 +242,7 @@ class ProveedorController extends Controller
         // Manejar seguros médicos (relación muchos a muchos)
         if ($request->has('seguros_medicos')) {
             // Filtrar valores válidos (excluir -1 que significa "Sin seguro")
-            $segurosValidos = array_filter($request->seguros_medicos, function($seguro) {
+            $segurosValidos = array_filter($request->seguros_medicos, function ($seguro) {
                 return $seguro != '-1';
             });
 
@@ -253,7 +254,7 @@ class ProveedorController extends Controller
 
         // Actualizar la contraseña de gestión si se proporcionó
         if ($request->filled('password_gestion') && $request->filled('password_gestion_repetir')) {
-            if($request->password_gestion == $request->password_gestion_repetir) {
+            if ($request->password_gestion == $request->password_gestion_repetir) {
                 $proveedor->user->update([
                     'password' => Hash::make($request->password_gestion)
                 ]);
@@ -357,4 +358,21 @@ class ProveedorController extends Controller
         return response()->json(['success' => true]);
     }
 
+
+    public function misPedidosPresupuestos()
+    {
+        $proveedor = Proveedor::where('user_id', auth()->id())->first();
+      
+        if ($proveedor && $proveedor->tipo == 'centro_imagenes') {
+            $pruebas = Prueba::where('pedido_imagen_id', '!=', null)->get();
+            return view('proveedores.misPedidos', compact('pruebas'));
+        } elseif ($proveedor && $proveedor->tipo == 'laboratorio') {
+            $pruebas = Prueba::where('pedido_laboratorio_id', '!=', null)->get();
+            return view('proveedores.misPedidos', compact('pruebas'));
+        } else {
+            return redirect()->back()->with('error', 'No tienes permisos para ver los pedidos de presupuestos.');
+        }
+    }
 }
+
+    

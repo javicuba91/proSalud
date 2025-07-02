@@ -267,6 +267,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/proveedor/mis-citas/agendar', [ProveedorController::class, 'agendarCitaProveedor'])->name('profesionales.agendarCitaProveedor');
         Route::get('/proveedor/mis-clientes-pacientes', [ProveedorController::class, 'misClinicasPacientes'])->name('profesionales.misClinicasPacientes');
         Route::get('/proveedor/historial-pruebas', [ProveedorController::class, 'historialPruebas'])->name('profesionales.historialPruebas');
+
+        Route::get('/proveedor/mis-pedidos-presupuestos', [ProveedorController::class, 'misPedidosPresupuestos'])->name('profesionales.misPedidosPresupuestos');
+
     });
 });
 
