@@ -24,7 +24,11 @@ use App\Models\IntervaloMedicamento;
 use App\Models\Medicamento;
 use App\Models\MetodoPago;
 use App\Models\Paciente;
+<<<<<<< HEAD
 use App\Models\PedidoImagen;
+=======
+use App\Models\PedidoLaboratorio;
+>>>>>>> refs/remotes/origin/main
 use App\Models\Plan;
 use App\Models\PreguntaExperto;
 use App\Models\PresentacionMedicamento;
@@ -431,6 +435,19 @@ class ProfesionalController extends Controller
 
         return view('profesionales.pedidosLaboratorioCrear', compact('profesional'));
     }
+    public function ActualizarPedidoLaboratorio(Request $request)
+    {
+        $pedido = PedidoLaboratorio::findOrFail($request->input('pedido_id'));
+
+        // Actualizar los campos del pedido
+        $pedido->motivo = $request->input('motivo');
+        $pedido->sintoma = $request->input('sintomas');
+        $pedido->antecedentes = $request->input('antecedentes');
+        $pedido->qr = $request->input('qr');
+        $pedido->save();
+
+        return redirect()->route('profesionales.informeConsulta.pedidoLaboratorio', $pedido->informe_consulta_id)->with('success', 'Pedido de laboratorio actualizado correctamente.');
+    }
 
     public function pedidosImagenes()
     {
@@ -575,7 +592,7 @@ class ProfesionalController extends Controller
         $paciente->ciudad_id = $request->ciudad_id;
         $paciente->grupo_sanguineo = $request->grupo."".$request->rh;
         $paciente->save();
-        
+
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
             $filename = Str::slug($paciente->id . '-' . time()) . '.' . $file->getClientOriginalExtension();
@@ -695,7 +712,7 @@ class ProfesionalController extends Controller
         $profesional = Profesional::where('user_id', auth()->id())->first();
 
         $request->validate([
-            'paciente_id'    => 'required|exists:pacientes,id',            
+            'paciente_id'    => 'required|exists:pacientes,id',
             'modalidad'      => 'required|in:presencial,videoconsulta',
             'motivo'         => 'nullable|string',
             'consultorio_id' => 'nullable|exists:consultorios,id',
@@ -780,6 +797,27 @@ class ProfesionalController extends Controller
 
         return view('profesionales.recetasFarmaciaCrear', compact('profesional', 'receta', 'medicamentos', 'informe', 'cita', 'presentaciones', 'vias', 'intervalos'));
     }
+        public function pedidoLaboratorio($id)
+    {
+        $profesional = Profesional::where('user_id', auth()->id())->first();
+        $informe = InformeConsulta::find($id);
+
+        $cita = Cita::where('id', '=', $informe->cita_id)->first();
+
+        $pedido_informe = PedidoLaboratorio::where('informe_consulta_id', '=', $informe->id)->count();
+
+        if ($pedido_informe == 0) {
+            $pedido = new PedidoLaboratorio();
+            $pedido->informe_consulta_id = $informe->id;
+            $pedido->fecha_hora = date("Y-m-d H:i:s");
+            $pedido->save();
+        } else {
+            $pedido = PedidoLaboratorio::where('informe_consulta_id', '=', $informe->id)->first();
+        }
+
+        return view('profesionales.pedidosLaboratorioCrear', compact('profesional','cita', 'informe','pedido'));
+    }
+
 
      public function pedidoImagen($id)
     {
