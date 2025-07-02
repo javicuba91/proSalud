@@ -96,7 +96,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/paciente/cita/informe-consulta/{id}/receta', [PacienteController::class, 'misRecetasDetalle'])->name('profesionales.informeConsulta.receta');
     Route::get('/paciente/cita/{id}/exportar-pdf', [PacienteController::class, 'exportarCitaPdf'])->name('paciente.cita.exportarPdf');
-    
+
     Route::get('/subespecialidades/{id}', [PacienteController::class, 'getSubespecialidades']);
 
 
@@ -215,6 +215,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/profesional/listado-citas-presenciales/aceptadas', [ProfesionalController::class, 'listadoCitasPresencialesAceptadas'])->name('profesional.listadoCitasPresencialesAceptadas');
         Route::get('/profesional/listado-citas-presenciales/pasadas', [ProfesionalController::class, 'listadoCitasPresencialesPasadas'])->name('profesional.listadoCitasPresencialesPasadas');
 
+
+        Route::get('/profesional/cita/informe-consulta/{id}/pedido-laboratorio', [ProfesionalController::class, 'pedidoLaboratorio'])->name('profesionales.informeConsulta.pedidoLaboratorio');
+
+        Route::post('/profesional/cita/informe-consulta/pedido-laboratorio', [ProfesionalController::class, 'ActualizarPedidoLaboratorio'])->name('profesional.pedidoLaboratorio.update');
 
         Route::post('/profesional/contactos', [ProfesionalController::class, 'realizarContactoAdministrador'])->name('profesional.contactos.store');
 
