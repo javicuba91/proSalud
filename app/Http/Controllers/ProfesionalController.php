@@ -24,11 +24,8 @@ use App\Models\IntervaloMedicamento;
 use App\Models\Medicamento;
 use App\Models\MetodoPago;
 use App\Models\Paciente;
-<<<<<<< HEAD
 use App\Models\PedidoImagen;
-=======
 use App\Models\PedidoLaboratorio;
->>>>>>> refs/remotes/origin/main
 use App\Models\Plan;
 use App\Models\PreguntaExperto;
 use App\Models\PresentacionMedicamento;
@@ -441,7 +438,7 @@ class ProfesionalController extends Controller
 
         // Actualizar los campos del pedido
         $pedido->motivo = $request->input('motivo');
-        $pedido->sintoma = $request->input('sintomas');
+        $pedido->sintoma = $request->input('sintoma');
         $pedido->antecedentes = $request->input('antecedentes');
         $pedido->qr = $request->input('qr');
         $pedido->save();

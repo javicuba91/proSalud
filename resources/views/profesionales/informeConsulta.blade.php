@@ -211,18 +211,11 @@
                     <a href="/profesional/cita/informe-consulta/{{$informe->id}}/receta" class="btn btn-dark w-100">Crear/Editar receta</a>
                 </div>
                 <div class="col-md-4 mb-2">
-<<<<<<< HEAD
-                    <a href="" class="btn btn-dark w-100">Crear pedido de laboratorio</a>
-                </div>
-                <div class="col-md-4 mb-2">
-                    <a href="/profesional/cita/informe-consulta/{{$informe->id}}/pedido-imagen" class="btn btn-dark w-100">Crear pedido de prueba de imágenes</a>
-=======
                     <a href="/profesional/cita/informe-consulta/{{ $informe->id }}/pedido-laboratorio" class="btn btn-dark w-100">Crear/Editar pedido de laboratorio
                     </a>
                 </div>
                 <div class="col-md-4 mb-2">
-                    <button class="btn btn-dark w-100">Crear/Editar pedido de prueba de imágenes</button>
->>>>>>> refs/remotes/origin/main
+                    <a href="/profesional/cita/informe-consulta/{{$informe->id}}/pedido-imagen" class="btn btn-dark w-100">Crear/Editar pedido de imágenes</a>                    
                 </div>
             </div>
 

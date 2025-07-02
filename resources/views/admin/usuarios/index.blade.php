@@ -25,11 +25,8 @@
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Rol</th>
-<<<<<<< HEAD
                 <th>Fecha registro</th>
-=======
                 <th>Categoria</th>
->>>>>>> refs/remotes/origin/main
                 <th>Acciones</th>
             </tr>
         </thead>
