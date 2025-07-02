@@ -19,7 +19,7 @@ class PedidoImagen extends Model
 
      public function informeConsulta()
     {
-        return $this->hasOne(InformeConsulta::class,'informe_consulta_id');
+        return $this->belongsTo(InformeConsulta::class,'informe_consulta_id');
     }
 
          public function pruebas()

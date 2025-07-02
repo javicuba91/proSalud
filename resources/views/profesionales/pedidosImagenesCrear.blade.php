@@ -189,7 +189,11 @@
     <div class="row mb-3">
         <div class="col-lg-4"><button class="btn btn-dark w-100">Enviar al paciente</button></div>
         <div class="col-lg-4"><button class="btn btn-dark w-100">Imprimir</button></div>
-        <div class="col-lg-4"><button class="btn btn-dark w-100">Exportar en PDF</button></div>
+        <div class="col-lg-4">
+            <a class="btn btn-dark w-100" href="{{ route('profesional.pedido.imagen.exportarPDF', $pedido->id) }}">
+                Exportar en PDF
+            </a>
+        </div>
     </div>
 
 
