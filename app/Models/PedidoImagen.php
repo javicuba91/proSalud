@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class PedidoImagen extends Model
 {
-    //
-
     protected $table = "pedido_imagenes";
 
     protected $fillable = [

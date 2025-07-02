@@ -211,10 +211,10 @@
                     <a href="/profesional/cita/informe-consulta/{{$informe->id}}/receta" class="btn btn-dark w-100">Crear receta</a>
                 </div>
                 <div class="col-md-4 mb-2">
-                    <button class="btn btn-dark w-100">Crear pedido de laboratorio</button>
+                    <a href="" class="btn btn-dark w-100">Crear pedido de laboratorio</a>
                 </div>
                 <div class="col-md-4 mb-2">
-                    <button class="btn btn-dark w-100">Crear pedido de prueba de imágenes</button>
+                    <a href="/profesional/cita/informe-consulta/{{$informe->id}}/pedido-imagen" class="btn btn-dark w-100">Crear pedido de prueba de imágenes</a>
                 </div>
             </div>
 

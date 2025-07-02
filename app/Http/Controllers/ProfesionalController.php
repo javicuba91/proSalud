@@ -24,6 +24,7 @@ use App\Models\IntervaloMedicamento;
 use App\Models\Medicamento;
 use App\Models\MetodoPago;
 use App\Models\Paciente;
+use App\Models\PedidoImagen;
 use App\Models\Plan;
 use App\Models\PreguntaExperto;
 use App\Models\PresentacionMedicamento;
@@ -778,6 +779,27 @@ class ProfesionalController extends Controller
 
 
         return view('profesionales.recetasFarmaciaCrear', compact('profesional', 'receta', 'medicamentos', 'informe', 'cita', 'presentaciones', 'vias', 'intervalos'));
+    }
+
+     public function pedidoImagen($id)
+    {
+        $profesional = Profesional::where('user_id', auth()->id())->first();
+        $informe = InformeConsulta::find($id);       
+
+        $cita = Cita::where('id', '=', $informe->cita_id)->first();
+
+        $pedido_informe = PedidoImagen::where('informe_consulta_id', '=', $informe->id)->count();
+
+        if ($pedido_informe == 0) {
+            $pedido = new PedidoImagen();
+            $pedido->informe_consulta_id = $informe->id;
+            $pedido->fecha_hora = date("Y-m-d H:i:s");
+            $pedido->save();
+        } else {
+            $pedido = PedidoImagen::where('informe_consulta_id', '=', $informe->id)->first();
+        }
+
+        return view('profesionales.pedidosImagenesCrear', compact('profesional', 'informe', 'cita', 'pedido'));
     }
 
     public function actualizarReceta(Request $request, $id)
@@ -1657,6 +1679,23 @@ class ProfesionalController extends Controller
         ]);
 
         return response()->json(['success' => true, 'message' => 'Respuesta enviada correctamente']);
+    }
+
+
+    public function actualizarPedidoImagen(Request $request){
+        $pedido_id = $request->input('pedido_imagen_id');
+
+        $pedido = PedidoImagen::findOrFail($pedido_id);
+
+        $pedido->motivo = $request->input('motivo');
+        $pedido->sintomas = $request->input('sintomas');
+        $pedido->antecedentes = $request->input('antecedentes');
+        $pedido->qr = $request->input('qr');
+        $pedido->save();
+
+        return redirect()->route('profesionales.informeConsulta.pedidoImagen', $pedido->informe_consulta_id)
+            ->with('success', 'Pedido de imagen actualizado correctamente');
+
     }
 
 }

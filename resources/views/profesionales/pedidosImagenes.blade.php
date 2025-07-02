@@ -7,12 +7,7 @@
 @stop
 
 @section('content')
-    <div class="row border p-2">
-        <div class="col-lg-12">
-            <a href="/profesional/pedidos-imagenes/crear" class="btn btn-dark w-100 ">Crear una nuevo pedido</a>
-        </div>
-    </div>
-
+   
     <div class="row mt-3">
         <div class="col-lg-12">
             <h5>Historial de pedidos a centros de imágenes</h5>

@@ -216,6 +216,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/profesional/listado-citas-presenciales/pasadas', [ProfesionalController::class, 'listadoCitasPresencialesPasadas'])->name('profesional.listadoCitasPresencialesPasadas');
 
 
+        Route::get('/profesional/cita/informe-consulta/{id}/pedido-imagen', [ProfesionalController::class, 'pedidoImagen'])->name('profesionales.informeConsulta.pedidoImagen');
+         Route::post('/profesional/cita/informe-consulta/pedido-imagen/update', [ProfesionalController::class, 'actualizarPedidoImagen'])->name('profesional.pedido-imagenes.update');
+
+
         Route::post('/profesional/contactos', [ProfesionalController::class, 'realizarContactoAdministrador'])->name('profesional.contactos.store');
 
         Route::get('/profesional/pacientes/buscar', [ProfesionalController::class, 'buscarPaciente'])->name('profesional.pacientes.buscar');
