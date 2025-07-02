@@ -8,6 +8,9 @@
 
 @section('content')
     @if (isset($pruebas) && $pruebas->count() > 0)
+     @php
+          $proveedor = App\Models\Proveedor::where('user_id', auth()->id())->first();
+     @endphp
         <table id="pruebas" class="table table-bordered">
             <thead>
                 <tr>
@@ -15,7 +18,12 @@
                     <th>Profesional</th>
                     <th>Paciente</th>
                     <th>Tipo</th>
-                    <th>Muestras</th>
+                    @if ($proveedor->tipo == 'laboratorio')
+                        <th>Muestras</th>
+                    @else
+                        <th>Región Anatómica</th>
+                    @endif
+
                     <th>Indicaciones</th>
                     <th>Prioridad</th>
                     <th>Estado</th>
@@ -38,7 +46,12 @@
                         @endif
 
                         <td>{{ $prueba->tipo }}</td>
-                        <td>{{ $prueba->muestras }}</td>
+                        @if ($prueba->pedido_laboratorio_id != null)
+                            <td>{{ $prueba->muestras }}</td>
+                        @else
+                            <td>{{ $prueba->region_anatomica }}</td>
+                        @endif
+
                         <td>{{ $prueba->indicaciones }}</td>
                         <td>{{ ucfirst($prueba->prioridad) }}</td>
                         <td>{{ ucfirst($prueba->estado) }}</td>
