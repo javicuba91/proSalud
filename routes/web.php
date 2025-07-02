@@ -240,6 +240,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/proveedor/mis-valoraciones', [ProveedorController::class, 'valoracionesComentarios'])->name('proveedores.valoracionesComentarios');
         Route::get('/proveedor/compartir-resultado', [ProveedorController::class, 'compartirResultados'])->name('proveedores.compartirResultados');
         Route::get('/proveedor/mis-datos', [ProveedorController::class, 'misDatos'])->name('proveedores.misDatos');
+        Route::post('/proveedor/mis-datos', [ProveedorController::class, 'GuardarMisDatos'])->name('proveedores.guardarMisDatos');
+        Route::post('/proveedor/mis-datos/guardar-documentos/{id}', [ProveedorController::class, 'guardarDocumento'])->name('proveedores.guardarDocumento');
+        Route::delete('/proveedor/documentos/{documento}', [ProveedorController::class, 'eliminarDocumento'])->name('proveedores.documentos.destroy');
+        Route::post('/proveedor/guardar-seguro', [ProveedorController::class, 'guardarSeguro'])->name('proveedores.guardarSeguro');
+        Route::post('/proveedor/eliminar-seguro', [ProveedorController::class, 'eliminarSeguro'])->name('proveedores.eliminarSeguro');
         Route::get('/proveedor/mis-citas', [ProveedorController::class, 'misCitas'])->name('proveedores.misCitas');
 
         Route::get('/proveedor/listado-citas/pasadas', [ProveedorController::class, 'listadoCitasPasadas'])->name('proveedores.listadoCitasPasadas');
