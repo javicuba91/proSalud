@@ -3,31 +3,70 @@
 @section('title', 'Mis clínicas / pacientes')
 
 @section('content_header')
-    <h1>Mis clínicas / pacientes</h1>
+    <h1>Listado de pacientes</h1>
 @stop
 
 @section('content')
-    <div class="row border p-2 mb-2">
-        <div class="col-lg-12 mb-2">
-            <input type="text" class="form-control" placeholder="Buscar cliente/paciente">
-        </div>
-    </div>
 
-    <div class="row mt-2">
-        <div class="col-lg-12 mb-2">
-            <h3 class="">Listado de pacientes</h3>
+    @if(isset($pacientes) && $pacientes->count())
+        <div class="table-responsive">
+            <table id="pacientes-table" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($pacientes as $paciente)
+                        <tr>
+                            <td>{{ $paciente->nombre_completo ?? '-' }}</td>
+                            <td>{{ $paciente->email ?? '-' }}</td>
+                            <td>{{ $paciente->celular ?? '-' }}</td>
+                            <td>
+                                <a href="#" class="btn btn-info btn-sm"><i class="fa fa-history"></i> Ver historial</a>
+                                <a href="#" class="btn btn-success btn-sm"><i class="fa fa-calendar"></i> Crear cita</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-    </div>
+    @else
+        <div class="alert alert-info">No hay pacientes con presupuestos aceptados.</div>
+    @endif
+@stop
 
-    <div class="row border p-2 mb-2">
-        <div class="col-lg-6"><input type="text" class="form-control" placeholder="Nombre cliente/paciente"></div>
-        <div class="col-lg-3"><a href="/proveedor/mis-citas/agendar" class="btn btn-primary w-100 ">Crear cita</a></div>
-        <div class="col-lg-3"><a href="/proveedor/historial-pruebas" class="btn btn-primary w-100 ">Ver historial pruebas</a></div>
-    </div>
+@section('css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+@stop
 
-    <div class="row border pt-2 pb-2 shadow fixed-bottom">
-        <div class="col-lg-12">
-          <a href="/profesional/paciente/crear" class="btn btn-light w-100">Añadir nuevo paciente</a>
-        </div>
-    </div>    
+@section('js')
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#pacientes-table').DataTable({
+                language: {
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ registros por página",
+                    zeroRecords: "No se encontraron resultados",
+                    info: "Mostrando página _PAGE_ de _PAGES_",
+                    infoEmpty: "No hay registros disponibles",
+                    infoFiltered: "(filtrado de _MAX_ registros totales)",
+                    paginate: {
+                        first: "Primero",
+                        last: "Último",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    },
+                    loadingRecords: "Cargando...",
+                    processing: "Procesando...",
+                    emptyTable: "No hay datos disponibles en la tabla"
+                }
+            });
+        });
+    </script>
 @stop

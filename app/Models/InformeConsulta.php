@@ -31,4 +31,13 @@ class InformeConsulta extends Model
         return $this->belongsTo(Receta::class);
     }
 
+    public function pedidoLaboratorio()
+    {
+        return $this->hasOne(PedidoLaboratorio::class, 'informe_consulta_id');
+    }
+
+    public function pedidoImagen()
+    {
+        return $this->hasOne(PedidoImagen::class, 'informe_consulta_id');
+    }
 }
