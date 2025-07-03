@@ -274,8 +274,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/proveedor/historial-pruebas', [ProveedorController::class, 'historialPruebas'])->name('profesionales.historialPruebas');
 
         Route::get('/proveedor/mis-pedidos-presupuestos', [ProveedorController::class, 'misPedidosPresupuestos'])->name('profesionales.misPedidosPresupuestos');
+        Route::post('/proveedor/presupuestos/store', [PresupuestoPruebaController::class, 'store'])->name('presupuestos.store');
 
          Route::post('/proveedor/presupuestos/store', [PresupuestoPruebaController::class, 'store'])->name('presupuestos.store');
+
+        Route::post('/proveedor/elegir-plan', [ProveedorController::class, 'elegirPlan'])->name('proveedor.elegir.plan');
+        Route::post('/proveedor/pagar-plan', [ProveedorController::class, 'pagarPlan'])->name('proveedor.pagar.plan');
 
 
     });
