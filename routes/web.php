@@ -286,12 +286,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::post('/proveedor/elegir-plan', [ProveedorController::class, 'elegirPlan'])->name('proveedor.elegir.plan');
         Route::post('/proveedor/pagar-plan', [ProveedorController::class, 'pagarPlan'])->name('proveedor.pagar.plan');
-<<<<<<< HEAD
 
         Route::get('/proveedor/mis-clientes-pacientes/{id}/pruebas', [ProveedorController::class, 'pruebasHistoricoPaciente'])->name('proveedores.pacientes.presupuestos.historial');
 
-=======
->>>>>>> refs/remotes/origin/main
     });
 });
 
