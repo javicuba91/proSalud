@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('valoraciones', function (Blueprint $table) {
+        Schema::create('valoraciones_proveedores', function (Blueprint $table) {
             $table->id();
             $table->foreignId('paciente_id')->constrained('pacientes')->onDelete('cascade');
-            $table->foreignId('profesional_id')->constrained('profesionales')->onDelete('cascade');
+            $table->foreignId('proveedor_id')->constrained('proveedores')->onDelete('cascade');
             $table->date('fecha');
             $table->enum('modalidad', ['presencial', 'videollamada']);
             $table->tinyInteger('puntuacion')->unsigned(); // de 1 a 5
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('valoraciones');
+        Schema::dropIfExists('valoraciones_proveedores');
     }
 };

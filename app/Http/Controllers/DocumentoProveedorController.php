@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DocumentoProfesional;
-use App\Models\Profesional;
+
+use App\Models\DocumentosProveedor;
+use App\Models\Proveedor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
-class DocumentoProfesionalController extends Controller
+class DocumentoProveedorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $query = DocumentoProfesional::with('profesional');
+        $query = DocumentosProveedor::with('proveedor');
 
         // Aplicar filtros
-        if ($request->filled('profesional_id')) {
-            $query->where('profesional_id', $request->profesional_id);
+        if ($request->filled('proveedor_id')) {
+            $query->where('proveedor_id', $request->proveedor_id);
         }
 
         if ($request->filled('estado')) {
@@ -28,9 +29,9 @@ class DocumentoProfesionalController extends Controller
         $documentos = $query->orderBy('created_at', 'desc')->get();
 
         // Obtener datos para los filtros
-        $profesionales = Profesional::orderBy('nombre_completo', 'ASC')->get();
+        $proveedores = Proveedor::orderBy('nombre', 'ASC')->get();
 
-        return view('admin.documentos-profesional.index', compact('documentos', 'profesionales'));
+        return view('admin.documentos-proveedor.index', compact('documentos', 'proveedores'));
     }
 
     /**
@@ -38,8 +39,8 @@ class DocumentoProfesionalController extends Controller
      */
     public function create()
     {
-        $profesionales = Profesional::with('user')->get();
-        return view('admin.documentos-profesional.create', compact('profesionales'));
+        $proveedores = Proveedor::with('user')->get();
+        return view('admin.documentos-proveedor.create', compact('proveedores'));
     }
 
     /**
@@ -48,16 +49,16 @@ class DocumentoProfesionalController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'profesional_id' => 'required|exists:profesionales,id',
+            'proveedor_id' => 'required|exists:proveedores,id',
             'nombre' => 'required|string|max:255',
             'tipo' => 'required|string',
             'documento' => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120', // max 5MB
         ]);
 
-        // Guardar archivo en public/documentos/{profesionalId}/
+        // Guardar archivo en public/documentos/{proveedorId}/
         $file = $request->file('documento');
-        $profesionalId = $request->profesional_id;
-        $folder = public_path("documentos_profesional/{$profesionalId}");
+        $proveedorId = $request->proveedor_id;
+        $folder = public_path("documentos_proveedor/{$proveedorId}");
 
         if (!File::exists($folder)) {
             File::makeDirectory($folder, 0755, true);
@@ -67,15 +68,15 @@ class DocumentoProfesionalController extends Controller
         $file->move($folder, $filename);
 
         // Guardar registro en BD
-        DocumentoProfesional::create([
-            'profesional_id' => $profesionalId,
+        DocumentosProveedor::create([
+            'proveedor_id' => $proveedorId,
             'nombre' => $request->nombre,
             'tipo' => $request->tipo,
-            'archivo' => "documentos_profesional/{$profesionalId}/{$filename}",
+            'archivo' => "documentos_proveedor/{$proveedorId}/{$filename}",
             'estado' => 'pendiente', // Estado por defecto
         ]);
 
-        return redirect()->route('documentos-profesional.index')->with('success', 'Documento guardado correctamente.');
+        return redirect()->route('documentos-proveedor.index')->with('success', 'Documento guardado correctamente.');
     }
 
     /**
@@ -105,19 +106,19 @@ class DocumentoProfesionalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DocumentoProfesional $documento)
+    public function destroy(DocumentosProveedor $documento)
     {
         if (File::exists(public_path($documento->archivo))) {
             File::delete(public_path($documento->archivo));
         }
 
         $documento->delete();
-        return redirect()->route('documentos-profesional.index')->with('eliminado', 'ok');
+        return redirect()->route('documentos-proveedor.index')->with('eliminado', 'ok');
     }
 
     public function aprobar($id)
     {
-        $documento = DocumentoProfesional::findOrFail($id);
+        $documento = DocumentosProveedor::findOrFail($id);
         $documento->estado = 'aprobado';
         $documento->save();
 
@@ -126,7 +127,7 @@ class DocumentoProfesionalController extends Controller
 
     public function denegar($id)
     {
-        $documento = DocumentoProfesional::findOrFail($id);
+        $documento = DocumentosProveedor::findOrFail($id);
         $documento->estado = 'denegado';
         $documento->save();
 

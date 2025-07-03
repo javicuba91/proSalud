@@ -7,48 +7,47 @@
 @stop
 
 @section('content')
+
     <div class="d-flex justify-content-between">
-        <h5>Número de valoraciones: 100</h5>
-        <h5>Puntuación media: 4,5/5</h5>
+        <h5>Número de valoraciones: {{ $proveedor->valoraciones->count() }}</h5>
+        <h5>Puntuación media:
+            {{ number_format($proveedor->valoraciones->avg('puntuacion'), 1) }}/5
+        </h5>
     </div>
 
-    <div class="row p-2 mb-2 border">
-        <div class="col-md mb-2">
-            <input type="text" class="form-control" placeholder="Nombre paciente">
+    @foreach ($proveedor->valoraciones as $valoracion)
+        <div class="row p-2 mb-2 border">
+            <div class="col-md mb-2">
+                <input type="text" class="form-control"
+                       value="{{ $valoracion->paciente->nombre_completo ?? 'N/A' }}"
+                       placeholder="Nombre paciente" readonly>
+            </div>
+            <div class="col-md mb-2">
+                <input type="text" class="form-control"
+                       value="{{ date("d-m-Y",strtotime($valoracion->fecha)) }}"
+                       placeholder="Fecha" readonly>
+            </div>
+            <div class="col-md mb-2">
+                <input type="text" class="form-control"
+                       value="{{ ucfirst($valoracion->modalidad) }}"
+                       placeholder="Modalidad" readonly>
+            </div>
+            <div class="col-md mb-2">
+                <input type="text" class="form-control"
+                       value="{{ $valoracion->puntuacion }} estrellas"
+                       placeholder="Puntuación" readonly>
+            </div>
+            <div class="col-md mb-2">
+                <button class="btn btn-dark w-100" type="button"
+                    data-toggle="collapse"
+                    data-target="#comentario-{{ $valoracion->id }}">
+                    Ver comentario
+                </button>
+            </div>
+            <div class="col-md-12 mb-2 collapse" id="comentario-{{ $valoracion->id }}">
+                <textarea class="form-control" rows="5" readonly>{{ $valoracion->comentario }}</textarea>
+            </div>
         </div>
-        <div class="col-md mb-2">
-            <input type="text" class="form-control" placeholder="Fecha">
-        </div>
-        <div class="col-md mb-2">
-            <input type="text" class="form-control" placeholder="Presencial/videollamada">
-        </div>
-        <div class="col-md mb-2">
-            <input type="text" class="form-control" placeholder="Valoración (estrellitas)">
-        </div>
-        <div class="col-md mb-2">
-            <button class="btn btn-dark w-100">Ver comentario</button>
-        </div>
-        <div class="col-md-12 mb-2">
-            <textarea class="form-control" rows="5"></textarea>
-        </div>
-    </div>
+    @endforeach
 
-    <div class="row p-2 mb-2 border">
-        <div class="col-md mb-2">
-            <input type="text" class="form-control" placeholder="Nombre paciente">
-        </div>
-        <div class="col-md mb-2">
-            <input type="text" class="form-control" placeholder="Fecha">
-        </div>
-        <div class="col-md mb-2">
-            <input type="text" class="form-control" placeholder="Presencial/videollamada">
-        </div>
-        <div class="col-md mb-2">
-            <input type="text" class="form-control" placeholder="Valoración (estrellitas)">
-        </div>
-        <div class="col-md mb-2">
-            <button class="btn btn-dark w-100">Ver comentario</button>
-        </div>
-    </div>
-    </div>
-@stop
+@endsection

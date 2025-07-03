@@ -164,7 +164,8 @@ class ProveedorController extends Controller
 
     public function valoracionesComentarios()
     {
-        return view('proveedores.valoracionesComentarios');
+        $proveedor = Proveedor::where('user_id', Auth::id())->first();
+        return view('proveedores.valoracionesComentarios', compact('proveedor'));
     }
 
     public function compartirResultados()

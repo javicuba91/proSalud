@@ -71,4 +71,9 @@ class Proveedor extends Model
         return $this->belongsTo(Plan::class);
     }
 
+    public function valoraciones()
+    {
+        return $this->hasMany(ValoracionProveedor::class);
+    }
+
 }

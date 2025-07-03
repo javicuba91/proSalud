@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Valoraciones de Profesionales')
+@section('title', 'Valoraciones de Proveedores')
 
 @section('content_header')
-    <h1>Valoraciones de Profesionales</h1>
+    <h1>Valoraciones de Proveedores</h1>
 @stop
 
 @section('css')
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="card-body">
-            <form method="GET" action="{{ route('valoraciones.index') }}" id="filtros-form">
+            <form method="GET" action="{{ route('valoraciones_proveedores.index') }}" id="filtros-form">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
@@ -57,13 +57,13 @@
 
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="profesional_id">Profesional</label>
-                            <select name="profesional_id" id="profesional_id" class="form-control">
-                                <option value="">Todos los profesionales</option>
-                                @foreach($profesionales as $profesional)
-                                    <option value="{{ $profesional->id }}"
-                                        {{ request('profesional_id') == $profesional->id ? 'selected' : '' }}>
-                                        {{ $profesional->nombre_completo }}
+                            <label for="proveedor_id">Proveedor</label>
+                            <select name="proveedor_id" id="proveedor_id" class="form-control">
+                                <option value="">Todos los proveedores</option>
+                                @foreach($proveedores as $proveedor)
+                                    <option value="{{ $proveedor->id }}"
+                                        {{ request('proveedor_id') == $proveedor->id ? 'selected' : '' }}>
+                                        {{ $proveedor->nombre }}
                                     </option>
                                 @endforeach
                             </select>
@@ -115,7 +115,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-filter"></i> Aplicar Filtros
                         </button>
-                        <a href="{{ route('valoraciones.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('valoraciones_proveedores.index') }}" class="btn btn-secondary">
                             <i class="fas fa-times"></i> Limpiar Filtros
                         </a>
                     </div>
@@ -127,7 +127,7 @@
         <thead>
             <tr>
                 <th>Paciente</th>
-                <th>Profesional</th>
+                <th>Proveedor</th>
                 <th>Fecha / Hora</th>
                 <th>Modalidad</th>
                 <th>Puntuación</th>
@@ -139,7 +139,7 @@
             @foreach ($valoraciones as $valoracion)
                 <tr>
                     <td>{{ $valoracion->paciente->nombre_completo }}</td>
-                    <td>{{ $valoracion->profesional->nombre_completo }}</td>
+                    <td>{{ $valoracion->proveedor->nombre }}</td>
                     <td>{{ date("d-m-Y", strtotime($valoracion->fecha)) }}</td>
                     <td>{{ ucfirst($valoracion->modalidad) }}</td>
 
@@ -149,8 +149,8 @@
                         @endfor
                     </td>
                     <td>
-                        <a href="{{ route('valoraciones.show', $valoracion->id) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
-                        <form action="{{ route('valoraciones.destroy', $valoracion->id) }}" method="POST"
+                        <a href="{{ route('valoraciones_proveedores.show', $valoracion->id) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                        <form action="{{ route('valoraciones_proveedores.destroy', $valoracion->id) }}" method="POST"
                             style="display:inline;">
                             @csrf
                             @method('DELETE')
@@ -178,14 +178,14 @@
 
             // Mejorar los selectores con Select2 si está disponible
             if ($.fn.select2) {
-                $('#paciente_id, #profesional_id').select2({
+                $('#paciente_id, #proveedor_id').select2({
                     placeholder: 'Seleccionar...',
                     allowClear: true
                 });
             }
 
             // Confirmación para eliminar valoraciones
-            $('form[action*="valoraciones"][method="POST"]').submit(function(e) {
+            $('form[action*="valoraciones_proveedores"][method="POST"]').submit(function(e) {
                 e.preventDefault();
 
                 const form = this;

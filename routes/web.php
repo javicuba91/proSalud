@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoriasProfesionalesController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\CiudadController;
 use App\Http\Controllers\DocumentoProfesionalController;
+use App\Http\Controllers\DocumentoProveedorController;
 use App\Http\Controllers\EmergenciaController;
 use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\EtiquetaBlogController;
@@ -32,6 +33,7 @@ use App\Http\Controllers\RespuestaController;
 use App\Http\Controllers\SeguroMedicoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ValoracionController;
+use App\Http\Controllers\ValoracionProveedorController;
 use App\Http\Controllers\ViaMedicamentoController;
 use App\Models\Provincia;
 use Illuminate\Support\Facades\Auth;
@@ -507,15 +509,23 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/proveedores/{id}/edit', [UsuarioController::class, 'editProveedor'])->name('proveedores.edit');
         Route::put('/proveedores/{id}', [UsuarioController::class, 'updateProveedor'])->name('proveedores.update');
 
-        Route::get('/documentos-profesional', [DocumentoProfesionalController::class, 'index'])->name('documentos.index');
-        Route::get('/documentos-profesional/create', [DocumentoProfesionalController::class, 'create'])->name('documentos.create');
-        Route::post('/documentos-profesional', [DocumentoProfesionalController::class, 'store'])->name('documentos.store');
-        Route::get('/documentos-profesional/{documento}/edit', [DocumentoProfesionalController::class, 'edit'])->name('documentos.edit');
-        Route::put('/documentos-profesional/{documento}', [DocumentoProfesionalController::class, 'update'])->name('documentos.update');
-        Route::delete('/documentos-profesional/{documento}', [DocumentoProfesionalController::class, 'destroy'])->name('documentos.destroy');
-        Route::post('/documentos-profesional/{id}/aprobar', [DocumentoProfesionalController::class, 'aprobar'])->name('documentos.aprobar');
-        Route::post('/documentos-profesional/{id}/denegar', [DocumentoProfesionalController::class, 'denegar'])->name('documentos.denegar');
+        Route::get('/documentos-profesional', [DocumentoProfesionalController::class, 'index'])->name('documentos-profesional.index');
+        Route::get('/documentos-profesional/create', [DocumentoProfesionalController::class, 'create'])->name('documentos-profesional.create');
+        Route::post('/documentos-profesional', [DocumentoProfesionalController::class, 'store'])->name('documentos-profesional.store');
+        Route::get('/documentos-profesional/{documento}/edit', [DocumentoProfesionalController::class, 'edit'])->name('documentos-profesional.edit');
+        Route::put('/documentos-profesional/{documento}', [DocumentoProfesionalController::class, 'update'])->name('documentos-profesional.update');
+        Route::delete('/documentos-profesional/{documento}', [DocumentoProfesionalController::class, 'destroy'])->name('documentos-profesional.destroy');
+        Route::post('/documentos-profesional/{id}/aprobar', [DocumentoProfesionalController::class, 'aprobar'])->name('documentos-profesional.aprobar');
+        Route::post('/documentos-profesional/{id}/denegar', [DocumentoProfesionalController::class, 'denegar'])->name('documentos-profesional.denegar');
 
+        Route::get('/documentos-proveedor', [DocumentoProveedorController::class, 'index'])->name('documentos-proveedor.index');
+        Route::get('/documentos-proveedor/create', [DocumentoProveedorController::class, 'create'])->name('documentos-proveedor.create');
+        Route::post('/documentos-proveedor', [DocumentoProveedorController::class, 'store'])->name('documentos-proveedor.store');
+        Route::get('/documentos-proveedor/{documento}/edit', [DocumentoProveedorController::class, 'edit'])->name('documentos-proveedor.edit');
+        Route::put('/documentos-proveedor/{documento}', [DocumentoProveedorController::class, 'update'])->name('documentos-proveedor.update');
+        Route::delete('/documentos-proveedor/{documento}', [DocumentoProveedorController::class, 'destroy'])->name('documentos-proveedor.destroy');
+        Route::post('/documentos-proveedor/{id}/aprobar', [DocumentoProveedorController::class, 'aprobar'])->name('documentos-proveedor.aprobar');
+        Route::post('/documentos-proveedor/{id}/denegar', [DocumentoProveedorController::class, 'denegar'])->name('documentos-proveedor.denegar');
 
         Route::get('/valoraciones', [ValoracionController::class, 'index'])->name('valoraciones.index');
         Route::get('/valoraciones/create', [ValoracionController::class, 'create'])->name('valoraciones.create');
@@ -524,6 +534,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/valoraciones/{valoracion}', [ValoracionController::class, 'show'])->name('valoraciones.show');
         Route::put('/valoraciones/{valoracion}', [ValoracionController::class, 'update'])->name('valoraciones.update');
         Route::delete('/valoraciones/{valoracion}', [ValoracionController::class, 'destroy'])->name('valoraciones.destroy');
+
+
+        // Rutas para valoraciones de proveedores
+        Route::get('/valoraciones-proveedores', [ValoracionProveedorController::class, 'index'])->name('valoraciones_proveedores.index');
+        Route::get('/valoraciones-proveedores/create', [ValoracionProveedorController::class, 'create'])->name('valoraciones_proveedores.create');
+        Route::post('/valoraciones-proveedores', [ValoracionProveedorController::class, 'store'])->name('valoraciones_proveedores.store');
+        Route::get('/valoraciones-proveedores/{valoracionProveedor}/edit', [ValoracionProveedorController::class, 'edit'])->name('valoraciones_proveedores.edit');
+        Route::get('/valoraciones-proveedores/{valoracionProveedor}', [ValoracionProveedorController::class, 'show'])->name('valoraciones_proveedores.show');
+        Route::put('/valoraciones-proveedores/{valoracionProveedor}', [ValoracionProveedorController::class, 'update'])->name('valoraciones_proveedores.update');
+        Route::delete('/valoraciones-proveedores/{valoracionProveedor}', [ValoracionProveedorController::class, 'destroy'])->name('valoraciones_proveedores.destroy');
 
         Route::get('/informes-consulta', [InformeConsultaController::class, 'index'])->name('informes.index');
         Route::get('/informes-consulta/{informe}', [InformeConsultaController::class, 'show'])->name('informes.show');

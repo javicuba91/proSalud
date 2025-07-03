@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Documentos')
+@section('title', 'Documentos Profesional')
 
 @section('css')
     <style>
@@ -11,24 +11,13 @@
     </style>
 @stop
 
-
 @section('content_header')
-    <h1>Documentos</h1>
+    <h1>Documentos de Profesionales</h1>
     <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('documentos.create') }}" class="btn btn-primary">
+        <a href="{{ route('documentos-profesional.create') }}" class="btn btn-primary">
             <i class="fa fa-plus"> Crear Documento</i>
         </a>
     </div>
-
-@stop
-
-@section('css')
-    <style>
-        .filtros-activos {
-            background-color: #e3f2fd;
-            border-left: 4px solid #2196f3;
-        }
-    </style>
 @stop
 
 @section('content')
@@ -55,7 +44,7 @@
             </div>
         </div>
         <div class="card-body">
-            <form method="GET" action="{{ route('documentos.index') }}" id="filtros-form">
+            <form method="GET" action="{{ route('documentos-profesional.index') }}" id="filtros-form">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -96,7 +85,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-filter"></i> Aplicar Filtros
                         </button>
-                        <a href="{{ route('documentos.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('documentos-profesional.index') }}" class="btn btn-secondary">
                             <i class="fas fa-times"></i> Limpiar Filtros
                         </a>
                     </div>
@@ -109,7 +98,6 @@
             <tr>
                 <th>Profesional</th>
                 <th>Nombre</th>
-                <th>Profesional</th>
                 <th>Archivo</th>
                 <th>Estado</th>
                 <th>Acciones</th>
@@ -120,7 +108,6 @@
                 <tr>
                     <td>{{ $documento->profesional->nombre_completo }}</td>
                     <td>{{ $documento->nombre }}</td>
-                    <td>{{ $documento->profesional->nombre_completo ?? 'N/A' }}</td>
                     <td>
                         <a href="{{ asset($documento->archivo) }}" target="_blank" class="d-block mb-1">
                             <i class="fa fa-file"></i> Abrir
@@ -129,12 +116,14 @@
                     <td>
                         @if ($documento->estado == 'aprobado')
                             <span class="badge bg-success p-2">{{ ucfirst($documento->estado) }}</span>
+                        @elseif ($documento->estado == 'pendiente')
+                            <span class="badge bg-warning p-2">{{ ucfirst($documento->estado) }}</span>
                         @else
                             <span class="badge bg-danger p-2">{{ ucfirst($documento->estado) }}</span>
                         @endif
                     </td>
                     <td>
-                        <form class="form-eliminar" action="{{ route('documentos.destroy', $documento->id) }}"
+                        <form class="form-eliminar" action="{{ route('documentos-profesional.destroy', $documento->id) }}"
                             method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
@@ -292,5 +281,4 @@
             });
         });
     </script>
-
 @endsection

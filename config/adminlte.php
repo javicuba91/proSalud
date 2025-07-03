@@ -632,8 +632,8 @@ return [
                 ['text' => 'Proveedores', 'url' => '/admin/proveedores', 'icon' => '', 'can' => 'solo-admin'],
             ],
         ],
-        ['text' => 'Valoraciones', 'url' => '/admin/valoraciones', 'icon' => 'fas fa-star', 'can' => 'solo-admin'],
-
+        ['text' => 'Valoraciones Profesionales', 'url' => '/admin/valoraciones', 'icon' => 'fas fa-star', 'can' => 'solo-admin'],
+        ['text' => 'Valoraciones Proveedores', 'url' => '/admin/valoraciones-proveedores', 'icon' => 'fas fa-star', 'can' => 'solo-admin'],
 
         [
             'text' => 'Cerrar sesión',

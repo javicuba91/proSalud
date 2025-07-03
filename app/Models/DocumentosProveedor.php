@@ -14,4 +14,8 @@ class DocumentosProveedor extends Model
         'nombre',
         'estado'
     ];
+    public function proveedor()
+        {
+                return $this->belongsTo(Proveedor::class);
+        }
 }
