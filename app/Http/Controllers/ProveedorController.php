@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cita;
+use App\Models\ContactoAdminProveedores;
 use App\Models\DocumentosProveedor;
 use App\Models\Plan;
 use App\Models\Propietario;
@@ -80,10 +81,6 @@ class ProveedorController extends Controller
         return view('proveedores.misEstadisticas');
     }
 
-    public function contactarAdministrador()
-    {
-        return view('proveedores.contactarAdministrador');
-    }
 
     public function notificaciones()
     {
@@ -411,10 +408,10 @@ class ProveedorController extends Controller
                 if (!$informe) return false;
 
                 // Buscar en pedido laboratorio
-                if ($informe->pedidoLaboratorio) {                                       
+                if ($informe->pedidoLaboratorio) {
                     foreach ($informe->pedidoLaboratorio->pruebas as $prueba) {
-                        foreach ($prueba->presupuestos as $presupuesto) {                           
-                            if ($presupuesto->proveedor_id == $proveedor->id && $presupuesto->estado == 'aprobado') {                                
+                        foreach ($prueba->presupuestos as $presupuesto) {
+                            if ($presupuesto->proveedor_id == $proveedor->id && $presupuesto->estado == 'aprobado') {
                                 return true;
                             }
                         }
@@ -422,9 +419,9 @@ class ProveedorController extends Controller
                 }
                 // Buscar en pedido imagen
                 if ($informe->pedidoImagen) {
-                    foreach ($informe->pedidoImagen->pruebas as $prueba) {                       
-                        foreach ($prueba->presupuestos as $presupuesto) {                          
-                            if ($presupuesto->proveedor_id == $proveedor->id && $presupuesto->estado == 'aprobado') {                              
+                    foreach ($informe->pedidoImagen->pruebas as $prueba) {
+                        foreach ($prueba->presupuestos as $presupuesto) {
+                            if ($presupuesto->proveedor_id == $proveedor->id && $presupuesto->estado == 'aprobado') {
                                 return true;
                             }
                         }
@@ -485,5 +482,28 @@ class ProveedorController extends Controller
         } else {
             return redirect()->back()->with('error', 'No tienes permisos para ver los pedidos de presupuestos.');
         }
+    }
+    public function contactarAdministrador()
+    {
+        $proveedor = Proveedor::where('user_id', auth()->id())->first();
+        return view('proveedores.contactarAdministrador', compact('proveedor'));
+    }
+
+    public function realizarContactoAdministrador(Request $request)
+    {
+        $request->validate([
+            'motivo' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+        ]);
+
+        $proveedor = Proveedor::where('user_id', auth()->id())->first();
+
+        ContactoAdminProveedores::create([
+            'proveedor_id' => $proveedor->id,
+            'motivo' => $request->motivo,
+            'descripcion' => $request->descripcion,
+        ]);
+
+        return back()->with('success', 'Consulta enviada correctamente.');
     }
 }

@@ -119,6 +119,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profesional/mis-datos', [ProfesionalController::class, 'misDatos'])->name('profesionales.misDatos');
     Route::get('/profesional/mis-planes', [ProfesionalController::class, 'misPlanes'])->name('profesionales.misPlanes');
     Route::get('/profesional/contactar-administrador', [ProfesionalController::class, 'contactarAdministrador'])->name('profesionales.contactarAdministrador');
+    Route::get('/proveedor/contactar-administrador', [ProveedorController::class, 'contactarAdministrador'])->name('proveedor.contactarAdministrador');
 
     // Rutas para preguntas y respuestas de expertos
     Route::get('/profesional/preguntas-respuestas', [ProfesionalController::class, 'preguntasRespuestas'])->name('profesionales.preguntasRespuestas');
@@ -227,6 +228,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/profesional/cita/informe-consulta/pedido-laboratorio', [ProfesionalController::class, 'ActualizarPedidoLaboratorio'])->name('profesional.pedidoLaboratorio.update');
 
         Route::post('/profesional/contactos', [ProfesionalController::class, 'realizarContactoAdministrador'])->name('profesional.contactos.store');
+        Route::post('/proveedor/contactos', [ProveedorController::class, 'realizarContactoAdministrador'])->name('proveedor.contactos.store');
+
 
         Route::get('/profesional/pacientes/buscar', [ProfesionalController::class, 'buscarPaciente'])->name('profesional.pacientes.buscar');
         Route::get('/profesional/consultorios/buscar', [ProfesionalController::class, 'delProfesional'])->name('profesional.consultorios.buscar');

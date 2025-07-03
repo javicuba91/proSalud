@@ -75,5 +75,9 @@ class Proveedor extends Model
     {
         return $this->hasMany(ValoracionProveedor::class);
     }
+    public function contactos()
+    {
+        return $this->hasMany(ContactoAdminProveedores::class);
+    }
 
 }
