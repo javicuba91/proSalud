@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\DocumentosProveedor;
+use App\Models\Plan;
 use App\Models\Propietario;
 use App\Models\Proveedor;
 use App\Models\SegurosMedicos;
 use App\Models\Prueba;
+use App\Models\SuscripcionesPlanesProveedores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -89,7 +91,75 @@ class ProveedorController extends Controller
 
     public function misPlanes()
     {
-        return view('proveedores.misPlanes');
+        $planes = Plan::all();
+        $proveedor = Proveedor::where('user_id', Auth::id())->first();
+        return view('proveedores.misPlanes', compact('planes', 'proveedor'));
+    }
+
+    public function elegirPlan(Request $request)
+    {
+        $request->validate([
+            'plan_id' => 'required|exists:planes,id',
+        ]);        $proveedor = Proveedor::where('user_id', Auth::id())->firstOrFail();
+
+        // Buscar suscripción activa
+        $suscripcionActiva = SuscripcionesPlanesProveedores::where('proveedores_id', $proveedor->id)
+            ->where('fecha_fin', '>=', now())
+            ->latest('fecha_fin')
+            ->first();
+
+        if ($suscripcionActiva) {
+            return redirect()->back()->with('error', 'Ya tienes una suscripción activa. No puedes cambiar de plan hasta que finalice.');
+        }
+
+        // Cambiar plan y crear nueva suscripción
+        $proveedor->update([
+            'plan_id' => $request->plan_id,
+        ]);
+
+        $suscripcion = new SuscripcionesPlanesProveedores();
+        $suscripcion->proveedores_id = $proveedor->id;
+        $suscripcion->plan_id = $request->plan_id;
+        $suscripcion->fecha_inicio = now();
+        $suscripcion->fecha_fin = now()->addDays(30);
+        $suscripcion->save();
+
+        return redirect()->back()->with('success', 'Has cambiado de plan correctamente.');
+    }
+
+    public function pagarPlan(Request $request)
+    {
+        $request->validate([
+            'plan_id' => 'required|exists:planes,id'
+        ]);
+
+        $proveedor = Proveedor::where('user_id', Auth::id())->firstOrFail();
+
+        // Buscar suscripción activa
+        $suscripcionActiva = SuscripcionesPlanesProveedores::where('proveedores_id', $proveedor->id)
+            ->where('fecha_fin', '>=', now())
+            ->latest('fecha_fin')
+            ->first();
+
+        if ($suscripcionActiva) {
+            return redirect()->back()->with('error', 'Ya tienes una suscripción activa. No puedes cambiar de plan hasta que finalice.');
+        }
+
+        // Actualizar el plan actual
+        $proveedor->update([
+            'plan_id' => $request->plan_id,
+        ]);
+
+        // Registrar la suscripción (y marcarla como pagada)
+        $suscripcion = new SuscripcionesPlanesProveedores();
+        $suscripcion->proveedores_id = $proveedor->id;
+        $suscripcion->plan_id = $request->plan_id;
+        $suscripcion->fecha_inicio = now();
+        $suscripcion->fecha_fin = now()->addDays(30);
+        $suscripcion->pagado = 1; // Marcar como pagado
+        $suscripcion->save();
+
+        return redirect()->route('proveedores.misPlanes')->with('success', 'Plan activado correctamente.');
     }
 
     public function valoracionesComentarios()
@@ -344,7 +414,7 @@ class ProveedorController extends Controller
 
     public function guardarSeguro(Request $request)
     {
-        $proveedor = Proveedor::where('user_id', auth()->id())->first();
+        $proveedor = Proveedor::where('user_id', Auth::id())->first();
         $proveedor->segurosMedicos()->syncWithoutDetaching([$request->seguro_id]);
 
         return response()->json(['success' => true]);
@@ -352,7 +422,7 @@ class ProveedorController extends Controller
 
     public function eliminarSeguro(Request $request)
     {
-        $proveedor = Proveedor::where('user_id', auth()->id())->first();
+        $proveedor = Proveedor::where('user_id', Auth::id())->first();
         $proveedor->segurosMedicos()->detach($request->seguro_id);
 
         return response()->json(['success' => true]);
@@ -361,8 +431,8 @@ class ProveedorController extends Controller
 
     public function misPedidosPresupuestos()
     {
-        $proveedor = Proveedor::where('user_id', auth()->id())->first();
-      
+        $proveedor = Proveedor::where('user_id', Auth::id())->first();
+
         if ($proveedor && $proveedor->tipo == 'centro_imagenes') {
             $pruebas = Prueba::where('pedido_imagen_id', '!=', null)->get();
             return view('proveedores.misPedidos', compact('pruebas'));
@@ -374,5 +444,3 @@ class ProveedorController extends Controller
         }
     }
 }
-
-    
