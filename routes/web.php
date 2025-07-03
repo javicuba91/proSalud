@@ -281,12 +281,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/proveedor/mis-pedidos-presupuestos', [ProveedorController::class, 'misPedidosPresupuestos'])->name('profesionales.misPedidosPresupuestos');
         Route::post('/proveedor/presupuestos/store', [PresupuestoPruebaController::class, 'store'])->name('presupuestos.store');
 
-         Route::post('/proveedor/presupuestos/store', [PresupuestoPruebaController::class, 'store'])->name('presupuestos.store');
+        Route::post('/proveedor/presupuestos/store', [PresupuestoPruebaController::class, 'store'])->name('presupuestos.store');
 
         Route::post('/proveedor/elegir-plan', [ProveedorController::class, 'elegirPlan'])->name('proveedor.elegir.plan');
         Route::post('/proveedor/pagar-plan', [ProveedorController::class, 'pagarPlan'])->name('proveedor.pagar.plan');
-
-
     });
 });
 
@@ -627,6 +625,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
         // Rutas AJAX para blog
         Route::post('/blog/categorias/ajax-store', [CategoriaBlogController::class, 'ajaxStore'])->name('blog.categorias.ajax.store');
         Route::post('/blog/etiquetas/ajax-store', [EtiquetaBlogController::class, 'ajaxStore'])->name('blog.etiquetas.ajax.store');
+
+        Route::post('/contacto/proveedores', [AdminController::class, 'adminContactoProveedores'])->name('admin.contacto.proveedores');
+        Route::get('/contacto/proveedores', [AdminController::class, 'adminContactoProveedores'])->name('admin.contacto_proveedores');
+        Route::post('/contacto-proveedores/{id}/responder', [AdminController::class, 'responderContactoProveedor'])->name('admin.responder_contacto_proveedor');
+
+        Route::post('/contacto/profesional', [AdminController::class, 'adminContactoProfesional'])->name('admin.contacto.profesional');
+        Route::get('/contacto/profesional', [AdminController::class, 'adminContactoProfesional'])->name('admin.contacto_profesional');
+        Route::post('/contacto-profesional/{id}/responder', [AdminController::class, 'responderContactoProfesional'])->name('admin.responder_contacto_profesional');
     });
 });
-Route::get('/mail-test', [MailTestController::class, 'sendTest']);
+Route::get('/mail_test', [MailTestController::class, 'sendTest']);

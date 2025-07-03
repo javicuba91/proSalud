@@ -65,18 +65,22 @@
     <div class="row mt-1 border p-2">
         @foreach ($profesional->contactos->whereNull('respuesta') as $contacto)
             <div class="col-md-5 mb-2">
+                <label>Motivo:</label>
                 <input type="text" class="form-control" value="{{ $contacto->motivo }}" readonly>
             </div>
             <div class="col-md-5 mb-2">
+                <label>Fecha Consulta:</label>
                 <input type="text" class="form-control" value="{{ $contacto->created_at->format('d-m-Y') }}" readonly>
             </div>
             <div class="col-md-2 mb-2">
+                <label>&nbsp;</label>
                 <button class="btn btn-dark w-100" type="button" data-toggle="collapse"
                     data-target="#consulta-{{ $contacto->id }}">
                     Ver consulta
                 </button>
             </div>
             <div class="col-md-12 mb-2 collapse" id="consulta-{{ $contacto->id }}">
+                <label>Tu consulta:</label>
                 <textarea class="form-control" rows="5" readonly>{{ $contacto->descripcion }}</textarea>
             </div>
         @endforeach
@@ -91,19 +95,24 @@
     <div class="row mt-1 border p-2">
         @foreach ($profesional->contactos->whereNotNull('respuesta') as $contacto)
             <div class="col-md-5 mb-2">
+                <label>Motivo:</label>
                 <input type="text" class="form-control" value="{{ $contacto->motivo }}" readonly>
             </div>
             <div class="col-md-5 mb-2">
-                <input type="text" class="form-control" value="{{ $contacto->created_at->format('d-m-Y') }}" readonly>
+                <label>Fecha Respuesta:</label>
+                <input type="text" class="form-control" value="{{date('d-m-Y', strtotime($contacto->fecha_respuesta)) }}" readonly>
             </div>
             <div class="col-md-2 mb-2">
+                <label>&nbsp;</label>
                 <button class="btn btn-dark w-100" type="button" data-toggle="collapse"
                     data-target="#consulta-pasada-{{ $contacto->id }}">
                     Ver consulta
                 </button>
             </div>
             <div class="col-md-12 mb-2 collapse" id="consulta-pasada-{{ $contacto->id }}">
+                <label>Tu consulta:</label>
                 <textarea class="form-control mb-2" rows="5" readonly>{{ $contacto->descripcion }}</textarea>
+                <label>Respuesta del administrador:</label>
                 <textarea class="form-control" rows="3" readonly>{{ $contacto->respuesta }}</textarea>
             </div>
         @endforeach

@@ -9,7 +9,7 @@ class ContactoAdminProfesional extends Model
     protected $table = "contactos_admin";
 
     protected $fillable = [
-        'profesional_id', 'motivo', 'descripcion', 'estado'
+        'profesional_id', 'motivo', 'descripcion', 'estado', 'respuesta', 'fecha_respuesta'
     ];
 
     public function profesional()

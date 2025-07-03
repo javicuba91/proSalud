@@ -16,7 +16,9 @@ return new class extends Migration
             $table->foreignId('proveedor_id')->constrained('proveedores')->onDelete('cascade');
             $table->string('motivo');
             $table->text('descripcion');
-            $table->enum('estado', ['pendiente', 'pasado'])->default('pendiente');
+            $table->enum('estado', ['pendiente', 'respondido'])->default('pendiente');
+            $table->text('respuesta')->nullable();
+            $table->timestamp('fecha_respuesta')->nullable();
             $table->timestamps();
         });
     }
