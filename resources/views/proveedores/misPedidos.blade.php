@@ -67,14 +67,16 @@
                             @endif
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary btn-sm"
-                                data-toggle="modal"
-                                data-target="#modalPresupuesto"
-                                data-prueba-id="{{ $prueba->id }}"
-                                data-precio="{{ $presupuesto->precio ?? '' }}"
-                                data-estado="{{ $presupuesto->estado ?? 'pendiente' }}">
-                                {{ $presupuesto ? 'Editar presupuesto' : 'Añadir presupuesto' }}
-                            </button>
+                            @if(!$presupuesto || ($presupuesto && strtolower($presupuesto->estado) !== 'aprobado'))
+                                <button type="button" class="btn btn-primary btn-sm"
+                                    data-toggle="modal"
+                                    data-target="#modalPresupuesto"
+                                    data-prueba-id="{{ $prueba->id }}"
+                                    data-precio="{{ $presupuesto->precio ?? '' }}"
+                                    data-estado="{{ $presupuesto->estado ?? 'pendiente' }}">
+                                    {{ $presupuesto ? 'Editar presupuesto' : 'Añadir presupuesto' }}
+                                </button>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

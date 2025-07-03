@@ -110,7 +110,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/paciente/usuario/eliminar-cuenta', [PacienteController::class, 'eliminarCuenta'])->name('usuario.eliminarCuenta');
 
-
+    Route::post('/paciente/presupuestos/aceptar/{id}', [App\Http\Controllers\PacienteController::class, 'aceptarPresupuesto'])->name('paciente.presupuestos.aceptar');
 
     /* URLS SIDEBAR: PROFESIONAL*/
     // Rutas SIEMPRE accesibles para el profesional
@@ -278,6 +278,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/proveedor/mis-pedidos-presupuestos', [ProveedorController::class, 'misPedidosPresupuestos'])->name('profesionales.misPedidosPresupuestos');
         Route::post('/proveedor/presupuestos/store', [PresupuestoPruebaController::class, 'store'])->name('presupuestos.store');
 
+         Route::post('/proveedor/presupuestos/store', [PresupuestoPruebaController::class, 'store'])->name('presupuestos.store');
 
         Route::post('/proveedor/elegir-plan', [ProveedorController::class, 'elegirPlan'])->name('proveedor.elegir.plan');
         Route::post('/proveedor/pagar-plan', [ProveedorController::class, 'pagarPlan'])->name('proveedor.pagar.plan');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cita;
 use App\Models\DocumentosProveedor;
 use App\Models\Plan;
 use App\Models\Propietario;
@@ -392,7 +393,48 @@ class ProveedorController extends Controller
 
     public function misClinicasPacientes()
     {
-        return view('proveedores.misClinicasPacientes');
+        $proveedor = Proveedor::where('user_id', auth()->id())->first();
+        $pacientes = collect();
+
+        if ($proveedor) {
+            // Buscar todas las citas con informe de consulta y pedidos
+            $citas = Cita::with([
+                'paciente',
+                'informeConsulta.pedidoLaboratorio.pruebas.presupuestos',
+                'informeConsulta.pedidoImagen.pruebas.presupuestos'
+            ])->get();
+
+
+            $pacientes = $citas->filter(callback: function ($cita) use ($proveedor) {
+                $informe = $cita->informeConsulta;
+
+                if (!$informe) return false;
+
+                // Buscar en pedido laboratorio
+                if ($informe->pedidoLaboratorio) {                                       
+                    foreach ($informe->pedidoLaboratorio->pruebas as $prueba) {
+                        foreach ($prueba->presupuestos as $presupuesto) {                           
+                            if ($presupuesto->proveedor_id == $proveedor->id && $presupuesto->estado == 'aprobado') {                                
+                                return true;
+                            }
+                        }
+                    }
+                }
+                // Buscar en pedido imagen
+                if ($informe->pedidoImagen) {
+                    foreach ($informe->pedidoImagen->pruebas as $prueba) {                       
+                        foreach ($prueba->presupuestos as $presupuesto) {                          
+                            if ($presupuesto->proveedor_id == $proveedor->id && $presupuesto->estado == 'aprobado') {                              
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            })->pluck('paciente')->unique('id')->filter();
+        }
+
+        return view('proveedores.misClinicasPacientes', compact('pacientes'));
     }
 
     public function historialPruebas()
@@ -432,7 +474,7 @@ class ProveedorController extends Controller
 
     public function misPedidosPresupuestos()
     {
-        $proveedor = Proveedor::where('user_id', Auth::id())->first();
+        $proveedor = Proveedor::where('user_id', auth()->id())->first();
 
         if ($proveedor && $proveedor->tipo == 'centro_imagenes') {
             $pruebas = Prueba::where('pedido_imagen_id', '!=', null)->get();

@@ -14,11 +14,13 @@ use App\Models\IntervaloMedicamento;
 use App\Models\Medicamento;
 use App\Models\Paciente;
 use App\Models\PresentacionMedicamento;
+use App\Models\Prueba;
 use App\Models\Receta;
 use App\Models\SegurosMedicos;
 use App\Models\User;
 use App\Models\Valoracion;
 use App\Models\ViaAdministracionMedicamento;
+use App\Models\PresupuestoPrueba;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -273,7 +275,43 @@ class PacienteController extends Controller
 
     public function presupuestos()
     {
-        return view('pacientes.presupuestos');
+        $paciente = Paciente::where('user_id', '=', Auth()->user()->id)->firstOrFail();
+
+        // Obtener todas las citas del paciente
+        $citas = Cita::where('paciente_id', $paciente->id)->with([
+            'informeConsulta.pedidoLaboratorio.pruebas.presupuestos.proveedor',
+            'informeConsulta.pedidoImagen.pruebas.presupuestos.proveedor'
+        ])->get();
+
+        // Recolectar todas las pruebas con presupuesto
+        $pruebasConPresupuesto = collect();
+
+        foreach ($citas as $cita) {
+            $informe = $cita->informeConsulta;
+            if (!$informe) continue;
+
+            // Pruebas de laboratorio
+            if ($informe->pedidoLaboratorio) {
+                foreach ($informe->pedidoLaboratorio->pruebas as $prueba) {
+                    if ($prueba->presupuestos->count() > 0) {
+                        $pruebasConPresupuesto->push($prueba);
+                    }
+                }
+            }
+
+            // Pruebas de imagen
+            if ($informe->pedidoImagen) {
+                foreach ($informe->pedidoImagen->pruebas as $prueba) {
+                    if ($prueba->presupuestos->count() > 0) {
+                        $pruebasConPresupuesto->push($prueba);
+                    }
+                }
+            }
+        }
+
+        return view('pacientes.presupuestos', [
+            'pruebas' => $pruebasConPresupuesto
+        ]);
     }
 
     public function misPruebas()
@@ -408,6 +446,17 @@ class PacienteController extends Controller
         $paciente = $cita->paciente;
         $profesional = $cita->profesional;
         $pdf = \PDF::loadView('pacientes.pdf.cita', compact('cita', 'receta', 'paciente', 'profesional'));
-        return $pdf->download('cita_'.$cita->id.'.pdf');
+        return $pdf->download('cita_' . $cita->id . '.pdf');
+    }
+
+    /**
+     * Aceptar un presupuesto de prueba
+     */
+    public function aceptarPresupuesto($id)
+    {
+        $presupuesto = PresupuestoPrueba::findOrFail($id);
+        $presupuesto->estado = 'aprobado';
+        $presupuesto->save();
+        return redirect()->back()->with('success', 'Presupuesto aprobado correctamente.');
     }
 }
