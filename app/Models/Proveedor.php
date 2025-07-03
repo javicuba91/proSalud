@@ -73,6 +73,7 @@ class Proveedor extends Model
         return $this->belongsTo(Plan::class);
     }
 
+<<<<<<< HEAD
     public static function presupuestos_laboratorios_aprobados_por_paciente($id_paciente)
     {
         $proveedor = Proveedor::where('user_id', Auth::id())->first();
@@ -109,6 +110,15 @@ class Proveedor extends Model
        ", [$proveedor->id, $id_paciente]);
 
        return $presupuestos_pacientes;
+=======
+    public function valoraciones()
+    {
+        return $this->hasMany(ValoracionProveedor::class);
+    }
+    public function contactos()
+    {
+        return $this->hasMany(ContactoAdminProveedores::class);
+>>>>>>> refs/remotes/origin/main
     }
 
 }

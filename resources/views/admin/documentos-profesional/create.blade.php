@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-    <form action="{{ route('documentos.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('documentos-profesional.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
             <label for="profesional_id">Profesional</label>
@@ -58,7 +58,7 @@
 
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Guardar</button>
-            <a href="{{ route('documentos.index') }}" class="btn btn-secondary">Cancelar</a>
+            <a href="{{ route('documentos-profesional.index') }}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
 @stop

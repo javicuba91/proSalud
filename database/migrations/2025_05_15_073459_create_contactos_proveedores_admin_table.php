@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contactos_admin', function (Blueprint $table) {
+        Schema::create('contactos_proveedores_admin', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('profesional_id')->constrained('profesionales')->onDelete('cascade');
+            $table->foreignId('proveedor_id')->constrained('proveedores')->onDelete('cascade');
             $table->string('motivo');
             $table->text('descripcion');
             $table->enum('estado', ['pendiente', 'respondido'])->default('pendiente');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contactos_admin');
+        Schema::dropIfExists('contactos_proveedores_admin');
     }
 };

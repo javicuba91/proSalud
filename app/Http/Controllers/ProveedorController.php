@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cita;
+use App\Models\ContactoAdminProveedores;
 use App\Models\DocumentosProveedor;
 use App\Models\Plan;
 use App\Models\Propietario;
@@ -81,10 +82,6 @@ class ProveedorController extends Controller
         return view('proveedores.misEstadisticas');
     }
 
-    public function contactarAdministrador()
-    {
-        return view('proveedores.contactarAdministrador');
-    }
 
     public function notificaciones()
     {
@@ -167,7 +164,8 @@ class ProveedorController extends Controller
 
     public function valoracionesComentarios()
     {
-        return view('proveedores.valoracionesComentarios');
+        $proveedor = Proveedor::where('user_id', Auth::id())->first();
+        return view('proveedores.valoracionesComentarios', compact('proveedor'));
     }
 
     public function compartirResultados()
@@ -487,6 +485,7 @@ class ProveedorController extends Controller
             return redirect()->back()->with('error', 'No tienes permisos para ver los pedidos de presupuestos.');
         }
     }
+<<<<<<< HEAD
 
 
     public function pruebasHistoricoPaciente($id_paciente)
@@ -545,5 +544,29 @@ class ProveedorController extends Controller
         }
         $imagen->delete();
         return back()->with('success', 'Imagen eliminada correctamente.');
+=======
+    public function contactarAdministrador()
+    {
+        $proveedor = Proveedor::where('user_id', auth()->id())->first();
+        return view('proveedores.contactarAdministrador', compact('proveedor'));
+    }
+
+    public function realizarContactoAdministrador(Request $request)
+    {
+        $request->validate([
+            'motivo' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+        ]);
+
+        $proveedor = Proveedor::where('user_id', auth()->id())->first();
+
+        ContactoAdminProveedores::create([
+            'proveedor_id' => $proveedor->id,
+            'motivo' => $request->motivo,
+            'descripcion' => $request->descripcion,
+        ]);
+
+        return back()->with('success', 'Consulta enviada correctamente.');
+>>>>>>> refs/remotes/origin/main
     }
 }

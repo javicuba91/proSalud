@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contactos_admin', function (Blueprint $table) {
+        Schema::create('valoraciones', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('paciente_id')->constrained('pacientes')->onDelete('cascade');
             $table->foreignId('profesional_id')->constrained('profesionales')->onDelete('cascade');
-            $table->string('motivo');
-            $table->text('descripcion');
-            $table->enum('estado', ['pendiente', 'respondido'])->default('pendiente');
-            $table->text('respuesta')->nullable();
-            $table->timestamp('fecha_respuesta')->nullable();
+            $table->date('fecha');
+            $table->enum('modalidad', ['presencial', 'videollamada']);
+            $table->tinyInteger('puntuacion')->unsigned(); // de 1 a 5
+            $table->text('comentario')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contactos_admin');
+        Schema::dropIfExists('valoraciones');
     }
 };

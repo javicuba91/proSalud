@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cita;
+use App\Models\ContactoAdminProfesional;
+use App\Models\ContactoAdminProveedores;
 use App\Models\Emergencia;
 use App\Models\Medicamento;
 use App\Models\Paciente;
@@ -145,6 +147,83 @@ class AdminController extends Controller
 
         return response()->json([
             'contenido' => "Carga completada"
+        ]);
+    }
+
+    public function adminContactoProveedores(Request $request)
+    {
+        $query = ContactoAdminProveedores::with('proveedor');
+
+        // Aplicar filtros
+        if ($request->filled('proveedor_id')) {
+            $query->where('proveedor_id', $request->proveedor_id);
+        }
+
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        $contactos = $query->orderBy('created_at', 'desc')->get();
+
+        // Obtener datos para los filtros
+        $proveedores = Proveedor::orderBy('nombre', 'ASC')->get();
+
+        return view('admin.contacto_proveedores.index', compact('contactos', 'proveedores'));
+    }
+    public function adminContactoProfesional(Request $request)
+    {
+        $query = ContactoAdminProfesional::with('profesional');
+
+        // Aplicar filtros
+        if ($request->filled('profesional_id')) {
+            $query->where('profesional_id', $request->profesional_id);
+        }
+
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        $contactos = $query->orderBy('created_at', 'desc')->get();
+
+        // Obtener datos para los filtros
+        $profesionales = Profesional::orderBy('nombre_completo', 'ASC')->get();
+
+        return view('admin.contacto_profesional.index', compact('contactos', 'profesionales'));
+    }
+
+    public function responderContactoProveedor(Request $request, $id)
+    {
+        $request->validate([
+            'respuesta' => 'required|string',
+        ]);
+
+        $contacto = ContactoAdminProveedores::findOrFail($id);
+        $contacto->respuesta = $request->respuesta;
+        $contacto->estado = 'respondido';
+        $contacto->fecha_respuesta = now();
+        $contacto->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Respuesta enviada correctamente'
+        ]);
+    }
+
+    public function responderContactoProfesional(Request $request, $id)
+    {
+        $request->validate([
+            'respuesta' => 'required|string',
+        ]);
+
+        $contacto = ContactoAdminProfesional::findOrFail($id);
+        $contacto->respuesta = $request->respuesta;
+        $contacto->estado = 'respondido';
+        $contacto->fecha_respuesta = now();
+        $contacto->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Respuesta enviada correctamente'
         ]);
     }
 }

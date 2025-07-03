@@ -564,6 +564,20 @@ return [
         ],
 
         ['text' => 'Citas', 'url' => '/admin/citas', 'icon' => 'fas fa-calendar-check', 'can' => 'solo-admin'],
+
+        [
+            'text' => 'Contactos',
+            'url'  => '#',
+            'icon' => 'fas fa-book',
+            'can'  => 'solo-admin',
+            'submenu' => [
+
+                ['text' => 'Contacto Profesional', 'url' => '/admin/contacto/profesional', 'icon' => '', 'can' => 'solo-admin'],
+                ['text' => 'Contacto Proveedores', 'url' => '/admin/contacto/proveedores', 'icon' => '', 'can' => 'solo-admin'],
+            ],
+        ],
+
+
         ['text' => 'Documentos Profesional', 'url' => '/admin/documentos-profesional', 'icon' => 'fas fa-file-alt', 'can' => 'solo-admin'],
         ['text' => 'Emergencias', 'url' => '/admin/emergencias', 'icon' => 'fas fa-ambulance', 'can' => 'solo-admin'],
         ['text' => 'Especialidades', 'url' => '/admin/especialidades', 'icon' => 'fas fa-stethoscope', 'can' => 'solo-admin'],
@@ -626,8 +640,18 @@ return [
                 ['text' => 'Proveedores', 'url' => '/admin/proveedores', 'icon' => '', 'can' => 'solo-admin'],
             ],
         ],
-        ['text' => 'Valoraciones', 'url' => '/admin/valoraciones', 'icon' => 'fas fa-star', 'can' => 'solo-admin'],
 
+        [
+            'text' => 'Valoraciones',
+            'url'  => '#',
+            'icon' => 'fas fa-star',
+            'can'  => 'solo-admin',
+            'submenu' => [
+                ['text' => 'Valoraciones Profesionales', 'url' => '/admin/valoraciones', 'icon' => 'fas fa-star', 'can' => 'solo-admin'],
+                ['text' => 'Valoraciones Proveedores', 'url' => '/admin/valoraciones-proveedores', 'icon' => 'fas fa-star', 'can' => 'solo-admin'],
+            ],
+
+        ],
 
         [
             'text' => 'Cerrar sesión',

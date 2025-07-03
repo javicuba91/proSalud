@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('tipo'); // identidad, especializacion, titulo, diploma
             $table->string('archivo');
             $table->string('nombre')->nullable(); // Descripción del documento
-            $table->enum('estado', ['pendiente','aprobado', 'denegado'])->nullable();
+            $table->enum('estado', ['pendiente','aprobado', 'denegado'])->nullable()->default('pendiente');
             $table->timestamps();
         });
     }
