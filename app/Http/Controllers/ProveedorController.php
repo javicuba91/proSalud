@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use App\Models\ImagenesPrueba;
 
 class ProveedorController extends Controller
 {
@@ -101,7 +102,8 @@ class ProveedorController extends Controller
     {
         $request->validate([
             'plan_id' => 'required|exists:planes,id',
-        ]);        $proveedor = Proveedor::where('user_id', Auth::id())->firstOrFail();
+        ]);
+        $proveedor = Proveedor::where('user_id', Auth::id())->firstOrFail();
 
         // Buscar suscripción activa
         $suscripcionActiva = SuscripcionesPlanesProveedores::where('proveedores_id', $proveedor->id)
@@ -410,10 +412,10 @@ class ProveedorController extends Controller
                 if (!$informe) return false;
 
                 // Buscar en pedido laboratorio
-                if ($informe->pedidoLaboratorio) {                                       
+                if ($informe->pedidoLaboratorio) {
                     foreach ($informe->pedidoLaboratorio->pruebas as $prueba) {
-                        foreach ($prueba->presupuestos as $presupuesto) {                           
-                            if ($presupuesto->proveedor_id == $proveedor->id && $presupuesto->estado == 'aprobado') {                                
+                        foreach ($prueba->presupuestos as $presupuesto) {
+                            if ($presupuesto->proveedor_id == $proveedor->id && $presupuesto->estado == 'aprobado') {
                                 return true;
                             }
                         }
@@ -421,9 +423,9 @@ class ProveedorController extends Controller
                 }
                 // Buscar en pedido imagen
                 if ($informe->pedidoImagen) {
-                    foreach ($informe->pedidoImagen->pruebas as $prueba) {                       
-                        foreach ($prueba->presupuestos as $presupuesto) {                          
-                            if ($presupuesto->proveedor_id == $proveedor->id && $presupuesto->estado == 'aprobado') {                              
+                    foreach ($informe->pedidoImagen->pruebas as $prueba) {
+                        foreach ($prueba->presupuestos as $presupuesto) {
+                            if ($presupuesto->proveedor_id == $proveedor->id && $presupuesto->estado == 'aprobado') {
                                 return true;
                             }
                         }
@@ -484,5 +486,64 @@ class ProveedorController extends Controller
         } else {
             return redirect()->back()->with('error', 'No tienes permisos para ver los pedidos de presupuestos.');
         }
+    }
+
+
+    public function pruebasHistoricoPaciente($id_paciente)
+    {
+        $proveedor = Proveedor::where('user_id', auth()->id())->first();
+
+        if ($proveedor && $proveedor->tipo == 'laboratorio') {
+                $presupuestos = Proveedor::presupuestos_laboratorios_aprobados_por_paciente($id_paciente);
+                return view('proveedores.pruebasHistoricoPaciente', compact('presupuestos'));
+            }
+
+        if ($proveedor && $proveedor->tipo == 'centro_imagenes') {
+            $presupuestos = Proveedor::presupuestos_imagenes_aprobados_por_paciente($id_paciente);
+            return view('proveedores.pruebasHistoricoPaciente', compact('presupuestos'));
+        }        
+    }
+
+    public function marcarPruebaCompletada($pruebaId)
+    {
+        $prueba = Prueba::findOrFail($pruebaId);
+        $prueba->estado = 'completada';
+        $prueba->save();
+        return back()->with('success', 'La prueba ha sido marcada como completada.');
+    }
+
+    public function subirImagenPrueba(Request $request, $pruebaId)
+    {
+        $request->validate([
+            'imagen' => 'required',
+            'imagen.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:4096',
+            'descripcion' => 'nullable|string|max:255',
+        ]);
+        $prueba = Prueba::findOrFail($pruebaId);
+        if ($request->hasFile('imagen')) {
+            foreach ($request->file('imagen') as $file) {
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $path = 'imagenes/pruebas/' . $prueba->id;
+                $file->move(public_path($path), $filename);
+                $ruta = $path . '/' . $filename;
+                \App\Models\ImagenesPrueba::create([
+                    'prueba_id' => $prueba->id,
+                    'ruta' => $ruta,
+                    'descripcion' => $request->descripcion,
+                ]);
+            }
+        }
+        return back()->with('success', 'Imágenes subidas correctamente.');
+    }
+
+    public function eliminarImagenPrueba($imagenId)
+    {
+        $imagen = ImagenesPrueba::findOrFail($imagenId);
+        // Eliminar archivo físico
+        if (file_exists(public_path($imagen->ruta))) {
+            unlink(public_path($imagen->ruta));
+        }
+        $imagen->delete();
+        return back()->with('success', 'Imagen eliminada correctamente.');
     }
 }

@@ -108,7 +108,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/paciente/usuario/eliminar-cuenta', [PacienteController::class, 'eliminarCuenta'])->name('usuario.eliminarCuenta');
 
-    Route::post('/paciente/presupuestos/aceptar/{id}', [App\Http\Controllers\PacienteController::class, 'aceptarPresupuesto'])->name('paciente.presupuestos.aceptar');
+    Route::post('/paciente/presupuestos/aceptar/{id}', [PacienteController::class, 'aceptarPresupuesto'])->name('paciente.presupuestos.aceptar');
+    Route::post('/paciente/presupuestos/denegar/{id}', [PacienteController::class, 'denegarPresupuesto'])->name('paciente.presupuestos.denegar');
 
     /* URLS SIDEBAR: PROFESIONAL*/
     // Rutas SIEMPRE accesibles para el profesional
@@ -281,10 +282,19 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/proveedor/elegir-plan', [ProveedorController::class, 'elegirPlan'])->name('proveedor.elegir.plan');
         Route::post('/proveedor/pagar-plan', [ProveedorController::class, 'pagarPlan'])->name('proveedor.pagar.plan');
 
+        Route::get('/proveedor/mis-clientes-pacientes/{id}/pruebas', [ProveedorController::class, 'pruebasHistoricoPaciente'])->name('proveedores.pacientes.presupuestos.historial');
 
     });
 });
 
+/* Cambiar estado de prueba a completada */
+Route::post('/prueba/{prueba}/marcar-completada', [App\Http\Controllers\ProveedorController::class, 'marcarPruebaCompletada'])->name('prueba.marcarCompletada')->middleware('auth');
+
+/* Subir imagen asociada a una prueba */
+Route::post('/prueba/{prueba}/subir-imagen', [App\Http\Controllers\ProveedorController::class, 'subirImagenPrueba'])->name('prueba.subirImagen')->middleware('auth');
+
+// Eliminar imagen de prueba
+Route::delete('/prueba/imagen/{imagen}', [App\Http\Controllers\ProveedorController::class, 'eliminarImagenPrueba'])->name('prueba.eliminarImagen')->middleware('auth');
 
 
 Route::get('/profesionales', [ProfesionalFrontendController::class, 'index'])->name('profesionales.index');

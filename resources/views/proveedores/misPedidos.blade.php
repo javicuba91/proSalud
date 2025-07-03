@@ -25,7 +25,7 @@
                     @endif
 
                     <th>Indicaciones</th>                        <th>Prioridad</th>
-                        <th>Estado</th>
+                        <th>Estado prueba</th>
                         <th>Presupuesto</th>
                         <th>Acciones</th>
                     </tr>
@@ -67,7 +67,7 @@
                             @endif
                         </td>
                         <td>
-                            @if(!$presupuesto || ($presupuesto && strtolower($presupuesto->estado) !== 'aprobado'))
+                            @if(!$presupuesto || ($presupuesto && strtolower($presupuesto->estado) == 'pendiente'))
                                 <button type="button" class="btn btn-primary btn-sm"
                                     data-toggle="modal"
                                     data-target="#modalPresupuesto"

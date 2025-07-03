@@ -489,12 +489,6 @@ return [
             'can'  => 'solo-proveedor',
         ],
         [
-            'text' => 'Mis citas',
-            'url' => '/proveedor/mis-citas',
-            'icon' => '',
-            'can'  => 'solo-proveedor',
-        ],
-        [
             'text' => 'Mis clientes/pacientes',
             'url' => '/proveedor/mis-clientes-pacientes',
             'icon' => '',

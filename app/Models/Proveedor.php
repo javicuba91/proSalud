@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Proveedor extends Model
 {
@@ -69,6 +71,44 @@ class Proveedor extends Model
     public function plan()
     {
         return $this->belongsTo(Plan::class);
+    }
+
+    public static function presupuestos_laboratorios_aprobados_por_paciente($id_paciente)
+    {
+        $proveedor = Proveedor::where('user_id', Auth::id())->first();
+
+       $presupuestos_pacientes = DB::select("
+           SELECT pp.id, pp.precio,pp.estado as estadoPresupuesto, pr.id as idPrueba, pr.tipo,pr.muestras,pr.prioridad,pr.estado as estadoPrueba,pr.created_at as fechaSolicitudPrueba, pac.nombre_completo
+           FROM presupuestos_pruebas pp
+           INNER JOIN proveedores p ON p.id = pp.proveedor_id
+           INNER JOIN pruebas pr ON pr.id = pp.prueba_id
+           INNER JOIN pedido_laboratorios pl ON pl.id = pr.pedido_laboratorio_id
+           INNER JOIN informes_consultas ic ON ic.id = pl.informe_consulta_id
+           INNER JOIN citas c ON c.id = ic.cita_id
+           INNER JOIN pacientes pac ON pac.id = c.paciente_id
+           WHERE p.tipo='laboratorio' AND p.id = ? AND pac.id = ?
+       ", [$proveedor->id, $id_paciente]);
+
+       return $presupuestos_pacientes;
+    }
+
+    public static function presupuestos_imagenes_aprobados_por_paciente($id_paciente)
+    {
+        $proveedor = Proveedor::where('user_id', Auth::id())->first();
+
+       $presupuestos_pacientes = DB::select("
+           SELECT pp.id, pp.precio,pp.estado as estadoPresupuesto, pr.id as idPrueba, pr.tipo,pr.region_anatomica,pr.prioridad,pr.estado as estadoPrueba,pr.created_at as fechaSolicitudPrueba, pac.nombre_completo
+           FROM presupuestos_pruebas pp
+           INNER JOIN proveedores p ON p.id = pp.proveedor_id
+           INNER JOIN pruebas pr ON pr.id = pp.prueba_id
+           INNER JOIN pedido_imagenes pl ON pl.id = pr.pedido_imagen_id
+           INNER JOIN informes_consultas ic ON ic.id = pl.informe_consulta_id
+           INNER JOIN citas c ON c.id = ic.cita_id
+           INNER JOIN pacientes pac ON pac.id = c.paciente_id
+           WHERE p.tipo='centro_imagenes' AND p.id = ? AND pac.id = ?
+       ", [$proveedor->id, $id_paciente]);
+
+       return $presupuestos_pacientes;
     }
 
 }

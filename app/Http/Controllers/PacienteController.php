@@ -316,7 +316,30 @@ class PacienteController extends Controller
 
     public function misPruebas()
     {
-        return view('pacientes.misPruebas');
+        $paciente = Paciente::where('user_id', Auth::id())->firstOrFail();
+
+        $pruebas = collect();
+
+        foreach ($paciente->citas as $cita) {
+            $informe = $cita->informeConsulta;
+            if (!$informe) continue;
+
+            // Pruebas de laboratorio
+            if ($informe->pedidoLaboratorio) {
+                foreach ($informe->pedidoLaboratorio->pruebas as $prueba) {
+                    $pruebas->push($prueba);
+                }
+            }
+
+            // Pruebas de imagen
+            if ($informe->pedidoImagen) {
+                foreach ($informe->pedidoImagen->pruebas as $prueba) {
+                    $pruebas->push($prueba);
+                }
+            }
+        }
+
+        return view('pacientes.misPruebas', compact('pruebas'));
     }
 
     public function miHistorialMedico()
@@ -458,5 +481,13 @@ class PacienteController extends Controller
         $presupuesto->estado = 'aprobado';
         $presupuesto->save();
         return redirect()->back()->with('success', 'Presupuesto aprobado correctamente.');
+    }
+
+    public function denegarPresupuesto($id)
+    {
+        $presupuesto = PresupuestoPrueba::findOrFail($id);
+        $presupuesto->estado = 'denegado';
+        $presupuesto->save();
+        return redirect()->back()->with('success', 'Presupuesto denegado correctamente.');
     }
 }

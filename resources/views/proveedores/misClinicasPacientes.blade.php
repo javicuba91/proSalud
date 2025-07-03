@@ -26,8 +26,7 @@
                             <td>{{ $paciente->email ?? '-' }}</td>
                             <td>{{ $paciente->celular ?? '-' }}</td>
                             <td>
-                                <a href="#" class="btn btn-info btn-sm"><i class="fa fa-history"></i> Ver historial</a>
-                                <a href="#" class="btn btn-success btn-sm"><i class="fa fa-calendar"></i> Crear cita</a>
+                                <a href="{{ route('proveedores.pacientes.presupuestos.historial', $paciente->id) }}" class="btn btn-info btn-sm"><i class="fa fa-history"></i> Ver historial</a>                                
                             </td>
                         </tr>
                     @endforeach
