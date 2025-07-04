@@ -592,9 +592,16 @@ return [
                 ['text' => 'Respuestas', 'url' => '/admin/respuestas-expertos', 'icon' => '', 'can' => 'solo-admin'],
             ],
         ],
-        ['text' => 'Facturación', 'url' => '/admin/facturacion', 'icon' => 'fas fa-file-invoice-dollar', 'can' => 'solo-admin'],
-
-
+         [
+            'text' => 'Facturación',
+            'url'  => '#',
+            'icon' => 'fas fa-user-tie',
+            'can'  => 'solo-admin',
+            'submenu' => [
+                ['text' => 'Profesionales', 'url' => '/admin/facturacion', 'icon' => '', 'can' => 'solo-admin'],
+                ['text' => 'Proveedores', 'url' => '/admin/facturacion-proveedor', 'icon' => '', 'can' => 'solo-admin'],
+            ],
+        ],
         [
             'text' => 'Informes de Consulta',
             'url'  => '#',

@@ -60,7 +60,8 @@
                 <form action="{{ route('pacientes.buscar.medicos') }}" method="get">
                     <div class="row">
                         <div class="col">
-                            <select name="especialidad_id" id="" class="form-control form-select">
+                            <label for="especialidad_id"><strong>Especialidad</strong></label>
+                            <select name="especialidad_id" id="especialidad_id" class="form-control form-select">
                                 <option value="">-- Selecciona una especialidad -- </option>
                                 @foreach ($especialidades as $especialidad)
                                     <option value="{{ $especialidad->id }}">{{ $especialidad->nombre }}</option>
@@ -68,23 +69,27 @@
                             </select>
                         </div>
                         <div class="col">
-                            <select name="sub_especialidad_id" id="" class="form-control form-select">
+                            <label for="sub_especialidad_id"><strong>Sub-especialidad</strong></label>
+                            <select name="sub_especialidad_id" id="sub_especialidad_id" class="form-control form-select">
                                 <option value="">-- Selecciona una sub-especialidad -- </option>
 
                             </select>
                         </div>
                         <div class="col">
-                            <input type="text" name="nombre_completo" placeholder="Nombre médico"
+                            <label for="nombre_completo"><strong>Nombre médico</strong></label>
+                            <input type="text" name="nombre_completo" id="nombre_completo" placeholder="Nombre médico"
                                 class="form-control">
                         </div>
                         <div class="col">
-                            <select name="modalidad" id="" class="form-control form-select">
+                            <label for="modalidad"><strong>Modalidad</strong></label>
+                            <select name="modalidad" id="modalidad" class="form-control form-select">
                                 <option value="">-- Selecciona una modalidad -- </option>
                                 <option value="presencial">Presencial</option>
                                 <option value="videoconsulta">Videollamada</option>
                             </select>
                         </div>
                         <div class="col">
+                            <label for="provincia_id"><strong>Provincia</strong></label>
                             <select class="form-control form-select" name="provincia_id" id="provincia_id">
                                 <option value="">-- Seleccione la provincia -- </option>
                                 @foreach ($provincias as $provincia)
@@ -94,12 +99,14 @@
                             </select>
                         </div>
                         <div class="col">
+                            <label for="ciudad_id"><strong>Ciudad</strong></label>
                             <select class="form-control form-select" name="ciudad_id" id="ciudad_id">
                                 <option value="">-- Seleccione la ciudad -- </option>
                             </select>
                         </div>
                         <div class="col">
-                            <select name="seguro_id" id="" class="form-control form-select">
+                            <label for="seguro_id"><strong>Seguro</strong></label>
+                            <select name="seguro_id" id="seguro_id" class="form-control form-select">
                                 <option value="">-- Selecciona un seguro -- </option>
                                 @foreach ($seguros as $seguro)
                                     <option value="{{ $seguro->id }}">{{ $seguro->nombre }}</option>
@@ -107,6 +114,7 @@
                             </select>
                         </div>
                         <div class="col">
+                            <label><strong>&nbsp;</strong></label>
                             <button type="submit" class="btn btn-dark w-100">Buscar</button>
                         </div>
                     </div>
@@ -115,7 +123,8 @@
             <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                 <div class="row">
                     <div class="col">
-                        <select name="especialidad_id" id="" class="form-control form-select">
+                        <label for="odont_especialidad_id"><strong>Especialidad</strong></label>
+                        <select name="especialidad_id" id="odont_especialidad_id" class="form-control form-select">
                             <option value="">-- Selecciona una especialidad -- </option>
                             @foreach ($especialidades as $especialidad)
                                 <option value="{{ $especialidad->id }}">{{ $especialidad->nombre }}</option>
@@ -123,28 +132,34 @@
                         </select>
                     </div>
                     <div class="col">
-                        <select name="especialidad_id" id="" class="form-control form-select">
+                        <label for="odont_sub_especialidad_id"><strong>Sub-especialidad</strong></label>
+                        <select name="especialidad_id" id="odont_sub_especialidad_id" class="form-control form-select">
                             <option value="">-- Selecciona una sub-especialidad -- </option>
 
                         </select>
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Nombre prof." class="form-control">
+                        <label for="odont_nombre"><strong>Nombre prof.</strong></label>
+                        <input type="text" id="odont_nombre" placeholder="Nombre prof." class="form-control">
                     </div>
                     <div class="col">
-                        <select name="modalidad" id="" class="form-control form-select">
+                        <label for="odont_modalidad"><strong>Modalidad</strong></label>
+                        <select name="modalidad" id="odont_modalidad" class="form-control form-select">
                             <option value="">-- Selecciona una modalidad -- </option>
                             <option value="presencial">Presencial</option>
                             <option value="videoconsulta">Videollamada</option>
                         </select>
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Provincia" class="form-control">
+                        <label for="odont_provincia"><strong>Provincia</strong></label>
+                        <input type="text" id="odont_provincia" placeholder="Provincia" class="form-control">
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Ciudad" class="form-control">
+                        <label for="odont_ciudad"><strong>Ciudad</strong></label>
+                        <input type="text" id="odont_ciudad" placeholder="Ciudad" class="form-control">
                     </div>
                     <div class="col">
+                        <label><strong>&nbsp;</strong></label>
                         <button class="btn btn-dark w-100">Buscar</button>
                     </div>
                 </div>
@@ -152,7 +167,8 @@
             <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
                 <div class="row">
                     <div class="col">
-                        <select name="especialidad_id" id="" class="form-control form-select">
+                        <label for="psico_especialidad_id"><strong>Especialidad</strong></label>
+                        <select name="especialidad_id" id="psico_especialidad_id" class="form-control form-select">
                             <option value="">-- Selecciona una especialidad -- </option>
                             @foreach ($especialidades as $especialidad)
                                 <option value="{{ $especialidad->id }}">{{ $especialidad->nombre }}</option>
@@ -160,28 +176,33 @@
                         </select>
                     </div>
                     <div class="col">
-                        <select name="especialidad_id" id="" class="form-control form-select">
+                        <label for="psico_sub_especialidad_id"><strong>Sub-especialidad</strong></label>
+                        <select name="especialidad_id" id="psico_sub_especialidad_id" class="form-control form-select">
                             <option value="">-- Selecciona una sub-especialidad -- </option>
-
                         </select>
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Nombre prof." class="form-control">
+                        <label for="psico_nombre"><strong>Nombre prof.</strong></label>
+                        <input type="text" id="psico_nombre" placeholder="Nombre prof." class="form-control">
                     </div>
                     <div class="col">
-                        <select name="modalidad" id="" class="form-control form-select">
+                        <label for="psico_modalidad"><strong>Modalidad</strong></label>
+                        <select name="modalidad" id="psico_modalidad" class="form-control form-select">
                             <option value="">-- Selecciona una modalidad -- </option>
                             <option value="presencial">Presencial</option>
                             <option value="videoconsulta">Videollamada</option>
                         </select>
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Provincia" class="form-control">
+                        <label for="psico_provincia"><strong>Provincia</strong></label>
+                        <input type="text" id="psico_provincia" placeholder="Provincia" class="form-control">
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Ciudad" class="form-control">
+                        <label for="psico_ciudad"><strong>Ciudad</strong></label>
+                        <input type="text" id="psico_ciudad" placeholder="Ciudad" class="form-control">
                     </div>
                     <div class="col">
+                        <label><strong>&nbsp;</strong></label>
                         <button class="btn btn-dark w-100">Buscar</button>
                     </div>
                 </div>
@@ -189,7 +210,8 @@
             <div class="tab-pane fade" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
                 <div class="row">
                     <div class="col">
-                        <select name="especialidad_id" id="" class="form-control form-select">
+                        <label for="lab_especialidad_id"><strong>Especialidad</strong></label>
+                        <select name="especialidad_id" id="lab_especialidad_id" class="form-control form-select">
                             <option value="">-- Selecciona una especialidad -- </option>
                             @foreach ($especialidades as $especialidad)
                                 <option value="{{ $especialidad->id }}">{{ $especialidad->nombre }}</option>
@@ -197,19 +219,24 @@
                         </select>
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Nombre prueba" class="form-control">
+                        <label for="lab_nombre"><strong>Nombre prueba</strong></label>
+                        <input type="text" id="lab_nombre" placeholder="Nombre prueba" class="form-control">
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Provincia" class="form-control">
+                        <label for="lab_provincia"><strong>Provincia</strong></label>
+                        <input type="text" id="lab_provincia" placeholder="Provincia" class="form-control">
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Ciudad" class="form-control">
+                        <label for="lab_ciudad"><strong>Ciudad</strong></label>
+                        <input type="text" id="lab_ciudad" placeholder="Ciudad" class="form-control">
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Geolocalizar" class="form-control">
+                        <label for="lab_geo"><strong>Geolocalizar</strong></label>
+                        <input type="text" id="lab_geo" placeholder="Geolocalizar" class="form-control">
                     </div>
                     <div class="col">
-                        <select name="seguro_id" id="" class="form-control form-select">
+                        <label for="lab_seguro_id"><strong>Seguro</strong></label>
+                        <select name="seguro_id" id="lab_seguro_id" class="form-control form-select">
                             <option value="">-- Selecciona un seguro -- </option>
                             @foreach ($seguros as $seguro)
                                 <option value="{{ $seguro->id }}">{{ $seguro->nombre }}</option>
@@ -217,6 +244,7 @@
                         </select>
                     </div>
                     <div class="col">
+                        <label><strong>&nbsp;</strong></label>
                         <button class="btn btn-dark w-100">Buscar</button>
                     </div>
                 </div>
@@ -224,7 +252,8 @@
             <div class="tab-pane fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
                 <div class="row">
                     <div class="col">
-                        <select name="especialidad_id" id="" class="form-control form-select">
+                        <label for="img_especialidad_id"><strong>Especialidad</strong></label>
+                        <select name="especialidad_id" id="img_especialidad_id" class="form-control form-select">
                             <option value="">-- Selecciona una especialidad -- </option>
                             @foreach ($especialidades as $especialidad)
                                 <option value="{{ $especialidad->id }}">{{ $especialidad->nombre }}</option>
@@ -232,19 +261,24 @@
                         </select>
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Nombre prueba" class="form-control">
+                        <label for="img_nombre"><strong>Nombre prueba</strong></label>
+                        <input type="text" id="img_nombre" placeholder="Nombre prueba" class="form-control">
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Provincia" class="form-control">
+                        <label for="img_provincia"><strong>Provincia</strong></label>
+                        <input type="text" id="img_provincia" placeholder="Provincia" class="form-control">
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Ciudad" class="form-control">
+                        <label for="img_ciudad"><strong>Ciudad</strong></label>
+                        <input type="text" id="img_ciudad" placeholder="Ciudad" class="form-control">
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Geolocalizar" class="form-control">
+                        <label for="img_geo"><strong>Geolocalizar</strong></label>
+                        <input type="text" id="img_geo" placeholder="Geolocalizar" class="form-control">
                     </div>
                     <div class="col">
-                        <select name="seguro_id" id="" class="form-control form-select">
+                        <label for="img_seguro_id"><strong>Seguro</strong></label>
+                        <select name="seguro_id" id="img_seguro_id" class="form-control form-select">
                             <option value="">-- Selecciona un seguro -- </option>
                             @foreach ($seguros as $seguro)
                                 <option value="{{ $seguro->id }}">{{ $seguro->nombre }}</option>
@@ -252,6 +286,7 @@
                         </select>
                     </div>
                     <div class="col">
+                        <label><strong>&nbsp;</strong></label>
                         <button class="btn btn-dark w-100">Buscar</button>
                     </div>
                 </div>
@@ -259,18 +294,23 @@
             <div class="tab-pane fade" id="tab6" role="tabpanel" aria-labelledby="tab6-tab">
                 <div class="row">
                     <div class="col">
-                        <input type="text" placeholder="Disponibilidad" class="form-control">
+                        <label for="farm_disponibilidad"><strong>Disponibilidad</strong></label>
+                        <input type="text" id="farm_disponibilidad" placeholder="Disponibilidad" class="form-control">
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Provincia" class="form-control">
+                        <label for="farm_provincia"><strong>Provincia</strong></label>
+                        <input type="text" id="farm_provincia" placeholder="Provincia" class="form-control">
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Ciudad" class="form-control">
+                        <label for="farm_ciudad"><strong>Ciudad</strong></label>
+                        <input type="text" id="farm_ciudad" placeholder="Ciudad" class="form-control">
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Geolocalizar" class="form-control">
+                        <label for="farm_geo"><strong>Geolocalizar</strong></label>
+                        <input type="text" id="farm_geo" placeholder="Geolocalizar" class="form-control">
                     </div>
                     <div class="col">
+                        <label><strong>&nbsp;</strong></label>
                         <button type="submit" class="btn btn-dark w-100">Buscar</button>
                     </div>
                 </div>
@@ -279,13 +319,15 @@
                 <form action="{{ route('pacientes.buscar.emergencias') }}" method="get">
                     <div class="row">
                         <div class="col">
-                            <select name="tipo" id="" class="form-control form-select">
+                            <label for="emerg_tipo"><strong>Tipo de servicio</strong></label>
+                            <select name="tipo" id="emerg_tipo" class="form-control form-select">
                                 <option value="">-- Seleccione tipo de servicio -- </option>
                                 <option value="Farmacia 24 horas">Farmacia 24 horas</option>
                                 <option value="Ambulancia 24 horas">Ambulancia 24 horas</option>
                             </select>
                         </div>
                         <div class="col">
+                            <label for="provincia_id1"><strong>Provincia</strong></label>
                             <select class="form-control form-select" name="provincia_id1" id="provincia_id1">
                                 <option value="">-- Seleccione la provincia -- </option>
                                 @foreach ($provincias as $provincia)
@@ -295,14 +337,17 @@
                             </select>
                         </div>
                         <div class="col">
+                            <label for="ciudad_id1"><strong>Ciudad</strong></label>
                             <select class="form-control form-select" name="ciudad_id1" id="ciudad_id1">
                                 <option value="">-- Seleccione la ciudad -- </option>
                             </select>
                         </div>
                         <div class="col">
-                            <input type="text" placeholder="Geolocalizar" class="form-control">
+                            <label for="emerg_geo"><strong>Geolocalizar</strong></label>
+                            <input type="text" id="emerg_geo" placeholder="Geolocalizar" class="form-control">
                         </div>
                         <div class="col">
+                            <label><strong>&nbsp;</strong></label>
                             <button type="submit" class="btn btn-dark w-100">Buscar</button>
                         </div>
                     </div>
@@ -311,7 +356,8 @@
             <div class="tab-pane fade" id="tab8" role="tabpanel" aria-labelledby="tab8-tab">
                 <div class="row">
                     <div class="col">
-                        <select name="especialidad_id" id="" class="form-control form-select">
+                        <label for="otros_especialidad_id"><strong>Especialidad</strong></label>
+                        <select name="especialidad_id" id="otros_especialidad_id" class="form-control form-select">
                             <option value="">-- Selecciona una especialidad -- </option>
                             @foreach ($especialidades as $especialidad)
                                 <option value="{{ $especialidad->id }}">{{ $especialidad->nombre }}</option>
@@ -319,25 +365,29 @@
                         </select>
                     </div>
                     <div class="col">
-                        <select name="especialidad_id" id="" class="form-control form-select">
+                        <label for="otros_sub_especialidad_id"><strong>Sub-especialidad</strong></label>
+                        <select name="especialidad_id" id="otros_sub_especialidad_id" class="form-control form-select">
                             <option value="">-- Selecciona una sub-especialidad -- </option>
-
                         </select>
                     </div>
                     <div class="col">
-                        <select name="modalidad" id="" class="form-control form-select">
+                        <label for="otros_modalidad"><strong>Modalidad</strong></label>
+                        <select name="modalidad" id="otros_modalidad" class="form-control form-select">
                             <option value="">-- Selecciona una modalidad -- </option>
                             <option value="presencial">Presencial</option>
                             <option value="videoconsulta">Videollamada</option>
                         </select>
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Provincia" class="form-control">
+                        <label for="otros_provincia"><strong>Provincia</strong></label>
+                        <input type="text" id="otros_provincia" placeholder="Provincia" class="form-control">
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Ciudad" class="form-control">
+                        <label for="otros_ciudad"><strong>Ciudad</strong></label>
+                        <input type="text" id="otros_ciudad" placeholder="Ciudad" class="form-control">
                     </div>
                     <div class="col">
+                        <label><strong>&nbsp;</strong></label>
                         <button class="btn btn-dark w-100">Buscar</button>
                     </div>
                 </div>

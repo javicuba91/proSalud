@@ -55,6 +55,7 @@ class EmergenciaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'nombre' => 'required|string|max:255',
             'tipo' => 'required|in:Farmacia 24 horas,Ambulancia 24 horas',
             'region_id' => 'required|exists:regiones,id',
             'provincia_id' => 'required|exists:provincias,id',
@@ -64,6 +65,7 @@ class EmergenciaController extends Controller
         ]);
 
         Emergencia::create([
+            'nombre' => $request->nombre,
             'tipo' => $request->tipo,
             'region_id' => $request->region_id,
             'provincia_id' => $request->provincia_id,
@@ -100,6 +102,7 @@ class EmergenciaController extends Controller
     public function update(Request $request, Emergencia $emergencia)
     {
         $request->validate([
+            'nombre' => 'required|string|max:255',
             'tipo' => 'required|in:Farmacia 24 horas,Ambulancia 24 horas',
             'provincia_id' => 'required|exists:provincias,id',
             'ciudad_id' => 'required|exists:ciudades,id',
@@ -108,6 +111,7 @@ class EmergenciaController extends Controller
         ]);
 
         $emergencia->update([
+            'nombre' => $request->nombre,
             'tipo' => $request->tipo,
             'provincia_id' => $request->provincia_id,
             'ciudad_id' => $request->ciudad_id,

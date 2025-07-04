@@ -125,6 +125,11 @@
         </div>
 
         <div class="row border p-2">
+            <div class="col-md-12 mb-2">
+                <label for="nombre_propietario" class="form-label">Nombre del propietario <span class="text-danger">*</span></label>
+                <input type="text" name="nombre_propietario" id="nombre_propietario" class="form-control form-input"
+                    placeholder="Ingrese nombre del propietario" value="{{ $proveedor->propietario->nombre ?? '' }}" disabled>
+            </div>
             <div class="col-md-6 mb-2">
                 <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
                 <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control form-input"
@@ -261,6 +266,10 @@
                 <label for="email_centro" class="form-label">Email del centro <span class="text-danger">*</span></label>
                 <input type="email" name="email" id="email_centro" class="form-control form-input"
                     placeholder="Ingrese email del centro" value="{{ $proveedor->propietario->email ?? ($proveedor->email ?? '') }}" disabled>
+            </div>
+            <div class="col-md-6 mb-2">
+                <label for="proveedor_id" class="form-label">ID Proveedor (debug/admin)</label>
+                <input type="number" name="proveedor_id" id="proveedor_id" class="form-control form-input" value="{{ $proveedor->propietario->proveedor_id ?? $proveedor->id ?? '' }}" disabled>
             </div>
         </div>
 

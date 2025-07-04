@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Cita;
 use App\Models\ContactoAdminProfesional;
 use App\Models\ContactoAdminProveedores;
+use App\Models\DocumentoProfesional;
+use App\Models\DocumentosProveedor;
 use App\Models\Emergencia;
 use App\Models\Medicamento;
 use App\Models\Paciente;
@@ -72,8 +74,10 @@ class AdminController extends Controller
 
         $usuariosPorTipo = $datos;
 
+        $total_documentos_profesional = DocumentoProfesional::where('estado', '=', 'pendiente')->count();
+        $total_documentos_proveedor = DocumentosProveedor::where('estado', '=', 'pendiente')->count();
 
-        return view('admin.index', compact('usuariosPorTipo', 'total_ingresos', 'total_citas_pendientes', 'total_citas_canceladas', 'total_citas', 'total_profesionales', 'total_pacientes', 'total_proveedores', 'total_emergencias'));
+        return view('admin.index', compact('total_documentos_proveedor','total_documentos_profesional','total_ingresos_profesionales','total_ingresos_proveedor','usuariosPorTipo', 'total_ingresos', 'total_citas_pendientes', 'total_citas_canceladas', 'total_citas', 'total_profesionales', 'total_pacientes', 'total_proveedores', 'total_emergencias'));
     }
 
     /**

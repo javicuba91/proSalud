@@ -29,7 +29,10 @@ class PropietarioController extends Controller
      */
     public function store(StorePropietarioRequest $request)
     {
-        //
+        $data = $request->validated();
+        $propietario = Propietario::create($data);
+        // ... lógica adicional si es necesario ...
+        return redirect()->route('propietarios.index')->with('success', 'Propietario creado correctamente.');
     }
 
     /**
@@ -53,7 +56,10 @@ class PropietarioController extends Controller
      */
     public function update(UpdatePropietarioRequest $request, Propietario $propietario)
     {
-        //
+        $data = $request->validated();
+        $propietario->update($data);
+        // ... lógica adicional si es necesario ...
+        return redirect()->route('propietarios.index')->with('success', 'Propietario actualizado correctamente.');
     }
 
     /**

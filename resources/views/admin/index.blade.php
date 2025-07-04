@@ -105,6 +105,53 @@
                 </div>
             </div>
         </div>
+        <div class="clearfix hidden-md-up"></div>
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+                <span style="background-color: deepskyblue; color: black;" class="info-box-icon elevation-1"><i
+                        class="fa fa-hand-holding-usd"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Total Ingresos Profesional</span>
+                    <span class="info-box-number">${{ $total_ingresos_profesionales }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+                <span style="background-color: yellow; color: black;" class="info-box-icon elevation-1"><i
+                        class="fa fa-hand-holding-usd"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Total Ingresos Proveedor</span>
+                    <span class="info-box-number">${{ $total_ingresos_proveedor }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix hidden-md-up"></div>
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+                <span style="background-color: burlywood; color: black;" class="info-box-icon elevation-1"><i
+                        class="fa fa-book"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Doc. Pendiente Profesional</span>
+                    <span class="info-box-number">{{ $total_documentos_profesional }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+                <span style="background-color: hotpink; color: black;" class="info-box-icon elevation-1"><i
+                        class="fa fa-book"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Doc. Pendiente Proveedor</span>
+                    <span class="info-box-number">{{ $total_documentos_proveedor }}</span>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="row">

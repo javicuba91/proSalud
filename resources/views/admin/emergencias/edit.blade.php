@@ -19,6 +19,10 @@
             </select>
         </div>
         <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre" class="form-control" value="{{ $emergencia->nombre }}" required>
+        </div>
+        <div class="form-group">
             <label for="region_id">Región</label>
             <select name="region_id" id="region_id" class="form-control" required>
                 <option value="">Seleccionar región...</option>

@@ -378,6 +378,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/facturacion/{id}/pagar', [FacturacionController::class, 'pagar'])->name('admin.facturacion.pagar');
         Route::post('/facturacion/{id}/pagar', [FacturacionController::class, 'pagarPost'])->name('admin.facturacion.pagar.post');
 
+        Route::get('/facturacion-proveedor', [FacturacionController::class, 'indexProveedor'])->name('admin.facturacion.proveedor.index');
+        Route::get('/facturacion-proveedor/{id}', [FacturacionController::class, 'showProveedor'])->name('admin.facturacion.proveedor.show');
+        Route::get('/facturacion-proveedor/{id}/pagar', [FacturacionController::class, 'pagarProveedor'])->name('admin.facturacion.proveedor.pagar');
+        Route::post('/facturacion-proveedor/{id}/pagar', [FacturacionController::class, 'pagarPostProveedor'])->name('admin.facturacion.proveedor.pagar.post');
+
+
+
+
         Route::get('/especialidades', [EspecialidadController::class, 'index'])->name('especialidades.index');
         Route::get('/especialidades/create', [EspecialidadController::class, 'create'])->name('especialidades.create');
         Route::post('/especialidades', [EspecialidadController::class, 'store'])->name('especialidades.store');

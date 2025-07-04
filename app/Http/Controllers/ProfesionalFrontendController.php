@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CategoriaProfesional;
+use App\Models\Ciudad;
 use App\Models\Plan;
 use App\Models\Profesional;
 use App\Models\User;
@@ -92,7 +93,8 @@ class ProfesionalFrontendController extends Controller
     public function registro()
     {
         $categorias=CategoriaProfesional::all();
-        return view('frontend.profesionales.registro', compact('categorias'));
+        $ciudades = Ciudad::orderBy('nombre')->get();
+        return view('frontend.profesionales.registro', compact('categorias','ciudades'));
     }
 
     public function registroProfesional(Request $request)

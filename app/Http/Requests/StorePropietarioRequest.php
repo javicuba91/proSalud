@@ -22,7 +22,14 @@ class StorePropietarioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nombre' => 'required|string|max:255',
+            'fecha_nacimiento' => 'nullable|date',
+            'genero' => 'nullable|string|max:20',
+            'telefono_personal' => 'nullable|string|max:20',
+            'cedula_identidad' => 'nullable|string|max:50',
+            'telefono_profesional' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'proveedor_id' => 'nullable|exists:proveedores,id',
         ];
     }
 }

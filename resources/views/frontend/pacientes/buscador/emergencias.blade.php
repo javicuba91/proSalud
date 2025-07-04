@@ -86,6 +86,13 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-lg-12 mb-2">
+                                                    <input type="text" class="form-control"
+                                                        value="{{ $emergencia->nombre }}"
+                                                        placeholder="Nombre">
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-lg-12">
                                                     <p>Valoraciones:</p>
                                                 </div>
