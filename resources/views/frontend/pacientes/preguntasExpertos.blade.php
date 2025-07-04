@@ -96,8 +96,6 @@
                                     @if ($respuesta->pregunta->sub_especialidad_id != null)
                                         / {{ $respuesta->pregunta->subespecialidad->nombre }})
                                     @endif
-
-                                    )
                                 </button>
                             </h2>
                             <div id="collapse{{ $respuesta->id }}" class="accordion-collapse collapse"

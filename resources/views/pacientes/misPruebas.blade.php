@@ -59,10 +59,12 @@
                             </td>
                             <td>
                                 @if ($prueba->pedido_imagen_id || $prueba->pedido_laboratorio_id)
-                                    <button type="button" class="btn btn-sm btn-info" data-toggle="modal"
+                                    @if ($prueba->estado != 'pendiente')
+                                        <button type="button" class="btn btn-sm btn-info" data-toggle="modal"
                                         data-target="#modalImagenesPrueba{{ $prueba->id }}">
                                         <i class="fa fa-images"></i> Ver imágenes
                                     </button>
+                                    @endif
                                     <!-- Modal -->
                                     <div class="modal fade" id="modalImagenesPrueba{{ $prueba->id }}" tabindex="-1"
                                         role="dialog" aria-labelledby="modalLabel{{ $prueba->id }}" aria-hidden="true">

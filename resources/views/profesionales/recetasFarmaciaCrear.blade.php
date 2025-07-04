@@ -3,16 +3,17 @@
 @section('title', 'Elaboración receta digital')
 
 @section('css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
-    .profile-image {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        padding: 20px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    }
+        .profile-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
     </style>
 @endsection
 
@@ -87,7 +88,7 @@
     </div>
 
     <!-- Datos de la receta -->
-    <form action="{{ route('profesionales.receta.update', $receta->id) }}" method="POST">
+    <form action="{{ route('profesionales.receta.update', $receta->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         <h5>Datos de la receta</h5>
         @php
@@ -99,6 +100,7 @@
 
             // Si quieres que el enlace codificado sea la URL de detalle:
             //$urlDetalle = route('recetas.show', ['id' => $receta->id, 'qr' => $qrValue]);
+
         @endphp
 
         <div class="row mb-3 border p-2">
@@ -106,7 +108,7 @@
                 <div class="col-md-12 text-left mb-3">
                     {{-- Mostrar el QR --}}
                     {!! QrCode::size(150)->generate($receta->qr) !!}
-                </div>            
+                </div>
             @endif
 
             <div class="col-md-6 mb-2">
@@ -133,14 +135,121 @@
         <div class="mb-3">
             <textarea class="form-control" name="comentarios" rows="2" placeholder="Comentarios">{{ $receta->comentarios }}</textarea>
         </div>
+        <label for="recetas">Adjuntar archivos de imagen o PDF de recetas anteriores </label>
         <div class="mb-4">
-            <input type="file" class="form-control" placeholder="Firma (adjuntar archivo o área para firma)">
+            <input id="recetas" name="ruta_archivo[]" type="file" class="form-control" accept="image/*,application/pdf" multiple onchange="previewFiles(this)">
+
+            <!-- Mostrar archivos existentes -->
+            @if($receta->recetas_anteriores && $receta->recetas_anteriores->count() > 0)
+            <div class="mt-3">
+                <h6>Archivos ya subidos:</h6>
+                <div class="row">
+                    @foreach($receta->recetas_anteriores as $index => $archivo)
+                    <div class="col-md-4 mb-2">
+                        <div class="border p-2 rounded">
+                            @if(Str::endsWith(strtolower($archivo->ruta_archivo), ['.jpg','.jpeg','.png','.gif']))
+                            <img src="{{ asset($archivo->ruta_archivo) }}" class="img-thumbnail w-100" style="max-height: 150px; object-fit: cover;">
+                            @else
+                            <div class="text-center p-3">
+                                <i class="fas fa-file-pdf fa-3x text-danger"></i>
+                                <p class="mt-2 mb-0">PDF</p>
+                            </div>
+                            @endif
+                            <div class="mt-2">
+                                <a href="{{ asset($archivo->ruta_archivo) }}" target="_blank" class="btn btn-sm btn-info w-100">
+                                    <i class="fas fa-eye"></i> Ver
+                                </a>
+                                <button type="button" class="btn btn-sm btn-danger w-100 mt-1" onclick="eliminarArchivo({{ $archivo->id }})">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
+            <!-- Contenedor para preview de nuevos archivos -->
+            <div class="mt-2" id="preview-container"></div>
         </div>
 
+        <script>
+            function previewFiles(input) {
+                const preview = document.getElementById('preview-container');
+                preview.innerHTML = '';
+
+                if (input.files && input.files.length > 0) {
+                    const previewTitle = document.createElement('h6');
+                    previewTitle.textContent = 'Archivos seleccionados:';
+                    preview.appendChild(previewTitle);
+
+                    const row = document.createElement('div');
+                    row.className = 'row';
+
+                    for (let i = 0; i < input.files.length; i++) {
+                        const file = input.files[i];
+                        const col = document.createElement('div');
+                        col.className = 'col-md-4 mb-2';
+
+                        const fileDiv = document.createElement('div');
+                        fileDiv.className = 'border p-2 rounded';
+
+                        if (file.type.startsWith('image/')) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                fileDiv.innerHTML = `
+                                    <img src="${e.target.result}" class="img-thumbnail w-100" style="max-height: 150px; object-fit: cover;">
+                                    <p class="mt-2 mb-0 text-center small">${file.name}</p>
+                                `;
+                            }
+                            reader.readAsDataURL(file);
+                        } else if (file.type === 'application/pdf') {
+                            fileDiv.innerHTML = `
+                                <div class="text-center p-3">
+                                    <i class="fas fa-file-pdf fa-3x text-danger"></i>
+                                    <p class="mt-2 mb-0 small">${file.name}</p>
+                                </div>
+                            `;
+                        }
+
+                        col.appendChild(fileDiv);
+                        row.appendChild(col);
+                    }
+
+                    preview.appendChild(row);
+                }
+            }
+
+            function eliminarArchivo(archivoId) {
+                if (confirm('¿Estás seguro de que quieres eliminar este archivo?')) {
+                    fetch(`/profesional/receta/archivo/${archivoId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert('Error al eliminar el archivo');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error al eliminar el archivo');
+                    });
+                }
+            }
+        </script>
         <div class="row mb-3">
             <div class="col-lg"><button type="submit" class="btn btn-dark w-100">Guardar receta</button></div>
             <div class="col-lg"><button class="btn btn-dark w-100">Enviar al paciente</button></div>
-            <div class="col-lg"><button type="button" data-toggle="modal" data-target="#modalReceta" class="btn btn-dark w-100">Imprimir</button></div>
+            <div class="col-lg"><button type="button" data-toggle="modal" data-target="#modalReceta"
+                    class="btn btn-dark w-100">Imprimir</button></div>
             <div class="col-lg">
                 <a href="{{ route('profesional.receta.exportarPDF', $receta->id) }}" class="btn btn-dark w-100">
                     Exportar en PDF
@@ -189,59 +298,91 @@
     </div>
 
     <!-- Modal -->
-<div class="modal fade" id="modalReceta" tabindex="-1" aria-labelledby="modalRecetaLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable"> <!-- scroll si el contenido es largo -->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalRecetaLabel">Vista previa Receta Médica</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <div class="modal-body" id="modalRecetaContent" style="font-family: DejaVu Sans, sans-serif; font-size:12px; color:#333;">
-          <!-- Aquí va tu contenido -->
-          <h2>Receta Médica</h2>
-  
-          <table class="logo-table" style="width: 100%; margin-bottom: 20px; border-collapse: collapse;">
-            <tr>
-              <td style="text-align:center; vertical-align:middle;">
-                <img src="{{ asset('imagenes/logo.png') }}" style="width:100px; height:100px; object-fit:contain; border:1px solid #ccc; padding:5px; border-radius:5px;">
-              </td>
-              <td style="text-align:center; vertical-align:middle;">
-                <img src="{{ asset($receta->informeConsulta->cita->profesional->logo) }}" style="width:100px; height:100px; object-fit:contain; border:1px solid #ccc; padding:5px; border-radius:5px;">
-              </td>
-            </tr>
-          </table>
-  
-          <table class="info-table" style="width: 100%; margin-bottom: 20px; border-collapse: collapse;">
-            <tr><td style="font-weight:bold; color:#000; width: 30%;">Paciente:</td><td>{{ $receta->informeConsulta->cita->paciente->nombre_completo }}</td></tr>
-            <tr><td style="font-weight:bold; color:#000;">Cédula:</td><td>{{ $receta->informeConsulta->cita->paciente->cedula }}</td></tr>
-            <tr><td style="font-weight:bold; color:#000;">Fecha nacimiento:</td><td>{{ $receta->informeConsulta->cita->paciente->fecha_nacimiento }}</td></tr>
-            <tr><td style="font-weight:bold; color:#000;">Médico:</td><td>{{ $receta->informeConsulta->cita->profesional->nombre_completo }}</td></tr>
-            <tr><td style="font-weight:bold; color:#000;">Colegiado:</td><td>{{ $receta->informeConsulta->cita->profesional->num_colegiado }}</td></tr>
-            <tr><td style="font-weight:bold; color:#000;">Fecha emisión:</td><td>{{ date("d-m-Y H:i:s",strtotime($receta->fecha_emision)) }}</td></tr>
-            <tr><td style="font-weight:bold; color:#000;">Diagnóstico:</td><td>{{ $receta->diagnostico }}</td></tr>
-            <tr><td style="font-weight:bold; color:#000;">Comentarios:</td><td>{{ $receta->comentarios }}</td></tr>
-          </table>
-  
-          <h3>Medicamentos</h3>
-          @foreach($receta->medicamentosRecetados as $med)
-            <div style="padding:10px; border-radius:6px; background:#f0f8ff; margin-bottom:10px; color:#0056b3; font-size:13px;">
-              <strong>{{ $med->medicamento->nombre ?? 'Medicamento' }}</strong><br>
-              Dosis: {{ $med->dosis }}<br>
-              Presentación: {{ App\Models\PresentacionMedicamento::find($med->presentacion_medicamentos_id)->nombre }}<br>
-              Vía: {{ App\Models\ViaAdministracionMedicamento::find($med->via_administracion_medicamentos_id)->nombre }}<br>
-              Intervalo: {{ App\Models\IntervaloMedicamento::find($med->intervalo_medicamentos_id)->nombre }}<br>
-              Duración: {{ $med->duracion }}
+    <div class="modal fade" id="modalReceta" tabindex="-1" aria-labelledby="modalRecetaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable"> <!-- scroll si el contenido es largo -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalRecetaLabel">Vista previa Receta Médica</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body" id="modalRecetaContent"
+                    style="font-family: DejaVu Sans, sans-serif; font-size:12px; color:#333;">
+                    <!-- Aquí va tu contenido -->
+                    <h2>Receta Médica</h2>
+
+                    <table class="logo-table" style="width: 100%; margin-bottom: 20px; border-collapse: collapse;">
+                        <tr>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <img src="{{ asset('imagenes/logo.png') }}"
+                                    style="width:100px; height:100px; object-fit:contain; border:1px solid #ccc; padding:5px; border-radius:5px;">
+                            </td>
+                            <td style="text-align:center; vertical-align:middle;">
+                                <img src="{{ asset($receta->informeConsulta->cita->profesional->logo) }}"
+                                    style="width:100px; height:100px; object-fit:contain; border:1px solid #ccc; padding:5px; border-radius:5px;">
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table class="info-table" style="width: 100%; margin-bottom: 20px; border-collapse: collapse;">
+                        <tr>
+                            <td style="font-weight:bold; color:#000; width: 30%;">Paciente:</td>
+                            <td>{{ $receta->informeConsulta->cita->paciente->nombre_completo }}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold; color:#000;">Cédula:</td>
+                            <td>{{ $receta->informeConsulta->cita->paciente->cedula }}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold; color:#000;">Fecha nacimiento:</td>
+                            <td>{{ $receta->informeConsulta->cita->paciente->fecha_nacimiento }}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold; color:#000;">Médico:</td>
+                            <td>{{ $receta->informeConsulta->cita->profesional->nombre_completo }}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold; color:#000;">Colegiado:</td>
+                            <td>{{ $receta->informeConsulta->cita->profesional->num_colegiado }}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold; color:#000;">Fecha emisión:</td>
+                            <td>{{ date('d-m-Y H:i:s', strtotime($receta->fecha_emision)) }}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold; color:#000;">Diagnóstico:</td>
+                            <td>{{ $receta->diagnostico }}</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold; color:#000;">Comentarios:</td>
+                            <td>{{ $receta->comentarios }}</td>
+                        </tr>
+                    </table>
+
+                    <h3>Medicamentos</h3>
+                    @foreach ($receta->medicamentosRecetados as $med)
+                        <div
+                            style="padding:10px; border-radius:6px; background:#f0f8ff; margin-bottom:10px; color:#0056b3; font-size:13px;">
+                            <strong>{{ $med->medicamento->nombre ?? 'Medicamento' }}</strong><br>
+                            Dosis: {{ $med->dosis }}<br>
+                            Presentación:
+                            {{ App\Models\PresentacionMedicamento::find($med->presentacion_medicamentos_id)->nombre }}<br>
+                            Vía:
+                            {{ App\Models\ViaAdministracionMedicamento::find($med->via_administracion_medicamentos_id)->nombre }}<br>
+                            Intervalo:
+                            {{ App\Models\IntervaloMedicamento::find($med->intervalo_medicamentos_id)->nombre }}<br>
+                            Duración: {{ $med->duracion }}
+                        </div>
+                    @endforeach
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="imprimirContenidoModal()">Imprimir
+                        Receta</button>
+                </div>
             </div>
-          @endforeach
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" onclick="imprimirContenidoModal()">Imprimir Receta</button>
-        </div>
-      </div>
     </div>
-  </div>
-  
+
     <!-- Modal Añadir Medicamento -->
     <div class="modal fade" id="modalMedicamento" tabindex="-1" aria-labelledby="modalMedicamentoLabel"
         aria-hidden="true">
@@ -304,11 +445,11 @@
 @stop
 
 @section('js')
-<script>
-    function imprimirContenidoModal() {
-      const contenido = document.getElementById('modalRecetaContent').innerHTML;
-      const ventana = window.open('', '_blank', 'width=800,height=600');
-      ventana.document.write(`
+    <script>
+        function imprimirContenidoModal() {
+            const contenido = document.getElementById('modalRecetaContent').innerHTML;
+            const ventana = window.open('', '_blank', 'width=800,height=600');
+            ventana.document.write(`
         <html>
           <head>
             <title>Imprimir Receta Médica</title>
@@ -363,11 +504,11 @@
           </body>
         </html>
       `);
-      ventana.document.close();
-      ventana.focus();
-      ventana.print();
-      ventana.close();
-    }
+            ventana.document.close();
+            ventana.focus();
+            ventana.print();
+            ventana.close();
+        }
     </script>
-    
+
 @endsection

@@ -33,117 +33,117 @@
         {{-- Datos de filiación --}}
         <div class="row mb-4">
             <div class="col-lg-12">
-                <h5 class="mb-3">Datos de filiación</h5>
-                <div class="border rounded p-3">
-                    <div class="row">
-                        <div class="col-lg-4 mb-3">
-                            <label class="form-label">Nombre paciente</label>
-                            <input value="{{ $cita->paciente->nombre_completo }}" type="text" class="form-control">
-                        </div>
-                        <div class="col-lg-4 mb-3">
-                            <label class="form-label">Fecha de nacimiento</label>
-                            <input value="{{ $cita->paciente->fecha_nacimiento }}" type="date" class="form-control">
-                        </div>
-                        <div class="col-lg-4 mb-3">
-                            <label class="form-label">Género</label>
-                            <select name="genero" id="genero" class="form-control form-select">
-                                <option value="">Seleccione su género</option>
-                                <option value="Masculino" {{ $cita->paciente->genero == 'Masculino' ? 'selected' : '' }}>
-                                    Masculino</option>
-                                <option value="Femenino" {{ $cita->paciente->genero == 'Femenino' ? 'selected' : '' }}>
-                                    Femenino
-                                </option>
-                                <option value="Otro" {{ $cita->paciente->genero == 'Otro' ? 'selected' : '' }}>Otro
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Estado civil</label>
-                            <input value="{{ $cita->paciente->estado_civil }}" type="text" class="form-control">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Nacionalidad</label>
-                            <input value="{{ $cita->paciente->nacionalidad }}" type="text" class="form-control">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Teléfono</label>
-                            <input value="{{ $cita->paciente->celular }}" type="text" class="form-control">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Email</label>
-                            <input value="{{ $cita->paciente->email }}" type="text" class="form-control">
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <label class="form-label">Dirección de residencia</label>
-                            <input value="{{ $cita->paciente->direccion }}" type="text" class="form-control">
-                        </div>
-                    </div>
+            <h5 class="mb-3">Datos de filiación</h5>
+            <div class="border rounded p-3">
+                <div class="row">
+                <div class="col-lg-4 mb-3">
+                    <label class="form-label">Nombre paciente</label>
+                    <input value="{{ $cita->paciente->nombre_completo }}" type="text" class="form-control" readonly>
                 </div>
+                <div class="col-lg-4 mb-3">
+                    <label class="form-label">Fecha de nacimiento</label>
+                    <input value="{{ $cita->paciente->fecha_nacimiento }}" type="date" class="form-control" readonly>
+                </div>
+                <div class="col-lg-4 mb-3">
+                    <label class="form-label">Género</label>
+                    <select name="genero" id="genero" class="form-control form-select" readonly>
+                    <option value="">Seleccione su género</option>
+                    <option value="Masculino" {{ $cita->paciente->genero == 'Masculino' ? 'selected' : '' }}>
+                        Masculino</option>
+                    <option value="Femenino" {{ $cita->paciente->genero == 'Femenino' ? 'selected' : '' }}>
+                        Femenino
+                    </option>
+                    <option value="Otro" {{ $cita->paciente->genero == 'Otro' ? 'selected' : '' }}>Otro
+                    </option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Estado civil</label>
+                    <input value="{{ $cita->paciente->estado_civil }}" type="text" class="form-control" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Nacionalidad</label>
+                    <input value="{{ $cita->paciente->nacionalidad }}" type="text" class="form-control" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Teléfono</label>
+                    <input value="{{ $cita->paciente->celular }}" type="text" class="form-control" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input value="{{ $cita->paciente->email }}" type="text" class="form-control" readonly>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Dirección de residencia</label>
+                    <input value="{{ $cita->paciente->direccion }}" type="text" class="form-control" readonly>
+                </div>
+                </div>
+            </div>
             </div>
         </div>
 
         {{-- Antecedentes patológicos personales --}}
         <div class="row mb-4 border p-4">
             <div class="col-lg-12">
-                <h5 class="mb-3">Antecedentes patológicos personales</h5>
-                @foreach ($cita->paciente->antecedentes as $antecedente)
-                    <div class="border rounded p-2 mb-2">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Alergias</label>
-                                <input value="{{ $antecedente->alergias }}" type="text" class="form-control">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Condiciones médicas preexistentes</label>
-                                <input value="{{ $antecedente->condiciones_medicas }}" type="text" class="form-control">
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Medicamentos que consume habitualmente</label>
-                                <input value="{{ $antecedente->medicamentos }}" type="text" class="form-control">
-                            </div>
-                        </div>
+            <h5 class="mb-3">Antecedentes patológicos personales</h5>
+            @foreach ($cita->paciente->antecedentes as $antecedente)
+                <div class="border rounded p-2 mb-2">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                    <label class="form-label">Alergias</label>
+                    <input value="{{ $antecedente->alergias }}" type="text" class="form-control" readonly>
                     </div>
-                @endforeach
+                    <div class="col-md-6 mb-3">
+                    <label class="form-label">Condiciones médicas preexistentes</label>
+                    <input value="{{ $antecedente->condiciones_medicas }}" type="text" class="form-control" readonly>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                    <label class="form-label">Medicamentos que consume habitualmente</label>
+                    <input value="{{ $antecedente->medicamentos }}" type="text" class="form-control" readonly>
+                    </div>
+                </div>
+                </div>
+            @endforeach
             </div>
         </div>
 
         {{-- Seguro de salud --}}
         <div class="row mb-4">
             <div class="col-lg-12">
-                <h5 class="mb-3">Seguro de salud</h5>
-                <div class="border rounded p-3">
-                    <label class="form-label">Seguro médico del paciente</label>
-                    <select class="form-control form-select" name="seguros_medicos[]" id="seguros_medicos" multiple>
-                        @foreach ($seguros as $seguro)
-                            <option value="{{ $seguro->id }}" @if ($cita->paciente->segurosMedicos->contains('id', $seguro->id)) selected @endif>
-                                {{ $seguro->nombre }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+            <h5 class="mb-3">Seguro de salud</h5>
+            <div class="border rounded p-3">
+            <label class="form-label">Seguro médico del paciente</label>
+            <select class="form-control form-select" name="seguros_medicos[]" id="seguros_medicos" multiple readonly disabled>
+            @foreach ($seguros as $seguro)
+                <option value="{{ $seguro->id }}" @if ($cita->paciente->segurosMedicos->contains('id', $seguro->id)) selected @endif>
+                {{ $seguro->nombre }}
+                </option>
+            @endforeach
+            </select>
+            </div>
             </div>
         </div>
 
         {{-- Datos de emergencia --}}
         <div class="row mb-4">
             <div class="col-lg-12">
-                <h5 class="mb-3">Datos de emergencia</h5>
-                @foreach ($cita->paciente->contactos_emergencia as $contacto)
-                    <div class="row mt-2 border p-2">
-                        <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Nombre"
-                                value="{{ $contacto->nombre }}">
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Relación"
-                                value="{{ $contacto->relacion }}">
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Teléfono"
-                                value="{{ $contacto->telefono }}">
-                        </div>
-                    </div>
-                @endforeach
+            <h5 class="mb-3">Datos de emergencia</h5>
+            @foreach ($cita->paciente->contactos_emergencia as $contacto)
+                <div class="row mt-2 border p-2">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Nombre"
+                    value="{{ $contacto->nombre }}" readonly>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Relación"
+                    value="{{ $contacto->relacion }}" readonly>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Teléfono"
+                    value="{{ $contacto->telefono }}" readonly>
+                </div>
+                </div>
+            @endforeach
             </div>
         </div>
 

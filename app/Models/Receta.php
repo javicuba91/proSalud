@@ -25,4 +25,13 @@ class Receta extends Model
     {
         return $this->belongsTo(InformeConsulta::class, 'informe_consulta_id');
     }
+    public function recetasAnteriores()
+    {
+        return $this->hasMany(RecetasAnteriores::class);
+    }
+
+    public function recetas_anteriores()
+    {
+        return $this->hasMany(RecetasAnteriores::class);
+    }
 }

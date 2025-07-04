@@ -29,7 +29,9 @@ class Profesional extends Model
         'presencial',
         'videoconsulta',
         'foto',
-        'logo'
+        'logo',
+        'sello',
+        'firma',
     ];
 
     public function user()

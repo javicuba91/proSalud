@@ -150,6 +150,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profesional/actualizar-numero-cuenta', [ProfesionalController::class, 'actualizarNumeroCuenta']);
     Route::post('/profesional/actualizar-datos', [ProfesionalController::class, 'actualizarDatos']);
     Route::post('/profesional/actualizar-contrasena', [ProfesionalController::class, 'actualizarContrasena'])->name('profesional.actualizarContrasena');
+    Route::post('/profesional/actualizar-sello-firma', [ProfesionalController::class, 'actualizarSelloFirma'])->name('profesional.actualizarSelloFirma');
+    Route::delete('/profesional/sello/eliminar', [ProfesionalController::class, 'eliminarSello'])->name('profesional.sello.eliminar');
+    Route::delete('/profesional/firma/eliminar', [ProfesionalController::class, 'eliminarFirma'])->name('profesional.firma.eliminar');
     Route::post('/profesional/titulos-universitarios', [ProfesionalController::class, 'guardarTitulo'])->name('profesional.titulos.guardar');
     Route::post('/profesional/especializaciones/guardar', [ProfesionalController::class, 'guardarEspecializacion'])
         ->name('profesional.especializaciones.guardar');
@@ -215,6 +218,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/profesional/medicamentos-recetas', [MedicamentosRecetaController::class, 'store'])->name('profesionales.medicamentos_recetas.guardarMedicamentosReceta');
         Route::delete('/profesional/medicamentos_recetas/{id}', [MedicamentosRecetaController::class, 'destroy'])->name('profesionales.medicamentos_recetas.destroy');
         Route::post('/profesional/receta/guardar/{id}', [ProfesionalController::class, 'actualizarReceta'])->name('profesionales.receta.update');
+        Route::delete('/profesional/receta/archivo/{id}', [ProfesionalController::class, 'eliminarArchivoReceta'])->name('profesionales.receta.eliminarArchivo');
         Route::get('/profesional/receta/detalle/{id}', [ProfesionalController::class, 'detalleReceta'])->name('profesionales.detalleReceta');
 
         Route::get('/profesional/listado-citas-presenciales/aceptadas', [ProfesionalController::class, 'listadoCitasPresencialesAceptadas'])->name('profesional.listadoCitasPresencialesAceptadas');
@@ -288,7 +292,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/proveedor/pagar-plan', [ProveedorController::class, 'pagarPlan'])->name('proveedor.pagar.plan');
 
         Route::get('/proveedor/mis-clientes-pacientes/{id}/pruebas', [ProveedorController::class, 'pruebasHistoricoPaciente'])->name('proveedores.pacientes.presupuestos.historial');
-
     });
 });
 

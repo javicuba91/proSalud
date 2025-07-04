@@ -34,6 +34,7 @@ use App\Models\Provincia;
 use App\Models\Prueba;
 use App\Models\RespuestaExperto;
 use App\Models\Receta;
+use App\Models\RecetasAnteriores;
 use App\Models\Region;
 use App\Models\SegurosMedicos;
 use App\Models\SuscripcionPlan;
@@ -44,10 +45,10 @@ use App\Models\ViaAdministracionMedicamento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\File;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 
@@ -298,16 +299,16 @@ class ProfesionalController extends Controller
             ->unique('id')
             ->values();
 
-        $pacientes_contactos= Paciente::where('profesional_id', $profesional->id)->get();
+        $pacientes_contactos = Paciente::where('profesional_id', $profesional->id)->get();
 
-        return view('profesionales.misPacientes', compact('profesional', 'pacientes','pacientes_contactos'));
+        return view('profesionales.misPacientes', compact('profesional', 'pacientes', 'pacientes_contactos'));
     }
 
     public function misContactos()
     {
         $profesional = Profesional::where('user_id', auth()->id())->first();
 
-        $pacientes= Paciente::where('profesional_id', $profesional->id)->get();
+        $pacientes = Paciente::where('profesional_id', $profesional->id)->get();
 
         return view('profesionales.misContactos', compact('profesional', 'pacientes'));
     }
@@ -441,7 +442,7 @@ class ProfesionalController extends Controller
         $pedido->motivo = $request->input('motivo');
         $pedido->sintoma = $request->input('sintoma');
         $pedido->antecedentes = $request->input('antecedentes');
-         if($pedido->qr == null || $pedido->qr == ''){
+        if ($pedido->qr == null || $pedido->qr == '') {
             $pedido->qr = $request->input('qr');
         }
         $pedido->save();
@@ -579,8 +580,8 @@ class ProfesionalController extends Controller
 
         $paciente = new Paciente();
         $paciente->profesional_id = $profesional->id; // Asignar el profesional al paciente
-        $paciente->genero=$request->genero;
-        $paciente->estado_civil=$request->estado_civil;
+        $paciente->genero = $request->genero;
+        $paciente->estado_civil = $request->estado_civil;
         $paciente->nombre_completo = $request->nombre_completo;
         $paciente->nacionalidad = $request->nacionalidad;
         $paciente->cedula = $request->cedula;
@@ -590,7 +591,7 @@ class ProfesionalController extends Controller
         $paciente->direccion = $request->direccion;
         $paciente->user_id = $usuario->id; // Asignar el usuario al paciente
         $paciente->ciudad_id = $request->ciudad_id;
-        $paciente->grupo_sanguineo = $request->grupo."".$request->rh;
+        $paciente->grupo_sanguineo = $request->grupo . "" . $request->rh;
         $paciente->save();
 
         if ($request->hasFile('foto')) {
@@ -621,7 +622,7 @@ class ProfesionalController extends Controller
     public function informeConsulta($id)
     {
         $seguros = SegurosMedicos::all();
-        $cita = Cita::find($id);
+        $cita = Cita::findorFail($id);
 
 
         $informe = InformeConsulta::where('cita_id', '=', $cita->id)->first();
@@ -797,7 +798,7 @@ class ProfesionalController extends Controller
 
         return view('profesionales.recetasFarmaciaCrear', compact('profesional', 'receta', 'medicamentos', 'informe', 'cita', 'presentaciones', 'vias', 'intervalos'));
     }
-        public function pedidoLaboratorio($id)
+    public function pedidoLaboratorio($id)
     {
         $profesional = Profesional::where('user_id', auth()->id())->first();
         $informe = InformeConsulta::find($id);
@@ -815,11 +816,11 @@ class ProfesionalController extends Controller
             $pedido = PedidoLaboratorio::where('informe_consulta_id', '=', $informe->id)->first();
         }
 
-        return view('profesionales.pedidosLaboratorioCrear', compact('profesional','cita', 'informe','pedido'));
+        return view('profesionales.pedidosLaboratorioCrear', compact('profesional', 'cita', 'informe', 'pedido'));
     }
 
 
-     public function pedidoImagen($id)
+    public function pedidoImagen($id)
     {
         $profesional = Profesional::where('user_id', auth()->id())->first();
         $informe = InformeConsulta::find($id);
@@ -842,6 +843,35 @@ class ProfesionalController extends Controller
 
     public function actualizarReceta(Request $request, $id)
     {
+        // Manejar múltiples archivos
+        if ($request->hasFile('ruta_archivo')) {
+            $files = $request->file('ruta_archivo');
+
+            // Si es un solo archivo, convertirlo a array
+            if (!is_array($files)) {
+                $files = [$files];
+            }
+
+            foreach ($files as $file) {
+                // Crear nuevo registro para cada archivo
+                $recetas_anteriores = new RecetasAnteriores();
+                $recetas_anteriores->receta_id = $id;
+                $recetas_anteriores->save(); // Guardar para obtener ID
+
+                $filename = Str::slug($recetas_anteriores->id . '-' . time() . '-' . uniqid()) . '.' . $file->getClientOriginalExtension();
+                $path = 'recetas/recetas anteriores/' . $recetas_anteriores->id;
+
+                // Asegurarse de que el directorio existe
+                if (!File::exists(public_path($path))) {
+                    File::makeDirectory(public_path($path), 0755, true);
+                }
+
+                $file->move(public_path($path), $filename);
+                $recetas_anteriores->ruta_archivo = $path . '/' . $filename;
+                $recetas_anteriores->save(); // Actualizar con la ruta
+            }
+        }
+
         $receta = Receta::findOrFail($id);
         $receta->qr = $request->qr;
         $receta->diagnostico = $request->diagnostico;
@@ -1005,6 +1035,134 @@ class ProfesionalController extends Controller
         $usuario->save();
 
         return response()->json(['message' => 'Contraseña actualizada']);
+    }
+
+    public function actualizarSelloFirma(Request $request)
+    {
+        try {
+            $profesional = Profesional::where('user_id', auth()->id())->first();
+
+            if (!$profesional) {
+                return response()->json(['message' => 'Profesional no encontrado'], 404);
+            }
+
+            // Verificar que al menos un archivo esté presente
+            if (!$request->hasFile('sello') && !$request->hasFile('firma')) {
+                return response()->json(['message' => 'Debe seleccionar al menos un archivo (sello o firma)'], 400);
+            }
+
+            // Validar archivos si se envían
+            $rules = [];
+            if ($request->hasFile('sello')) {
+                $rules['sello'] = 'required|image|mimes:jpeg,png,jpg,gif|max:2048';
+            }
+            if ($request->hasFile('firma')) {
+                $rules['firma'] = 'required|image|mimes:jpeg,png,jpg,gif|max:2048';
+            }
+
+            $request->validate($rules);
+
+            // Función auxiliar para crear y verificar directorio
+            $crearDirectorioSeguro = function ($path) {
+                $fullPath = public_path($path);
+
+                // Crear directorio si no existe
+                if (!File::exists($fullPath)) {
+                    if (!File::makeDirectory($fullPath, 0755, true)) {
+                        return false;
+                    }
+                }
+
+                // Verificar que el directorio existe y es escribible
+                if (!File::exists($fullPath) || !is_writable($fullPath)) {
+                    // Intentar cambiar permisos si es posible
+                    if (File::exists($fullPath)) {
+                        chmod($fullPath, 0755);
+                    }
+
+                    // Verificar nuevamente
+                    if (!is_writable($fullPath)) {
+                        return false;
+                    }
+                }
+
+                return $fullPath;
+            };
+
+            // Procesar sello
+            if ($request->hasFile('sello')) {
+                $selloFile = $request->file('sello');
+
+                // Verificar que el archivo es válido
+                if (!$selloFile->isValid()) {
+                    return response()->json(['message' => 'El archivo de sello no es válido'], 400);
+                }
+
+                $selloFilename = 'sello_' . $profesional->id . '_' . time() . '.' . $selloFile->getClientOriginalExtension();
+                $selloPath = 'imagenes/medicos/' . $profesional->id;
+
+                // Crear y verificar directorio de forma segura
+                $fullPath = $crearDirectorioSeguro($selloPath);
+                if (!$fullPath) {
+                    return response()->json(['message' => 'No se pudo crear o acceder al directorio para el sello. Verifique los permisos.'], 500);
+                }
+
+                // Intentar mover el archivo
+                try {
+                    $selloFile->move($fullPath, $selloFilename);
+                } catch (\Exception $e) {
+                    return response()->json(['message' => 'Error al guardar el archivo de sello: ' . $e->getMessage()], 500);
+                }
+
+                // Verificar que el archivo se movió correctamente
+                if (!File::exists($fullPath . DIRECTORY_SEPARATOR . $selloFilename)) {
+                    return response()->json(['message' => 'No se pudo verificar que el archivo de sello se guardó correctamente'], 500);
+                }
+
+                $profesional->sello = $selloPath . '/' . $selloFilename;
+            }
+
+            // Procesar firma
+            if ($request->hasFile('firma')) {
+                $firmaFile = $request->file('firma');
+
+                // Verificar que el archivo es válido
+                if (!$firmaFile->isValid()) {
+                    return response()->json(['message' => 'El archivo de firma no es válido'], 400);
+                }
+
+                $firmaFilename = 'firma_' . $profesional->id . '_' . time() . '.' . $firmaFile->getClientOriginalExtension();
+                $firmaPath = 'imagenes/medicos/' . $profesional->id;
+
+                // Crear y verificar directorio de forma segura
+                $fullPath = $crearDirectorioSeguro($firmaPath);
+                if (!$fullPath) {
+                    return response()->json(['message' => 'No se pudo crear o acceder al directorio para la firma. Verifique los permisos.'], 500);
+                }
+
+                // Intentar mover el archivo
+                try {
+                    $firmaFile->move($fullPath, $firmaFilename);
+                } catch (\Exception $e) {
+                    return response()->json(['message' => 'Error al guardar el archivo de firma: ' . $e->getMessage()], 500);
+                }
+
+                // Verificar que el archivo se movió correctamente
+                if (!File::exists($fullPath . DIRECTORY_SEPARATOR . $firmaFilename)) {
+                    return response()->json(['message' => 'No se pudo verificar que el archivo de firma se guardó correctamente'], 500);
+                }
+
+                $profesional->firma = $firmaPath . '/' . $firmaFilename;
+            }
+
+            $profesional->save();
+
+            return response()->json(['success' => true, 'message' => 'Sello y/o firma actualizados correctamente']);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['message' => 'Error de validación: ' . implode(', ', $e->validator->errors()->all())], 422);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error al procesar los archivos: ' . $e->getMessage()], 500);
+        }
     }
 
     public function guardarTitulo(Request $request)
@@ -1207,7 +1365,8 @@ class ProfesionalController extends Controller
     }
 
 
-    public function guardarHorariosVideollamada(Request $request){
+    public function guardarHorariosVideollamada(Request $request)
+    {
         $profesional = Profesional::where('user_id', auth()->id())->firstOrFail();
         $horariosData = $request->input('horarios', []);
         $añoActual = now()->year;
@@ -1637,7 +1796,6 @@ class ProfesionalController extends Controller
                 'success' => true,
                 'message' => 'Recordatorio enviado correctamente al paciente'
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -1696,8 +1854,10 @@ class ProfesionalController extends Controller
         $pregunta = PreguntaExperto::findOrFail($request->pregunta_id);
         $especialidadesProfesional = $profesional->especializaciones()->pluck('especialidad_id')->toArray();
 
-        if (!in_array($pregunta->especialidad_id, $especialidadesProfesional) &&
-            !in_array($pregunta->sub_especialidad_id, $especialidadesProfesional)) {
+        if (
+            !in_array($pregunta->especialidad_id, $especialidadesProfesional) &&
+            !in_array($pregunta->sub_especialidad_id, $especialidadesProfesional)
+        ) {
             return response()->json(['success' => false, 'message' => 'No tienes autorización para responder esta pregunta']);
         }
 
@@ -1720,7 +1880,8 @@ class ProfesionalController extends Controller
     }
 
 
-    public function actualizarPedidoImagen(Request $request){
+    public function actualizarPedidoImagen(Request $request)
+    {
         $pedido_id = $request->input('pedido_imagen_id');
 
         $pedido = PedidoImagen::findOrFail($pedido_id);
@@ -1728,14 +1889,13 @@ class ProfesionalController extends Controller
         $pedido->motivo = $request->input('motivo');
         $pedido->sintomas = $request->input('sintomas');
         $pedido->antecedentes = $request->input('antecedentes');
-        if($pedido->qr == null || $pedido->qr == ''){
+        if ($pedido->qr == null || $pedido->qr == '') {
             $pedido->qr = $request->input('qr');
         }
         $pedido->save();
 
         return redirect()->route('profesionales.informeConsulta.pedidoImagen', $pedido->informe_consulta_id)
             ->with('success', 'Pedido de imagen actualizado correctamente');
-
     }
 
 
@@ -1744,7 +1904,6 @@ class ProfesionalController extends Controller
         $prueba = new Prueba();
         $prueba->pedido_laboratorio_id = $request->input('pedido_id');
         $prueba->tipo = $request->input('tipo');
-        $prueba->muestras = $request->input('muestras');
         $prueba->indicaciones = $request->input('indicaciones');
         $prueba->prioridad = $request->input('prioridad');
         $prueba->save();
@@ -1786,7 +1945,7 @@ class ProfesionalController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Prueba eliminada correctamente']);
     }
-        public function exportarPedidoLaboratorioPDF($id)
+    public function exportarPedidoLaboratorioPDF($id)
     {
         $pedido = PedidoLaboratorio::findOrFail($id);
 
@@ -1794,7 +1953,7 @@ class ProfesionalController extends Controller
 
         return $pdf->download('Pedido_Laboratorio' . $pedido->id . '.pdf');
     }
-        public function exportarPedidoImagenPDF($id)
+    public function exportarPedidoImagenPDF($id)
     {
         $pedido = PedidoImagen::findOrFail($id);
 
@@ -1803,5 +1962,88 @@ class ProfesionalController extends Controller
         return $pdf->download('Pedido_Laboratorio' . $pedido->id . '.pdf');
     }
 
+    public function eliminarArchivoReceta($id)
+    {
+        try {
+            $archivo = RecetasAnteriores::findOrFail($id);
 
+            // Eliminar el archivo físico del servidor
+            if ($archivo->ruta_archivo && File::exists(public_path($archivo->ruta_archivo))) {
+                File::delete(public_path($archivo->ruta_archivo));
+
+                // También eliminar el directorio si está vacío
+                $directorio = dirname(public_path($archivo->ruta_archivo));
+                if (File::isDirectory($directorio) && count(File::files($directorio)) === 0) {
+                    File::deleteDirectory($directorio);
+                }
+            }
+
+            // Eliminar el registro de la base de datos
+            $archivo->delete();
+
+            return response()->json(['success' => true, 'message' => 'Archivo eliminado correctamente']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al eliminar el archivo: ' . $e->getMessage()]);
+        }
+    }
+
+    public function eliminarSello()
+    {
+        try {
+            $profesional = Profesional::where('user_id', Auth::id())->first();
+
+            if (!$profesional) {
+                return response()->json(['success' => false, 'message' => 'Profesional no encontrado']);
+            }
+
+            // Eliminar el archivo físico del servidor si existe
+            if ($profesional->sello && File::exists(public_path($profesional->sello))) {
+                File::delete(public_path($profesional->sello));
+
+                // También eliminar el directorio si está vacío
+                $directorio = dirname(public_path($profesional->sello));
+                if (File::isDirectory($directorio) && count(File::files($directorio)) === 0) {
+                    File::deleteDirectory($directorio);
+                }
+            }
+
+            // Establecer el campo sello como null en la base de datos
+            $profesional->sello = null;
+            $profesional->save();
+
+            return response()->json(['success' => true, 'message' => 'Sello eliminado correctamente']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al eliminar el sello: ' . $e->getMessage()]);
+        }
+    }
+
+    public function eliminarFirma()
+    {
+        try {
+            $profesional = Profesional::where('user_id', Auth::id())->first();
+
+            if (!$profesional) {
+                return response()->json(['success' => false, 'message' => 'Profesional no encontrado']);
+            }
+
+            // Eliminar el archivo físico del servidor si existe
+            if ($profesional->firma && File::exists(public_path($profesional->firma))) {
+                File::delete(public_path($profesional->firma));
+
+                // También eliminar el directorio si está vacío
+                $directorio = dirname(public_path($profesional->firma));
+                if (File::isDirectory($directorio) && count(File::files($directorio)) === 0) {
+                    File::deleteDirectory($directorio);
+                }
+            }
+
+            // Establecer el campo firma como null en la base de datos
+            $profesional->firma = null;
+            $profesional->save();
+
+            return response()->json(['success' => true, 'message' => 'Firma eliminada correctamente']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al eliminar la firma: ' . $e->getMessage()]);
+        }
+    }
 }

@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <style>
         body {
@@ -8,7 +9,8 @@
             margin: 20px;
         }
 
-        h2, h3 {
+        h2,
+        h3 {
             color: #0056b3;
             text-align: center;
             margin-bottom: 10px;
@@ -76,6 +78,7 @@
         }
     </style>
 </head>
+
 <body>
     <h2>Receta Médica</h2>
 
@@ -113,7 +116,7 @@
         </tr>
         <tr>
             <td class="label">Fecha emisión:</td>
-            <td>{{ date("d-m-Y H:i:s",strtotime($receta->fecha_emision)) }}</td>
+            <td>{{ date('d-m-Y H:i:s', strtotime($receta->fecha_emision)) }}</td>
         </tr>
         <tr>
             <td class="label">Diagnóstico:</td>
@@ -123,24 +126,48 @@
             <td class="label">Comentarios:</td>
             <td>{{ $receta->comentarios }}</td>
         </tr>
+        <tr>
+            <td class="label">Sello:</td>
+            <td>
+                @if ($receta->informeConsulta->cita->profesional->sello)
+                    <img src="{{ public_path($receta->informeConsulta->cita->profesional->sello) }}"
+                        class="logo">
+                @else
+                    No disponible
+                @endif
+            </td>
+            <td class="label">Firma:</td>
+            <td>
+                @if ($receta->informeConsulta->cita->profesional->firma)
+                    <img src="{{ public_path($receta->informeConsulta->cita->profesional->firma) }}"
+                        class="logo">
+                @else
+                    No disponible
+                @endif
+            </td>
+        </tr>
+
     </table>
 
     <h3>Medicamentos</h3>
-    @foreach($receta->medicamentosRecetados as $med)
+    @foreach ($receta->medicamentosRecetados as $med)
         <div class="border">
             <strong>{{ $med->medicamento->nombre ?? 'Medicamento' }}</strong><br>
             Dosis: {{ $med->dosis }}<br>
-            Presentación: {{ App\Models\PresentacionMedicamento::find($med->presentacion_medicamentos_id)->nombre }}<br>
-            Vía: {{ App\Models\ViaAdministracionMedicamento::find($med->via_administracion_medicamentos_id)->nombre }}<br>
+            Presentación:
+            {{ App\Models\PresentacionMedicamento::find($med->presentacion_medicamentos_id)->nombre }}<br>
+            Vía:
+            {{ App\Models\ViaAdministracionMedicamento::find($med->via_administracion_medicamentos_id)->nombre }}<br>
             Intervalo: {{ App\Models\IntervaloMedicamento::find($med->intervalo_medicamentos_id)->nombre }}<br>
             Duración: {{ $med->duracion }}
         </div>
     @endforeach
 
-    @if($receta->qr)
+    @if ($receta->qr)
         <div class="qr">
             {!! QrCode::size(100)->generate($receta->qr) !!}
         </div>
     @endif
 </body>
+
 </html>

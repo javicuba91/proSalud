@@ -168,9 +168,6 @@
                     <input readonly value="{{ old('tipo', $prueba->tipo ?? '') }}" type="text"
                         class="form-control mb-2" name="tipo"
                         placeholder="Tipo de análisis solicitado (hemograma, perfil bioquímico, etc.)">
-                    <input readonly value="{{ old('muestras', $prueba->muestras ?? '') }}" type="text"
-                        class="form-control mb-2" name="muestras"
-                        placeholder="Muestras a recolectar (sangre, orina, etc.)">
                     <input readonly value="{{ old('indicaciones', $prueba->indicaciones ?? '') }}" type="text"
                         class="form-control mb-2" name="indicaciones"
                         placeholder="Indicaciones">
@@ -217,8 +214,7 @@
                     <div class="modal-body">
                         <input type="text" class="form-control mb-2" name="tipo"
                             placeholder="Tipo de análisis solicitado (hemograma, perfil bioquímico, etc.)">
-                        <input type="text" class="form-control mb-2" name="muestras"
-                            placeholder="Muestras a recolectar (sangre, orina, etc.)">
+
                         <input type="text" class="form-control mb-2" name="indicaciones"
                             placeholder="Indicaciones">
                         <select class="form-control mb-2" name="prioridad">

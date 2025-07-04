@@ -243,10 +243,10 @@
                     class="form-control" placeholder="¿Años de experiencia?">
             </div>
             <div class="col-md-6 mb-2">
-                        <label>&nbsp;</label>
-                        <button class="btn w-100 btn-dark" data-toggle="modal" data-target="#modalDocumento">
-                            <i class="fa fa-plus"></i> Subir licencia médica
-                        </button>
+                <label>&nbsp;</label>
+                <button class="btn w-100 btn-dark" data-toggle="modal" data-target="#modalDocumento">
+                    <i class="fa fa-plus"></i> Subir licencia médica
+                </button>
             </div>
         </div>
 
@@ -489,7 +489,8 @@
             <div class="row" id="curso-{{ $curso->id }}">
                 <div class="col-md-8 mb-2">
                     <label>Nombre del Doctorado</label>
-                    <input type="text" value="{{ $curso->nombre }}" class="form-control" placeholder="Nombre doctorado">
+                    <input type="text" value="{{ $curso->nombre }}" class="form-control"
+                        placeholder="Nombre doctorado">
                 </div>
                 <div class="col-md-2 mb-2">
                     <label>&nbsp;</label>
@@ -703,15 +704,16 @@
                 <label for="">Calendario Videoconsulta</label>
                 <div class="row">
                     <div class="col-lg-6">
-                         <button class="btn btn-primary w-100" data-toggle="modal" data-target="#modalVerCalendarioVideollamada">
+                        <button class="btn btn-primary w-100" data-toggle="modal"
+                            data-target="#modalVerCalendarioVideollamada">
                             <i class="fa fa-calendar"></i> Ver Calendario
                         </button>
                     </div>
                     <div class="col-lg-6">
                         <button class="btn btn-success w-100" data-toggle="modal"
-                        data-target="#modalGenerarCalendarioVideollamada">
-                        <i class="fa fa-plus"></i> Generar Calendario Videollamada
-                    </button>
+                            data-target="#modalGenerarCalendarioVideollamada">
+                            <i class="fa fa-plus"></i> Generar Calendario Videollamada
+                        </button>
                     </div>
                 </div>
             </div>
@@ -771,6 +773,260 @@
             </div>
         </div>
     </div>
+
+
+
+    {{-- Sección para Sello y Firma --}}
+    <div class="row mt-3 border p-3 mb-2">
+        <div class="col-md-12 mb-3">
+            <h6><strong>Sello y Firma Profesional</strong></h6>
+        </div>
+
+        {{-- Sello Profesional --}}
+        <div class="col-md-6 mb-4">
+            <label for="sello">Sello Profesional</label>
+            <div class="mb-3">
+                <input id="sello" name="sello" type="file" class="form-control"
+                    accept="image/*,application/pdf" onchange="previewSello(this)">
+                <small class="text-muted">Formatos permitidos: JPG, PNG, GIF, PDF</small>
+
+                {{-- Mostrar sello actual si existe --}}
+                @if ($profesional->sello)
+                    <div class="mt-3">
+                        <h6>Sello actual:</h6>
+                        <div class="col-md-6">
+                            <div class="border p-2 rounded">
+                                @if (Str::endsWith(strtolower($profesional->sello), ['.jpg', '.jpeg', '.png', '.gif']))
+                                    <img src="{{ asset($profesional->sello) }}" class="img-thumbnail w-100"
+                                        style="max-height: 150px; object-fit: cover;">
+                                @else
+                                    <div class="text-center p-3">
+                                        <i class="fas fa-file-pdf fa-3x text-danger"></i>
+                                        <p class="mt-2 mb-0">PDF</p>
+                                    </div>
+                                @endif
+                                <div class="mt-2">
+                                    <a href="{{ asset($profesional->sello) }}" target="_blank"
+                                        class="btn btn-sm btn-info w-100">
+                                        <i class="fas fa-eye"></i> Ver
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-danger w-100 mt-1"
+                                        onclick="eliminarSello()">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Contenedor para preview del nuevo sello --}}
+                <div class="mt-2" id="preview-sello-container"></div>
+            </div>
+        </div>
+
+        {{-- Firma Profesional --}}
+        <div class="col-md-6 mb-4">
+            <label for="firma">Firma Profesional</label>
+            <div class="mb-3">
+                <input id="firma" name="firma" type="file" class="form-control"
+                    accept="image/*,application/pdf" onchange="previewFirma(this)">
+                <small class="text-muted">Formatos permitidos: JPG, PNG, GIF, PDF</small>
+
+                {{-- Mostrar firma actual si existe --}}
+                @if ($profesional->firma)
+                    <div class="mt-3">
+                        <h6>Firma actual:</h6>
+                        <div class="col-md-6">
+                            <div class="border p-2 rounded">
+                                @if (Str::endsWith(strtolower($profesional->firma), ['.jpg', '.jpeg', '.png', '.gif']))
+                                    <img src="{{ asset($profesional->firma) }}" class="img-thumbnail w-100"
+                                        style="max-height: 150px; object-fit: cover;">
+                                @else
+                                    <div class="text-center p-3">
+                                        <i class="fas fa-file-pdf fa-3x text-danger"></i>
+                                        <p class="mt-2 mb-0">PDF</p>
+                                    </div>
+                                @endif
+                                <div class="mt-2">
+                                    <a href="{{ asset($profesional->firma) }}" target="_blank"
+                                        class="btn btn-sm btn-info w-100">
+                                        <i class="fas fa-eye"></i> Ver
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-danger w-100 mt-1"
+                                        onclick="eliminarFirma()">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Contenedor para preview de la nueva firma --}}
+                <div class="mt-2" id="preview-firma-container"></div>
+            </div>
+        </div>
+
+        <div class="col-md-12 mt-2">
+            <div class="text-center">
+                <button id="guardar_sello_firma" class="btn btn-dark"> Guardar Sello y Firma
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function previewSello(input) {
+            const preview = document.getElementById('preview-sello-container');
+            preview.innerHTML = '';
+
+            if (input.files && input.files.length > 0) {
+                const file = input.files[0];
+                const previewTitle = document.createElement('h6');
+                previewTitle.textContent = 'Nuevo sello seleccionado:';
+                previewTitle.className = 'mt-3';
+                preview.appendChild(previewTitle);
+
+                const col = document.createElement('div');
+                col.className = 'col-md-6';
+
+                const fileDiv = document.createElement('div');
+                fileDiv.className = 'border p-2 rounded';
+
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        fileDiv.innerHTML = `
+                                <img src="${e.target.result}" class="img-thumbnail w-100" style="max-height: 150px; object-fit: cover;">
+                                <p class="mt-2 mb-0 text-center small">${file.name}</p>
+                            `;
+                    }
+                    reader.readAsDataURL(file);
+                } else if (file.type === 'application/pdf') {
+                    fileDiv.innerHTML = `
+                            <div class="text-center p-3">
+                                <i class="fas fa-file-pdf fa-3x text-danger"></i>
+                                <p class="mt-2 mb-0 small">${file.name}</p>
+                            </div>
+                        `;
+                }
+
+                col.appendChild(fileDiv);
+                preview.appendChild(col);
+            }
+        }
+
+        function previewFirma(input) {
+            const preview = document.getElementById('preview-firma-container');
+            preview.innerHTML = '';
+
+            if (input.files && input.files.length > 0) {
+                const file = input.files[0];
+                const previewTitle = document.createElement('h6');
+                previewTitle.textContent = 'Nueva firma seleccionada:';
+                previewTitle.className = 'mt-3';
+                preview.appendChild(previewTitle);
+
+                const col = document.createElement('div');
+                col.className = 'col-md-6';
+
+                const fileDiv = document.createElement('div');
+                fileDiv.className = 'border p-2 rounded';
+
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        fileDiv.innerHTML = `
+                                <img src="${e.target.result}" class="img-thumbnail w-100" style="max-height: 150px; object-fit: cover;">
+                                <p class="mt-2 mb-0 text-center small">${file.name}</p>
+                            `;
+                    }
+                    reader.readAsDataURL(file);
+                } else if (file.type === 'application/pdf') {
+                    fileDiv.innerHTML = `
+                            <div class="text-center p-3">
+                                <i class="fas fa-file-pdf fa-3x text-danger"></i>
+                                <p class="mt-2 mb-0 small">${file.name}</p>
+                            </div>
+                        `;
+                }
+
+                col.appendChild(fileDiv);
+                preview.appendChild(col);
+            }
+        }
+
+        function eliminarSello() {
+            if (confirm('¿Estás seguro de que quieres eliminar el sello actual?')) {
+                fetch('/profesional/sello/eliminar', {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: data.message || 'No se pudo eliminar el sello',
+                                icon: 'error',
+                                confirmButtonText: 'Aceptar'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Hubo un problema al eliminar el sello',
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    });
+            }
+        }
+
+        function eliminarFirma() {
+            if (confirm('¿Estás seguro de que quieres eliminar la firma actual?')) {
+                fetch('/profesional/firma/eliminar', {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: data.message || 'No se pudo eliminar la firma',
+                                icon: 'error',
+                                confirmButtonText: 'Aceptar'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Hubo un problema al eliminar la firma',
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    });
+            }
+        }
+    </script>
+
 
     <!-- Modal -->
     <div class="modal fade" id="modalDocumento" tabindex="-1" role="dialog" aria-labelledby="modalDocumentoLabel"
@@ -1063,7 +1319,8 @@
                             <input type="text" name="pais" class="form-control" placeholder="País">
                         </div>
                         <div class="form-group">
-                            <input type="text" name="ciudad" class="form-control" placeholder="Año Inicio - Año Fin">
+                            <input type="text" name="ciudad" class="form-control"
+                                placeholder="Año Inicio - Año Fin">
                         </div>
                         <input type="hidden" name="profesional_id" value="{{ $profesional->id }}">
                     </div>
@@ -1259,8 +1516,8 @@
                     <h5 class="modal-title">Generar calendario de videollamadas</h5>
                 </div>
                 <div class="modal-body">
-                    <form id="form-calendario-videollamada" action="{{ route('profesional.horarios.videollamada.guardar') }}"
-                        method="POST">
+                    <form id="form-calendario-videollamada"
+                        action="{{ route('profesional.horarios.videollamada.guardar') }}" method="POST">
                         @csrf
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle text-center">
@@ -1311,16 +1568,19 @@
                                                             <div class="row g-2 align-items-center mb-2 horario-item-videollamada"
                                                                 data-id="{{ $detalleVideollamada->id }}">
                                                                 <div class="col-md-5">
-                                                                    <input step="30" readonly disabled type="time"
+                                                                    <input step="30" readonly disabled
+                                                                        type="time"
                                                                         name="horarios[{{ $index }}][{{ $loop->index }}][desde]"
                                                                         class="form-control"
-                                                                        value="{{ $detalleVideollamada->hora_desde }}" required>
+                                                                        value="{{ $detalleVideollamada->hora_desde }}"
+                                                                        required>
                                                                 </div>
                                                                 <div class="col-md-5">
                                                                     <input readonly disabled type="time"
                                                                         name="horarios[{{ $index }}][{{ $loop->index }}][hasta]"
                                                                         class="form-control"
-                                                                        value="{{ $detalleVideollamada->hora_hasta }}" required>
+                                                                        value="{{ $detalleVideollamada->hora_hasta }}"
+                                                                        required>
                                                                 </div>
                                                                 <div class="col-md-2">
                                                                     <button type="button"
@@ -1350,14 +1610,15 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" form="form-calendario-videollamada">Guardar</button>
+                    <button type="submit" class="btn btn-primary"
+                        form="form-calendario-videollamada">Guardar</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
 
-      <div class="modal fade" id="modalVerCalendarioVideollamada" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modalVerCalendarioVideollamada" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1700,6 +1961,50 @@
                 });
             });
 
+            // Función para guardar sello y firma
+            $('#guardar_sello_firma').click(function() {
+                const formData = new FormData();
+                formData.append('profesional_id', {{ $profesional->id }});
+
+                const selloFile = $('#sello')[0].files[0];
+                if (selloFile) {
+                    formData.append('sello', selloFile);
+                }
+
+                const firmaFile = $('#firma')[0].files[0];
+                if (firmaFile) {
+                    formData.append('firma', firmaFile);
+                }
+
+                // Verificar que al menos uno de los archivos esté seleccionado
+                if (!selloFile && !firmaFile) {
+                    alert('Por favor selecciona al menos un archivo (sello o firma).');
+                    return;
+                }
+
+                $.ajax({
+                    url: '/profesional/actualizar-sello-firma',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        alert('Sello y/o firma actualizados correctamente.');
+                        window.location.reload();
+                    },
+                    error: function(xhr) {
+                        let errorMessage = 'Error al actualizar sello y/o firma.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                        alert(errorMessage);
+                    }
+                });
+            });
+
             $('#formNuevoTitulo').submit(function(e) {
                 e.preventDefault();
 
@@ -1901,7 +2206,8 @@
                 button.addEventListener('click', function() {
 
                     const dia = this.dataset.dia;
-                    const container = document.querySelector(`.horarios-dia-videollamada[data-dia="${dia}"]`);
+                    const container = document.querySelector(
+                        `.horarios-dia-videollamada[data-dia="${dia}"]`);
                     const index = container.querySelectorAll('.row').length;
 
                     const html = `
@@ -1918,7 +2224,7 @@
             </div>
           `;
 
-                container.insertAdjacentHTML('beforeend', html);
+                    container.insertAdjacentHTML('beforeend', html);
                 });
             });
 
@@ -2128,7 +2434,7 @@
         });
     </script>
 
-     <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             let calendarEl = document.getElementById('calendarioFullCalendarVideollamada');
 
@@ -2229,7 +2535,7 @@
         });
     </script>
 
-<script>
+    <script>
         document.body.addEventListener('click', function(e) {
             const button = e.target.closest('.remove-horario-videollamada');
 

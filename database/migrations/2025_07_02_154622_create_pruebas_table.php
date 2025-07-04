@@ -16,9 +16,8 @@ return new class extends Migration
             $table->foreignId('pedido_imagen_id')->constrained('pedido_imagenes')->onDelete('cascade')->nullable();
             $table->foreignId('pedido_laboratorio_id')->constrained('pedido_laboratorios')->onDelete('cascade')->nullable();
             $table->text('tipo')->nullable();
-            $table->text('muestras')->nullable();
             $table->text('indicaciones')->nullable();
-             $table->text('region_anatomica')->nullable();
+            $table->text('region_anatomica')->nullable();
             $table->enum('prioridad', ['urgente', 'programado'])->default('programado');
             $table->enum('estado', ['pendiente', 'completada'])->default('pendiente');
             $table->timestamps();
@@ -26,7 +25,7 @@ return new class extends Migration
 
         Schema::create('presupuestos_pruebas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('prueba_id')->constrained('pruebas')->onDelete('cascade'); 
+            $table->foreignId('prueba_id')->constrained('pruebas')->onDelete('cascade');
             $table->double('precio')->nullable();
             $table->foreignId('proveedor_id')->constrained('proveedores')->onDelete('cascade');
             $table->enum('estado', ['pendiente', 'aprobado','denegado'])->default('pendiente');
