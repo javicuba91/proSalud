@@ -19,7 +19,7 @@ class SuscripcionesPlanesProveedores extends Model
         'pagado' => 'boolean',
     ];
 
-    public function proveedores()
+    public function proveedor()
     {
         return $this->belongsTo(Proveedor::class, 'proveedores_id');
     }
@@ -28,4 +28,5 @@ class SuscripcionesPlanesProveedores extends Model
     {
         return $this->belongsTo(Plan::class);
     }
+    
 }

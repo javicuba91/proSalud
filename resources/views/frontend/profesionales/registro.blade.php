@@ -1,6 +1,9 @@
 @extends('frontend.profesionales.layout')
 
-<title>@yield('title', 'ProSalud - Registro')</title>
+@section('title')
+    ProSalud - Registro
+@endsection
+
 
 @section('content')
     <div class="container py-5 text-center">
@@ -32,14 +35,21 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="mb-3 text-start">
                                     <input type="text" class="form-control" name="telefono" placeholder="Celular">
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
                                 <div class="mb-3 text-start">
-                                    <input type="text" class="form-control" name="ciudad" placeholder="Ciudad">
+                                    <select class="form-control" name="ciudad" id="ciudad-select" required>
+                                        <option value="" disabled selected>Selecciona una ciudad</option>
+                                        @foreach ($ciudades as $ciudad)
+                                            <option value="{{ $ciudad->nombre }}">{{ $ciudad->nombre }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -50,12 +60,12 @@
                             <input type="text" class="form-control" name="cedula" placeholder="Número de cédula">
                         </div>
                         <div class="mb-3 text-start">
-                                <select class="form-select" name="categoria_id" required>
-                                    <option value="" disabled selected>Selecciona una categoría</option>
-                                    @foreach ($categorias as $categoria)
-                                        <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
-                                    @endforeach
-                                </select>
+                            <select class="form-select" name="categoria_id" required>
+                                <option value="" disabled selected>Selecciona una categoría</option>
+                                @foreach ($categorias as $categoria)
+                                    <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="d-flex justify-content-between mb-3">
                             <div class="form-check">

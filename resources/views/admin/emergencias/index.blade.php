@@ -109,6 +109,7 @@
     <table id="emergencias" class="table table-bordered mb-4">
         <thead>
             <tr>
+                <th>Nombre</th>
                 <th>Tipo</th>
                 <th>Provincia</th>
                 <th>Ciudad</th>
@@ -119,8 +120,8 @@
         <tbody>
             @foreach ($emergencias as $emergencia)
                 <tr>
-                    <td>
-                        {{ $emergencia->tipo }}<br>
+                    <td>{{ $emergencia->nombre }}</td>
+                    <td>{{ $emergencia->tipo }}<br>
                         <strong>Dirección: </strong> {{$emergencia->direccion}}
                     </td>
                     <td>{{ $emergencia->provincia->nombre }}</td>

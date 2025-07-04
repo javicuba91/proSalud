@@ -271,6 +271,7 @@ class ProveedorController extends Controller
             // Si ya existe propietario, actualizarlo
             $propietario = Propietario::find($proveedor->propietario_id);
             $propietario->update([
+                'nombre' => $request->nombre_propietario,
                 'fecha_nacimiento' => $request->fecha_nacimiento,
                 'genero' => $request->genero,
                 'telefono_personal' => $request->telefono_personal,
@@ -281,6 +282,7 @@ class ProveedorController extends Controller
         } else {
             // Si no existe propietario, crearlo
             $propietario = new Propietario([
+                'nombre' => $request->nombre_propietario,
                 'fecha_nacimiento' => $request->fecha_nacimiento,
                 'genero' => $request->genero,
                 'telefono_personal' => $request->telefono_personal,

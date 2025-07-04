@@ -53,7 +53,7 @@
         <div class="row mb-2">
             <div class="col-md-2 col-lg-2">
                 @if ($paciente->foto)
-                    <label for="">Foto de Perfil</label>
+                    <label for="foto">Foto de Perfil</label>
                     <img src="{{ asset($paciente->foto) }}" alt="Foto Perfil"
                         class="img img-responsive img-fluid profile-image">
                 @endif
@@ -63,19 +63,23 @@
         <div class="border p-4 mb-2">
             <div class="row">
                 <div class="col-md-6 mb-2">
+                    <label for="foto">Foto</label>
                     <input name="foto" disabled type="file" value="{{ $paciente->foto }}" class="form-control"
                         placeholder="Foto">
                 </div>
                 <div class="col-md-6 mb-2">
+                    <label for="nombre_completo">Nombre completo</label>
                     <input name="nombre_completo" disabled type="text" value="{{ $paciente->user->name }}"
                         class="form-control" placeholder="Nombre completo">
                 </div>
                 <div class="col-md-6 mb-2">
+                    <label for="fecha_nacimiento">Fecha de nacimiento</label>
                     <input name="fecha_nacimiento" disabled type="date" value="{{ $paciente->fecha_nacimiento }}"
                         class="form-control" placeholder="Fecha de nacimiento">
                 </div>
                 <div class="col-md-6 mb-2">
-                    <select name="genero" disabled name="genero" id="genero" class="form-control form-select">
+                    <label for="genero">Género</label>
+                    <select name="genero" disabled id="genero" class="form-control form-select">
                         <option value="">Seleccione su género</option>
                         <option value="Masculino" {{ $paciente->genero == 'Masculino' ? 'selected' : '' }}>Masculino
                         </option>
@@ -84,6 +88,7 @@
                     </select>
                 </div>
                 <div class="col-md-6 mb-2">
+                    <label for="estado_civil">Estado civil</label>
                     <select disabled id="estado_civil" name="estado_civil"
                         class="form-control @error('estado_civil') is-invalid @enderror" required>
                         <option value="">Seleccione una opción</option>
@@ -100,22 +105,27 @@
                     </select>
                 </div>
                 <div class="col-md-6 mb-2">
+                    <label for="nacionalidad">Nacionalidad</label>
                     <input name="nacionalidad" disabled type="text" value="{{ $paciente->nacionalidad }}"
                         class="form-control" placeholder="Nacionalidad">
                 </div>
                 <div class="col-md-6 mb-2">
+                    <label for="celular">Celular</label>
                     <input name="celular" disabled type="text" value="{{ $paciente->celular }}" class="form-control"
                         placeholder="Celular">
                 </div>
                 <div class="col-md-6 mb-2">
-                    <input disabled type="text"value="{{ $paciente->user->email }}" class="form-control"
+                    <label for="email">Email</label>
+                    <input disabled type="text" value="{{ $paciente->user->email }}" class="form-control"
                         placeholder="Email">
                 </div>
                 <div class="col-md-6 mb-2">
+                    <label for="direccion">Dirección de residencia</label>
                     <input name="direccion" disabled type="text" value="{{ $paciente->direccion }}" class="form-control"
                         placeholder="Dirección de residencia">
                 </div>
                 <div class="col-md-6 mb-2">
+                    <label for="ciudad_id">Ciudad</label>
                     <select name="ciudad_id" disabled class="form-control form-select" id="ciudad_id">
                         <option value="">Seleccione una ciudad</option>
                         @foreach ($ciudades as $ciudad)
@@ -126,6 +136,7 @@
                     </select>
                 </div>
                 <div class="col-md-6 mb-2">
+                    <label for="cedula">Cédula</label>
                     <input name="cedula" disabled type="text" value="{{ $paciente->cedula }}" class="form-control"
                         placeholder="Cédula">
                 </div>
@@ -134,6 +145,7 @@
                     $rh = substr($paciente->grupo_sanguineo, -1); // Ej. "+"
                 @endphp
                 <div class="col-md-3 mb-2">
+                    <label for="grupo">Grupo sanguíneo</label>
                     <select disabled class="form-control" name="grupo" id="grupo">
                         <option value="A" {{ $grupo == 'A' ? 'selected' : '' }}>A</option>
                         <option value="B" {{ $grupo == 'B' ? 'selected' : '' }}>B</option>
@@ -142,6 +154,7 @@
                     </select>
                 </div>
                 <div class="col-md-3 mb-2">
+                    <label for="rh">RH</label>
                     <select disabled class="form-control" name="rh" id="rh">
                         <option value="+" {{ $rh == '+' ? 'selected' : '' }}>+</option>
                         <option value="-" {{ $rh == '-' ? 'selected' : '' }}>-</option>
@@ -173,15 +186,18 @@
             @foreach ($paciente->antecedentes as $antecedente)
                 <div class="row mt-2 border p-2">
                     <div class="col-md-12 mb-2">
+                        <label for="alergias">Alergias</label>
                         <input disabled type="text" class="form-control" placeholder="Alergias"
                             value="{{ $antecedente->alergias }}">
                     </div>
                     <div class="col-md-12 mb-2">
+                        <label for="condiciones_medicas">Condiciones médicas preexistentes</label>
                         <input disabled type="text" class="form-control"
                             placeholder="Condiciones médicas preexistentes"
                             value="{{ $antecedente->condiciones_medicas }}">
                     </div>
                     <div class="col-md-12">
+                        <label for="medicamentos">Medicamentos que consume habitualmente</label>
                         <input disabled type="text" class="form-control"
                             placeholder="Medicamentos que consume habitualmente"
                             value="{{ $antecedente->medicamentos }}">
@@ -204,6 +220,7 @@
                 </div>
             </div>
             <div class="col-md-12 mb-2">
+                <label for="seguros_medicos">Seguros médicos</label>
                 <select disabled class="form-control form-select" name="seguros_medicos[]" id="seguros_medicos" multiple>
                     @foreach ($seguros as $seguro)
                         <option value="{{ $seguro->id }}" @if ($paciente->segurosMedicos->contains('id', $seguro->id)) selected @endif>
@@ -231,14 +248,17 @@
             @foreach ($paciente->contactos_emergencia as $contacto)
                 <div class="row mt-2 border p-2">
                     <div class="col-md-3 mb-2">
+                        <label for="nombre">Nombre</label>
                         <input disabled type="text" class="form-control" placeholder="Nombre"
                             value="{{ $contacto->nombre }}">
                     </div>
                     <div class="col-md-3 mb-2">
+                        <label for="relacion">Relación</label>
                         <input disabled type="text" class="form-control" placeholder="Relación"
                             value="{{ $contacto->relacion }}">
                     </div>
                     <div class="col-md-4 mb-2">
+                        <label for="telefono">Teléfono</label>
                         <input disabled type="text" class="form-control" placeholder="Teléfono"
                             value="{{ $contacto->telefono }}">
                     </div>
@@ -260,6 +280,7 @@
                     <h5>Documentos</h5>
                 </div>
                 <div class="col-md-12 mb-2">
+                    <label for="documento">Documento</label>
                     <input disabled type="text" class="form-control"
                         placeholder="Subir cédula, pasaporte o documento equivalente">
                 </div>
@@ -272,14 +293,17 @@
                     <h5>Datos acceso a ProSalud</h5>
                 </div>
                 <div class="col-md-4 mb-2">
+                    <label for="usuario">Usuario</label>
                     <input disabled type="text" value="{{ $paciente->user->email }}" class="form-control"
                         placeholder="Usuario" readonly>
                 </div>
                 <div class="col-md-4 mb-2">
+                    <label for="password">Contraseña</label>
                     <input name="password" disabled type="text" class="form-control"
                         placeholder="Contraseña ***********">
                 </div>
                 <div class="col-md-4 mb-2">
+                    <label for="repetir_password">Repetir contraseña</label>
                     <input name="repetir_password" disabled type="text" class="form-control"
                         placeholder="Cambiar contraseña">
                 </div>

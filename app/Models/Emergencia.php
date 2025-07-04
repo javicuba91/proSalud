@@ -9,6 +9,7 @@ class Emergencia extends Model
     protected $table = "emergencias";
 
     protected $fillable = [
+        'nombre',
         'tipo',
         'provincia_id',
         'ciudad_id',
