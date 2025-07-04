@@ -85,7 +85,7 @@
                                 <button type="button" class="btn btn-outline-dark w-100 mt-3 btn-abrir-modal"
                                     data-id="{{ $plan->id }}" data-nombre="{{ $plan->nombre }}"
                                     data-descripcion="{{ $plan->descripcion }}" data-precio="{{ $plan->precio }}">
-                                    Cambiar a este plan
+                                    Contratar plan
                                 </button>
                             @endif
                         @endif

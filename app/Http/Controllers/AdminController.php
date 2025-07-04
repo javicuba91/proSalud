@@ -10,6 +10,7 @@ use App\Models\Medicamento;
 use App\Models\Paciente;
 use App\Models\Profesional;
 use App\Models\Proveedor;
+use App\Models\SuscripcionesPlanesProveedores;
 use App\Models\SuscripcionPlan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,12 +32,22 @@ class AdminController extends Controller
         $total_citas = Cita::count();
         $total_citas_canceladas = Cita::where('estado', '=', 'cancelada')->count();
         $total_citas_pendientes = Cita::where('estado', '=', 'pendiente')->count();
-        $total_ingresos = SuscripcionPlan::where('pagado', '=',1)
+        
+        $total_ingresos_profesionales = SuscripcionPlan::where('pagado', '=',1)
             ->with('plan')
             ->get()
             ->sum(function (SuscripcionPlan $suscripcion) {
                 return $suscripcion->plan->precio ?? 0;
-            });
+        });
+
+         $total_ingresos_proveedor = SuscripcionesPlanesProveedores::where('pagado', '=',1)
+            ->with('plan')
+            ->get()
+            ->sum(function (SuscripcionesPlanesProveedores $suscripcion) {
+                return $suscripcion->plan->precio ?? 0;
+        });
+
+        $total_ingresos = $total_ingresos_profesionales + $total_ingresos_proveedor;
 
         $year = Carbon::now()->year;
         $tipos = ['proveedor', 'profesional', 'paciente'];

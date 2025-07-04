@@ -1063,7 +1063,7 @@
                             <input type="text" name="pais" class="form-control" placeholder="País">
                         </div>
                         <div class="form-group">
-                            <input type="text" name="ciudad" class="form-control" placeholder="Año">
+                            <input type="text" name="ciudad" class="form-control" placeholder="Año Inicio - Año Fin">
                         </div>
                         <input type="hidden" name="profesional_id" value="{{ $profesional->id }}">
                     </div>

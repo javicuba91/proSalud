@@ -26,6 +26,18 @@
 
     <div id="listado-pacientes">
         @foreach ($pacientes as $index => $paciente)
+
+        @php
+            $externo = "ProSalud";
+        @endphp
+            
+
+            @if ($paciente->profesional_id != null)
+                @php
+                    $externo = "Externo";  
+                @endphp              
+            @endif
+
             <div class="row mt-3 border p-2 paciente-item" data-id="{{ $paciente->id }}">
                 <div class="col-lg-2">
                     <input type="text" class="form-control"
@@ -36,7 +48,7 @@
                         placeholder="paciente1@prosalud.com" readonly>
                 </div>
                 <div class="col-lg-3">
-                    <input type="text" class="form-control" value="{{ $paciente->nombre_completo }}"
+                    <input type="text" class="form-control" value="{{ $paciente->nombre_completo}} ({{$externo }})"
                         placeholder="Nombre paciente" readonly>
                 </div>
                 <div class="col-lg-2">

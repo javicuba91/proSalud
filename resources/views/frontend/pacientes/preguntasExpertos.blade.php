@@ -103,7 +103,8 @@
                             <div id="collapse{{ $respuesta->id }}" class="accordion-collapse collapse"
                                 data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    {{ $respuesta->respuesta }}
+                                    {{ $respuesta->respuesta }} <br>
+                                    <strong>Médico: </strong> <a href="/profesionales/ficha/{{ $respuesta->profesional->id }}">{{ $respuesta->profesional->nombre_completo }}</a> <br>
                                 </div>
                             </div>
                         </div>

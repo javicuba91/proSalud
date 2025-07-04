@@ -40,6 +40,8 @@ class FacturacionController extends Controller
         $profesionales = Profesional::orderBy('nombre_completo', 'ASC')->get();
         $planes = Plan::orderBy('nombre', 'ASC')->get();
 
+        
+
         return view('admin.facturacion.index', compact('suscripciones', 'profesionales', 'planes'));
     }
 

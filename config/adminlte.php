@@ -579,6 +579,7 @@ return [
 
 
         ['text' => 'Documentos Profesional', 'url' => '/admin/documentos-profesional', 'icon' => 'fas fa-file-alt', 'can' => 'solo-admin'],
+        ['text' => 'Documentos Proveedor', 'url' => '/admin/documentos-proveedor', 'icon' => 'fas fa-file-alt', 'can' => 'solo-admin'],
         ['text' => 'Emergencias', 'url' => '/admin/emergencias', 'icon' => 'fas fa-ambulance', 'can' => 'solo-admin'],
         ['text' => 'Especialidades', 'url' => '/admin/especialidades', 'icon' => 'fas fa-stethoscope', 'can' => 'solo-admin'],
         [

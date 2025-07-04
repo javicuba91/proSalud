@@ -477,16 +477,14 @@ class ProveedorController extends Controller
 
         if ($proveedor && $proveedor->tipo == 'centro_imagenes') {
             $pruebas = Prueba::where('pedido_imagen_id', '!=', null)->get();
-            return view('proveedores.misPedidos', compact('pruebas'));
+            return view('proveedores.misPedidos', compact('pruebas','proveedor'));
         } elseif ($proveedor && $proveedor->tipo == 'laboratorio') {
             $pruebas = Prueba::where('pedido_laboratorio_id', '!=', null)->get();
-            return view('proveedores.misPedidos', compact('pruebas'));
+            return view('proveedores.misPedidos', compact('pruebas','proveedor'));
         } else {
             return redirect()->back()->with('error', 'No tienes permisos para ver los pedidos de presupuestos.');
         }
     }
-<<<<<<< HEAD
-
 
     public function pruebasHistoricoPaciente($id_paciente)
     {
@@ -544,7 +542,8 @@ class ProveedorController extends Controller
         }
         $imagen->delete();
         return back()->with('success', 'Imagen eliminada correctamente.');
-=======
+    }
+    
     public function contactarAdministrador()
     {
         $proveedor = Proveedor::where('user_id', auth()->id())->first();
@@ -567,6 +566,5 @@ class ProveedorController extends Controller
         ]);
 
         return back()->with('success', 'Consulta enviada correctamente.');
->>>>>>> refs/remotes/origin/main
     }
 }

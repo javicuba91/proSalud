@@ -95,7 +95,7 @@
                                                     <a type="text"
                                                         class="btn btn-dark btn-danger text-white w-100">Favorito</a>
                                                 </div>
-                                                @if (Auth::user())
+                                                
                                                     <div class="col-lg-6 mb-2">
                                                         <button class="btn btn-dark w-100"
                                                             data-telefono="{{ $emergencia->telefono }}"
@@ -103,13 +103,7 @@
                                                             Solicitar
                                                         </button>
                                                     </div>
-                                                @else
-                                                    <div class="col-lg-6 mb-2">
-                                                        <button disabled class="btn btn-dark w-100">
-                                                            Solicitar
-                                                        </button>
-                                                    </div>
-                                                @endif
+                                               
 
                                             </div>
                                         </div>
