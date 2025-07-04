@@ -15,20 +15,28 @@
             </div>
         @endif
 
-        <form class="mb-5" action="{{ route('pacientes.enviar.preguntasExpertos') }}" method="post">
+        <form class="mb-3" action="{{ route('pacientes.enviar.preguntasExpertos') }}" method="post">
             @csrf
             <div class="row border p-4 formPreguntasExperto">
-                <div class="col-lg-6 mb-2">
+                <div class="col-lg-4 mb-2">
+                    <select name="categoria_id" class="form-control form-select" id="">
+                        <option value="-1">-- Seleccione categoria --</option>
+                        @foreach ($categorias as $categoria)
+                            <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-lg-4 mb-2">
                     <select name="especialidad_id" class="form-control form-select" id="">
-                        <option value="-1">-- Seleccione especialidad --</option>
+                        <option value="-1">-- Seleccione especialidad (opcional) --</option>
                         @foreach ($especialidades as $especialidad)
                             <option value="{{ $especialidad->id }}">{{ $especialidad->nombre }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="col-lg-6 mb-2">
+                <div class="col-lg-4 mb-2">
                     <select name="sub_especialidad_id" class="form-control form-select" id="">
-                        <option value="-1">-- Seleccione subespecialidad --</option>
+                        <option value="-1">-- Seleccione especialidad (opcional) --</option>
 
                     </select>
                 </div>
@@ -41,7 +49,7 @@
             </div>
         </form>
 
-        <div class="row mt-5">
+        <div class="row mt-3">
             <div class="col-lg-12">
                 <ul>
                     <li>Tu pregunta se publicará de forma anónima.</li>
@@ -55,10 +63,24 @@
                 </ul>
             </div>
         </div>
+        <h2 class="mt-3 mb-3">Respuestas a preguntas anteriores</h2>
+        <p class="mb-3">Aquí puedes ver las respuestas a preguntas anteriores realizadas por otros pacientes. Si tienes una
+            pregunta similar, puedes encontrar la respuesta aquí.</p>
 
         <form method="GET" action="{{ route('pacientes.respuestas.index') }}">
-            <div class="row mt-5 mb-5">
-                <div class="col-lg-4 mb-2">
+            <div class="row mt-3 mb-3">
+
+                <div class="col-lg-3 mb-2">
+                    <select name="categoria_id" class="form-control filtrosRespuestas form-select" id="">
+                        <option value="-1">-- Seleccione categoría --</option>
+                        @if(isset($categorias))
+                            @foreach ($categorias as $categoria)
+                                <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                <div class="col-lg-3 mb-2">
                     <select name="especialidad_id" class="form-control filtrosRespuestas form-select" id="">
                         <option value="-1">-- Seleccione especialidad --</option>
                         @foreach ($especialidades as $especialidad)
@@ -66,7 +88,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-lg-4 mb-2">
+                <div class="col-lg-3 mb-2">
                     <select name="sub_especialidad_id" class="form-control filtrosRespuestas form-select" id="">
                         <option value="-1">-- Seleccione subespecialidad --</option>
 
@@ -75,7 +97,7 @@
                 <div class="col-lg-2 mb-2">
                     <button class="btn btn-dark w-100">Filtrar</button>
                 </div>
-                <div class="col-lg-2 mb-2">
+                <div class="col-lg-1 mb-2">
                     <a href="/pacientes/preguntas-expertos" class="btn btn-dark w-100">Borrar</a>
                 </div>
             </div>
@@ -91,16 +113,25 @@
                             <h2 class="accordion-header" id="headingTwo">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapse{{ $respuesta->id }}">
-                                    {{ $respuesta->pregunta->pregunta }}
-                                    ({{ $respuesta->pregunta->especialidad->nombre }}
-                                    @if ($respuesta->pregunta->sub_especialidad_id != null)
-                                        / {{ $respuesta->pregunta->subespecialidad->nombre }})
+                                   <strong>Pregunta:&nbsp;</strong> {{ $respuesta->pregunta->pregunta }}
+                                    (
+                                    @if ($respuesta->pregunta->categoria)
+                                        <span class="badge bg-primary">{{ $respuesta->pregunta->categoria->nombre }}</span>
                                     @endif
+                                    @if ($respuesta->pregunta->especialidad)
+                                        <span class="badge bg-success">{{ $respuesta->pregunta->especialidad->nombre }}</span>
+                                    @endif
+                                    @if ($respuesta->pregunta->sub_especialidad_id != null)
+                                        <span class="badge bg-info">{{ $respuesta->pregunta->subespecialidad->nombre }}</span>
+                                    @endif
+                                    )
                                 </button>
                             </h2>
+
                             <div id="collapse{{ $respuesta->id }}" class="accordion-collapse collapse"
                                 data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
+                                    <strong>Respuesta:&nbsp;</strong>
                                     {{ $respuesta->respuesta }} <br>
                                     <strong>Médico: </strong> <a href="/profesionales/ficha/{{ $respuesta->profesional->id }}">{{ $respuesta->profesional->nombre_completo }}</a> <br>
                                 </div>

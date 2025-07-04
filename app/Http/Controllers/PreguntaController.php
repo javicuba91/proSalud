@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PreguntaExperto;
 use App\Models\Especialidad;
+use App\Models\CategoriaProfesional;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -16,22 +17,34 @@ class PreguntaController extends Controller
     {
         $query = PreguntaExperto::query();
 
+        // Filtro por categoría
+        if ($request->filled('categoria_id')) {
+            $query->where('categoria_id', $request->categoria_id);
+        }
+
+        // Filtro por especialidad
         if ($request->filled('especialidad_id')) {
             $query->where('especialidad_id', $request->especialidad_id);
         }
+
+        // Filtro por subespecialidad
         if ($request->filled('subespecialidad_id')) {
             $query->where('sub_especialidad_id', $request->subespecialidad_id);
         }
 
-        $preguntas = $query->get();
-        $especialidades = Especialidad::whereNull('padre_id')->get();
+        $preguntas = $query->with(['categoria', 'especialidad', 'subespecialidad'])->get();
+
+        // Obtener datos para los filtros
+        $categorias = CategoriaProfesional::orderBy('nombre')->get();
+        $especialidades = Especialidad::whereNull('padre_id')->orderBy('nombre')->get();
+
         if ($request->filled('especialidad_id')) {
-            $subespecialidades = Especialidad::where('padre_id', $request->especialidad_id)->get();
+            $subespecialidades = Especialidad::where('padre_id', $request->especialidad_id)->orderBy('nombre')->get();
         } else {
-            $subespecialidades = Especialidad::whereNotNull('padre_id')->get();
+            $subespecialidades = Especialidad::whereNotNull('padre_id')->orderBy('nombre')->get();
         }
 
-        return view('admin.preguntas.index', compact('preguntas', 'especialidades', 'subespecialidades'));
+        return view('admin.preguntas.index', compact('preguntas', 'categorias', 'especialidades', 'subespecialidades'));
     }
 
     /**
@@ -39,8 +52,9 @@ class PreguntaController extends Controller
      */
     public function create()
     {
-        $especialidades = Especialidad::whereNull('padre_id')->get(); //
-        return view('admin.preguntas.create', compact('especialidades'));
+        $categorias = CategoriaProfesional::orderBy('nombre')->get();
+        $especialidades = Especialidad::whereNull('padre_id')->orderBy('nombre')->get();
+        return view('admin.preguntas.create', compact('categorias', 'especialidades'));
     }
 
     /**
@@ -48,15 +62,24 @@ class PreguntaController extends Controller
      */
     public function store(Request $request)
     {
-            $request->validate([
-                'especialidad_id' => 'required|exists:especialidades,id',
-                'sub_especialidad_id' => 'nullable|exists:especialidades,id',
-                'pregunta' => 'required|string',
-            ]);
-            PreguntaExperto::create($request->all());
+        $request->validate([
+            'categoria_id' => 'nullable|exists:categoria_profesionales,id',
+            'especialidad_id' => 'nullable|exists:especialidades,id',
+            'sub_especialidad_id' => 'nullable|exists:especialidades,id',
+            'pregunta' => 'required|string',
+        ], [
+            'pregunta.required' => 'La pregunta es obligatoria',
+        ]);
 
-            return redirect()->route('preguntas.index')
-                ->with('success', 'Pregunta creada correctamente.');
+        // Validar que al menos uno de los campos esté presente
+        if (!$request->categoria_id && !$request->especialidad_id && !$request->sub_especialidad_id) {
+            return back()->withErrors(['categoria_id' => 'Debe seleccionar al menos una categoría, especialidad o subespecialidad.'])->withInput();
+        }
+
+        PreguntaExperto::create($request->all());
+
+        return redirect()->route('preguntas.index')
+            ->with('success', 'Pregunta creada correctamente.');
     }
     /**
      * Display the specified resource.
@@ -71,8 +94,9 @@ class PreguntaController extends Controller
      */
     public function edit(PreguntaExperto $pregunta)
     {
-        $especialidades = Especialidad::whereNull('padre_id')->get();
-        return view('admin.preguntas.edit', compact('pregunta', 'especialidades'));
+        $categorias = CategoriaProfesional::orderBy('nombre')->get();
+        $especialidades = Especialidad::whereNull('padre_id')->orderBy('nombre')->get();
+        return view('admin.preguntas.edit', compact('pregunta', 'categorias', 'especialidades'));
     }
 
     /**
@@ -81,10 +105,18 @@ class PreguntaController extends Controller
     public function update(Request $request, PreguntaExperto $pregunta)
     {
         $request->validate([
-            'especialidad_id' => 'required|exists:especialidades,id',
+            'categoria_id' => 'nullable|exists:categoria_profesionales,id',
+            'especialidad_id' => 'nullable|exists:especialidades,id',
             'sub_especialidad_id' => 'nullable|exists:especialidades,id',
             'pregunta' => 'required|string',
+        ], [
+            'pregunta.required' => 'La pregunta es obligatoria',
         ]);
+
+        // Validar que al menos uno de los campos esté presente
+        if (!$request->categoria_id && !$request->especialidad_id && !$request->sub_especialidad_id) {
+            return back()->withErrors(['categoria_id' => 'Debe seleccionar al menos una categoría, especialidad o subespecialidad.'])->withInput();
+        }
 
         $pregunta->update($request->all());
 

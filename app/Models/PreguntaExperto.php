@@ -12,7 +12,9 @@ class PreguntaExperto extends Model
     protected $fillable = [
         'especialidad_id',
         'sub_especialidad_id',
-        'pregunta'
+        'pregunta',
+        'categoria_id',
+
     ];
 
     public function respuestas()
@@ -26,7 +28,11 @@ class PreguntaExperto extends Model
     }
 
     public function subespecialidad()
-{
-    return $this->belongsTo(Especialidad::class, 'sub_especialidad_id');
-}
+    {
+        return $this->belongsTo(Especialidad::class, 'sub_especialidad_id');
+    }
+    public function categoria()
+    {
+        return $this->belongsTo(CategoriaProfesional::class, 'categoria_id');
+    }
 }

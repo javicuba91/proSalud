@@ -18,20 +18,40 @@ class RespuestaController extends Controller
     {
         $query = \App\Models\RespuestaExperto::query();
 
+        // Filtrar por categoría de la pregunta
+        if ($request->filled('categoria_id')) {
+            $query->whereHas('pregunta', function($q) use ($request) {
+                $q->where('categoria_id', $request->categoria_id);
+            });
+        }
+
+        // Filtrar por especialidad de la pregunta
         if ($request->filled('especialidad_id')) {
             $query->whereHas('pregunta', function($q) use ($request) {
                 $q->where('especialidad_id', $request->especialidad_id);
             });
         }
+
+        // Filtrar por subespecialidad de la pregunta
+        if ($request->filled('sub_especialidad_id')) {
+            $query->whereHas('pregunta', function($q) use ($request) {
+                $q->where('sub_especialidad_id', $request->sub_especialidad_id);
+            });
+        }
+
+        // Filtrar por profesional que respondió
         if ($request->filled('profesional_id')) {
             $query->where('profesional_id', $request->profesional_id);
         }
 
-        $respuestas = $query->get();
+        $respuestas = $query->with(['pregunta.categoria', 'pregunta.especialidad', 'pregunta.subespecialidad', 'profesional.user'])->get();
+
+        // Obtener datos para filtros
+        $categorias = \App\Models\CategoriaProfesional::all();
         $especialidades = \App\Models\Especialidad::whereNull('padre_id')->get();
         $profesionales = \App\Models\Profesional::orderBy('nombre_completo')->get();
 
-        return view('admin.respuestas.index', compact('respuestas', 'especialidades', 'profesionales'));
+        return view('admin.respuestas.index', compact('respuestas', 'categorias', 'especialidades', 'profesionales'));
     }
 
     /**
@@ -39,7 +59,7 @@ class RespuestaController extends Controller
      */
     public function create()
     {
-        $preguntas = PreguntaExperto::with(['especialidad', 'subespecialidad'])->get();
+        $preguntas = PreguntaExperto::with(['categoria', 'especialidad', 'subespecialidad'])->get();
         // Ya no cargamos todos los profesionales, se cargarán via AJAX según la pregunta seleccionada
         $profesionales = collect(); // Colección vacía
 
@@ -77,7 +97,7 @@ class RespuestaController extends Controller
      */
     public function edit(RespuestaExperto $respuesta)
     {
-        $preguntas = PreguntaExperto::with(['especialidad', 'subespecialidad'])->get();
+        $preguntas = PreguntaExperto::with(['categoria', 'especialidad', 'subespecialidad'])->get();
         $profesionales = collect(); // Se cargarán vía AJAX
 
         return view('admin.respuestas.edit', compact('respuesta', 'preguntas', 'profesionales'));
@@ -110,7 +130,7 @@ class RespuestaController extends Controller
     }
 
     /**
-     * Get professionals filtered by question's speciality
+     * Get professionals filtered by question's category, specialty and subspecialty
      */
     public function ProfesionalesPregunta(Request $request)
     {
@@ -120,25 +140,42 @@ class RespuestaController extends Controller
             return response()->json([]);
         }
 
-        // Obtener la pregunta con sus especialidades
-        $pregunta = PreguntaExperto::find($preguntaId);
+        // Obtener la pregunta con sus categorías y especialidades
+        $pregunta = PreguntaExperto::with(['categoria', 'especialidad', 'subespecialidad'])->find($preguntaId);
 
         if (!$pregunta) {
             return response()->json([]);
         }
 
-        // Obtener profesionales que tienen la especialidad principal o sub-especialidad de la pregunta
+        // Obtener profesionales que coincidan con la categoría, especialidad o subespecialidad de la pregunta
         $profesionales = Profesional::with('user')
-            ->whereHas('especializaciones', function($query) use ($pregunta) {
-                // Filtrar por especialidad principal
-                $query->where('especialidad_id', $pregunta->especialidad_id);
-            })->get();
+            ->where(function($query) use ($pregunta) {
+                // Filtrar por categoría si la pregunta tiene categoría
+                if ($pregunta->categoria_id) {
+                    $query->orWhere('categoria_id', $pregunta->categoria_id);
+                }
+
+                // Filtrar por especialidad principal si la pregunta tiene especialidad
+                if ($pregunta->especialidad_id) {
+                    $query->orWhereHas('especializaciones', function($subQuery) use ($pregunta) {
+                        $subQuery->where('especialidad_id', $pregunta->especialidad_id);
+                    });
+                }
+
+                // Filtrar por subespecialidad si la pregunta tiene subespecialidad
+                if ($pregunta->sub_especialidad_id) {
+                    $query->orWhereHas('especializaciones', function($subQuery) use ($pregunta) {
+                        $subQuery->where('sub_especialidad_id', $pregunta->sub_especialidad_id);
+                    });
+                }
+            })
+            ->get();
 
         // Formatear la respuesta para el select
         $profesionalesFormatted = $profesionales->map(function($profesional) {
             return [
                 'id' => $profesional->id,
-                'nombre_completo' => $profesional->nombre_completo?? 'Profesional #' . $profesional->id
+                'nombre_completo' => $profesional->nombre_completo ?? 'Profesional #' . $profesional->id
             ];
         });
 

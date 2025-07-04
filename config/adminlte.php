@@ -595,7 +595,7 @@ return [
          [
             'text' => 'Facturación',
             'url'  => '#',
-            'icon' => 'fas fa-user-tie',
+            'icon' => 'fas fa-money-check-alt' ,
             'can'  => 'solo-admin',
             'submenu' => [
                 ['text' => 'Profesionales', 'url' => '/admin/facturacion', 'icon' => '', 'can' => 'solo-admin'],

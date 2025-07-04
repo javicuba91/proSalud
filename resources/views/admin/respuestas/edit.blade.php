@@ -21,8 +21,13 @@
                         @foreach ($preguntas as $pregunta)
                             <option value="{{ $pregunta->id }}"
                                 {{ old('preguntas_expertos_id', $respuesta->preguntas_expertos_id) == $pregunta->id ? 'selected' : '' }}>
-                                <strong>{{ $pregunta->especialidad->nombre ?? 'Sin especialidad' }}</strong>
-                                @if ($pregunta->subespecialidad)
+                                @if($pregunta->categoria)
+                                    <strong>[{{ $pregunta->categoria->nombre }}]</strong>
+                                @endif
+                                @if($pregunta->especialidad)
+                                    {{ $pregunta->especialidad->nombre }}
+                                @endif
+                                @if($pregunta->subespecialidad)
                                     / {{ $pregunta->subespecialidad->nombre }}
                                 @endif
                                 -> {{ Str::limit($pregunta->pregunta, 100) }}

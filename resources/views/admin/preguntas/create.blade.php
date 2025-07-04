@@ -13,9 +13,24 @@
                 @csrf
 
                 <div class="form-group">
-                    <label for="especialidad_id">Especialidad <span class="text-danger">*</span></label>
-                    <select name="especialidad_id" id="especialidad_id" class="form-control @error('especialidad_id') is-invalid @enderror" required>
-                        <option value="">Seleccione una especialidad</option>
+                    <label for="categoria_id">Categoría</label>
+                    <select name="categoria_id" id="categoria_id" class="form-control @error('categoria_id') is-invalid @enderror">
+                        <option value="">Seleccione una categoría (opcional)</option>
+                        @foreach($categorias as $categoria)
+                            <option value="{{ $categoria->id }}" {{ old('categoria_id') == $categoria->id ? 'selected' : '' }}>
+                                {{ $categoria->nombre }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('categoria_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="especialidad_id">Especialidad</label>
+                    <select name="especialidad_id" id="especialidad_id" class="form-control @error('especialidad_id') is-invalid @enderror">
+                        <option value="">Seleccione una especialidad (opcional)</option>
                         @foreach($especialidades as $especialidad)
                             <option value="{{ $especialidad->id }}" {{ old('especialidad_id') == $especialidad->id ? 'selected' : '' }}>
                                 {{ $especialidad->nombre }}
@@ -43,6 +58,9 @@
                     @error('pregunta')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                    <small class="form-text text-muted">
+                        <strong>Nota:</strong> Debe seleccionar al menos una categoría, especialidad o subespecialidad.
+                    </small>
                 </div>
 
                 <div class="form-group">

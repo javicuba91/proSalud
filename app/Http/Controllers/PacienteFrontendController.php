@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ArticuloBlog;
 use App\Models\CategoriaBlog;
+use App\Models\CategoriaProfesional;
 use App\Models\Cita;
 use App\Models\DetalleCita;
 use App\Models\Emergencia;
@@ -119,16 +120,37 @@ class PacienteFrontendController extends Controller
 
     public function preguntasExpertos()
     {
+        $categorias = CategoriaProfesional::orderBy('nombre', 'ASC')->get();
         $especialidades = Especialidad::where('padre_id', '=', NULL)->orderBy('nombre', 'ASC')->get();
         $respuestas = RespuestaExperto::orderBy('id', 'DESC')->get();
-        return view('frontend.pacientes.preguntasExpertos', compact('especialidades', 'respuestas'));
+        return view('frontend.pacientes.preguntasExpertos', compact('especialidades', 'respuestas', 'categorias'));
     }
 
     public function preguntasExpertosGuardar(Request $request)
     {
         $preguntaExperto = new PreguntaExperto();
-        $preguntaExperto->especialidad_id = $request->especialidad_id;
-        $preguntaExperto->sub_especialidad_id = $request->sub_especialidad_id;
+
+        // Manejar categoría
+        if ($request->categoria_id == -1) {
+            $preguntaExperto->categoria_id = null;
+        } else {
+            $preguntaExperto->categoria_id = $request->categoria_id;
+        }
+
+        // Manejar especialidad
+        if ($request->especialidad_id == -1) {
+            $preguntaExperto->especialidad_id = null;
+        } else {
+            $preguntaExperto->especialidad_id = $request->especialidad_id;
+        }
+
+        // Manejar subespecialidad
+        if ($request->sub_especialidad_id == -1) {
+            $preguntaExperto->sub_especialidad_id = null;
+        } else {
+            $preguntaExperto->sub_especialidad_id = $request->sub_especialidad_id;
+        }
+
         $preguntaExperto->pregunta = $request->pregunta;
         $preguntaExperto->save();
 
@@ -137,14 +159,23 @@ class PacienteFrontendController extends Controller
 
     public function pacientePreguntaRespuestaFiltro(Request $request)
     {
-        $query = RespuestaExperto::with(['pregunta.especialidad', 'pregunta.subespecialidad']);
+        $query = RespuestaExperto::with(['pregunta.categoria', 'pregunta.especialidad', 'pregunta.subespecialidad']);
 
+        // Filtro por categoría de la pregunta
+        if ($request->filled('categoria_id')) {
+            $query->whereHas('pregunta', function ($q) use ($request) {
+                $q->where('categoria_id', $request->categoria_id);
+            });
+        }
+
+        // Filtro por especialidad de la pregunta
         if ($request->filled('especialidad_id')) {
             $query->whereHas('pregunta', function ($q) use ($request) {
                 $q->where('especialidad_id', $request->especialidad_id);
             });
         }
 
+        // Filtro por subespecialidad de la pregunta
         if ($request->filled('sub_especialidad_id')) {
             $query->whereHas('pregunta', function ($q) use ($request) {
                 $q->where('sub_especialidad_id', $request->sub_especialidad_id);
@@ -152,9 +183,10 @@ class PacienteFrontendController extends Controller
         }
 
         $respuestas = $query->get();
+        $categorias = CategoriaProfesional::orderBy('nombre', 'ASC')->get();
         $especialidades = Especialidad::where('padre_id', '=', NULL)->orderBy('nombre', 'ASC')->get();
 
-        return view('frontend.pacientes.preguntasExpertos', compact('respuestas', 'especialidades'));
+        return view('frontend.pacientes.preguntasExpertos', compact('respuestas', 'categorias', 'especialidades'));
     }
 
     public function buscarMedicosPaciente(Request $request)
@@ -235,7 +267,7 @@ class PacienteFrontendController extends Controller
             $query->where('tipo', '=', $request->tipo);
         }
 
-        if ($request->filled('ciudad')) {           
+        if ($request->filled('ciudad')) {
             $query->where('direccion', 'LIKE', '%' . $request->ciudad . '%');
         }
 
@@ -286,7 +318,7 @@ class PacienteFrontendController extends Controller
     {
         $profesional = Profesional::findOrFail($profesional_id);
 
-        $horarios = HorarioProfesional::where('profesional_id', $profesional->id)           
+        $horarios = HorarioProfesional::where('profesional_id', $profesional->id)
             ->whereDate('fecha', $fecha)
             ->with('detalles.consultorio')
             ->get();

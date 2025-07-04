@@ -1815,19 +1815,42 @@ class ProfesionalController extends Controller
             return redirect()->route('login');
         }
 
-        // Obtener las especialidades del profesional
+        // Obtener la categoría del profesional
+        $categoriaProfesional = $profesional->categoria_id;
+        
+        // Obtener las especialidades y subespecialidades del profesional
         $especialidadesProfesional = $profesional->especializaciones()->pluck('especialidad_id')->toArray();
+        $subespecialidadesProfesional = $profesional->especializaciones()->pluck('sub_especialidad_id')->whereNotNull()->toArray();
 
-        // Obtener preguntas de las especialidades del profesional
-        $preguntas = PreguntaExperto::whereIn('especialidad_id', $especialidadesProfesional)
-            ->orWhereIn('sub_especialidad_id', $especialidadesProfesional)
-            ->with(['especialidad', 'subespecialidad', 'respuestas.profesional'])
+        // Construir query para obtener preguntas relevantes
+        $queryPreguntas = PreguntaExperto::query();
+        
+        // Aplicar filtros con OR para que lleguen preguntas de cualquier criterio que coincida
+        $queryPreguntas->where(function($query) use ($categoriaProfesional, $especialidadesProfesional, $subespecialidadesProfesional) {
+            // Preguntas por categoría (si el profesional tiene categoría)
+            if ($categoriaProfesional) {
+                $query->orWhere('categoria_id', $categoriaProfesional);
+            }
+            
+            // Preguntas por especialidad principal
+            if (!empty($especialidadesProfesional)) {
+                $query->orWhereIn('especialidad_id', $especialidadesProfesional);
+            }
+            
+            // Preguntas por subespecialidad
+            if (!empty($subespecialidadesProfesional)) {
+                $query->orWhereIn('sub_especialidad_id', $subespecialidadesProfesional);
+            }
+        });
+        
+        $preguntas = $queryPreguntas
+            ->with(['especialidad', 'subespecialidad', 'categoria', 'respuestas.profesional'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         // Obtener las respuestas del profesional actual
         $misRespuestas = RespuestaExperto::where('profesional_id', $profesional->id)
-            ->with(['pregunta.especialidad', 'pregunta.subespecialidad'])
+            ->with(['pregunta.especialidad', 'pregunta.subespecialidad', 'pregunta.categoria'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -1850,14 +1873,33 @@ class ProfesionalController extends Controller
             return response()->json(['success' => false, 'message' => 'Profesional no encontrado']);
         }
 
-        // Verificar que el profesional puede responder esta pregunta (tiene la especialidad)
+        // Verificar que el profesional puede responder esta pregunta
         $pregunta = PreguntaExperto::findOrFail($request->pregunta_id);
+        
+        // Obtener datos del profesional
+        $categoriaProfesional = $profesional->categoria_id;
         $especialidadesProfesional = $profesional->especializaciones()->pluck('especialidad_id')->toArray();
+        $subespecialidadesProfesional = $profesional->especializaciones()->pluck('sub_especialidad_id')->whereNotNull()->toArray();
+        
+        // Verificar si puede responder por algún criterio
+        $puedeResponder = false;
+        
+        // Puede responder si comparte la categoría
+        if ($pregunta->categoria_id && $categoriaProfesional && $pregunta->categoria_id == $categoriaProfesional) {
+            $puedeResponder = true;
+        }
+        
+        // Puede responder si tiene la especialidad de la pregunta
+        if ($pregunta->especialidad_id && in_array($pregunta->especialidad_id, $especialidadesProfesional)) {
+            $puedeResponder = true;
+        }
+        
+        // Puede responder si tiene la subespecialidad de la pregunta
+        if ($pregunta->sub_especialidad_id && in_array($pregunta->sub_especialidad_id, $subespecialidadesProfesional)) {
+            $puedeResponder = true;
+        }
 
-        if (
-            !in_array($pregunta->especialidad_id, $especialidadesProfesional) &&
-            !in_array($pregunta->sub_especialidad_id, $especialidadesProfesional)
-        ) {
+        if (!$puedeResponder) {
             return response()->json(['success' => false, 'message' => 'No tienes autorización para responder esta pregunta']);
         }
 
