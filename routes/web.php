@@ -195,6 +195,8 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/profesional/mis-pacientes/update/{id}', [ProfesionalController::class, 'updatePacientes'])->name('profesionales.updatePacientes');
         Route::get('/profesional/listado-citas-videollamada', [ProfesionalController::class, 'listadoCitasVideollamada'])->name('profesional.listadoCitasVideollamada');
 
+        Route::post('/profesional/consultorios/{id}/actualizar-direccion', [App\Http\Controllers\ProfesionalController::class, 'actualizarDireccion'])->name('consultorios.actualizarDireccion');
+
         Route::get('/profesional/mis-contactos', [ProfesionalController::class, 'misContactos'])->name('profesionales.misContactos');
 
         Route::get('/profesional/recetas-farmacia-digitales', [ProfesionalController::class, 'recetasFarmacia'])->name('profesionales.recetasFarmacia');
