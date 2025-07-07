@@ -2112,4 +2112,13 @@ class ProfesionalController extends Controller
             return response()->json(['success' => false, 'message' => 'Error al eliminar la firma: ' . $e->getMessage()]);
         }
     }
+
+    public function actualizarDireccion(Request $request, $id)
+    {
+        $consultorio = ConsultorioProfesional::findOrFail($id);
+        $consultorio->direccion = $request->input('direccion');
+        $consultorio->save();
+
+        return response()->json(['success' => true]);
+    }
 }

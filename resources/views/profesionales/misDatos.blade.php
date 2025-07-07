@@ -575,8 +575,14 @@
                 <div class="row mt-1 border p-2 mb-4 position-relative" id="consultorio-{{ $consultorio->id }}">
                     <div class="col-md-8 mb-2">
                         <label>Dirección</label>
-                        <input type="text" value="{{ $consultorio->direccion }}" class="form-control"
-                            placeholder="Dirección escrita">
+                        <div class="input-group">
+                            <input type="text" value="{{ $consultorio->direccion }}" class="form-control direccion-consultorio" data-consultorio-id="{{ $consultorio->id }}" id="direccion-consultorio-{{ $consultorio->id }}" readonly>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-primary btn-editar-direccion" data-consultorio-id="{{ $consultorio->id }}" data-direccion="{{ $consultorio->direccion }}">
+                                    <i class="fa fa-edit"></i> Editar dirección
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-2 mb-2">
                         <label>&nbsp;</label>
@@ -588,8 +594,7 @@
                     <div class="col-md-2 mb-2">
                         <label>&nbsp;</label>
                         <button type="button" class="btn btn-danger w-100 eliminar-consultorio"
-                            data-id="{{ $consultorio->id }}" title="Eliminar"
-                            onclick="eliminarConsultorio({{ $consultorio->id }})">
+                            data-id="{{ $consultorio->id }}" title="Eliminar">
                             <i class="fa fa-trash"></i>
                         </button>
                     </div>
@@ -638,13 +643,18 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Cargar imágenes</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
-                        <input type="file" name="imagenes[]" multiple class="form-control" accept="image/*" required>
+                        <input type="file" name="imagenes[]" multiple class="form-control" accept="image/*" required id="inputImagenesConsultorio">
                         <input type="hidden" id="consultorioIdInput" name="consultorio_id">
+                        <div id="previewImagenesConsultorio" class="row mt-2"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Subir</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
             </form>
@@ -877,157 +887,6 @@
         </div>
     </div>
 
-    <script>
-        function previewSello(input) {
-            const preview = document.getElementById('preview-sello-container');
-            preview.innerHTML = '';
-
-            if (input.files && input.files.length > 0) {
-                const file = input.files[0];
-                const previewTitle = document.createElement('h6');
-                previewTitle.textContent = 'Nuevo sello seleccionado:';
-                previewTitle.className = 'mt-3';
-                preview.appendChild(previewTitle);
-
-                const col = document.createElement('div');
-                col.className = 'col-md-6';
-
-                const fileDiv = document.createElement('div');
-                fileDiv.className = 'border p-2 rounded';
-
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        fileDiv.innerHTML = `
-                                <img src="${e.target.result}" class="img-thumbnail w-100" style="max-height: 150px; object-fit: cover;">
-                                <p class="mt-2 mb-0 text-center small">${file.name}</p>
-                            `;
-                    }
-                    reader.readAsDataURL(file);
-                } else if (file.type === 'application/pdf') {
-                    fileDiv.innerHTML = `
-                            <div class="text-center p-3">
-                                <i class="fas fa-file-pdf fa-3x text-danger"></i>
-                                <p class="mt-2 mb-0 small">${file.name}</p>
-                            </div>
-                        `;
-                }
-
-                col.appendChild(fileDiv);
-                preview.appendChild(col);
-            }
-        }
-
-        function previewFirma(input) {
-            const preview = document.getElementById('preview-firma-container');
-            preview.innerHTML = '';
-
-            if (input.files && input.files.length > 0) {
-                const file = input.files[0];
-                const previewTitle = document.createElement('h6');
-                previewTitle.textContent = 'Nueva firma seleccionada:';
-                previewTitle.className = 'mt-3';
-                preview.appendChild(previewTitle);
-
-                const col = document.createElement('div');
-                col.className = 'col-md-6';
-
-                const fileDiv = document.createElement('div');
-                fileDiv.className = 'border p-2 rounded';
-
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        fileDiv.innerHTML = `
-                                <img src="${e.target.result}" class="img-thumbnail w-100" style="max-height: 150px; object-fit: cover;">
-                                <p class="mt-2 mb-0 text-center small">${file.name}</p>
-                            `;
-                    }
-                    reader.readAsDataURL(file);
-                } else if (file.type === 'application/pdf') {
-                    fileDiv.innerHTML = `
-                            <div class="text-center p-3">
-                                <i class="fas fa-file-pdf fa-3x text-danger"></i>
-                                <p class="mt-2 mb-0 small">${file.name}</p>
-                            </div>
-                        `;
-                }
-
-                col.appendChild(fileDiv);
-                preview.appendChild(col);
-            }
-        }
-
-        function eliminarSello() {
-            if (confirm('¿Estás seguro de que quieres eliminar el sello actual?')) {
-                fetch('/profesional/sello/eliminar', {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                            'Content-Type': 'application/json',
-                        },
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            location.reload();
-                        } else {
-                            Swal.fire({
-                                title: 'Error',
-                                text: data.message || 'No se pudo eliminar el sello',
-                                icon: 'error',
-                                confirmButtonText: 'Aceptar'
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'Hubo un problema al eliminar el sello',
-                            icon: 'error',
-                            confirmButtonText: 'Aceptar'
-                        });
-                    });
-            }
-        }
-
-        function eliminarFirma() {
-            if (confirm('¿Estás seguro de que quieres eliminar la firma actual?')) {
-                fetch('/profesional/firma/eliminar', {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                            'Content-Type': 'application/json',
-                        },
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            location.reload();
-                        } else {
-                            Swal.fire({
-                                title: 'Error',
-                                text: data.message || 'No se pudo eliminar la firma',
-                                icon: 'error',
-                                confirmButtonText: 'Aceptar'
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'Hubo un problema al eliminar la firma',
-                            icon: 'error',
-                            confirmButtonText: 'Aceptar'
-                        });
-                    });
-            }
-        }
-    </script>
-
-
     <!-- Modal -->
     <div class="modal fade" id="modalDocumento" tabindex="-1" role="dialog" aria-labelledby="modalDocumentoLabel"
         aria-hidden="true">
@@ -1255,23 +1114,21 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalFormacionesAdicionales" tabindex="-1" role="dialog"
-        aria-labelledby="tituloModal" aria-hidden="true">
+    <div class="modal fade" id="modalFormacionesAdicionales" tabindex="-1" role="dialog" aria-labelledby="modalFormacionesAdicionalesLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form id="formFormacionesAdicionales">
+            <form id="formNuevaFormacionAdicional">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Nueva Formación</h5>
+                        <h5 class="modal-title" id="modalFormacionesAdicionalesLabel">Nueva Formación Adicional</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="">Tipo de formación</label>
-                            <select name="tipo" id="" class="form-control">
+                            <label for="tipo_formacion">Tipo</label>
+                            <select class="form-control" id="tipo_formacion" name="tipo" required>
                                 <option value="curso">Curso</option>
                                 <option value="master">Máster</option>
                                 <option value="taller">Taller</option>
@@ -1280,85 +1137,21 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="nombre" class="form-control" placeholder="Nombre del título"
-                                required>
-                        </div>
-                        <input type="hidden" name="profesional_id" value="{{ $profesional->id }}">
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-dark">Guardar</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalExperiencia" tabindex="-1" role="dialog" aria-labelledby="modalExperienciaLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form id="formNuevaExperiencia">
-                @csrf
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Nueva experiencia laboral</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <input type="text" name="puesto" class="form-control" placeholder="Puesto/Cargo"
-                                required>
+                            <label for="nombre_formacion">Nombre</label>
+                            <input type="text" class="form-control" id="nombre_formacion" name="nombre" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="clinica" class="form-control" placeholder="Clínica/Centro">
+                            <label for="centro_formacion">Centro educativo</label>
+                            <input type="text" class="form-control" id="centro_formacion" name="centro_educativo">
                         </div>
                         <div class="form-group">
-                            <input type="text" name="pais" class="form-control" placeholder="País">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="ciudad" class="form-control"
-                                placeholder="Año Inicio - Año Fin">
-                        </div>
-                        <input type="hidden" name="profesional_id" value="{{ $profesional->id }}">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-dark">Guardar</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalConsultorio" tabindex="-1" role="dialog" aria-labelledby="modalConsultorioLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form id="formNuevoConsultorio">
-                @csrf
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Nuevo consultorio</h5>
-                    </div>
-                    <div class="modal-body">
-                        <input type="hidden" name="profesional_id" value="{{ $profesional->id }}">
-                        <div class="form-group">
-                            <input type="text" name="direccion" class="form-control" placeholder="Dirección escrita"
-                                required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="clinica" class="form-control" placeholder="Clínica/edificio">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="info_adicional" class="form-control"
-                                placeholder="Información adicional">
+                            <label for="pais_formacion">País</label>
+                            <input type="text" class="form-control" id="pais_formacion" name="pais">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-dark">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar formación</button>
                     </div>
                 </div>
             </form>
@@ -1644,14 +1437,123 @@
         </div>
     </div>
 
-@stop
+    <!-- Modal Nuevo Consultorio -->
+    <div class="modal fade" id="modalConsultorio" tabindex="-1" role="dialog" aria-labelledby="modalConsultorioLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="formNuevoConsultorio">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalConsultorioLabel">Nuevo Consultorio</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Dirección</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="direccionNuevoConsultorio" name="direccion" readonly required>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-outline-primary" id="btnSeleccionarDireccionMapa">
+                                        <i class="fa fa-map-marker"></i> Seleccionar en mapa
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Clínica/Edificio</label>
+                            <input type="text" class="form-control" name="clinica" placeholder="Clínica/Edificio">
+                        </div>
+                        <div class="form-group">
+                            <label>Información Adicional</label>
+                            <input type="text" class="form-control" name="info_adicional" placeholder="Información adicional">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar consultorio</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para seleccionar dirección en mapa (Leaflet) -->
+    <div class="modal fade" id="modalMapaDireccion" tabindex="-1" role="dialog" aria-labelledby="modalMapaDireccionLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalMapaDireccionLabel">Seleccionar dirección en el mapa</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="mapaLeaflet" style="height: 400px;"></div>
+                    <div class="mt-2">
+                        <strong>Dirección seleccionada:</strong>
+                        <span id="direccion-seleccionada"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="guardarDireccionMapa">Guardar dirección</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalExperiencia" tabindex="-1" role="dialog" aria-labelledby="modalExperienciaLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="formNuevaExperiencia">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nueva experiencia laboral</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" name="puesto" class="form-control" placeholder="Puesto/Cargo"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="clinica" class="form-control" placeholder="Clínica/Centro">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="pais" class="form-control" placeholder="País">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="ciudad" class="form-control"
+                                placeholder="Año Inicio - Año Fin">
+                        </div>
+                        <input type="hidden" name="profesional_id" value="{{ $profesional->id }}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-dark">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+@endsection
+
 
 @section('js')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+   
     <script>
         $(document).ready(function() {
 
@@ -2569,5 +2471,263 @@
                 }
             }
         });
+    </script>
+   
+   <script>
+        let mapa, marker, direccionSeleccionada = '';
+        let lat = -0.1806532, lng = -78.4678382; // Quito por defecto
+        let consultorioEditandoId = null;
+
+        // Abrir modal de mapa desde nuevo consultorio
+        $(document).on('click', '#btnSeleccionarDireccionMapa', function() {
+            consultorioEditandoId = null;
+            lat = -0.1806532;
+            lng = -78.4678382;
+            abrirModalMapaDireccion();
+        });
+
+        // Abrir modal de mapa desde edición de consultorio existente
+        $(document).on('click', '.btn-editar-direccion', function() {
+            consultorioEditandoId = $(this).data('consultorio-id');
+            const direccion = $(this).data('direccion');
+            if (direccion) {
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}&accept-language=es`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.length > 0) {
+                            lat = parseFloat(data[0].lat);
+                            lng = parseFloat(data[0].lon);
+                        } else {
+                            lat = -0.1806532;
+                            lng = -78.4678382;
+                        }
+                        abrirModalMapaDireccion();
+                    });
+            } else {
+                lat = -0.1806532;
+                lng = -78.4678382;
+                abrirModalMapaDireccion();
+            }
+        });
+
+        function abrirModalMapaDireccion() {
+            $('#modalMapaDireccion').modal('show');
+        }
+
+        $('#modalMapaDireccion').on('shown.bs.modal', function() {
+            setTimeout(function() {
+                if (!mapa) {
+                    mapa = L.map('mapaLeaflet').setView([lat, lng], 13);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        attribution: '© OpenStreetMap'
+                    }).addTo(mapa);
+                    mapa.on('click', function(e) {
+                        if (marker) mapa.removeLayer(marker);
+                        marker = L.marker(e.latlng).addTo(mapa);
+                        obtenerDireccion(e.latlng.lat, e.latlng.lng);
+                    });
+                } else {
+                    mapa.setView([lat, lng], 13);
+                    mapa.invalidateSize();
+                    if (marker) {
+                        mapa.removeLayer(marker);
+                        marker = null;
+                    }
+                }
+                $('#direccion-seleccionada').text('');
+            }, 300);
+        });
+
+        function obtenerDireccion(lat, lng) {
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=es`)
+                .then(response => response.json())
+                .then(data => {
+                    direccionSeleccionada = data.display_name || '';
+                    $('#direccion-seleccionada').text(direccionSeleccionada);
+                });
+        }
+
+        $('#guardarDireccionMapa').on('click', function() {
+            if (!direccionSeleccionada) {
+                alert('Selecciona una dirección en el mapa.');
+                return;
+            }
+            if (consultorioEditandoId) {
+                // Edición de consultorio existente
+                const input = $(`#direccion-consultorio-${consultorioEditandoId}`);
+                input.val(direccionSeleccionada);
+                // Guardar por AJAX
+                $.ajax({
+                    url: `/profesional/consultorios/${consultorioEditandoId}/actualizar-direccion`,
+                    method: 'POST',
+                    data: {
+                                       _token: $('meta[name="csrf-token"]').attr('content'),
+                direccion: direccionSeleccionada
+            },
+            success: function() {
+                $('#modalMapaDireccion').modal('hide');
+                consultorioEditandoId = null;
+            },
+            error: function() {
+                alert('Error al actualizar la dirección');
+            }
+        });
+    } else {
+        // Nuevo consultorio
+        $('#direccionNuevoConsultorio').val(direccionSeleccionada);
+        $('#modalMapaDireccion').modal('hide');
+    }
+});
+    </script>
+
+    <script>
+        function previewSello(input) {
+            const preview = document.getElementById('preview-sello-container');
+            preview.innerHTML = '';
+
+            if (input.files && input.files.length > 0) {
+                const file = input.files[0];
+                const previewTitle = document.createElement('h6');
+                previewTitle.textContent = 'Nuevo sello seleccionado:';
+                previewTitle.className = 'mt-3';
+                preview.appendChild(previewTitle);
+
+                const col = document.createElement('div');
+                col.className = 'col-md-6';
+
+                const fileDiv = document.createElement('div');
+                fileDiv.className = 'border p-2 rounded';
+
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        fileDiv.innerHTML = `
+                                <img src="${e.target.result}" class="img-thumbnail w-100" style="max-height: 150px; object-fit: cover;">
+                                <p class="mt-2 mb-0 text-center small">${file.name}</p>
+                            `;
+                    }
+                    reader.readAsDataURL(file);
+                } else if (file.type === 'application/pdf') {
+                    fileDiv.innerHTML = `
+                            <div class="text-center p-3">
+                                <i class="fas fa-file-pdf fa-3x text-danger"></i>
+                                <p class="mt-2 mb-0 small">${file.name}</p>
+                            </div>
+                        `;
+                }
+
+                col.appendChild(fileDiv);
+                preview.appendChild(col);
+            }
+        }
+
+        function previewFirma(input) {
+            const preview = document.getElementById('preview-firma-container');
+            preview.innerHTML = '';
+
+            if (input.files && input.files.length > 0) {
+                const file = input.files[0];
+                const previewTitle = document.createElement('h6');
+                previewTitle.textContent = 'Nueva firma seleccionada:';
+                previewTitle.className = 'mt-3';
+                preview.appendChild(previewTitle);
+
+                const col = document.createElement('div');
+                col.className = 'col-md-6';
+
+                const fileDiv = document.createElement('div');
+                fileDiv.className = 'border p-2 rounded';
+
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        fileDiv.innerHTML = `
+                                <img src="${e.target.result}" class="img-thumbnail w-100" style="max-height: 150px; object-fit: cover;">
+                                <p class="mt-2 mb-0 text-center small">${file.name}</p>
+                            `;
+                    }
+                    reader.readAsDataURL(file);
+                } else if (file.type === 'application/pdf') {
+                    fileDiv.innerHTML = `
+                            <div class="text-center p-3">
+                                <i class="fas fa-file-pdf fa-3x text-danger"></i>
+                                <p class="mt-2 mb-0 small">${file.name}</p>
+                            </div>
+                        `;
+                }
+
+                col.appendChild(fileDiv);
+                preview.appendChild(col);
+            }
+        }
+
+        function eliminarSello() {
+            if (confirm('¿Estás seguro de que quieres eliminar el sello actual?')) {
+                fetch('/profesional/sello/eliminar', {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: data.message || 'No se pudo eliminar el sello',
+                                icon: 'error',
+                                confirmButtonText: 'Aceptar'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Hubo un problema al eliminar el sello',
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    });
+            }
+        }
+
+        function eliminarFirma() {
+            if (confirm('¿Estás seguro de que quieres eliminar la firma actual?')) {
+                fetch('/profesional/firma/eliminar', {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: data.message || 'No se pudo eliminar la firma',
+                                icon: 'error',
+                                confirmButtonText: 'Aceptar'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Hubo un problema al eliminar la firma',
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    });
+            }
+        }
     </script>
 @endsection
