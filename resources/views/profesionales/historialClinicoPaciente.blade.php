@@ -14,8 +14,9 @@
     <div class="border p-2 mb-2">
         <div class="row">
             <div class="col-lg-12 mb-2 text-center">
-                @if($paciente->foto)
-                    <img src="{{ asset($paciente->foto) }}" alt="Foto del paciente" class="img-fluid rounded" style="max-width: 400px; max-height: 400px;">
+                @if ($paciente->foto)
+                    <img src="{{ asset($paciente->foto) }}" alt="Foto del paciente" class="img-fluid rounded"
+                        style="max-width: 400px; max-height: 400px;">
                 @else
                     <span class="text-muted">Sin foto</span>
                 @endif
@@ -143,7 +144,7 @@
                 <div class="col-md-2 mb-2">
                     <label for="fecha_informe_{{ $loop->index }}" class="form-label">Fecha</label>
                     <input type="text" id="fecha_informe_{{ $loop->index }}"
-                        value="{{ date('d-m-Y',strtotime($informe->created_at)) }}" class="form-control" readonly
+                        value="{{ date('d-m-Y', strtotime($informe->created_at)) }}" class="form-control" readonly
                         placeholder="Fecha">
                 </div>
                 <div class="col-md-2 mb-2">
@@ -179,7 +180,7 @@
                     }
                 @endphp
 
-                @if($todasLasPruebas->count() > 0)
+                @if ($todasLasPruebas->count() > 0)
                     <div class="col-md-12 mt-3">
                         <h6 class="text-primary">Pruebas asociadas al informe:</h6>
                         <div class="table-responsive">
@@ -188,7 +189,7 @@
                                     <tr>
                                         <th>Motivo de la prueba</th>
                                         <th>Tipo</th>
-                                        <th>Fecha de solicitud del Pedido</th>
+                                        <th>Fecha de solicitud de la Prueba</th>
                                         <th>Categoría</th>
                                         <th>Prioridad</th>
                                         <th>Estado</th>
@@ -196,21 +197,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($todasLasPruebas as $prueba)
+                                    @foreach ($todasLasPruebas as $prueba)
                                         <tr>
                                             @if ($prueba->pedidoLaboratorio)
-                                                <td class="font-weight-bold">{{ $prueba->pedidoLaboratorio->motivo ?? '-' }}</td>
+                                                <td class="font-weight-bold">
+                                                    {{ $prueba->pedidoLaboratorio->motivo ?? '-' }}</td>
                                             @elseif ($prueba->pedidoImagen)
-                                                <td class="font-weight-bold">{{ $prueba->pedidoImagen->motivo ?? '-' }}</td>
+                                                <td class="font-weight-bold">{{ $prueba->pedidoImagen->motivo ?? '-' }}
+                                                </td>
                                             @else
                                                 <td class="font-weight-bold">-</td>
                                             @endif
                                             <td>{{ $prueba->tipo ?? '-' }}</td>
-                                            @if ($prueba->pedidoLaboratorio)
-                                                <td>{{ $prueba->pedidoLaboratorio->fecha_hora ? date('d-m-Y H:i:s', strtotime($prueba->pedidoLaboratorio->fecha_hora)) : '-' }}</td>
-                                            @elseif ($prueba->pedidoImagen)
-                                                <td>{{ $prueba->pedidoImagen->fecha_hora ? date('d-m-Y H:i:s', strtotime($prueba->pedidoImagen->fecha_hora)) : '-' }}</td>
-                                            @endif
+                                            <td>{{ date('d-m-Y H:i:s', strtotime($prueba->created_at)) }}</td>
                                             <td>
                                                 @if ($prueba->pedido_laboratorio_id)
                                                     <span class="badge badge-info">Laboratorio</span>
@@ -224,99 +223,121 @@
                                             <td>
                                                 @php
                                                     $estado = strtolower($prueba->estado ?? '');
-                                                    $claseEstado = match($estado) {
+                                                    $claseEstado = match ($estado) {
                                                         'pendiente' => 'badge-warning',
                                                         'aprobada', 'completada' => 'badge-success',
                                                         'rechazada' => 'badge-danger',
                                                         default => 'badge-secondary',
                                                     };
                                                 @endphp
-                                                <span class="badge {{ $claseEstado }}">{{ ucfirst($prueba->estado ?? '-') }}</span>
+                                                <span
+                                                    class="badge {{ $claseEstado }}">{{ ucfirst($prueba->estado ?? '-') }}</span>
                                             </td>
                                             <td>
                                                 @if ($prueba->pedido_imagen_id || $prueba->pedido_laboratorio_id)
                                                     @if ($prueba->estado != 'pendiente')
-                                                        <button type="button" class="btn btn-sm btn-info" data-toggle="modal"
-                                                        data-target="#modalResultados{{ $prueba->id }}">
-                                                        <i class="fa fa-eye"></i> Ver resultados
-                                                    </button>
+                                                        <button type="button" class="btn btn-sm btn-info"
+                                                            data-toggle="modal"
+                                                            data-target="#modalResultados{{ $prueba->id }}">
+                                                            <i class="fa fa-eye"></i> Ver resultados
+                                                        </button>
                                                     @endif
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="modalResultados{{ $prueba->id }}" tabindex="-1"
-                                                        role="dialog" aria-labelledby="modalLabel{{ $prueba->id }}" aria-hidden="true">
+                                                    <div class="modal fade" id="modalResultados{{ $prueba->id }}"
+                                                        tabindex="-1" role="dialog"
+                                                        aria-labelledby="modalLabel{{ $prueba->id }}"
+                                                        aria-hidden="true">
                                                         <div class="modal-dialog modal-lg" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="modalLabel{{ $prueba->id }}">
-                                                                        Resultados de la prueba: {{ $prueba->tipo ?? 'N/A' }}
+                                                                    <h5 class="modal-title"
+                                                                        id="modalLabel{{ $prueba->id }}">
+                                                                        Resultados de la prueba:
+                                                                        {{ $prueba->tipo ?? 'N/A' }}
                                                                         @if ($prueba->pedido_laboratorio_id)
-                                                                            <span class="badge badge-info ml-2">Laboratorio</span>
+                                                                            <span
+                                                                                class="badge badge-info ml-2">Laboratorio</span>
                                                                         @elseif($prueba->pedido_imagen_id)
-                                                                            <span class="badge badge-primary ml-2">Imagen</span>
+                                                                            <span
+                                                                                class="badge badge-primary ml-2">Imagen</span>
                                                                         @endif
                                                                     </h5>
-                                                                    <button type="button" class="close" data-dismiss="modal"
-                                                                        aria-label="Cerrar">
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Cerrar">
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
-                                                                </div>                                                <div class="modal-body">
-                                                    {{-- Mostrar imágenes para cualquier tipo de prueba --}}
-                                                    @php
-                                                        $imagenes = \App\Models\ImagenesPrueba::where('prueba_id', $prueba->id)->get();
-                                                    @endphp
-                                                    @if ($imagenes->count())
-                                                        <h6 class="text-primary mb-3">
-                                                            @if ($prueba->pedido_imagen_id)
-                                                                Imágenes de la prueba
-                                                            @elseif ($prueba->pedido_laboratorio_id)
-                                                                Resultados de laboratorio
-                                                            @else
-                                                                Imágenes de la prueba
-                                                            @endif
-                                                        </h6>
-                                                        <div class="row">
-                                                            @foreach ($imagenes as $img)
-                                                                <div class="col-md-4 mb-3 text-center position-relative">
-                                                                    <img src="/{{ $img->ruta }}" alt="Imagen prueba"
-                                                                        class="img-fluid rounded mb-2"
-                                                                        style="max-height:180px; cursor: pointer;"
-                                                                        onclick="window.open('/{{ $img->ruta }}', '_blank')">
-                                                                    <div class="small text-muted">{{ $img->descripcion ?? 'Sin descripción' }}</div>
                                                                 </div>
-                                                            @endforeach
-                                                        </div>
-                                                    @else
-                                                        <div class="alert alert-info">
-                                                            <i class="fa fa-info-circle"></i>
-                                                            @if ($prueba->pedido_imagen_id)
-                                                                No hay imágenes asociadas a esta prueba de imagen.
-                                                            @elseif ($prueba->pedido_laboratorio_id)
-                                                                No hay resultados de laboratorio disponibles para esta prueba.
-                                                            @else
-                                                                No hay imágenes asociadas a esta prueba.
-                                                            @endif
-                                                        </div>
-                                                    @endif
+                                                                <div class="modal-body">
+                                                                    {{-- Mostrar imágenes para cualquier tipo de prueba --}}
+                                                                    @php
+                                                                        $imagenes = \App\Models\ImagenesPrueba::where(
+                                                                            'prueba_id',
+                                                                            $prueba->id,
+                                                                        )->get();
+                                                                    @endphp
+                                                                    @if ($imagenes->count())
+                                                                        <h6 class="text-primary mb-3">
+                                                                            @if ($prueba->pedido_imagen_id)
+                                                                                Imágenes de la prueba
+                                                                            @elseif ($prueba->pedido_laboratorio_id)
+                                                                                Resultados de laboratorio
+                                                                            @else
+                                                                                Imágenes de la prueba
+                                                                            @endif
+                                                                        </h6>
+                                                                        <div class="row">
+                                                                            @foreach ($imagenes as $img)
+                                                                                <div
+                                                                                    class="col-md-4 mb-3 text-center position-relative">
+                                                                                    <img src="/{{ $img->ruta }}"
+                                                                                        alt="Imagen prueba"
+                                                                                        class="img-fluid rounded mb-2"
+                                                                                        style="max-height:180px; cursor: pointer;"
+                                                                                        onclick="window.open('/{{ $img->ruta }}', '_blank')">
+                                                                                    <div class="small text-muted">
+                                                                                        {{ $img->descripcion ?? 'Sin descripción' }}
+                                                                                    </div>
+                                                                                </div>
+                                                                            @endforeach
+                                                                        </div>
+                                                                    @else
+                                                                        <div class="alert alert-info">
+                                                                            <i class="fa fa-info-circle"></i>
+                                                                            @if ($prueba->pedido_imagen_id)
+                                                                                No hay imágenes asociadas a esta prueba de
+                                                                                imagen.
+                                                                            @elseif ($prueba->pedido_laboratorio_id)
+                                                                                No hay resultados de laboratorio disponibles
+                                                                                para esta prueba.
+                                                                            @else
+                                                                                No hay imágenes asociadas a esta prueba.
+                                                                            @endif
+                                                                        </div>
+                                                                    @endif
 
-                                                    {{-- Mostrar archivos adicionales si existen --}}
-                                                    @if (isset($prueba->archivo) && $prueba->archivo)
-                                                        <hr>
-                                                        <h6 class="text-secondary mb-2">Archivo adicional</h6>
-                                                        <a href="{{ asset('ruta/a/archivos/' . $prueba->archivo) }}" target="_blank"
-                                                            class="btn btn-sm btn-outline-primary">
-                                                            <i class="fa fa-download"></i> Descargar archivo
-                                                        </a>
-                                                    @endif
-                                                </div>
+                                                                    {{-- Mostrar archivos adicionales si existen --}}
+                                                                    @if (isset($prueba->archivo) && $prueba->archivo)
+                                                                        <hr>
+                                                                        <h6 class="text-secondary mb-2">Archivo adicional
+                                                                        </h6>
+                                                                        <a href="{{ asset('ruta/a/archivos/' . $prueba->archivo) }}"
+                                                                            target="_blank"
+                                                                            class="btn btn-sm btn-outline-primary">
+                                                                            <i class="fa fa-download"></i> Descargar
+                                                                            archivo
+                                                                        </a>
+                                                                    @endif
+                                                                </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Cerrar</button>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 @elseif (isset($prueba->archivo) && $prueba->archivo)
-                                                    <a href="{{ asset('ruta/a/archivos/' . $prueba->archivo) }}" target="_blank"
-                                                        class="btn btn-sm btn-primary">
+                                                    <a href="{{ asset('ruta/a/archivos/' . $prueba->archivo) }}"
+                                                        target="_blank" class="btn btn-sm btn-primary">
                                                         <i class="fa fa-download"></i> Ver archivo
                                                     </a>
                                                 @else
@@ -350,21 +371,28 @@
                 <div class="col-md-3 mb-2">
                     @php
                         $receta1 = \App\Models\Receta::find($receta->id);
-                        $medicamentos = $receta1->medicamentosRecetados->map(function($med) {
-                            return optional($med->medicamento)->nombre;
-                        })->filter()->implode(', ');
+                        $medicamentos = $receta1->medicamentosRecetados
+                            ->map(function ($med) {
+                                return optional($med->medicamento)->nombre;
+                            })
+                            ->filter()
+                            ->implode(', ');
                     @endphp
-                    <input type="text" value="{{ $medicamentos }}" class="form-control" placeholder="Medicamento/s recetados">
+                    <input type="text" value="{{ $medicamentos }}" class="form-control"
+                        placeholder="Medicamento/s recetados">
 
                 </div>
                 <div class="col-md-3 mb-2">
-                    <input type="text" value="{{$receta->fecha_emision}}" class="form-control" placeholder="Fecha">
+                    <input type="text" value="{{ $receta->fecha_emision }}" class="form-control"
+                        placeholder="Fecha">
                 </div>
                 <div class="col-md-3 mb-2">
-                    <input type="text" value="{{$receta->nombre_completo}}" class="form-control" placeholder="Médico que recetó">
+                    <input type="text" value="{{ $receta->nombre_completo }}" class="form-control"
+                        placeholder="Médico que recetó">
                 </div>
                 <div class="col-md-3 mb-2">
-                    <a href="/profesional/cita/informe-consulta/{{$receta->idInforme}}/receta" class="btn btn-dark w-100">Ver receta</a>
+                    <a href="/profesional/cita/informe-consulta/{{ $receta->idInforme }}/receta"
+                        class="btn btn-dark w-100">Ver receta</a>
                 </div>
             </div>
         @endforeach

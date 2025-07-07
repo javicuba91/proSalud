@@ -225,7 +225,7 @@
                                     <tr>
                                         <th>Motivo de la prueba</th>
                                         <th>Tipo</th>
-                                        <th>Fecha de solicitud del Pedido</th>
+                                        <th>Fecha de solicitud de la Prueba</th>
                                         <th>Categoría</th>
                                         <th>Prioridad</th>
                                         <th>Estado</th>
@@ -243,11 +243,7 @@
                                                 <td class="font-weight-bold">-</td>
                                             @endif
                                             <td>{{ $prueba->tipo ?? '-' }}</td>
-                                            @if ($prueba->pedidoLaboratorio)
-                                                <td>{{ $prueba->pedidoLaboratorio->fecha_hora ? date('d-m-Y H:i:s', strtotime($prueba->pedidoLaboratorio->fecha_hora)) : '-' }}</td>
-                                            @elseif ($prueba->pedidoImagen)
-                                                <td>{{ $prueba->pedidoImagen->fecha_hora ? date('d-m-Y H:i:s', strtotime($prueba->pedidoImagen->fecha_hora)) : '-' }}</td>
-                                            @endif
+                                            <td>{{date('d-m-Y H:i:s', strtotime($prueba->created_at))}}</td>
                                             <td>
                                                 @if ($prueba->pedido_laboratorio_id)
                                                     <span class="badge badge-info">Laboratorio</span>
