@@ -546,6 +546,8 @@ return [
             'can'  => 'solo-admin',
             'submenu' => [
                 ['text' => 'Categorias Profesionales', 'url' => '/admin/categorias-profesionales', 'icon' => '', 'can' => 'solo-admin'],
+                ['text' => 'Categorias/Especialidad', 'url' => '/admin/categorias-especialidad', 'icon' => '', 'can' => 'solo-admin'],
+                ['text' => 'Especialidad/Subespecialidad', 'url' => '/admin/especialidades', 'icon' => '', 'can' => 'solo-admin'],
                 ['text' => 'Métodos de Pago', 'url' => '/admin/metodos-pago', 'icon' => '', 'can' => 'solo-admin'],
                 ['text' => 'Planes', 'url' => '/admin/planes', 'icon' => '', 'can' => 'solo-admin'],
                 ['text' => 'Seguros Médicos', 'url' => '/admin/seguros-medicos', 'icon' => '', 'can' => 'solo-admin'],
@@ -581,7 +583,7 @@ return [
         ['text' => 'Documentos Profesional', 'url' => '/admin/documentos-profesional', 'icon' => 'fas fa-file-alt', 'can' => 'solo-admin'],
         ['text' => 'Documentos Proveedor', 'url' => '/admin/documentos-proveedor', 'icon' => 'fas fa-file-alt', 'can' => 'solo-admin'],
         ['text' => 'Emergencias', 'url' => '/admin/emergencias', 'icon' => 'fas fa-ambulance', 'can' => 'solo-admin'],
-        ['text' => 'Especialidades', 'url' => '/admin/especialidades', 'icon' => 'fas fa-stethoscope', 'can' => 'solo-admin'],
+
         [
             'text' => 'Expertos',
             'url'  => '#',

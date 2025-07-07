@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         // Seeders adicionales
         $this->call([
             PreguntasExpertosSeeder::class,
+            EspecialidadesSanitariosSeeder::class,
         ]);
     }
 }

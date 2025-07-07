@@ -11,6 +11,7 @@ use App\Http\Controllers\DocumentoProfesionalController;
 use App\Http\Controllers\DocumentoProveedorController;
 use App\Http\Controllers\EmergenciaController;
 use App\Http\Controllers\EspecialidadController;
+use App\Http\Controllers\EspecialidadesSanitariosController;
 use App\Http\Controllers\EtiquetaBlogController;
 use App\Http\Controllers\InformeConsultaController;
 use App\Http\Controllers\IntervaloMedicamentoController;
@@ -400,6 +401,18 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/categorias-profesionales/{categoriaProfesional}/edit', [CategoriasProfesionalesController::class, 'edit'])->name('categorias-profesionales.edit');
         Route::put('/categorias-profesionales/{categoriaProfesional}', [CategoriasProfesionalesController::class, 'update'])->name('categorias-profesionales.update');
         Route::delete('/categorias-profesionales/{categoriaProfesional}', [CategoriasProfesionalesController::class, 'destroy'])->name('categorias-profesionales.destroy');
+
+
+        Route::get('/categorias-especialidad', [EspecialidadesSanitariosController::class, 'index'])->name('especialidades-sanitarios.index');
+        Route::get('/categorias-especialidad/create', [EspecialidadesSanitariosController::class, 'create'])->name('especialidades-sanitarios.create');
+        Route::post('/categorias-especialidad', [EspecialidadesSanitariosController::class, 'store'])->name('especialidades-sanitarios.store');
+        Route::get('/categorias-especialidad/{especialidadSanitario}/edit', [EspecialidadesSanitariosController::class, 'edit'])->name('especialidades-sanitarios.edit');
+        Route::put('/categorias-especialidad/{especialidadSanitario}', [EspecialidadesSanitariosController::class, 'update'])->name('especialidades-sanitarios.update');
+        Route::delete('/categorias-especialidad/{especialidadSanitario}', [EspecialidadesSanitariosController::class, 'destroy'])->name('especialidades-sanitarios.destroy');
+
+
+
+
 
         Route::get('/metodos-pago', [MetodoPagoController::class, 'index'])->name('metodos-pagos.index');
         Route::get('/metodos-pago/create', [MetodoPagoController::class, 'create'])->name('metodos-pagos.create');

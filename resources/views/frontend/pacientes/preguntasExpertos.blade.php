@@ -19,7 +19,13 @@
             @csrf
             <div class="row border p-4 formPreguntasExperto">
                 <div class="col-lg-4 mb-2">
-                    <select name="categoria_id" class="form-control form-select" id="">
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="conoceCategoria" name="conoce_categoria">
+                        <label class="form-check-label" for="conoceCategoria">
+                            Conozco la categoría
+                        </label>
+                    </div>
+                    <select name="categoria_id" class="form-control form-select" id="selectCategoria" disabled>
                         <option value="-1">-- Seleccione categoria --</option>
                         @foreach ($categorias as $categoria)
                             <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -27,7 +33,13 @@
                     </select>
                 </div>
                 <div class="col-lg-4 mb-2">
-                    <select name="especialidad_id" class="form-control form-select" id="">
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="conoceEspecialidad" name="conoce_especialidad">
+                        <label class="form-check-label" for="conoceEspecialidad">
+                            Conozco la especialidad
+                        </label>
+                    </div>
+                    <select name="especialidad_id" class="form-control form-select" id="selectEspecialidad" disabled>
                         <option value="-1">-- Seleccione especialidad (opcional) --</option>
                         @foreach ($especialidades as $especialidad)
                             <option value="{{ $especialidad->id }}">{{ $especialidad->nombre }}</option>
@@ -35,8 +47,14 @@
                     </select>
                 </div>
                 <div class="col-lg-4 mb-2">
-                    <select name="sub_especialidad_id" class="form-control form-select" id="">
-                        <option value="-1">-- Seleccione especialidad (opcional) --</option>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="conoceSubespecialidad" name="conoce_subespecialidad">
+                        <label class="form-check-label" for="conoceSubespecialidad">
+                            Conozco la subespecialidad
+                        </label>
+                    </div>
+                    <select name="sub_especialidad_id" class="form-control form-select" id="selectSubespecialidad" disabled>
+                        <option value="-1">-- Seleccione subespecialidad (opcional) --</option>
 
                     </select>
                 </div>
@@ -150,10 +168,43 @@
 @section('js')
     <script>
         $(document).ready(function() {
+            // Manejar habilitación/deshabilitación de selects según checkboxes
+            $('#conoceCategoria').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#selectCategoria').prop('disabled', false);
+                } else {
+                    $('#selectCategoria').prop('disabled', true);
+                    $('#selectCategoria').val('-1');
+                }
+            });
+
+            $('#conoceEspecialidad').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#selectEspecialidad').prop('disabled', false);
+                } else {
+                    $('#selectEspecialidad').prop('disabled', true);
+                    $('#selectEspecialidad').val('-1');
+                    // También deshabilitar y limpiar subespecialidad
+                    $('#conoceSubespecialidad').prop('checked', false);
+                    $('#selectSubespecialidad').prop('disabled', true);
+                    $('#selectSubespecialidad').empty().append('<option value="-1">-- Seleccione subespecialidad (opcional) --</option>');
+                }
+            });
+
+            $('#conoceSubespecialidad').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#selectSubespecialidad').prop('disabled', false);
+                } else {
+                    $('#selectSubespecialidad').prop('disabled', true);
+                    $('#selectSubespecialidad').val('-1');
+                }
+            });
+
+            // Funcionalidad existente para cargar subespecialidades
             $('select[name="especialidad_id"]').on('change', function() {
                 var especialidadId = $(this).val();
 
-                if (especialidadId) {
+                if (especialidadId && especialidadId != '-1') {
                     $.ajax({
                         url: '/subespecialidades/' + especialidadId,
                         type: 'GET',
@@ -162,7 +213,7 @@
                             let $subSelect = $('select[name="sub_especialidad_id"]');
                             $subSelect.empty();
                             $subSelect.append(
-                                '<option value="">-- Seleccione subespecialidad --</option>'
+                                '<option value="-1">-- Seleccione subespecialidad --</option>'
                             );
 
                             $.each(data, function(key, value) {
@@ -173,7 +224,7 @@
                     });
                 } else {
                     $('select[name="sub_especialidad_id"]').empty().append(
-                        '<option value="">-- Seleccione subespecialidad --</option>');
+                        '<option value="-1">-- Seleccione subespecialidad --</option>');
                 }
             });
         });
