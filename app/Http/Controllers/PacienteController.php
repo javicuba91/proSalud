@@ -9,6 +9,7 @@ use App\Models\Ciudad;
 use App\Models\ContactosEmergencia;
 use App\Models\Emergencia;
 use App\Models\Especialidad;
+use App\Models\ImagenesPrueba;
 use App\Models\InformeConsulta;
 use App\Models\IntervaloMedicamento;
 use App\Models\Medicamento;
@@ -516,5 +517,61 @@ class PacienteController extends Controller
         $presupuesto->estado = 'denegado';
         $presupuesto->save();
         return redirect()->back()->with('success', 'Presupuesto denegado correctamente.');
+    }
+
+    public function exportarHistorialMedicoPdf($id)
+    {
+        $paciente = Paciente::findOrFail($id);
+        
+        // Verificar que el usuario solo pueda acceder a su propio historial
+        if ($paciente->user_id !== Auth::id()) {
+            abort(403, 'No tienes permisos para acceder a este historial médico.');
+        }
+
+        $seguros = SegurosMedicos::all();
+
+        $informes = InformeConsulta::whereHas('cita', function ($query) use ($paciente) {
+            $query->where('paciente_id', $paciente->id);
+        })
+        ->with([
+            'cita',
+            'pedidoLaboratorio.pruebas',
+            'pedidoImagen.pruebas'
+        ])
+        ->get();
+
+        $pruebas = collect();
+
+        foreach ($paciente->citas as $cita) {
+            $informe = $cita->informeConsulta;
+            if (!$informe) continue;
+
+            // Pruebas de laboratorio
+            if ($informe->pedidoLaboratorio) {
+                foreach ($informe->pedidoLaboratorio->pruebas as $prueba) {
+                    $pruebas->push($prueba);
+                }
+            }
+
+            // Pruebas de imagen
+            if ($informe->pedidoImagen) {
+                foreach ($informe->pedidoImagen->pruebas as $prueba) {
+                    $pruebas->push($prueba);
+                }
+            }
+        }
+
+        $recetas = DB::table('recetas as r')
+            ->join('informes_consultas as ic', 'ic.id', '=', 'r.informe_consulta_id')
+            ->join('citas as c', 'c.id', '=', 'ic.cita_id')
+            ->join('profesionales as p', 'p.id', '=', 'c.profesional_id')
+            ->join('pacientes as pac', 'pac.id', '=', 'c.paciente_id')
+            ->where('pac.id', $paciente->id)
+            ->select('r.id', 'r.fecha_emision', 'p.nombre_completo', 'pac.cedula', 'c.motivo', 'ic.id as idInforme', 'c.id as idCita')
+            ->get();
+
+        $pdf = \PDF::loadView('pacientes.pdf.historialMedico', compact('seguros', 'recetas', 'paciente', 'informes', 'pruebas'));
+        
+        return $pdf->download('historial_medico_' . $paciente->nombre_completo . '_' . date('Y-m-d') . '.pdf');
     }
 }

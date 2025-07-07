@@ -17,6 +17,7 @@
                         @if ($proveedor->tipo == 'laboratorio')
                             <th>Motivos</th>
                         @else
+                            <th>Motivos</th>
                             <th>Región Anatómica</th>
                         @endif
                         <th>Prioridad</th>
@@ -26,14 +27,16 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>                @foreach ($presupuestos as $presupuesto)
-                    <tr>
-                        <td>{{ $presupuesto->tipo ?? '-' }}</td>
-                        @if ($proveedor && $proveedor->tipo == 'laboratorio')
-                            <td>{{ $presupuesto->motivo ?? '-' }}</td>
-                        @else
-                            <td>{{ $presupuesto->region_anatomica ?? '-' }}</td>
-                        @endif
+                <tbody>
+                    @foreach ($presupuestos as $presupuesto)
+                        <tr>
+                            <td>{{ $presupuesto->tipo ?? '-' }}</td>
+                            @if ($proveedor && $proveedor->tipo == 'laboratorio')
+                                <td>{{ $presupuesto->motivo ?? '-' }}</td>
+                            @else
+                                <td>{{ $presupuesto->motivo ?? '-' }}</td>
+                                <td>{{ $presupuesto->region_anatomica ?? '-' }}</td>
+                            @endif
                             <td>{{ ucfirst($presupuesto->prioridad) ?? '-' }}</td>
                             <td>
                                 @if ($presupuesto->estadoPrueba === 'pendiente')

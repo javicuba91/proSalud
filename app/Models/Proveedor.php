@@ -97,7 +97,7 @@ class Proveedor extends Model
         $proveedor = Proveedor::where('user_id', Auth::id())->first();
 
        $presupuestos_pacientes = DB::select("
-           SELECT pp.id, pp.precio,pp.estado as estadoPresupuesto, pr.id as idPrueba, pr.tipo,pr.region_anatomica,pr.prioridad,pr.estado as estadoPrueba,pr.created_at as fechaSolicitudPrueba, pac.nombre_completo
+           SELECT pp.id, pp.precio,pp.estado as estadoPresupuesto, pr.id as idPrueba, pr.tipo,pr.region_anatomica,pr.prioridad,pr.estado as estadoPrueba,pr.created_at as fechaSolicitudPrueba, pac.nombre_completo, pl.motivo
            FROM presupuestos_pruebas pp
            INNER JOIN proveedores p ON p.id = pp.proveedor_id
            INNER JOIN pruebas pr ON pr.id = pp.prueba_id

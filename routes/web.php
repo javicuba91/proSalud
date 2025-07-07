@@ -88,6 +88,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/paciente/presupuestos', [PacienteController::class, 'presupuestos'])->name('pacientes.presupuestos');
     Route::get('/paciente/mis-pruebas', [PacienteController::class, 'misPruebas'])->name('pacientes.misPruebas');
     Route::get('/paciente/mi-historial-medico', [PacienteController::class, 'miHistorialMedico'])->name(name: 'pacientes.miHistorialMedico');
+    Route::get('/paciente/mi-historial-medico/{id}/pdf', [PacienteController::class, 'exportarHistorialMedicoPdf'])->name('pacientes.historial.pdf');
 
     Route::get('/paciente/mis-valoraciones', [PacienteController::class, 'valoraciones'])->name('pacientes.valoraciones');
     Route::get('/paciente/mis-valoraciones/detalle/profesionales/{id}', [PacienteController::class, 'valoracionesProfesionales'])->name('pacientes.valoraciones.profesionales');

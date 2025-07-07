@@ -26,7 +26,16 @@
 @endsection
 
 @section('content_header')
-    <h1>Mi Historial Médico: <span class="text-danger font-bold">{{ $paciente->nombre_completo }}</span></h1>
+    <div class="row">
+        <div class="col-9">
+            <h1>Mi Historial Médico: <span class="text-danger font-bold">{{ $paciente->nombre_completo }}</span></h1>
+        </div>
+        <div class="col-3 text-end d-flex align-items-end justify-content-end">
+            <a href="{{ route('pacientes.historial.pdf', $paciente->id) }}" class="btn btn-danger">
+                <i class="fas fa-file-pdf"></i> Descargar PDF
+            </a>
+        </div>
+    </div>
 @stop
 
 @section('content')
