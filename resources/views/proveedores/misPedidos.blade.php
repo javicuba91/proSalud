@@ -8,9 +8,9 @@
 
 @section('content')
     @if (isset($pruebas) && $pruebas->count() > 0)
-     @php
-          $proveedor = App\Models\Proveedor::where('user_id', auth()->id())->first();
-     @endphp
+        @php
+            $proveedor = App\Models\Proveedor::where('user_id', auth()->id())->first();
+        @endphp
         <table id="pruebas" class="table table-bordered">
             <thead>
                 <tr>
@@ -19,21 +19,22 @@
                     <th>Paciente</th>
                     <th>Tipo</th>
                     @if ($proveedor->tipo == 'laboratorio')
-                        <th>Muestras</th>
+                        <th>Motivos</th>
                     @else
                         <th>Región Anatómica</th>
                     @endif
 
-                    <th>Indicaciones</th>                        <th>Prioridad</th>
-                        <th>Estado prueba</th>
-                        <th>Presupuesto</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($pruebas as $prueba)
-                        <tr>
-                            <td>{{ $prueba->id }}</td>
+                    <th>Indicaciones</th>
+                    <th>Prioridad</th>
+                    <th>Estado prueba</th>
+                    <th>Presupuesto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($pruebas as $prueba)
+                    <tr>
+                        <td>{{ $prueba->id }}</td>
 
                         @if ($prueba->pedido_laboratorio_id != null)
                             <td>{{ $prueba->pedidoLaboratorio->informeConsulta->cita->profesional->nombre_completo ?? 'N/A' }}
@@ -48,9 +49,9 @@
 
                         <td>{{ $prueba->tipo }}</td>
                         @if ($prueba->pedido_laboratorio_id != null)
-                            <td>{{ $prueba->muestras }}</td>
+                            <td>{{ $prueba->pedidoLaboratorio->motivo }}</td>
                         @else
-                            <td>{{ $prueba->region_anatomica }}</td>
+                            <td>{{ $prueba->region_anatomica}}</td>
                         @endif
 
                         <td>{{ $prueba->indicaciones }}</td>
@@ -60,18 +61,16 @@
                             @php
                                 $presupuesto = $prueba->presupuestoProveedor($proveedor->id);
                             @endphp
-                            @if($presupuesto)
+                            @if ($presupuesto)
                                 {{ number_format($presupuesto->precio, 2) }} € - {{ ucfirst($presupuesto->estado) }}
                             @else
                                 No disponible
                             @endif
                         </td>
                         <td>
-                            @if(!$presupuesto || ($presupuesto && strtolower($presupuesto->estado) == 'pendiente'))
-                                <button type="button" class="btn btn-primary btn-sm"
-                                    data-toggle="modal"
-                                    data-target="#modalPresupuesto"
-                                    data-prueba-id="{{ $prueba->id }}"
+                            @if (!$presupuesto || ($presupuesto && strtolower($presupuesto->estado) == 'pendiente'))
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                    data-target="#modalPresupuesto" data-prueba-id="{{ $prueba->id }}"
                                     data-precio="{{ $presupuesto->precio ?? '' }}"
                                     data-estado="{{ $presupuesto->estado ?? 'pendiente' }}">
                                     {{ $presupuesto ? 'Editar presupuesto' : 'Añadir presupuesto' }}
@@ -87,7 +86,8 @@
     @endif
 
     <!-- Modal para añadir/editar presupuesto -->
-    <div class="modal fade" id="modalPresupuesto" tabindex="-1" role="dialog" aria-labelledby="modalPresupuestoLabel" aria-hidden="true">
+    <div class="modal fade" id="modalPresupuesto" tabindex="-1" role="dialog" aria-labelledby="modalPresupuestoLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -104,7 +104,8 @@
 
                         <div class="form-group">
                             <label for="precio">Precio (€)</label>
-                            <input type="number" class="form-control" id="precio" name="precio" step="0.01" min="0" required>
+                            <input type="number" class="form-control" id="precio" name="precio" step="0.01"
+                                min="0" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -133,7 +134,7 @@
             });
 
             // Modal de presupuesto
-            $('#modalPresupuesto').on('show.bs.modal', function (event) {
+            $('#modalPresupuesto').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
                 var pruebaId = button.data('prueba-id');
                 var precio = button.data('precio');
@@ -183,7 +184,8 @@
 
                         Swal.fire({
                             title: 'Error',
-                            html: errorMessage || 'Ha ocurrido un error al guardar el presupuesto.',
+                            html: errorMessage ||
+                                'Ha ocurrido un error al guardar el presupuesto.',
                             icon: 'error',
                             confirmButtonText: 'Aceptar'
                         });

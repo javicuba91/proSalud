@@ -349,7 +349,34 @@ class PacienteController extends Controller
 
         $informes = InformeConsulta::whereHas('cita', function ($query) use ($paciente) {
             $query->where('paciente_id', $paciente->id);
-        })->get();
+        })
+        ->with([
+            'cita',
+            'pedidoLaboratorio.pruebas',
+            'pedidoImagen.pruebas'
+        ])
+        ->get();
+
+        $pruebas = collect();
+
+        foreach ($paciente->citas as $cita) {
+            $informe = $cita->informeConsulta;
+            if (!$informe) continue;
+
+            // Pruebas de laboratorio
+            if ($informe->pedidoLaboratorio) {
+                foreach ($informe->pedidoLaboratorio->pruebas as $prueba) {
+                    $pruebas->push($prueba);
+                }
+            }
+
+            // Pruebas de imagen
+            if ($informe->pedidoImagen) {
+                foreach ($informe->pedidoImagen->pruebas as $prueba) {
+                    $pruebas->push($prueba);
+                }
+            }
+        }
 
         $recetas = DB::table('recetas as r')
             ->join('informes_consultas as ic', 'ic.id', '=', 'r.informe_consulta_id')
@@ -360,7 +387,7 @@ class PacienteController extends Controller
             ->select('r.id', 'r.fecha_emision', 'p.nombre_completo', 'pac.cedula', 'c.motivo', 'ic.id as idInforme', 'c.id as idCita')
             ->get();
 
-        return view('pacientes.miHistorialMedico', compact('seguros', 'recetas', 'paciente', 'informes'));
+        return view('pacientes.miHistorialMedico', compact('seguros', 'recetas', 'paciente', 'informes', 'pruebas'));
     }
 
     public function valoraciones()

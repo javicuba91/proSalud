@@ -479,10 +479,10 @@ class ProveedorController extends Controller
 
         if ($proveedor && $proveedor->tipo == 'centro_imagenes') {
             $pruebas = Prueba::where('pedido_imagen_id', '!=', null)->get();
-            return view('proveedores.misPedidos', compact('pruebas','proveedor'));
+            return view('proveedores.misPedidos', compact('pruebas', 'proveedor'));
         } elseif ($proveedor && $proveedor->tipo == 'laboratorio') {
             $pruebas = Prueba::where('pedido_laboratorio_id', '!=', null)->get();
-            return view('proveedores.misPedidos', compact('pruebas','proveedor'));
+            return view('proveedores.misPedidos', compact('pruebas', 'proveedor'));
         } else {
             return redirect()->back()->with('error', 'No tienes permisos para ver los pedidos de presupuestos.');
         }
@@ -493,14 +493,14 @@ class ProveedorController extends Controller
         $proveedor = Proveedor::where('user_id', auth()->id())->first();
 
         if ($proveedor && $proveedor->tipo == 'laboratorio') {
-                $presupuestos = Proveedor::presupuestos_laboratorios_aprobados_por_paciente($id_paciente);
-                return view('proveedores.pruebasHistoricoPaciente', compact('presupuestos'));
-            }
+            $presupuestos = Proveedor::presupuestos_laboratorios_aprobados_por_paciente($id_paciente);
+            return view('proveedores.pruebasHistoricoPaciente', compact('presupuestos', 'proveedor'));
+        }
 
         if ($proveedor && $proveedor->tipo == 'centro_imagenes') {
             $presupuestos = Proveedor::presupuestos_imagenes_aprobados_por_paciente($id_paciente);
-            return view('proveedores.pruebasHistoricoPaciente', compact('presupuestos'));
-        }        
+            return view('proveedores.pruebasHistoricoPaciente', compact('presupuestos', 'proveedor'));
+        }
     }
 
     public function marcarPruebaCompletada($pruebaId)
@@ -545,7 +545,7 @@ class ProveedorController extends Controller
         $imagen->delete();
         return back()->with('success', 'Imagen eliminada correctamente.');
     }
-    
+
     public function contactarAdministrador()
     {
         $proveedor = Proveedor::where('user_id', auth()->id())->first();

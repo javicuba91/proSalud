@@ -546,8 +546,34 @@ class ProfesionalController extends Controller
 
         $informes = InformeConsulta::whereHas('cita', function ($query) use ($paciente) {
             $query->where('paciente_id', $paciente->id);
-        })->get();
+        })
+        ->with([
+            'cita',
+            'pedidoLaboratorio.pruebas',
+            'pedidoImagen.pruebas'
+        ])
+        ->get();
 
+        $pruebas = collect();
+
+        foreach ($paciente->citas as $cita) {
+            $informe = $cita->informeConsulta;
+            if (!$informe) continue;
+
+            // Pruebas de laboratorio
+            if ($informe->pedidoLaboratorio) {
+                foreach ($informe->pedidoLaboratorio->pruebas as $prueba) {
+                    $pruebas->push($prueba);
+                }
+            }
+
+            // Pruebas de imagen
+            if ($informe->pedidoImagen) {
+                foreach ($informe->pedidoImagen->pruebas as $prueba) {
+                    $pruebas->push($prueba);
+                }
+            }
+        }
         $recetas = DB::table('recetas as r')
             ->join('informes_consultas as ic', 'ic.id', '=', 'r.informe_consulta_id')
             ->join('citas as c', 'c.id', '=', 'ic.cita_id')
@@ -557,7 +583,7 @@ class ProfesionalController extends Controller
             ->select('r.id', 'r.fecha_emision', 'p.nombre_completo', 'pac.cedula', 'c.motivo', 'ic.id as idInforme', 'c.id as idCita')
             ->get();
 
-        return view('profesionales.historialClinicoPaciente', compact('seguros', 'recetas', 'paciente', 'informes'));
+        return view('profesionales.historialClinicoPaciente', compact('seguros', 'recetas', 'paciente', 'informes', 'pruebas'));
     }
 
 
@@ -1817,32 +1843,32 @@ class ProfesionalController extends Controller
 
         // Obtener la categoría del profesional
         $categoriaProfesional = $profesional->categoria_id;
-        
+
         // Obtener las especialidades y subespecialidades del profesional
         $especialidadesProfesional = $profesional->especializaciones()->pluck('especialidad_id')->toArray();
         $subespecialidadesProfesional = $profesional->especializaciones()->pluck('sub_especialidad_id')->whereNotNull()->toArray();
 
         // Construir query para obtener preguntas relevantes
         $queryPreguntas = PreguntaExperto::query();
-        
+
         // Aplicar filtros con OR para que lleguen preguntas de cualquier criterio que coincida
         $queryPreguntas->where(function($query) use ($categoriaProfesional, $especialidadesProfesional, $subespecialidadesProfesional) {
             // Preguntas por categoría (si el profesional tiene categoría)
             if ($categoriaProfesional) {
                 $query->orWhere('categoria_id', $categoriaProfesional);
             }
-            
+
             // Preguntas por especialidad principal
             if (!empty($especialidadesProfesional)) {
                 $query->orWhereIn('especialidad_id', $especialidadesProfesional);
             }
-            
+
             // Preguntas por subespecialidad
             if (!empty($subespecialidadesProfesional)) {
                 $query->orWhereIn('sub_especialidad_id', $subespecialidadesProfesional);
             }
         });
-        
+
         $preguntas = $queryPreguntas
             ->with(['especialidad', 'subespecialidad', 'categoria', 'respuestas.profesional'])
             ->orderBy('created_at', 'desc')
@@ -1875,25 +1901,25 @@ class ProfesionalController extends Controller
 
         // Verificar que el profesional puede responder esta pregunta
         $pregunta = PreguntaExperto::findOrFail($request->pregunta_id);
-        
+
         // Obtener datos del profesional
         $categoriaProfesional = $profesional->categoria_id;
         $especialidadesProfesional = $profesional->especializaciones()->pluck('especialidad_id')->toArray();
         $subespecialidadesProfesional = $profesional->especializaciones()->pluck('sub_especialidad_id')->whereNotNull()->toArray();
-        
+
         // Verificar si puede responder por algún criterio
         $puedeResponder = false;
-        
+
         // Puede responder si comparte la categoría
         if ($pregunta->categoria_id && $categoriaProfesional && $pregunta->categoria_id == $categoriaProfesional) {
             $puedeResponder = true;
         }
-        
+
         // Puede responder si tiene la especialidad de la pregunta
         if ($pregunta->especialidad_id && in_array($pregunta->especialidad_id, $especialidadesProfesional)) {
             $puedeResponder = true;
         }
-        
+
         // Puede responder si tiene la subespecialidad de la pregunta
         if ($pregunta->sub_especialidad_id && in_array($pregunta->sub_especialidad_id, $subespecialidadesProfesional)) {
             $puedeResponder = true;
