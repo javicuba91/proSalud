@@ -1015,21 +1015,19 @@ class ProfesionalController extends Controller
 
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
-            $filename = Str::slug($profesional->id . '-' . time()) . '.' . $file->getClientOriginalExtension();
+            $filename = "perfil_".Str::slug($profesional->id . '-' . time()) . '.' . $file->getClientOriginalExtension();
             $path = 'imagenes/medicos/' . $profesional->id;
             $file->move(public_path($path), $filename);
 
-            // Guardar la ruta relativa en la base de datos
             $profesional->foto = $path . '/' . $filename;
         }
 
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
-            $filename = Str::slug($profesional->id . '-' . time()) . '.' . $file->getClientOriginalExtension();
+            $filename = "logo_".Str::slug($profesional->id . '-' . time()) . '.' . $file->getClientOriginalExtension();
             $path = 'imagenes/medicos/' . $profesional->id;
             $file->move(public_path($path), $filename);
 
-            // Guardar la ruta relativa en la base de datos
             $profesional->logo = $path . '/' . $filename;
         }
 
