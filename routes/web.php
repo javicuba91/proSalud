@@ -388,9 +388,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/facturacion-proveedor/{id}/pagar', [FacturacionController::class, 'pagarProveedor'])->name('admin.facturacion.proveedor.pagar');
         Route::post('/facturacion-proveedor/{id}/pagar', [FacturacionController::class, 'pagarPostProveedor'])->name('admin.facturacion.proveedor.pagar.post');
 
-
-
-
         Route::get('/especialidades', [EspecialidadController::class, 'index'])->name('especialidades.index');
         Route::get('/especialidades/create', [EspecialidadController::class, 'create'])->name('especialidades.create');
         Route::post('/especialidades', [EspecialidadController::class, 'store'])->name('especialidades.store');
@@ -412,8 +409,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/categorias-especialidad/{especialidadSanitario}/edit', [EspecialidadesSanitariosController::class, 'edit'])->name('especialidades-sanitarios.edit');
         Route::put('/categorias-especialidad/{especialidadSanitario}', [EspecialidadesSanitariosController::class, 'update'])->name('especialidades-sanitarios.update');
         Route::delete('/categorias-especialidad/{especialidadSanitario}', [EspecialidadesSanitariosController::class, 'destroy'])->name('especialidades-sanitarios.destroy');
-
-
 
 
 

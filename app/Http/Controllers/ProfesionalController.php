@@ -1726,14 +1726,14 @@ class ProfesionalController extends Controller
         $profesional = Profesional::findOrFail($profesionalId);
 
         $notificacion = new Notificacion();
+        $notificacion->mensaje = "Documento pendiente de validación: {$request->nombre} de {$profesional->nombre_completo}";
         $notificacion->titulo = "Documento pendiente de validación: {$request->nombre}";
-        $notificacion->mensaje = "Documento pendiente de validación: {$request->nombre}";
         $notificacion->tipo = 'warning';
         $notificacion->icono = 'fa fa-file';
-        $notificacion->url = '/admin/documentos-profesional';
+        $notificacion->url = '/admin/documentos-profesional?estado=pendiente';
         $notificacion->leida = 0;
         $notificacion->usuario_id = $profesional->user_id;
-        $notificacion->rol = 'profesional';
+        $notificacion->usuario_id_destino = NULL; // Notificación para el administrador
         $notificacion->save();
 
         return redirect()->back()->with('success', 'Documento guardado correctamente.');

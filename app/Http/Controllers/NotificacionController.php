@@ -13,11 +13,20 @@ class NotificacionController extends Controller
     {
         $user = Auth::user();
 
-        $notificaciones = Notificacion::where('usuario_id', $user->id)
-            ->orWhereNull('usuario_id') // Notificaciones globales
-            ->where('leida', 0)
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        if ($user->role == "admin") {
+
+            $notificaciones = Notificacion::where('usuario_id_destino', '=', NULL)
+                ->where('leida', 0) // Solo no leídas
+                ->orderBy('created_at', 'desc')
+                ->paginate(20);
+        } else {
+
+            $notificaciones = Notificacion::where('usuario_id_destino', $user->id)
+                ->where('usuario_id', '!=', NULL) // Notificaciones globales
+                ->where('leida', 0) // Solo no leídas
+                ->orderBy('created_at', 'desc')
+                ->paginate(20);
+        }
 
         return view('admin.notificaciones.index', compact('notificaciones'));
     }
@@ -29,12 +38,19 @@ class NotificacionController extends Controller
     {
         $user = Auth::user();
 
-        $count = Notificacion::where(function($query) use ($user) {
-                $query->where('usuario_id', $user->id)
-                      ->orWhereNull('usuario_id');
+        if ($user->role == "admin") {
+
+            $count = Notificacion::where(function ($query) use ($user) {
+                $query->where('usuario_id_destino', '=', NULL);
+            })->where('leida', 0) // Solo no leídas
+                ->count();
+        } else {
+            $count = Notificacion::where(function ($query) use ($user) {
+                $query->where('usuario_id_destino', $user->id);
             })
-            ->where('leida', 0)
-            ->count();
+                ->where('leida', 0) // Solo no leídas
+                ->count();
+        }
 
         return response()->json(['count' => $count]);
     }
@@ -46,29 +62,42 @@ class NotificacionController extends Controller
     {
         $user = Auth::user();
 
-        $notificaciones = Notificacion::where(function($query) use ($user) {
-                $query->where('usuario_id', $user->id)
-                      ->orWhereNull('usuario_id');
-            })
-            ->where('leida', 0) // Solo no leídas
-            ->orderBy('created_at', 'desc')
-            ->limit(10)
-            ->get();
+        if ($user->role == "admin") {
+
+            $notificaciones = Notificacion::where('usuario_id_destino', '=', NULL)
+                ->where('leida', 0) // Solo no leídas
+                ->orderBy('created_at', 'desc')
+                ->get();
+                
+        } else {
+
+            $notificaciones = Notificacion::where('usuario_id_destino', $user->id)
+                ->where('usuario_id', '!=', NULL) // Notificaciones globales
+                ->where('leida', 0) // Solo no leídas
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
 
         $html = '';
-        foreach ($notificaciones as $notificacion) {
-            $iconColor = $notificacion->tipo ?? 'info';
-            $icon = $notificacion->icono ?? 'fas fa-info-circle';
-            $timeAgo = $notificacion->created_at->diffForHumans();
-            $readClass = $notificacion->leida ? '' : 'bg-light';
-
-            $html .= '<a href="' . ($notificacion->url ?? '#') . '" class="dropdown-item ' . $readClass . '" data-id="' . $notificacion->id . '">';
-            $html .= '<i class="' . $icon . ' text-' . $iconColor . ' mr-2"></i>';
-            $html .= '<span class="text-truncate">' . $notificacion->titulo . '</span>';
-            $html .= '<span class="float-right text-muted text-sm">' . $timeAgo . '</span>';
-            $html .= '</a>';
-            $html .= '<div class="dropdown-divider"></div>';
-        }
+        $html .= '<span class="dropdown-item dropdown-header">'.$notificaciones->count().' Notificationes</span>';
+        $html .= '<a href="#" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> 4 new messages
+                    </a><div class="dropdown-divider"></div>';
+        $html .= '<a href="#" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> 4 new messages
+                    </a><div class="dropdown-divider"></div>';
+        $html .= '<a href="#" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> 4 new messages
+                    </a><div class="dropdown-divider"></div>';
+        $html .= '<a href="#" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> 4 new messages
+                    </a><div class="dropdown-divider"></div>';
+        $html .= '<a href="#" class="dropdown-item">
+                        <i class="fas fa-star mr-2"></i> 4 new messages
+                    </a><div class="dropdown-divider"></div>';
+        $html .= '<a href="#" class="dropdown-item">
+                        <i class="fas fa-star mr-2"></i> 4 new messages
+                    </a><div class="dropdown-divider"></div>';
 
         if ($notificaciones->isEmpty()) {
             $html = '<div class="dropdown-item text-center text-muted">No hay notificaciones</div>';
@@ -85,9 +114,9 @@ class NotificacionController extends Controller
         $user = Auth::user();
 
         $notificacion = Notificacion::where('id', $id)
-            ->where(function($query) use ($user) {
+            ->where(function ($query) use ($user) {
                 $query->where('usuario_id', $user->id)
-                      ->orWhereNull('usuario_id');
+                    ->orWhereNull('usuario_id');
             })
             ->first();
 
@@ -105,10 +134,10 @@ class NotificacionController extends Controller
     {
         $user = Auth::user();
 
-        Notificacion::where(function($query) use ($user) {
-                $query->where('usuario_id', $user->id)
-                      ->orWhereNull('usuario_id');
-            })
+        Notificacion::where(function ($query) use ($user) {
+            $query->where('usuario_id', $user->id)
+                ->orWhereNull('usuario_id');
+        })
             ->noLeidas()
             ->update(['leida' => true]);
 
