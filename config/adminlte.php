@@ -305,6 +305,18 @@ return [
             'topnav_right' => true,
         ],
         [
+            'type' => 'navbar-notification',
+            'id' => 'my-notification',
+            'icon' => 'fas fa-bell',
+            'icon_color' => 'warning',
+            'label' => 3,
+            'label_color' => 'danger',
+            'url' => '#',
+            'topnav_right' => true,
+            'dropdown_mode' => true,
+            'can' => 'solo-admin',
+        ],
+        [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
@@ -776,6 +788,16 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        'Notificaciones' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'js/notificaciones.js',
                 ],
             ],
         ],

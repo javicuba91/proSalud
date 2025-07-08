@@ -18,6 +18,7 @@ use App\Http\Controllers\IntervaloMedicamentoController;
 use App\Http\Controllers\MedicamentosRecetaController;
 use App\Http\Controllers\MedicamentoController;
 use App\Http\Controllers\MetodoPagoController;
+use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\PacienteFrontendController;
 use App\Http\Controllers\PlanController;
@@ -672,6 +673,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::post('/contacto/profesional', [AdminController::class, 'adminContactoProfesional'])->name('admin.contacto.profesional');
         Route::get('/contacto/profesional', [AdminController::class, 'adminContactoProfesional'])->name('admin.contacto_profesional');
         Route::post('/contacto-profesional/{id}/responder', [AdminController::class, 'responderContactoProfesional'])->name('admin.responder_contacto_profesional');
+
+        // Rutas de notificaciones
+        Route::get('/notificaciones', [NotificacionController::class, 'index'])->name('admin.notificaciones.index');
+        Route::get('/notificaciones/count', [NotificacionController::class, 'count'])->name('admin.notificaciones.count');
+        Route::get('/notificaciones/dropdown', [NotificacionController::class, 'dropdown'])->name('admin.notificaciones.dropdown');
+        Route::get('/notificaciones/debug', [NotificacionController::class, 'debug'])->name('admin.notificaciones.debug');
+        Route::post('/notificaciones/{id}/marcar-leida', [NotificacionController::class, 'marcarLeida'])->name('admin.notificaciones.marcar_leida');
+        Route::post('/notificaciones/marcar-todas-leidas', [NotificacionController::class, 'marcarTodasLeidas'])->name('admin.notificaciones.marcar_todas_leidas');
+        Route::post('/notificaciones', [NotificacionController::class, 'store'])->name('admin.notificaciones.store');
     });
 });
 Route::get('/mail_test', [MailTestController::class, 'sendTest']);
