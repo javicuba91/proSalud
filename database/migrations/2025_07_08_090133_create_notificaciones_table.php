@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('url')->nullable();
             $table->boolean('leida')->default(false);
             $table->unsignedBigInteger('usuario_id')->nullable();
-            $table->string('rol')->nullable(); // admin, paciente, profesional, proveedor
+            $table->unsignedBigInteger('usuario_id_destino')->nullable();
             $table->timestamps();
-
             $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('usuario_id_destino')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
