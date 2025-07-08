@@ -13,6 +13,8 @@
 @section('js')
 <script>
 $(document).ready(function() {
+   
+
     // Función para actualizar el contador de notificaciones
     function updateNotificationCount() {
         $.get('/admin/notificaciones/count')

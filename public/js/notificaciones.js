@@ -1,5 +1,8 @@
 // Notificaciones AdminLTE
 $(document).ready(function() {
+        
+    $('.dropdown-footer').html('<a href="/admin/notificaciones" class="btn btn-primary btn-block">Ver todas las notificaciones</a>');
+
     // Función para actualizar el contador de notificaciones
     function updateNotificationCount() {
         $.ajax({
@@ -63,21 +66,5 @@ $(document).ready(function() {
             updateNotificationCount();
         }, 10000);
 
-        // Marcar notificación como leída al hacer clic
-        $(document).on('click', '#my-notification .dropdown-item[data-id]', function(e) {
-            var notificationId = $(this).data('id');
-            if (notificationId) {
-                $.ajax({
-                    url: '/admin/notificaciones/' + notificationId + '/marcar-leida',
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function() {
-                        updateNotificationCount();
-                    }
-                });
-            }
-        });
     }
 });

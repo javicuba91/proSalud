@@ -14,5 +14,3 @@
     </li>
 </ul>
 {{-- Puedes reemplazar este contenido por un @foreach de tus notificaciones reales --}}
-
-<div style="color:red">¡Funciona el dropdown_content!</div>

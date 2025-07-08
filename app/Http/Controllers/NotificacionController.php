@@ -62,41 +62,30 @@ class NotificacionController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role == "admin") {
-
-            $notificaciones = Notificacion::where('usuario_id_destino', '=', NULL)
+        $notificaciones = Notificacion::where('usuario_id_destino', '=', NULL)
                 ->where('leida', 0) // Solo no leídas
                 ->orderBy('created_at', 'desc')
                 ->get();
-                
-        } else {
-
-            $notificaciones = Notificacion::where('usuario_id_destino', $user->id)
-                ->where('usuario_id', '!=', NULL) // Notificaciones globales
-                ->where('leida', 0) // Solo no leídas
-                ->orderBy('created_at', 'desc')
-                ->get();
-        }
 
         $html = '';
         $html .= '<span class="dropdown-item dropdown-header">'.$notificaciones->count().' Notificationes</span>';
-        $html .= '<a href="#" class="dropdown-item">
-                        <i class="fas fa-file mr-2"></i> 4 new messages
+        $html .= '<a href="/admin/documentos-profesional?profesional_id=&estado=pendiente" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> Doc. Pendientes Profesional
+                    </a><div class="dropdown-divider"></div>';
+        $html .= '<a href="/admin/documentos-proveedor?proveedor_id=&estado=pendiente" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> Doc. Pendientes Proveedor
+                    </a><div class="dropdown-divider"></div>';
+        $html .= '<a href="/admin/contacto/profesional?profesional_id=&estado=pendiente" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i>Contactos Profesional
+                    </a><div class="dropdown-divider"></div>';
+        $html .= '<a href="/admin/contacto/proveedores?proveedor_id=&estado=pendiente" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i>Contactos Proveedor
                     </a><div class="dropdown-divider"></div>';
         $html .= '<a href="#" class="dropdown-item">
-                        <i class="fas fa-file mr-2"></i> 4 new messages
+                        <i class="fas fa-star mr-2"></i>Valoraciones Profesional
                     </a><div class="dropdown-divider"></div>';
         $html .= '<a href="#" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> 4 new messages
-                    </a><div class="dropdown-divider"></div>';
-        $html .= '<a href="#" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> 4 new messages
-                    </a><div class="dropdown-divider"></div>';
-        $html .= '<a href="#" class="dropdown-item">
-                        <i class="fas fa-star mr-2"></i> 4 new messages
-                    </a><div class="dropdown-divider"></div>';
-        $html .= '<a href="#" class="dropdown-item">
-                        <i class="fas fa-star mr-2"></i> 4 new messages
+                        <i class="fas fa-star mr-2"></i>Valoraciones Proveedor
                     </a><div class="dropdown-divider"></div>';
 
         if ($notificaciones->isEmpty()) {
