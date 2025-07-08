@@ -33,8 +33,7 @@ class NotificacionController extends Controller
                 $query->where('usuario_id', $user->id)
                       ->orWhereNull('usuario_id');
             })
-            ->noLeidas()
-            ->activas()
+            ->where('leida', 0) // Solo no leídas
             ->count();
 
         return response()->json(['count' => $count]);
@@ -51,7 +50,7 @@ class NotificacionController extends Controller
                 $query->where('usuario_id', $user->id)
                       ->orWhereNull('usuario_id');
             })
-            ->activas()
+            ->where('leida', 0) // Solo no leídas
             ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();
