@@ -638,6 +638,7 @@ return [
                 ['text' => 'Vías de Administración', 'url' => '/admin/vias-administracion-medicamentos', 'icon' => '', 'can' => 'solo-admin'],
             ],
         ],
+        ['text' => 'Notificaciones', 'url' => '/admin/notificaciones', 'icon' => "fas fa-bell", 'can' => 'solo-admin'],
         [
             'text' => 'Regiones',
             'url'  => '#',
