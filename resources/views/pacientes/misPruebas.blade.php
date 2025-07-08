@@ -1,16 +1,15 @@
 @extends('adminlte::page')
 
 @section('title', 'Mis Pruebas')
+
+@section('content_header')
+    <h1>Mis Pruebas</h1>
+@stop
 @if (session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
 @endif
-
-@section('content_header')
-    <h1>Mis Pruebas</h1>
-@stop
-
 @section('content')
 
     @push('css')
