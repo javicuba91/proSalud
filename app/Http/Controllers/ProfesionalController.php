@@ -30,7 +30,9 @@ use App\Models\PedidoLaboratorio;
 use App\Models\Plan;
 use App\Models\PreguntaExperto;
 use App\Models\PresentacionMedicamento;
+use App\Models\PresupuestoPrueba;
 use App\Models\Profesional;
+use App\Models\Proveedor;
 use App\Models\Provincia;
 use App\Models\Prueba;
 use App\Models\RespuestaExperto;
@@ -48,6 +50,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -426,7 +429,26 @@ class ProfesionalController extends Controller
 
     public function pedidosLaboratorio()
     {
-        return view('profesionales.pedidosLaboratorio');
+        $profesional = Profesional::where('user_id', auth()->id())->first();
+
+        if (!$profesional) {
+            return redirect()->back()->with('error', 'No se encontró el profesional.');
+        }
+
+        // Obtener todos los pedidos de laboratorio del profesional
+        $pedidos = PedidoLaboratorio::whereHas('informeConsulta', function ($query) use ($profesional) {
+            $query->whereHas('cita', function ($citaQuery) use ($profesional) {
+                $citaQuery->where('profesional_id', $profesional->id);
+            });
+        })
+            ->with([
+                'informeConsulta.cita.paciente.user',
+                'pruebas'
+            ])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('profesionales.pedidosLaboratorio', compact('pedidos', 'profesional'));
     }
 
     public function pedidosLaboratorioCrear()
@@ -453,7 +475,26 @@ class ProfesionalController extends Controller
 
     public function pedidosImagenes()
     {
-        return view('profesionales.pedidosImagenes');
+        $profesional = Profesional::where('user_id', Auth::id())->first();
+        
+        if (!$profesional) {
+            return redirect()->back()->with('error', 'No se encontró el profesional.');
+        }
+        
+        // Obtener todos los pedidos de imágenes del profesional
+        $pedidos = PedidoImagen::whereHas('informeConsulta', function($query) use ($profesional) {
+            $query->whereHas('cita', function($citaQuery) use ($profesional) {
+                $citaQuery->where('profesional_id', $profesional->id);
+            });
+        })
+        ->with([
+            'informeConsulta.cita.paciente.user',
+            'pruebas'
+        ])
+        ->orderBy('created_at', 'desc')
+        ->get();
+        
+        return view('profesionales.pedidosImagenes', compact('pedidos', 'profesional'));
     }
 
     public function pedidosImagenesCrear()
@@ -548,12 +589,12 @@ class ProfesionalController extends Controller
         $informes = InformeConsulta::whereHas('cita', function ($query) use ($paciente) {
             $query->where('paciente_id', $paciente->id);
         })
-        ->with([
-            'cita',
-            'pedidoLaboratorio.pruebas',
-            'pedidoImagen.pruebas'
-        ])
-        ->get();
+            ->with([
+                'cita',
+                'pedidoLaboratorio.pruebas',
+                'pedidoImagen.pruebas'
+            ])
+            ->get();
 
         $pruebas = collect();
 
@@ -1028,7 +1069,7 @@ class ProfesionalController extends Controller
 
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
-            $filename = "perfil_".Str::slug($profesional->id . '-' . time()) . '.' . $file->getClientOriginalExtension();
+            $filename = "perfil_" . Str::slug($profesional->id . '-' . time()) . '.' . $file->getClientOriginalExtension();
             $path = 'imagenes/medicos/' . $profesional->id;
             $file->move(public_path($path), $filename);
 
@@ -1037,7 +1078,7 @@ class ProfesionalController extends Controller
 
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
-            $filename = "logo_".Str::slug($profesional->id . '-' . time()) . '.' . $file->getClientOriginalExtension();
+            $filename = "logo_" . Str::slug($profesional->id . '-' . time()) . '.' . $file->getClientOriginalExtension();
             $path = 'imagenes/medicos/' . $profesional->id;
             $file->move(public_path($path), $filename);
 
@@ -1876,7 +1917,7 @@ class ProfesionalController extends Controller
         $queryPreguntas = PreguntaExperto::query();
 
         // Aplicar filtros con OR para que lleguen preguntas de cualquier criterio que coincida
-        $queryPreguntas->where(function($query) use ($categoriaProfesional, $especialidadesProfesional, $subespecialidadesProfesional) {
+        $queryPreguntas->where(function ($query) use ($categoriaProfesional, $especialidadesProfesional, $subespecialidadesProfesional) {
             // Preguntas por categoría (si el profesional tiene categoría)
             if ($categoriaProfesional) {
                 $query->orWhere('categoria_id', $categoriaProfesional);
@@ -2146,5 +2187,86 @@ class ProfesionalController extends Controller
         $consultorio->save();
 
         return response()->json(['success' => true]);
+    }
+
+    public function detallesPedidoLaboratorio($id)
+    {
+
+        // Verificar autenticación
+        if (!Auth::check()) {
+            return response('<div class="alert alert-danger">Usuario no autenticado</div>', 401);
+        }
+
+        $profesional = Profesional::where('user_id', Auth::id())->first();
+
+        if (!$profesional) {
+            return response('<div class="alert alert-danger">Profesional no encontrado</div>', 404);
+        }
+
+        // Buscar el pedido básico primero
+        $pedido = PedidoLaboratorio::find($id);
+
+        if (!$pedido) {
+            return response('<div class="alert alert-danger">Pedido no encontrado con ID: ' . $id . '</div>', 404);
+        }
+
+        // Verificar que el pedido pertenece al profesional
+        $pedido->load([
+            'informeConsulta.cita.paciente.user',
+            'pruebas.presupuestos.proveedor'
+        ]);
+
+        // Verificar seguridad
+        if (
+            !$pedido->informeConsulta ||
+            !$pedido->informeConsulta->cita ||
+            $pedido->informeConsulta->cita->profesional_id != $profesional->id
+        ) {
+            return response('<div class="alert alert-danger">No tiene permisos para ver este pedido</div>', 403);
+        }
+
+        return view('profesionales.pedidoLaboratorioDetalles', compact('pedido', 'profesional'));
+    }
+
+    public function detallesPedidoImagen($id)
+    {
+        try {
+            // Verificar autenticación
+            if (!Auth::check()) {
+                return response('<div class="alert alert-danger">Usuario no autenticado</div>', 401);
+            }
+            
+            $profesional = Profesional::where('user_id', Auth::id())->first();
+            
+            if (!$profesional) {
+                return response('<div class="alert alert-danger">Profesional no encontrado</div>', 404);
+            }
+            
+            // Buscar el pedido básico primero
+            $pedido = PedidoImagen::find($id);
+            
+            if (!$pedido) {
+                return response('<div class="alert alert-danger">Pedido no encontrado con ID: ' . $id . '</div>', 404);
+            }
+            
+            // Verificar que el pedido pertenece al profesional
+            $pedido->load([
+                'informeConsulta.cita.paciente.user',
+                'pruebas.presupuestos.proveedor'
+            ]);
+            
+            // Verificar seguridad
+            if (!$pedido->informeConsulta || 
+                !$pedido->informeConsulta->cita || 
+                $pedido->informeConsulta->cita->profesional_id != $profesional->id) {
+                return response('<div class="alert alert-danger">No tiene permisos para ver este pedido</div>', 403);
+            }
+            
+            return view('profesionales.pedidoImagenDetalles', compact('pedido', 'profesional'));
+            
+        } catch (\Exception $e) {
+            Log::error('Error en detallesPedidoImagen: ' . $e->getMessage());
+            return response('<div class="alert alert-danger">Error: ' . $e->getMessage() . '</div>', 500);
+        }
     }
 }

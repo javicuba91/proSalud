@@ -206,9 +206,11 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/profesional/pedidos-laboratorio', [ProfesionalController::class, 'pedidosLaboratorio'])->name('profesionales.pedidosLaboratorio');
         Route::get('/profesional/pedidos-laboratorio/crear', [ProfesionalController::class, 'pedidosLaboratorioCrear'])->name('profesionales.pedidosLaboratorioCrear');
+        Route::get('/profesional/pedidos-laboratorio/{id}/detalles', [ProfesionalController::class, 'detallesPedidoLaboratorio'])->name('profesionales.detallesPedidoLaboratorio');
 
         Route::get('/profesional/pedidos-imagenes', [ProfesionalController::class, 'pedidosImagenes'])->name('profesionales.pedidosImagenes');
         Route::get('/profesional/pedidos-imagenes/crear', [ProfesionalController::class, 'pedidosImagenesCrear'])->name('profesionales.pedidosImagenesCrear');
+        Route::get('/profesional/pedidos-imagenes/{id}/detalles', [ProfesionalController::class, 'detallesPedidoImagen'])->name('profesionales.detallesPedidoImagen');
 
         Route::get('/profesional/valoraciones-comentarios', [ProfesionalController::class, 'valoracionesComentarios'])->name('profesionales.valoracionesComentarios');
         Route::get('/profesional/notificaciones', [ProfesionalController::class, 'notificaciones'])->name('profesionales.notificaciones');
