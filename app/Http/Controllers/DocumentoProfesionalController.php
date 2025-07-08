@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DocumentoProfesional;
+use App\Models\Notificacion;
 use App\Models\Profesional;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -120,6 +121,16 @@ class DocumentoProfesionalController extends Controller
         $documento = DocumentoProfesional::findOrFail($id);
         $documento->estado = 'aprobado';
         $documento->save();
+
+        $notificacion = new Notificacion();
+        $notificacion->usuario_id_destino = $documento->profesional->user_id;
+        $notificacion->usuario_id = NULL;
+        $notificacion->titulo = "El documento ".$documento->nombre." ha sido aprobado";
+        $notificacion->mensaje = "El documento ".$documento->nombre." ha sido aprobado";        
+        $notificacion->tipo = "documento_profesional";
+        $notificacion->icono = "fa fa-file";
+        $notificacion->leida = 0;
+        $notificacion->save();
 
         return response()->json(['success' => true, 'message' => 'Documento aprobado']);
     }

@@ -267,6 +267,8 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/profesional/cita/informe-consulta/{id}/exportar-pdf-imagen', [ProfesionalController::class, 'exportarPedidoImagenPDF'])->name('profesional.pedido.imagen.exportarPDF');
 
+        Route::post('/profesional/notificaciones/{id}/marcar-leida', [NotificacionController::class, 'marcarLeida'])->name('profesional.notificaciones.marcar_leida');
+
 
         /* URLS SIDEBAR: Proveedor*/
         Route::get('/proveedor', [ProveedorController::class, 'index'])->name('proveedores.index');
@@ -323,7 +325,6 @@ Route::get('/profesionales/login', [ProfesionalFrontendController::class, 'login
 Route::get('/profesionales/registro', [ProfesionalFrontendController::class, 'registro'])->name('profesionales.registro');
 Route::get('/profesionales/contacto', [ProfesionalFrontendController::class, 'contacto'])->name('profesionales.contacto');
 Route::get('/profesionales/ficha/{id}', [ProfesionalFrontendController::class, 'detalleProfesional'])->name('profesionales.detalleProfesional');
-
 
 Route::get('/proveedores', [ProveedorFrontendController::class, 'index'])->name('proveedores.index');
 Route::get('/proveedores/beneficios', [ProveedorFrontendController::class, 'beneficios'])->name('proveedores.beneficios');
