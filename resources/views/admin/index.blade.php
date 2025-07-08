@@ -161,7 +161,7 @@
                     <span class="info-box-text">Notificaciones ({{ $total_notificaciones }})</span>
                     <div class="row">
                         <div class="col-4">
-                            <strong>Doc. Pendientes Profesional ({{$documentos_profesionales->count()}})</strong>
+                            <strong>Doc. Pendientes Profesional ({{$total_documentos_profesionales}})</strong>
                             <ul>
                                 @foreach ($documentos_profesionales as $documento_profesional)
                                     <li>{{ $documento_profesional->titulo }}</li>
@@ -169,7 +169,7 @@
                             </ul>
                         </div>
                         <div class="col-4">
-                            <strong>Doc. Pendientes Proveedor ({{$documentos_proveedores->count()}})</strong>
+                            <strong>Doc. Pendientes Proveedor ({{$total_documentos_proveedores}})</strong>
                             <ul>
                                 @foreach ($documentos_proveedores as $documento_proveedor)
                                     <li>{{ $documento_proveedor->titulo }}</li>
@@ -177,7 +177,7 @@
                             </ul>
                         </div>
                         <div class="col-4">
-                            <strong>Contactos Profesional ({{$contacto_profesionales->count()}})</strong>
+                            <strong>Contactos Profesional ({{$total_contacto_profesionales}})</strong>
                             <ul>
                                 @foreach ($contacto_profesionales as $contacto_profesional)
                                     <li>{{ $contacto_profesional->titulo }}</li>
@@ -185,7 +185,7 @@
                             </ul>
                         </div>
                         <div class="col-4">
-                            <strong>Contactos Proveedor ({{$contacto_proveedores->count()}})</strong>
+                            <strong>Contactos Proveedor ({{$total_contacto_proveedores}})</strong>
                             <ul>
                                 @foreach ($contacto_proveedores as $contacto_proveedor)
                                     <li>{{ $contacto_proveedor->titulo }}</li>
@@ -194,7 +194,7 @@
                         </div>
 
                         <div class="col-4">
-                            <strong>Valoraciones Profesional ({{$valoraciones_profesionales->count()}})</strong>
+                            <strong>Valoraciones Profesional ({{$total_valoraciones_profesionales}})</strong>
                             <ul>
                                 @foreach ($valoraciones_profesionales as $valoracion_profesional)
                                     <li>{{ $valoracion_profesional->titulo }}</li>
@@ -202,7 +202,7 @@
                             </ul>
                         </div>
                         <div class="col-4">
-                            <strong>Valoraciones Proveedor ({{$valoraciones_proveedores->count()}})</strong>
+                            <strong>Valoraciones Proveedor ({{$total_valoraciones_proveedores}})</strong>
                             <ul>
                                 @foreach ($valoraciones_proveedores as $valoracion_proveedor)
                                     <li>{{ $valoracion_proveedor->titulo }}</li>

@@ -464,7 +464,7 @@ class PacienteController extends Controller
             $notificacion->titulo = "{$request->puntuacion} estrellas - {$profesional->nombre_completo}";
             $notificacion->tipo = 'valoracion_profesional';
             $notificacion->icono = 'fa fa-star';
-            $notificacion->url = '/admin/valoraciones-profesionales';
+            $notificacion->url = "/admin/valoraciones?paciente_id=&profesional_id=&modalidad=&puntuacion={$request->puntuacion}";
             $notificacion->leida = 0;
             $notificacion->usuario_id = $paciente->user_id;
             $notificacion->usuario_id_destino = NULL;
