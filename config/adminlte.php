@@ -304,7 +304,7 @@ return [
             'text' => 'search',
             'topnav_right' => true,
         ],
-        [
+        /*[
             'type' => 'navbar-notification',
             'id' => 'my-notification',
             'icon' => 'fas fa-bell',
@@ -315,7 +315,7 @@ return [
             'topnav_right' => true,
             'dropdown_mode' => true,
             'can' => 'solo-admin',
-        ],
+        ],*/
         [
             'type' => 'fullscreen-widget',
             'topnav_right' => false,

@@ -1,7 +1,7 @@
 // Notificaciones AdminLTE
 $(document).ready(function() {
         
-    $('.dropdown-footer').html('<a href="/admin/notificaciones" class="btn btn-primary btn-block">Ver todas las notificaciones</a>');
+    $('.dropdown-footer').html('');
 
     // Función para actualizar el contador de notificaciones
     function updateNotificationCount() {

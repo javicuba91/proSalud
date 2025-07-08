@@ -68,7 +68,6 @@ class NotificacionController extends Controller
                 ->get();
 
         $html = '';
-        $html .= '<span class="dropdown-item dropdown-header">'.$notificaciones->count().' Notificationes</span>';
         $html .= '<a href="/admin/documentos-profesional?profesional_id=&estado=pendiente" class="dropdown-item">
                         <i class="fas fa-file mr-2"></i> Doc. Pendientes Profesional
                     </a><div class="dropdown-divider"></div>';
