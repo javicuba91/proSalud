@@ -196,7 +196,7 @@ class ProveedorController extends Controller
 
             $notificacion = new Notificacion();
             $notificacion->mensaje = "Valoración de {$paciente->nombre_completo} para {$proveedor->nombre}";
-            $notificacion->titulo = "{$request->puntuacion} estrellas - {$proveedor->nombre_completo}";
+            $notificacion->titulo = "{$request->puntuacion} estrellas - {$proveedor->nombre}";
             $notificacion->tipo = 'valoracion_proveedor';
             $notificacion->icono = 'fa fa-star';
             $notificacion->url = "/admin/valoraciones?paciente_id=&proveedor_id=&modalidad=&puntuacion={$request->puntuacion}";
