@@ -2,6 +2,7 @@
 
 <title>@yield('title', 'ProSalud - Ficha del Profesional: '){{ $profesional->nombre_completo }}</title>
 
+
 @section('content')
     <div class="container">
         <div class="row">

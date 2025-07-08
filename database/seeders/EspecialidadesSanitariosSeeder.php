@@ -13,15 +13,15 @@ class EspecialidadesSanitariosSeeder extends Seeder
     public function run(): void
     {
         // Obtenemos los IDs de las categorías profesionales
-        $odontologiaId = DB::table('categoria_profesionales')->where('nombre', 'Dentisas')->value('id');
+        $odontologiaId = DB::table('categoria_profesionales')->where('nombre', 'Dentistas')->value('id');
         $psicologiaId = DB::table('categoria_profesionales')->where('nombre', 'Psicólogos')->value('id');
 
         // Verificamos que las categorías existan
         if (!$odontologiaId || !$psicologiaId) {
-            throw new \Exception('Las categorías "Dentisas" y "Psicólogos" deben existir en la tabla categoria_profesionales');
+            throw new \Exception('Las categorías "Dentistas" y "Psicólogos" deben existir en la tabla categoria_profesionales');
         }
 
-        // Especialidades de Dentisas
+        // Especialidades de Dentistas
         $especialidadesOdontologia = [
             [
                 'nombre' => 'Odontología General',

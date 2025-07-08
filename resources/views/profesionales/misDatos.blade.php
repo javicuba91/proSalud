@@ -4,7 +4,19 @@
 
 @section('css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
+        #mapaDireccion {
+            height: 400px !important;
+            width: 100% !important;
+            display: block !important;
+            z-index: 1;
+        }
+
+        .leaflet-container {
+            z-index: 1 !important;
+        }
+
         .profile-image {
             width: 150px;
             height: 150px;
@@ -75,6 +87,7 @@
         }
     </style>
 @endsection
+
 
 @section('content_header')
     <div class="row">
@@ -576,11 +589,18 @@
                     <div class="col-md-8 mb-2">
                         <label>Dirección</label>
                         <div class="input-group">
-                            <input type="text" value="{{ $consultorio->direccion }}" class="form-control direccion-consultorio" data-consultorio-id="{{ $consultorio->id }}" id="direccion-consultorio-{{ $consultorio->id }}" readonly>
+                            <input type="text" value="{{ $consultorio->direccion }}"
+                                class="form-control direccion-consultorio" data-consultorio-id="{{ $consultorio->id }}"
+                                id="direccion-consultorio-{{ $consultorio->id }}" readonly>
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-outline-primary btn-editar-direccion" data-consultorio-id="{{ $consultorio->id }}" data-direccion="{{ $consultorio->direccion }}">
-                                    <i class="fa fa-edit"></i> Editar dirección
-                                </button>
+                                <div class="input-group-append">
+                                    <button type="button"
+                                        class="btn btn-outline-primary btn-sm btnSeleccionarDireccionMapa"
+                                        data-input-id="direccion-consultorio-{{ $consultorio->id }}"
+                                        data-consultorio-id="{{ $consultorio->id }}">
+                                        <i class="fa fa-map-marker"></i> Editar dirección
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -648,7 +668,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <input type="file" name="imagenes[]" multiple class="form-control" accept="image/*" required id="inputImagenesConsultorio">
+                        <input type="file" name="imagenes[]" multiple class="form-control" accept="image/*" required
+                            id="inputImagenesConsultorio">
                         <input type="hidden" id="consultorioIdInput" name="consultorio_id">
                         <div id="previewImagenesConsultorio" class="row mt-2"></div>
                     </div>
@@ -1114,7 +1135,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalFormacionesAdicionales" tabindex="-1" role="dialog" aria-labelledby="modalFormacionesAdicionalesLabel" aria-hidden="true">
+    <div class="modal fade" id="modalFormacionesAdicionales" tabindex="-1" role="dialog"
+        aria-labelledby="modalFormacionesAdicionalesLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form id="formNuevaFormacionAdicional">
                 @csrf
@@ -1361,8 +1383,7 @@
                                                             <div class="row g-2 align-items-center mb-2 horario-item-videollamada"
                                                                 data-id="{{ $detalleVideollamada->id }}">
                                                                 <div class="col-md-5">
-                                                                    <input step="30" readonly disabled
-                                                                        type="time"
+                                                                    <input step="30" readonly disabled type="time"
                                                                         name="horarios[{{ $index }}][{{ $loop->index }}][desde]"
                                                                         class="form-control"
                                                                         value="{{ $detalleVideollamada->hora_desde }}"
@@ -1403,8 +1424,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary"
-                        form="form-calendario-videollamada">Guardar</button>
+                    <button type="submit" class="btn btn-primary" form="form-calendario-videollamada">Guardar</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -1438,7 +1458,8 @@
     </div>
 
     <!-- Modal Nuevo Consultorio -->
-    <div class="modal fade" id="modalConsultorio" tabindex="-1" role="dialog" aria-labelledby="modalConsultorioLabel" aria-hidden="true">
+    <div class="modal fade" id="modalConsultorio" tabindex="-1" role="dialog"
+        aria-labelledby="modalConsultorioLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form id="formNuevoConsultorio">
                 @csrf
@@ -1453,9 +1474,11 @@
                         <div class="form-group">
                             <label>Dirección</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="direccionNuevoConsultorio" name="direccion" readonly required>
+                                <input type="text" class="form-control" id="direccionNuevoConsultorio"
+                                    name="direccion" readonly required>
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-outline-primary" id="btnSeleccionarDireccionMapa">
+                                    <button type="button" class="btn btn-outline-primary btnSeleccionarDireccionMapa"
+                                        data-input-id="direccionNuevoConsultorio">
                                         <i class="fa fa-map-marker"></i> Seleccionar en mapa
                                     </button>
                                 </div>
@@ -1463,11 +1486,13 @@
                         </div>
                         <div class="form-group">
                             <label>Clínica/Edificio</label>
-                            <input type="text" class="form-control" name="clinica" placeholder="Clínica/Edificio">
+                            <input type="text" class="form-control" name="clinica"
+                                placeholder="Clínica/Edificio">
                         </div>
                         <div class="form-group">
                             <label>Información Adicional</label>
-                            <input type="text" class="form-control" name="info_adicional" placeholder="Información adicional">
+                            <input type="text" class="form-control" name="info_adicional"
+                                placeholder="Información adicional">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -1480,7 +1505,8 @@
     </div>
 
     <!-- Modal para seleccionar dirección en mapa (Leaflet) -->
-    <div class="modal fade" id="modalMapaDireccion" tabindex="-1" role="dialog" aria-labelledby="modalMapaDireccionLabel" aria-hidden="true">
+    <div class="modal fade" id="modalMapaDireccion" tabindex="-1" role="dialog"
+        aria-labelledby="modalMapaDireccionLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1490,22 +1516,23 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div id="mapaLeaflet" style="height: 400px;"></div>
-                    <div class="mt-2">
-                        <strong>Dirección seleccionada:</strong>
-                        <span id="direccion-seleccionada"></span>
+                    <div id="mapaDireccion" style="height: 400px;width: 100%;display: block !important;"></div>
+                    <div class="mt-3">
+                        <label>Dirección seleccionada:</label>
+                        <input type="text" id="direccionSeleccionadaMapa" class="form-control" readonly>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="guardarDireccionMapa">Guardar dirección</button>
+                    <button type="button" class="btn btn-primary" id="guardarDireccionMapa">Usar esta
+                        dirección</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="modalExperiencia" tabindex="-1" role="dialog" aria-labelledby="modalExperienciaLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="modalExperiencia" tabindex="-1" role="dialog"
+        aria-labelledby="modalExperienciaLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form id="formNuevaExperiencia">
                 @csrf
@@ -1553,7 +1580,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-   
+    <script>
+        // Solución para los íconos de Leaflet (evita error 404 de marker-icon)
+        L.Icon.Default.mergeOptions({
+            iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+            iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+            shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png'
+        });
+    </script>
     <script>
         $(document).ready(function() {
 
@@ -1735,6 +1769,8 @@
                     }
                 });
             });
+
+            $('.eliminar-consultorio').click(function() {});
 
             $('.eliminar-consultorio').click(function() {
                 let id = $(this).data('id');
@@ -2472,114 +2508,6 @@
             }
         });
     </script>
-   
-   <script>
-        let mapa, marker, direccionSeleccionada = '';
-        let lat = -0.1806532, lng = -78.4678382; // Quito por defecto
-        let consultorioEditandoId = null;
-
-        // Abrir modal de mapa desde nuevo consultorio
-        $(document).on('click', '#btnSeleccionarDireccionMapa', function() {
-            consultorioEditandoId = null;
-            lat = -0.1806532;
-            lng = -78.4678382;
-            abrirModalMapaDireccion();
-        });
-
-        // Abrir modal de mapa desde edición de consultorio existente
-        $(document).on('click', '.btn-editar-direccion', function() {
-            consultorioEditandoId = $(this).data('consultorio-id');
-            const direccion = $(this).data('direccion');
-            if (direccion) {
-                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}&accept-language=es`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data && data.length > 0) {
-                            lat = parseFloat(data[0].lat);
-                            lng = parseFloat(data[0].lon);
-                        } else {
-                            lat = -0.1806532;
-                            lng = -78.4678382;
-                        }
-                        abrirModalMapaDireccion();
-                    });
-            } else {
-                lat = -0.1806532;
-                lng = -78.4678382;
-                abrirModalMapaDireccion();
-            }
-        });
-
-        function abrirModalMapaDireccion() {
-            $('#modalMapaDireccion').modal('show');
-        }
-
-        $('#modalMapaDireccion').on('shown.bs.modal', function() {
-            setTimeout(function() {
-                if (!mapa) {
-                    mapa = L.map('mapaLeaflet').setView([lat, lng], 13);
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        maxZoom: 19,
-                        attribution: '© OpenStreetMap'
-                    }).addTo(mapa);
-                    mapa.on('click', function(e) {
-                        if (marker) mapa.removeLayer(marker);
-                        marker = L.marker(e.latlng).addTo(mapa);
-                        obtenerDireccion(e.latlng.lat, e.latlng.lng);
-                    });
-                } else {
-                    mapa.setView([lat, lng], 13);
-                    mapa.invalidateSize();
-                    if (marker) {
-                        mapa.removeLayer(marker);
-                        marker = null;
-                    }
-                }
-                $('#direccion-seleccionada').text('');
-            }, 300);
-        });
-
-        function obtenerDireccion(lat, lng) {
-            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=es`)
-                .then(response => response.json())
-                .then(data => {
-                    direccionSeleccionada = data.display_name || '';
-                    $('#direccion-seleccionada').text(direccionSeleccionada);
-                });
-        }
-
-        $('#guardarDireccionMapa').on('click', function() {
-            if (!direccionSeleccionada) {
-                alert('Selecciona una dirección en el mapa.');
-                return;
-            }
-            if (consultorioEditandoId) {
-                // Edición de consultorio existente
-                const input = $(`#direccion-consultorio-${consultorioEditandoId}`);
-                input.val(direccionSeleccionada);
-                // Guardar por AJAX
-                $.ajax({
-                    url: `/profesional/consultorios/${consultorioEditandoId}/actualizar-direccion`,
-                    method: 'POST',
-                    data: {
-                                       _token: $('meta[name="csrf-token"]').attr('content'),
-                direccion: direccionSeleccionada
-            },
-            success: function() {
-                $('#modalMapaDireccion').modal('hide');
-                consultorioEditandoId = null;
-            },
-            error: function() {
-                alert('Error al actualizar la dirección');
-            }
-        });
-    } else {
-        // Nuevo consultorio
-        $('#direccionNuevoConsultorio').val(direccionSeleccionada);
-        $('#modalMapaDireccion').modal('hide');
-    }
-});
-    </script>
 
     <script>
         function previewSello(input) {
@@ -2730,4 +2658,76 @@
             }
         }
     </script>
+
+    <script>
+        let currentInputDireccion = null;
+        let selectedLatLng = null;
+        let mapa = null;
+
+        // Al hacer clic en "Seleccionar en mapa"
+        $(document).on('click', '.btnSeleccionarDireccionMapa', function() {
+            const inputId = $(this).data('input-id');
+            currentInputDireccion = $('#' + inputId);
+
+            // Mostrar modal
+            $('#modalMapaDireccion').modal('show');
+        });
+
+        $('#modalMapaDireccion').on('shown.bs.modal', function() {
+            if (!mapa) {
+                mapa = L.map('mapaDireccion').setView([-0.1807, -78.4678], 13);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(mapa);
+
+                const iconoPinRojo = L.icon({
+                    iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+                    iconSize: [32, 32],       // tamaño del ícono
+                    iconAnchor: [16, 32],     // punto del ícono que corresponde a la ubicación
+                    popupAnchor: [0, -32]     // punto desde donde se abriría un popup
+                });
+
+                mapa.on('click', async function(e) {
+                    selectedLatLng = e.latlng;
+
+                     // Eliminar marcador anterior si ya existe
+                        if (mapa._selectedMarker) {
+                            mapa.removeLayer(mapa._selectedMarker);
+                        }
+
+                        // Agregar nuevo marcador
+                        mapa._selectedMarker = L.marker([e.latlng.lat, e.latlng.lng], { icon: iconoPinRojo }).addTo(mapa);
+
+
+                    const url =
+                        `https://nominatim.openstreetmap.org/reverse?lat=${e.latlng.lat}&lon=${e.latlng.lng}&format=json`;
+
+                    try {
+                        const res = await fetch(url);
+                        const data = await res.json();
+                        $('#direccionSeleccionadaMapa').val(data.display_name);
+                    } catch (error) {
+                        alert('Error al obtener dirección.');
+                    }
+                });
+            }
+
+            // Muy importante: redibujar el mapa después de mostrar el modal
+            setTimeout(() => {
+                mapa.invalidateSize();
+                mapa.setView([-0.1807, -78.4678], 13); // Recentrar por si acaso
+            }, 300);
+        });
+
+        // Al hacer clic en "Usar esta dirección"
+        $('#guardarDireccionMapa').on('click', function() {
+            const direccion = $('#direccionSeleccionadaMapa').val();
+            if (currentInputDireccion && direccion) {
+                currentInputDireccion.val(direccion);
+                $('#modalMapaDireccion').modal('hide');
+            }
+        });
+    </script>
+
 @endsection
