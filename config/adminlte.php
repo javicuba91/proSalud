@@ -792,6 +792,21 @@ return [
                 ],
             ],
         ],
+        'Toast' => [
+            'active' => true,
+            'files' => [
+                 [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js',
+                ],
+            ],
+        ],
         'Notificaciones' => [
             'active' => true,
             'files' => [
