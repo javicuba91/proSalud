@@ -28,7 +28,7 @@
                 <input readonly disabled value="{{$receta->medicoReceta}}" type="text" class="form-control" placeholder="Médico que recetó">
             </div>
             <div class="col-md">
-                <input readonly disabled value="{{App\Models\EspecializacionesProfesional::find($receta->especializacion_id)->especialidad->nombre}}" type="text" class="form-control" placeholder="Especialidad">
+                <input readonly disabled value="{{ $receta->nombre_especialidad ?? 'No especificada' }}" type="text" class="form-control" placeholder="Especialidad">
             </div>
             <div class="col-md">
                 <a href="/paciente/cita/informe-consulta/{{$receta->informe_consulta_id}}/receta" class="btn btn-dark w-100">Ver receta</a>

@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use App\Models\ImagenesPrueba;
 use App\Models\Notificacion;
+use App\Models\Paciente;
+use App\Models\ValoracionProveedor;
 
 class ProveedorController extends Controller
 {
@@ -168,7 +170,44 @@ class ProveedorController extends Controller
         $proveedor = Proveedor::where('user_id', Auth::id())->first();
         return view('proveedores.valoracionesComentarios', compact('proveedor'));
     }
+    public function guardarValoracion(Request $request)
+    {
+        $request->validate([
+            'paciente_id' => 'required|exists:pacientes,id',
+            'proveedor_id' => 'required|exists:proveedores,id',
+            'fecha' => 'required|date',
+            'modalidad' => 'required|in:presencial,videollamada',
+            'puntuacion' => 'required|integer|min:1|max:5',
+            'comentario' => 'nullable|string',
+        ]);
 
+        ValoracionProveedor::create($request->only([
+            'paciente_id',
+            'proveedor_id',
+            'fecha',
+            'modalidad',
+            'puntuacion',
+            'comentario'
+        ]));
+
+        if ($request->puntuacion < 3) {        // Crear notificación
+            $paciente = Paciente::findOrFail($request->paciente_id);
+            $proveedor = Proveedor::findOrFail($request->proveedor_id);
+
+            $notificacion = new Notificacion();
+            $notificacion->mensaje = "Valoración de {$paciente->nombre_completo} para {$proveedor->nombre}";
+            $notificacion->titulo = "{$request->puntuacion} estrellas - {$proveedor->nombre_completo}";
+            $notificacion->tipo = 'valoracion_proveedor';
+            $notificacion->icono = 'fa fa-star';
+            $notificacion->url = "/admin/valoraciones?paciente_id=&proveedor_id=&modalidad=&puntuacion={$request->puntuacion}";
+            $notificacion->leida = 0;
+            $notificacion->usuario_id = $paciente->user_id;
+            $notificacion->usuario_id_destino = NULL;
+            $notificacion->save();
+        }
+
+        return redirect()->back()->with('success', 'Gracias por tu valoración.');
+    }
     public function compartirResultados()
     {
         return view('proveedores.compartirResultados');

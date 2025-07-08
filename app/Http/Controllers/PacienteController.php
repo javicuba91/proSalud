@@ -250,8 +250,10 @@ class PacienteController extends Controller
             ->join('citas as c', 'c.id', '=', 'ic.cita_id')
             ->join('profesionales as p', 'p.id', '=', 'c.profesional_id')
             ->join('pacientes as pac', 'pac.id', '=', 'c.paciente_id')
+            ->join('especializaciones as ep', 'ep.id', '=', 'c.especializacion_id')
+            ->join('especialidades as e', 'e.id', '=', 'ep.especialidad_id')
             ->where('pac.id', $paciente->id)
-            ->select('ic.*', 'c.*', 'p.nombre_completo as medicoReceta', 'pac.*', 'r.*')
+            ->select('ic.*', 'c.*', 'p.nombre_completo as medicoReceta', 'pac.*', 'r.*', 'e.nombre as nombre_especialidad')
             ->get();
 
         return view('pacientes.misRecetas', compact('paciente', 'recetas'));
@@ -455,7 +457,7 @@ class PacienteController extends Controller
             'comentario'
         ]));
 
-        if($request->puntacion<3){        // Crear notificación
+        if($request->puntuacion<3){        // Crear notificación
             $paciente = Paciente::findOrFail($request->paciente_id);
             $profesional = Profesional::findOrFail($request->profesional_id);
 

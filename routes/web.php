@@ -76,6 +76,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/paciente/mis-citas/aceptadas', [PacienteController::class, 'misCitasAceptadas'])->name('pacientes.misCitas.aceptadas');
     Route::get('/paciente/mis-citas/{id}/detalle', [PacienteController::class, 'detalleCita'])->name('pacientes.misCitas.detalle');
     Route::post('/pacientes/valoraciones', [PacienteController::class, 'guardarValoracion'])->name('pacientes.valoraciones.store');
+    Route::post('/proveedores/valoraciones', [ProveedorController::class, 'guardarValoracion'])->name('proveedores.valoraciones.store');
 
 
     Route::get('/paciente/buscar-profesionales', [PacienteController::class, 'buscarProfesionales'])->name('pacientes.buscarProfesionales');
