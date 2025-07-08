@@ -36,19 +36,19 @@ class AdminController extends Controller
         $total_citas_canceladas = Cita::where('estado', '=', 'cancelada')->count();
         $total_citas_pendientes = Cita::where('estado', '=', 'pendiente')->count();
 
-        $total_ingresos_profesionales = SuscripcionPlan::where('pagado', '=',1)
+        $total_ingresos_profesionales = SuscripcionPlan::where('pagado', '=', 1)
             ->with('plan')
             ->get()
             ->sum(function (SuscripcionPlan $suscripcion) {
                 return $suscripcion->plan->precio ?? 0;
-        });
+            });
 
-         $total_ingresos_proveedor = SuscripcionesPlanesProveedores::where('pagado', '=',1)
+        $total_ingresos_proveedor = SuscripcionesPlanesProveedores::where('pagado', '=', 1)
             ->with('plan')
             ->get()
             ->sum(function (SuscripcionesPlanesProveedores $suscripcion) {
                 return $suscripcion->plan->precio ?? 0;
-        });
+            });
 
         $total_ingresos = $total_ingresos_profesionales + $total_ingresos_proveedor;
 
@@ -78,16 +78,69 @@ class AdminController extends Controller
         $total_documentos_profesional = DocumentoProfesional::where('estado', '=', 'pendiente')->count();
         $total_documentos_proveedor = DocumentosProveedor::where('estado', '=', 'pendiente')->count();
 
-        $notificaciones = Notificacion::where('leida',0)
+        $documentos_profesionales = Notificacion::where('leida', 0)
             ->where('usuario_id_destino', null)
+            ->where('tipo', 'documento_profesional')
             ->orderBy('created_at', 'desc')
             ->take(10)
             ->get();
-        $total_notificaciones = Notificacion::where('leida',0)
+        $documentos_proveedores = Notificacion::where('leida', 0)
+            ->where('usuario_id_destino', null)
+            ->where('tipo', 'documento_proveedor')
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+        $contacto_profesionales = Notificacion::where('leida', 0)
+            ->where('usuario_id_destino', null)
+            ->where('tipo', 'contacto_profesional')
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+        $contacto_proveedores = Notificacion::where('leida', 0)
+            ->where('usuario_id_destino', null)
+            ->where('tipo', 'contacto_proveedor')
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+        $valoraciones_profesionales = Notificacion::where('leida', 0)
+            ->where('usuario_id_destino', null)
+            ->where('tipo', 'valoracion_profesional')
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+        $valoraciones_proveedores = Notificacion::where('leida', 0)
+            ->where('usuario_id_destino', null)
+            ->where('tipo', 'valoracion_proveedor')
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+
+        $total_notificaciones = Notificacion::where('leida', 0)
             ->where('usuario_id_destino', null)
             ->count();
 
-        return view('admin.index', compact('total_documentos_proveedor','total_documentos_profesional','total_ingresos_profesionales','total_ingresos_proveedor','usuariosPorTipo', 'total_ingresos', 'total_citas_pendientes', 'total_citas_canceladas', 'total_citas', 'total_profesionales', 'total_pacientes', 'total_proveedores', 'total_emergencias', 'notificaciones', 'total_notificaciones'));
+        return view('admin.index', compact(
+            'total_documentos_proveedor',
+            'total_documentos_profesional',
+            'total_ingresos_profesionales',
+            'total_ingresos_proveedor',
+            'usuariosPorTipo',
+            'total_ingresos',
+            'total_citas_pendientes',
+            'total_citas_canceladas',
+            'total_citas',
+            'total_profesionales',
+            'total_pacientes',
+            'total_proveedores',
+            'total_emergencias',
+            'total_notificaciones',
+            'documentos_profesionales',
+            'documentos_proveedores',
+            'contacto_profesionales',
+            'contacto_proveedores',
+            'valoraciones_profesionales',
+            'valoraciones_proveedores'
+        ));
     }
 
     /**

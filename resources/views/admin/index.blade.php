@@ -3,7 +3,8 @@
 @section('title', 'Inicio')
 
 @section('content_header')
-    <h1>Bienvenidos al Panel de Administración</h1>
+    <h1>
+        Bienvenidos al Panel de Administración</h1>
 @stop
 
 @section('content')
@@ -158,12 +159,59 @@
                         class="fas fa-bell"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Notificaciones ({{ $total_notificaciones }})</span>
-                    @foreach ($notificaciones as $notificacion)
-                        <span class="info-box-number">
-                            {{ $notificacion->titulo }}
-                        </span>
-                    @endforeach
-                    <a href="{{ route('admin.notificaciones.index') }}" class="text-decoration-none">Ver todas las Notificaciones</a>
+                    <div class="row">
+                        <div class="col-4">
+                            <strong>Doc. Pendientes Profesional ({{$documentos_profesionales->count()}})</strong>
+                            <ul>
+                                @foreach ($documentos_profesionales as $documento_profesional)
+                                    <li>{{ $documento_profesional->titulo }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="col-4">
+                            <strong>Doc. Pendientes Proveedor ({{$documentos_proveedores->count()}})</strong>
+                            <ul>
+                                @foreach ($documentos_proveedores as $documento_proveedor)
+                                    <li>{{ $documento_proveedor->titulo }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="col-4">
+                            <strong>Contactos Profesional ({{$contacto_profesionales->count()}})</strong>
+                            <ul>
+                                @foreach ($contacto_profesionales as $contacto_profesional)
+                                    <li>{{ $contacto_profesional->titulo }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="col-4">
+                            <strong>Contactos Proveedor ({{$contacto_proveedores->count()}})</strong>
+                            <ul>
+                                @foreach ($contacto_proveedores as $contacto_proveedor)
+                                    <li>{{ $contacto_proveedor->titulo }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+
+                        <div class="col-4">
+                            <strong>Valoraciones Profesional ({{$valoraciones_profesionales->count()}})</strong>
+                            <ul>
+                                @foreach ($valoraciones_profesionales as $valoracion_profesional)
+                                    <li>{{ $valoracion_profesional->titulo }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="col-4">
+                            <strong>Valoraciones Proveedor ({{$valoraciones_proveedores->count()}})</strong>
+                            <ul>
+                                @foreach ($valoraciones_proveedores as $valoracion_proveedor)
+                                    <li>{{ $valoracion_proveedor->titulo }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    <a href="{{ route('admin.notificaciones.index') }}" class="text-decoration-none">Ver todas las
+                        Notificaciones</a>
                 </div>
             </div>
         </div>

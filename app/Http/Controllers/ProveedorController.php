@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use App\Models\ImagenesPrueba;
+use App\Models\Notificacion;
 
 class ProveedorController extends Controller
 {
@@ -364,6 +365,20 @@ class ProveedorController extends Controller
             'archivo' => "documentos/{$proveedorID}/{$filename}",
         ]);
 
+
+        $proveedor = Proveedor::findOrFail($proveedorID);
+
+        $notificacion = new Notificacion();
+        $notificacion->mensaje = "{$request->nombre} de {$proveedor->nombre}";
+        $notificacion->titulo = "{$request->nombre}";
+        $notificacion->tipo = 'documento_proveedor';
+        $notificacion->icono = 'fa fa-file';
+        $notificacion->url = '/admin/documentos-proveedor$proveedor?estado=pendiente';
+        $notificacion->leida = 0;
+        $notificacion->usuario_id = $proveedor->user_id;
+        $notificacion->usuario_id_destino = NULL; // Notificación para el administrador
+        $notificacion->save();
+
         return redirect()->back()->with('success', 'Documento guardado correctamente.');
     }
 
@@ -566,6 +581,18 @@ class ProveedorController extends Controller
             'motivo' => $request->motivo,
             'descripcion' => $request->descripcion,
         ]);
+
+        // Crear notificación
+        $notificacion = new Notificacion();
+        $notificacion->mensaje = "Consulta de {$proveedor->nombre}";
+        $notificacion->titulo = $request->motivo;
+        $notificacion->tipo = 'contacto_proveedor';
+        $notificacion->icono = 'fa fa-envelope';
+        $notificacion->url = '/admin/contacto-proveedores?estado=pendiente';
+        $notificacion->leida = 0;
+        $notificacion->usuario_id = $proveedor->user_id;
+        $notificacion->usuario_id_destino = NULL;
+        $notificacion->save();
 
         return back()->with('success', 'Consulta enviada correctamente.');
     }
