@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('titulo');
             $table->text('mensaje');
-            $table->string('tipo')->default('info'); // info, success, warning, danger
+            $table->string('tipo'); // info, success, warning, danger
             $table->string('icono')->nullable();
             $table->string('url')->nullable();
             $table->boolean('leida')->default(false);

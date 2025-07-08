@@ -706,6 +706,18 @@ class ProfesionalController extends Controller
             'descripcion' => $request->descripcion,
         ]);
 
+        // Crear notificación
+        $notificacion = new Notificacion();
+        $notificacion->mensaje = "Consulta de {$profesional->nombre_completo}";
+        $notificacion->titulo = $request->motivo;
+        $notificacion->tipo = 'contacto_profesional';
+        $notificacion->icono = 'fa fa-envelope';
+        $notificacion->url = '/admin/contacto-profesional?estado=pendiente';
+        $notificacion->leida = 0;
+        $notificacion->usuario_id = $profesional->user_id;
+        $notificacion->usuario_id_destino = NULL;
+        $notificacion->save();
+
         return back()->with('success', 'Consulta enviada correctamente.');
     }
 
@@ -1726,9 +1738,9 @@ class ProfesionalController extends Controller
         $profesional = Profesional::findOrFail($profesionalId);
 
         $notificacion = new Notificacion();
-        $notificacion->mensaje = "Documento pendiente de validación: {$request->nombre} de {$profesional->nombre_completo}";
-        $notificacion->titulo = "Documento pendiente de validación: {$request->nombre}";
-        $notificacion->tipo = 'warning';
+        $notificacion->mensaje = "{$request->nombre} de {$profesional->nombre_completo}";
+        $notificacion->titulo = "{$request->nombre}";
+        $notificacion->tipo = 'documento_profesional';
         $notificacion->icono = 'fa fa-file';
         $notificacion->url = '/admin/documentos-profesional?estado=pendiente';
         $notificacion->leida = 0;

@@ -13,6 +13,7 @@ use App\Models\ImagenesPrueba;
 use App\Models\InformeConsulta;
 use App\Models\IntervaloMedicamento;
 use App\Models\Medicamento;
+use App\Models\Notificacion;
 use App\Models\Paciente;
 use App\Models\PresentacionMedicamento;
 use App\Models\Prueba;
@@ -22,6 +23,7 @@ use App\Models\User;
 use App\Models\Valoracion;
 use App\Models\ViaAdministracionMedicamento;
 use App\Models\PresupuestoPrueba;
+use App\Models\Profesional;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -453,7 +455,21 @@ class PacienteController extends Controller
             'comentario'
         ]));
 
+        if($request->puntacion<3){        // Crear notificación
+            $paciente = Paciente::findOrFail($request->paciente_id);
+            $profesional = Profesional::findOrFail($request->profesional_id);
 
+            $notificacion = new Notificacion();
+            $notificacion->mensaje = "Valoración de {$paciente->nombre_completo} para {$profesional->nombre_completo}";
+            $notificacion->titulo = "{$request->puntuacion} estrellas - {$profesional->nombre_completo}";
+            $notificacion->tipo = 'valoracion_profesional';
+            $notificacion->icono = 'fa fa-star';
+            $notificacion->url = '/admin/valoraciones-profesionales';
+            $notificacion->leida = 0;
+            $notificacion->usuario_id = $paciente->user_id;
+            $notificacion->usuario_id_destino = NULL;
+            $notificacion->save();
+           }
 
         return redirect()->back()->with('success', 'Gracias por tu valoración.');
     }
@@ -522,7 +538,7 @@ class PacienteController extends Controller
     public function exportarHistorialMedicoPdf($id)
     {
         $paciente = Paciente::findOrFail($id);
-        
+
         // Verificar que el usuario solo pueda acceder a su propio historial
         if ($paciente->user_id !== Auth::id()) {
             abort(403, 'No tienes permisos para acceder a este historial médico.');
@@ -571,7 +587,7 @@ class PacienteController extends Controller
             ->get();
 
         $pdf = \PDF::loadView('pacientes.pdf.historialMedico', compact('seguros', 'recetas', 'paciente', 'informes', 'pruebas'));
-        
+
         return $pdf->download('historial_medico_' . $paciente->nombre_completo . '_' . date('Y-m-d') . '.pdf');
     }
 }
