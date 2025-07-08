@@ -144,33 +144,6 @@ class NotificacionController extends Controller
         return response()->json(['success' => true]);
     }
 
-    /**
-     * Crear nueva notificación (para administradores)
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'mensaje' => 'required|string',
-            'tipo' => 'required|string|in:info,success,warning,danger',
-            'usuario_id' => 'nullable|exists:users,id',
-            'url' => 'nullable|url',
-            'rol' => 'nullable|string'
-        ]);
-
-        $notificacion = Notificacion::create([
-            'usuario_id' => $request->usuario_id,
-            'titulo' => $request->titulo,
-            'mensaje' => $request->mensaje,
-            'tipo' => $request->tipo,
-            'url' => $request->url,
-            'icono' => $this->getIconoPorTipo($request->tipo),
-            'rol' => $request->rol,
-            'leida' => false
-        ]);
-
-        return response()->json(['success' => true, 'notificacion' => $notificacion]);
-    }
 
     private function getIconoPorTipo($tipo)
     {
