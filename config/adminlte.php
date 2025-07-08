@@ -298,21 +298,7 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
-        [
-            'type' => 'navbar-notification',
-            'id' => 'my-notification',
-            'icon' => 'fas fa-bell',
-            'icon_color' => 'warning',
-            'label' => 0,
-            'label_color' => 'danger',
-            'url' => '#',
-            'topnav_right' => true,
-            'dropdown_mode' => 'custom',
-            'dropdown_flabel' => 'Notificaciones',
-            'dropdown_content' => 'vendor.adminlte.partials.menu.notificaciones_admin',           
-            'can' => 'solo-admin',            
-        ],
+        // Navbar items:       
         [
             'type' => 'navbar-search',
             'text' => 'search',

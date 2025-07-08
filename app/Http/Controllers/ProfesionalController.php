@@ -23,6 +23,7 @@ use App\Models\InformeConsulta;
 use App\Models\IntervaloMedicamento;
 use App\Models\Medicamento;
 use App\Models\MetodoPago;
+use App\Models\Notificacion;
 use App\Models\Paciente;
 use App\Models\PedidoImagen;
 use App\Models\PedidoLaboratorio;
@@ -1721,6 +1722,19 @@ class ProfesionalController extends Controller
             'tipo' => $request->tipo,
             'archivo' => "documentos/{$profesionalId}/{$filename}",
         ]);
+
+        $profesional = Profesional::findOrFail($profesionalId);
+
+        $notificacion = new Notificacion();
+        $notificacion->titulo = "Documento pendiente de validación: {$request->nombre}";
+        $notificacion->mensaje = "Documento pendiente de validación: {$request->nombre}";
+        $notificacion->tipo = 'warning';
+        $notificacion->icono = 'fa fa-file';
+        $notificacion->url = '/admin/documentos-profesional';
+        $notificacion->leida = 0;
+        $notificacion->usuario_id = $profesional->user_id;
+        $notificacion->rol = 'profesional';
+        $notificacion->save();
 
         return redirect()->back()->with('success', 'Documento guardado correctamente.');
     }

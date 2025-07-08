@@ -9,14 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificacionController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
-     * Mostrar todas las notificaciones
-     */
     public function index()
     {
         $user = Auth::user();
