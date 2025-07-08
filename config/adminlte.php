@@ -304,7 +304,7 @@ return [
             'text' => 'search',
             'topnav_right' => true,
         ],
-        [
+        /*[
             'type' => 'navbar-notification',
             'id' => 'my-notification',
             'icon' => 'fas fa-bell',
@@ -315,7 +315,7 @@ return [
             'topnav_right' => true,
             'dropdown_mode' => true,
             'can' => 'solo-admin',
-        ],
+        ],*/
         [
             'type' => 'fullscreen-widget',
             'topnav_right' => false,
@@ -789,6 +789,21 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        'Toast' => [
+            'active' => true,
+            'files' => [
+                 [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js',
                 ],
             ],
         ],

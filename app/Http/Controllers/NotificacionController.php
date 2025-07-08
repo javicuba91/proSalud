@@ -67,7 +67,6 @@ class NotificacionController extends Controller
                 ->get();
 
         $html = '';
-        $html .= '<span class="dropdown-item dropdown-header">'.$notificaciones->count().' Notificationes</span>';
         $html .= '<a href="/admin/documentos-profesional?profesional_id=&estado=pendiente" class="dropdown-item">
                         <i class="fas fa-file mr-2"></i> Doc. Pendientes Profesional
                     </a><div class="dropdown-divider"></div>';
@@ -99,18 +98,9 @@ class NotificacionController extends Controller
      */
     public function marcarLeida($id)
     {
-        $user = Auth::user();
-
-        $notificacion = Notificacion::where('id', $id)
-            ->where(function ($query) use ($user) {
-                $query->where('usuario_id', $user->id)
-                    ->orWhereNull('usuario_id');
-            })
-            ->first();
-
-        if ($notificacion) {
-            $notificacion->marcarComoLeida();
-        }
+        $notificacion = Notificacion::find($id);
+        $notificacion->leida = 1;
+        $notificacion->save();
 
         return response()->json(['success' => true]);
     }

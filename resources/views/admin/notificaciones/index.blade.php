@@ -34,7 +34,7 @@
                         <i class="{{ $notificacion->icono ?? 'fas fa-bell' }} bg-{{ $notificacion->color ?? 'info' }}"></i>
                         <div class="timeline-item {{ $notificacion->leida ? '' : 'border-primary' }}">
                             <span class="time">
-                                <i class="fas fa-clock"></i> {{ $notificacion->created_at->diffForHumans() }}
+                                <i class="fas fa-clock"></i> {{ $notificacion->created_at->locale('es')->diffForHumans() }}
                                 @if(!$notificacion->leida)
                                     <span class="badge badge-primary ml-2">Nueva</span>
                                 @endif

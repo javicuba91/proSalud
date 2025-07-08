@@ -7,7 +7,119 @@
         Bienvenidos al Panel de Administración</h1>
 @stop
 
+@section('css')
+    <style>
+        .toast {
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .toast-success {
+            background-color: #e6f4ea;
+            border-left: 5px solid #28a745;
+        }
+
+        .toast-header {
+            background-color: transparent;
+            border-bottom: none;
+            font-weight: 600;
+        }
+
+        .toast-body {
+            color: #2e654b;
+            font-size: 0.95rem;
+        }
+    </style>
+
+@endsection
+
 @section('content')
+
+    @if($total_notificaciones > 0)       
+        <div style="position: fixed; top: 4rem; right: 1rem; z-index: 1055;">
+            <div id="myToast" class="toast toast-success" role="alert" aria-live="assertive" aria-atomic="true" data-delay="4000">
+                <div class="toast-header">
+                    <i class="fas fa-check-circle text-success mr-2"></i>
+                    <strong class="mr-auto text-success">Acciones pendientes</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body">
+                    Debes revisar las <a href="/admin/notificaciones">notificaciones pendientes</a> para completar las acciones requeridas.
+                </div>
+            </div>
+        </div>
+    @endif
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="info-box mb-3">
+                <span style="background-color: hotpink; color: black;" class="info-box-icon elevation-1"><i
+                        class="fas fa-bell"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Notificaciones ({{ $total_notificaciones }})</span>
+                    <div class="row">
+                        <div class="col-4">
+                            <strong>Doc. Pendientes Profesional ({{ $total_documentos_profesionales }})</strong>
+                            <ul>
+                                @foreach ($documentos_profesionales as $documento_profesional)
+                                    <li>{{ $documento_profesional->titulo }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="col-4">
+                            <strong>Doc. Pendientes Proveedor ({{ $total_documentos_proveedores }})</strong>
+                            <ul>
+                                @foreach ($documentos_proveedores as $documento_proveedor)
+                                    <li>{{ $documento_proveedor->titulo }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="col-4">
+                            <strong>Contactos Profesional ({{ $total_contacto_profesionales }})</strong>
+                            <ul>
+                                @foreach ($contacto_profesionales as $contacto_profesional)
+                                    <li>{{ $contacto_profesional->titulo }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="col-4">
+                            <strong>Contactos Proveedor ({{ $total_contacto_proveedores }})</strong>
+                            <ul>
+                                @foreach ($contacto_proveedores as $contacto_proveedor)
+                                    <li>{{ $contacto_proveedor->titulo }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+
+                        <div class="col-4">
+                            <strong>Valoraciones Profesional ({{ $total_valoraciones_profesionales }})</strong>
+                            <ul>
+                                @foreach ($valoraciones_profesionales as $valoracion_profesional)
+                                    <li>{{ $valoracion_profesional->titulo }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="col-4">
+                            <strong>Valoraciones Proveedor ({{ $total_valoraciones_proveedores }})</strong>
+                            <ul>
+                                @foreach ($valoraciones_proveedores as $valoracion_proveedor)
+                                    <li>{{ $valoracion_proveedor->titulo }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    <a href="{{ route('admin.notificaciones.index') }}" class="text-decoration-none">Ver todas las
+                        Notificaciones</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="row">
         <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
@@ -149,69 +261,6 @@
                 <div class="info-box-content">
                     <span class="info-box-text">Doc. Pendiente Proveedor</span>
                     <span class="info-box-number">{{ $total_documentos_proveedor }}</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12">
-            <div class="info-box mb-3">
-                <span style="background-color: hotpink; color: black;" class="info-box-icon elevation-1"><i
-                        class="fas fa-bell"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Notificaciones ({{ $total_notificaciones }})</span>
-                    <div class="row">
-                        <div class="col-4">
-                            <strong>Doc. Pendientes Profesional ({{$total_documentos_profesionales}})</strong>
-                            <ul>
-                                @foreach ($documentos_profesionales as $documento_profesional)
-                                    <li>{{ $documento_profesional->titulo }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        <div class="col-4">
-                            <strong>Doc. Pendientes Proveedor ({{$total_documentos_proveedores}})</strong>
-                            <ul>
-                                @foreach ($documentos_proveedores as $documento_proveedor)
-                                    <li>{{ $documento_proveedor->titulo }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        <div class="col-4">
-                            <strong>Contactos Profesional ({{$total_contacto_profesionales}})</strong>
-                            <ul>
-                                @foreach ($contacto_profesionales as $contacto_profesional)
-                                    <li>{{ $contacto_profesional->titulo }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        <div class="col-4">
-                            <strong>Contactos Proveedor ({{$total_contacto_proveedores}})</strong>
-                            <ul>
-                                @foreach ($contacto_proveedores as $contacto_proveedor)
-                                    <li>{{ $contacto_proveedor->titulo }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-
-                        <div class="col-4">
-                            <strong>Valoraciones Profesional ({{$total_valoraciones_profesionales}})</strong>
-                            <ul>
-                                @foreach ($valoraciones_profesionales as $valoracion_profesional)
-                                    <li>{{ $valoracion_profesional->titulo }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        <div class="col-4">
-                            <strong>Valoraciones Proveedor ({{$total_valoraciones_proveedores}})</strong>
-                            <ul>
-                                @foreach ($valoraciones_proveedores as $valoracion_proveedor)
-                                    <li>{{ $valoracion_proveedor->titulo }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                    <a href="{{ route('admin.notificaciones.index') }}" class="text-decoration-none">Ver todas las
-                        Notificaciones</a>
                 </div>
             </div>
         </div>
