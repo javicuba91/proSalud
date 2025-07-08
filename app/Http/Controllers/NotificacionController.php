@@ -98,18 +98,9 @@ class NotificacionController extends Controller
      */
     public function marcarLeida($id)
     {
-        $user = Auth::user();
-
-        $notificacion = Notificacion::where('id', $id)
-            ->where(function ($query) use ($user) {
-                $query->where('usuario_id', $user->id)
-                    ->orWhereNull('usuario_id');
-            })
-            ->first();
-
-        if ($notificacion) {
-            $notificacion->marcarComoLeida();
-        }
+        $notificacion = Notificacion::find($id);
+        $notificacion->leida = 1;
+        $notificacion->save();
 
         return response()->json(['success' => true]);
     }

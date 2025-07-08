@@ -26,7 +26,7 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+   public function index()
     {
         $total_profesionales = Profesional::count();
         $total_pacientes = Paciente::count();
