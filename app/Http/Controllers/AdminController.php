@@ -78,6 +78,33 @@ class AdminController extends Controller
         $total_documentos_profesional = DocumentoProfesional::where('estado', '=', 'pendiente')->count();
         $total_documentos_proveedor = DocumentosProveedor::where('estado', '=', 'pendiente')->count();
 
+        // Totales
+        $total_documentos_profesionales = Notificacion::where('leida', 0)
+            ->where('usuario_id_destino', null)
+            ->where('tipo', 'documento_profesional')
+            ->count();
+        $total_documentos_proveedores = Notificacion::where('leida', 0)
+            ->where('usuario_id_destino', null)
+            ->where('tipo', 'documento_proveedor')
+            ->count();
+        $total_contacto_profesionales = Notificacion::where('leida', 0)
+            ->where('usuario_id_destino', null)
+            ->where('tipo', 'contacto_profesional')
+            ->count();
+        $total_contacto_proveedores = Notificacion::where('leida', 0)
+            ->where('usuario_id_destino', null)
+            ->where('tipo', 'contacto_proveedor')
+            ->count();
+        $total_valoraciones_profesionales = Notificacion::where('leida', 0)
+            ->where('usuario_id_destino', null)
+            ->where('tipo', 'valoracion_profesional')
+            ->count();
+        $total_valoraciones_proveedores = Notificacion::where('leida', 0)
+            ->where('usuario_id_destino', null)
+            ->where('tipo', 'valoracion_proveedor')
+            ->count();
+
+        // Últimas 10 notificaciones
         $documentos_profesionales = Notificacion::where('leida', 0)
             ->where('usuario_id_destino', null)
             ->where('tipo', 'documento_profesional')
@@ -139,7 +166,13 @@ class AdminController extends Controller
             'contacto_profesionales',
             'contacto_proveedores',
             'valoraciones_profesionales',
-            'valoraciones_proveedores'
+            'valoraciones_proveedores',
+            'total_documentos_profesionales',
+            'total_documentos_proveedores',
+            'total_contacto_profesionales',
+            'total_contacto_proveedores',
+            'total_valoraciones_profesionales',
+            'total_valoraciones_proveedores'
         ));
     }
 
