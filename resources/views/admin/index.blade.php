@@ -152,6 +152,22 @@
             </div>
         </div>
 
+        <div class="col-12">
+            <div class="info-box mb-3">
+                <span style="background-color: hotpink; color: black;" class="info-box-icon elevation-1"><i
+                        class="fas fa-bell"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Notificaciones ({{ $total_notificaciones }})</span>
+                    @foreach ($notificaciones as $notificacion)
+                        <span class="info-box-number">
+                            {{ $notificacion->titulo }}
+                        </span>
+                    @endforeach
+                    <a href="{{ route('admin.notificaciones.index') }}" class="text-decoration-none">Ver todas las Notificaciones</a>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="row">
@@ -176,8 +192,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-
-        $(document).ready(function() {              
+        $(document).ready(function() {
 
             const usuariosPorTipo = @json($usuariosPorTipo);
 

@@ -16,7 +16,6 @@ class NotificacionController extends Controller
         if ($user->role == "admin") {
 
             $notificaciones = Notificacion::where('usuario_id_destino', '=', NULL)
-                ->where('leida', 0) // Solo no leídas
                 ->orderBy('created_at', 'desc')
                 ->paginate(20);
         } else {
@@ -122,12 +121,19 @@ class NotificacionController extends Controller
     {
         $user = Auth::user();
 
-        Notificacion::where(function ($query) use ($user) {
-            $query->where('usuario_id', $user->id)
-                ->orWhereNull('usuario_id');
-        })
-            ->noLeidas()
-            ->update(['leida' => true]);
+        if ($user->role == "admin") {
+
+            Notificacion::where(function ($query) use ($user) {
+                $query->where('usuario_id_destino', '=', NULL);
+            })->where('leida', 0) // Solo no leídas
+                ->update(['leida' => 1]);
+        } else {
+            Notificacion::where(function ($query) use ($user) {
+                $query->where('usuario_id_destino', $user->id);
+            })
+                ->where('leida', 0) // Solo no leídas
+                ->update(['leida' => 1]);
+        }
 
         return response()->json(['success' => true]);
     }
