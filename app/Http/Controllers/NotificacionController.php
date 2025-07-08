@@ -16,7 +16,6 @@ class NotificacionController extends Controller
         if ($user->role == "admin") {
 
             $notificaciones = Notificacion::where('usuario_id_destino', '=', NULL)
-                ->where('leida', 0) // Solo no leídas
                 ->orderBy('created_at', 'desc')
                 ->paginate(20);
         } else {
