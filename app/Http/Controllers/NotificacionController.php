@@ -15,7 +15,7 @@ class NotificacionController extends Controller
 
         $notificaciones = Notificacion::where('usuario_id', $user->id)
             ->orWhereNull('usuario_id') // Notificaciones globales
-            ->activas()
+            ->where('leida', 0)
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
@@ -33,7 +33,7 @@ class NotificacionController extends Controller
                 $query->where('usuario_id', $user->id)
                       ->orWhereNull('usuario_id');
             })
-            ->where('leida', 0) // Solo no leídas
+            ->where('leida', 0)
             ->count();
 
         return response()->json(['count' => $count]);
