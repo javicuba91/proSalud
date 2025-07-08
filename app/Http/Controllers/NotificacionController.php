@@ -123,12 +123,19 @@ class NotificacionController extends Controller
     {
         $user = Auth::user();
 
-        Notificacion::where(function ($query) use ($user) {
-            $query->where('usuario_id', $user->id)
-                ->orWhereNull('usuario_id');
-        })
-            ->noLeidas()
-            ->update(['leida' => true]);
+        if ($user->role == "admin") {
+
+            Notificacion::where(function ($query) use ($user) {
+                $query->where('usuario_id_destino', '=', NULL);
+            })->where('leida', 0) // Solo no leídas
+                ->update(['leida' => 1]);
+        } else {
+            Notificacion::where(function ($query) use ($user) {
+                $query->where('usuario_id_destino', $user->id);
+            })
+                ->where('leida', 0) // Solo no leídas
+                ->update(['leida' => 1]);
+        }
 
         return response()->json(['success' => true]);
     }

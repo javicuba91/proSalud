@@ -673,7 +673,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/notificaciones', [NotificacionController::class, 'index'])->name('admin.notificaciones.index');
         Route::get('/notificaciones/count', [NotificacionController::class, 'count'])->name('admin.notificaciones.count');
         Route::get('/notificaciones/dropdown', [NotificacionController::class, 'dropdown'])->name('admin.notificaciones.dropdown');
-        Route::get('/notificaciones/debug', [NotificacionController::class, 'debug'])->name('admin.notificaciones.debug');
         Route::post('/notificaciones/{id}/marcar-leida', [NotificacionController::class, 'marcarLeida'])->name('admin.notificaciones.marcar_leida');
         Route::post('/notificaciones/marcar-todas-leidas', [NotificacionController::class, 'marcarTodasLeidas'])->name('admin.notificaciones.marcar_todas_leidas');
         Route::post('/notificaciones', [NotificacionController::class, 'store'])->name('admin.notificaciones.store');

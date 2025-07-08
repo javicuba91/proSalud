@@ -9,6 +9,7 @@ use App\Models\DocumentoProfesional;
 use App\Models\DocumentosProveedor;
 use App\Models\Emergencia;
 use App\Models\Medicamento;
+use App\Models\Notificacion;
 use App\Models\Paciente;
 use App\Models\Profesional;
 use App\Models\Proveedor;
@@ -34,7 +35,7 @@ class AdminController extends Controller
         $total_citas = Cita::count();
         $total_citas_canceladas = Cita::where('estado', '=', 'cancelada')->count();
         $total_citas_pendientes = Cita::where('estado', '=', 'pendiente')->count();
-        
+
         $total_ingresos_profesionales = SuscripcionPlan::where('pagado', '=',1)
             ->with('plan')
             ->get()
@@ -77,7 +78,16 @@ class AdminController extends Controller
         $total_documentos_profesional = DocumentoProfesional::where('estado', '=', 'pendiente')->count();
         $total_documentos_proveedor = DocumentosProveedor::where('estado', '=', 'pendiente')->count();
 
-        return view('admin.index', compact('total_documentos_proveedor','total_documentos_profesional','total_ingresos_profesionales','total_ingresos_proveedor','usuariosPorTipo', 'total_ingresos', 'total_citas_pendientes', 'total_citas_canceladas', 'total_citas', 'total_profesionales', 'total_pacientes', 'total_proveedores', 'total_emergencias'));
+        $notificaciones = Notificacion::where('leida',0)
+            ->where('usuario_id_destino', null)
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+        $total_notificaciones = Notificacion::where('leida',0)
+            ->where('usuario_id_destino', null)
+            ->count();
+
+        return view('admin.index', compact('total_documentos_proveedor','total_documentos_profesional','total_ingresos_profesionales','total_ingresos_proveedor','usuariosPorTipo', 'total_ingresos', 'total_citas_pendientes', 'total_citas_canceladas', 'total_citas', 'total_profesionales', 'total_pacientes', 'total_proveedores', 'total_emergencias', 'notificaciones', 'total_notificaciones'));
     }
 
     /**
